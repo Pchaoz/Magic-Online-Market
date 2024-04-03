@@ -1,17 +1,22 @@
-import { useState } from "react";
-import Button from "./components/TestComponents/Button";
-import Altert from "./components/TestComponents/Altert";
-
-
+import {Routes, Route} from 'react-router-dom'
+import Home from "./components/pages/Home";
+import About from "./components/pages/About";
+import Navbar from './components/util/Navbar';
+import Login from './components/pages/Login';
+import Register from './components/pages/Register';
 
 function App() {
-  const [showAlert, setAlert] = useState(false);
 
   return (
-    <div>
-      {showAlert && <Altert onClose={() => setAlert(false)}> Hello <span> world </span> </Altert> }
-      <Button color="dark" onClick={() => setAlert(true)}> Soy un boton </Button>
-    </div>
+    <>
+      <Navbar/>
+      <Routes>
+        <Route path="/" element={ <Home /> }> </Route>
+        <Route path="/about" element={ <About /> }></Route>
+        <Route path="/login" element={ <Login /> }></Route>
+        <Route path="/register" element={ <Register /> }></Route>
+      </Routes>
+    </>
   )
   
   
