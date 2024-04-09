@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected $fillable = ["idDireccio","direccio","codiPostal"];
     public function up(): void
     {
         Schema::create('direccions', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idDireccio");
+            $table->string("direccio",50);
+            $table->string("codiPostal",20);
             $table->timestamps();
         });
     }

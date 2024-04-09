@@ -10,5 +10,5 @@ class Emparellaments extends Model
     use HasFactory;
     protected $table = "emparellaments";
     protected $primaryKey = "idEmparellament";
-    protected $fillable = ["idEmparellament","resultado"];
+    protected $fillable = ["idEmparellament","resultat"];
 }

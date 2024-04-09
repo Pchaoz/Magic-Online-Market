@@ -10,5 +10,5 @@ class Comandes extends Model
     use HasFactory;
     protected $table = "comandes";
     protected $primaryKey = "idComanda";
-    protected $fillable = ["idComanda","nom","preu","isEnviament"];
+    protected $fillable = ["idComanda","preu","isEnviament"];
 }

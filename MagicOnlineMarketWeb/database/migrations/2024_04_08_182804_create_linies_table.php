@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('linies', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idLinia");
+            $table->integer("quantitat")->default(1);
+            $table->double("preuUnitari");
+            $table->double("total");
             $table->timestamps();
         });
     }

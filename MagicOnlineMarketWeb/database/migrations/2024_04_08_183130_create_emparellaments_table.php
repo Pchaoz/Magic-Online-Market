@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('emparellaments', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idEmparellament");
+            $table->string("resultat",10);
             $table->timestamps();
         });
     }
