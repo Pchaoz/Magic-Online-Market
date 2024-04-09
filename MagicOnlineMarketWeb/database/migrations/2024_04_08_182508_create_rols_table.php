@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected $fillable = ["idRol","nom"];
+
+
     public function up(): void
     {
         Schema::create('rols', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idRol");
+            $table->string("nom");
             $table->timestamps();
         });
     }

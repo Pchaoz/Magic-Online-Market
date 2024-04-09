@@ -6,13 +6,16 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('tornejos', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idTorneig");
+            $table->integer("numparticipants")->default(2);
+            $table->integer("minParticipants")->default(2);
+            $table->integer("maxParticipants");
+            $table->integer("numeroRondes")->default(1);
+            $table->timestamp("horaInici");
             $table->timestamps();
         });
     }

@@ -10,5 +10,5 @@ class Rondes extends Model
     use HasFactory;
     protected $table = "rondes";
     protected $primaryKey = "idRonda";
-    protected $fillable = ["idRonda","posicio"];
+    protected $fillable = ["idRonda","numeroRonda"];
 }

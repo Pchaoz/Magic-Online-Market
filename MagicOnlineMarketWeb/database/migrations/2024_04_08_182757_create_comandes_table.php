@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('comandes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idComanda");
+            $table->double("preu");
+            $table->boolean("isEnviament")->default(false);
             $table->timestamps();
         });
     }

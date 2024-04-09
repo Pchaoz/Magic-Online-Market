@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('tipus_enviaments', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idTipusEnviament");
+            $table->string("nom",30);
+            $table->double("preu");
             $table->timestamps();
         });
     }

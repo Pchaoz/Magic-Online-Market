@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected $fillable = ["idPais","nom"];
     public function up(): void
     {
         Schema::create('paissos', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idPais");
+            $table->string("nom",30);
             $table->timestamps();
         });
     }

@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected $fillable = ["idPremi","posicio"];
     public function up(): void
     {
         Schema::create('premis', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idPremi");
+            $table->integer("posicio")->default(1);
             $table->timestamps();
         });
     }

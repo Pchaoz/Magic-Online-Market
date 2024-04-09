@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('rondes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idRonda");
+            $table->integer("numeroRonda")->default(1);
             $table->timestamps();
         });
     }

@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected $fillable = ["idCategoriesProductes","nom"];
     public function up(): void
     {
         Schema::create('categoria_productes', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idCategoriesProductes");
+            $table->string("nom");
             $table->timestamps();
         });
     }

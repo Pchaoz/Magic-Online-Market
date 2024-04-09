@@ -6,14 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+
     public function up(): void
     {
         Schema::create('ofertes', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->bigIncrements("idOferta");
+            $table->integer("quantitat")->default(1);
+            $table->double("preu");
         });
     }
 
