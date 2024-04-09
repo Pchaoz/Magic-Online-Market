@@ -1,6 +1,6 @@
 # magic_online_mobile
 
-Magic online market app
+magic_market_online app
 
 ## Getting Started
 
