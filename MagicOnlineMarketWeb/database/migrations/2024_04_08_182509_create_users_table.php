@@ -19,6 +19,7 @@ return new class extends Migration
             $table->double('saldo')->default(0);
             $table->integer('numeroVendes')->default(0);
             $table->double('mitjanaVenedor')->default(0);
+            $table->foreignId('idRol')->nullable()->constrained('rols')->references('idRol');
             $table->rememberToken();
             $table->timestamps();
         });

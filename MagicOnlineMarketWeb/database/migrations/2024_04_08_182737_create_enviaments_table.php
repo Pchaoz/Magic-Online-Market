@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('enviaments', function (Blueprint $table) {
 
             $table->bigIncrements("idEnviament");
+            $table->foreignId('idDesti')->nullable()->constrained('direccions')->references('idDireccio');
+            $table->foreignId('idTipusEnviament')->nullable()->constrained('tipus_enviaments')->references('idTipusEnviament');
             $table->timestamps();
         });
     }

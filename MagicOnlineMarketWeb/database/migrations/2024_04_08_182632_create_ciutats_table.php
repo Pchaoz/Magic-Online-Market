@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('ciutats', function (Blueprint $table) {
             $table->bigIncrements("idCiutat");
             $table->string("nom",30);
+            $table->foreignId('idPais')->nullable()->constrained('paissos')->references('idPais');
             $table->timestamps();
         });
     }

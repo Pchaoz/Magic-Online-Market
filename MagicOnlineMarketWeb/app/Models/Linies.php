@@ -11,4 +11,11 @@ class Linies extends Model
     protected $table = "linies";
     protected $primaryKey = "idLinia";
     protected $fillable = ["idLinia","quantitat","preuUnitari","total"];
+
+    public function comanda(){
+        return $this->BelongsTo(Comandes::class, 'idComanda', 'idComanda');
+    }
+    public function oferta(){
+        return $this->BelongsTo(Ofertes::class, 'idOferta', 'idOferta');
+    }
 }

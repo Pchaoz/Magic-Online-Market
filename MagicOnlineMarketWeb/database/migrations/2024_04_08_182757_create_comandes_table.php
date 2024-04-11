@@ -13,6 +13,8 @@ return new class extends Migration
             $table->bigIncrements("idComanda");
             $table->double("preu");
             $table->boolean("isEnviament")->default(false);
+            $table->foreignId("idEnviament")->nullable()->constrained('enviaments')->references('idEnviament');
+            $table->foreignId("idComprador")->nullable()->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }
@@ -24,4 +26,5 @@ return new class extends Migration
     {
         Schema::dropIfExists('comandes');
     }
+
 };

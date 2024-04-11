@@ -11,4 +11,16 @@ class Comandes extends Model
     protected $table = "comandes";
     protected $primaryKey = "idComanda";
     protected $fillable = ["idComanda","preu","isEnviament"];
+
+    public function enviament(){
+        return $this->hasOne(Enviaments::class);
+    }
+
+    public function comprador(){
+        return $this->BelongsTo(User::class, 'idUsuari', 'idComprador');
+    }
+
+    public function lines(){
+        return $this->hasMany(Linies::class);
+    }
 }

@@ -10,6 +10,10 @@ class Ofertes extends Model
     use HasFactory;
     protected $table = "ofertes";
     protected $primaryKey = "idOferta";
-    protected $fillable = ["idOferta","quantitat","preu"];
+    protected $fillable = ["idOferta","quantitat","preu","idProducte","idVenedor"];
+
+    public function lines(){
+        return $this->hasMany(Linies::class);
+    }
 
 }

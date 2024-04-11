@@ -11,4 +11,9 @@ class Productes extends Model
     protected $table = "productes";
     protected $primaryKey = "idProducte";
     protected $fillable = ["idProducte","nom"];
+
+    public function Ofertes(){
+        return $this->belongsToMany(User::class, 'ofertes', 'idProducte','idUsuari')->using(Ofertes::class)->withTimestamps();
+    }
+
 }

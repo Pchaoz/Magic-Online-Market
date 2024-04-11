@@ -13,6 +13,8 @@ return new class extends Migration
             $table->integer("quantitat")->default(1);
             $table->double("preuUnitari");
             $table->double("total");
+            $table->foreignId("idComanda")->nullable()->constrained('comandes')->references('idComanda');
+            $table->foreignId("idOferta")->nullable()->constrained('ofertes')->references('idOferta');
             $table->timestamps();
         });
     }

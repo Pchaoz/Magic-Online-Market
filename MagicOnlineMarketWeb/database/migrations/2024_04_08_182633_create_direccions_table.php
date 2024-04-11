@@ -13,6 +13,8 @@ return new class extends Migration
             $table->bigIncrements("idDireccio");
             $table->string("direccio",50);
             $table->string("codiPostal",20);
+            $table->foreignId('idCiutat')->nullable()->constrained('ciutats')->references('idCiutat');
+            $table->foreignId('idPropietari')->nullable()->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

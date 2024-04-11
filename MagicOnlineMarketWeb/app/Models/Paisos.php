@@ -12,4 +12,9 @@ class Paisos extends Model
     protected $primaryKey = "idPais";
     protected $fillable = ["idPais","nom"];
 
+    public function ciutats()
+    {
+        return $this->hasMany(Ciutats::class);
+    }
+
 }

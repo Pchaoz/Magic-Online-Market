@@ -11,4 +11,9 @@ class TipusEnviaments extends Model
     protected $table = "tipusEnviaments";
     protected $primaryKey = "idTipusEnviament";
     protected $fillable = ["idTipusEnviament","nom","preu"];
+
+
+    public function enviaments(){
+        return $this->hasMany(Enviaments::class);
+    }
 }

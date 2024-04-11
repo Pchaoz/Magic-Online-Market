@@ -10,4 +10,9 @@ class Noticies extends Model
     protected $table = "notices";
     protected $primaryKey = "idNoticia";
     protected $fillable = ["idNoticia"];
+
+
+    public function user(){
+        return $this->BelongsTo(User::class, 'idUsuari', 'idUsuari');
+    }
 }

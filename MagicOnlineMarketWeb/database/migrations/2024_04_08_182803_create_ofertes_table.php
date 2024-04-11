@@ -12,6 +12,8 @@ return new class extends Migration
         Schema::create('ofertes', function (Blueprint $table) {
             $table->bigIncrements("idOferta");
             $table->integer("quantitat")->default(1);
+            $table->foreignId("idProducte")->nullable()->constrained('productes')->references('idProducte');
+            $table->foreignId("idVenedor")->nullable()->constrained('usuaris')->references('idUsuari');
             $table->double("preu");
         });
     }
