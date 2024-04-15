@@ -7,8 +7,9 @@ void main() {
 }
 
 Future<Map<String, dynamic>> loginUser(String email, String password) async {
+  //Peticion al servidor
   final response = await http.post(
-    Uri.parse('http://tu-dominio.com/login'),
+    Uri.parse('http://127.0.0.1:8000/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -31,7 +32,7 @@ class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login App',
+      title: 'Login',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
