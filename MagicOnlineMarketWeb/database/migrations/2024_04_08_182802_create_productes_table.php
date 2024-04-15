@@ -14,6 +14,8 @@ return new class extends Migration
             $table->string("nom");
             $table->foreignId("idCategoriaProducte")->default(1)->constrained('categoria_productes')->references('idCategoriaProductes');
             $table->foreignId("idExpansioCarta")->nullable()->constrained('expansio_cartes')->references('idExpansioCarta');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

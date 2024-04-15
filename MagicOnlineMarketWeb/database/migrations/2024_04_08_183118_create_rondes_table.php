@@ -13,6 +13,8 @@ return new class extends Migration
             $table->bigIncrements("idRonda");
             $table->integer("numeroRonda")->default(1);
             $table->foreignId('idTorneig')->constrained('tornejos')->references('idTorneig');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

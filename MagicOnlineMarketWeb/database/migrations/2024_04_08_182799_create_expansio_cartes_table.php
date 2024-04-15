@@ -14,6 +14,8 @@ return new class extends Migration
             $table->bigIncrements("idExpansioCarta");
             $table->foreignId("idCarta")->nullable()->constrained('cartes')->references('idCarta');
             $table->foreignId("idExpansio")->nullable()->constrained('expansions')->references('idExpansio');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

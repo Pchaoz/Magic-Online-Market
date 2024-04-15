@@ -11,4 +11,12 @@ class Premis extends Model
     protected $table = "premis";
     protected $primaryKey = "idPremi";
     protected $fillable = ["idPremi","posicio","idProducte","idTornig"];
+
+    public function creador(){
+        return $this->BelongsTo(User::class, 'idUser', 'updated_by');
+    }
+
+    public function actualizador(){
+        return $this->BelongsTo(User::class, 'idUser', 'created_by');
+    }
 }

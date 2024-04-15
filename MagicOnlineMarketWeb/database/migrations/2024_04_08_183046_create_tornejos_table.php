@@ -18,6 +18,8 @@ return new class extends Migration
             $table->foreignId('idOrganitzador')->constrained('usuaris')->references('idUsuari');
             $table->foreignId('idTipusTorneig')->constrained('tipus_torneigs')->references('idTipusTorneig');
             $table->timestamp("horaInici");
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }
