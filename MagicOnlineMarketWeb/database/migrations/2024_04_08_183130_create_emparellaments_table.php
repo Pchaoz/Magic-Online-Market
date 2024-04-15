@@ -12,6 +12,9 @@ return new class extends Migration
         Schema::create('emparellaments', function (Blueprint $table) {
             $table->bigIncrements("idEmparellament");
             $table->string("resultat",10);
+            $table->foreignId('idRonda')->constrained('rondes')->references('idRonda');
+            $table->foreignId('idParticipantA')->constrained('participants')->references('idParticipant');
+            $table->foreignId('idParticipantB')->constrained('participants')->references('idParticipant');
             $table->timestamps();
         });
     }

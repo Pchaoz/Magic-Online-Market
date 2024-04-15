@@ -82,5 +82,9 @@ class User extends Authenticatable
         return $this->belongsToMany(Productes::class, 'ofertes', 'idUsuari','idProducte')->using(Ofertes::class)->withTimestamps();
     }
 
+    public function inscriure(){
+        return $this->belongsToMany(Tornejos::class, 'participants', 'idUsuari','idTorneig')->using(Participants::class)->withTimestamps();
+    }
+
 
 }

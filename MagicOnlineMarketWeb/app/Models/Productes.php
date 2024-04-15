@@ -16,6 +16,10 @@ class Productes extends Model
         return $this->belongsToMany(User::class, 'ofertes', 'idProducte','idUsuari')->using(Ofertes::class)->withTimestamps();
     }
 
+    public function premis(){
+        return $this->belongsToMany(Tornejos::class, 'premis', 'idProducte','idPremi')->using(Premis::class)->withTimestamps();
+    }
+
     public function categoriaProducte(){
         return $this->BelongsTo(CategoriaProductes::class, 'idCategoriesProductes', 'idCategoriesProductes');
     }

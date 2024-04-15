@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->bigIncrements("idParticipant");
             $table->integer("puntuacio")->default(0);
+            $table->foreignId("idUsuari")->constrained('usuaris')->references('idUsuari');
+            $table->foreignId("idTorneig")->constrained('tornejos')->references('idTorneig');
             $table->timestamps();
         });
     }

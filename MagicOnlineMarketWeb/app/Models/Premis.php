@@ -10,5 +10,5 @@ class Premis extends Model
     use HasFactory;
     protected $table = "premis";
     protected $primaryKey = "idPremi";
-    protected $fillable = ["idPremi","posicio"];
+    protected $fillable = ["idPremi","posicio","idProducte","idTornig"];
 }

@@ -11,4 +11,12 @@ class Rondes extends Model
     protected $table = "rondes";
     protected $primaryKey = "idRonda";
     protected $fillable = ["idRonda","numeroRonda"];
+
+    public function torneig(){
+        return $this->BelongsTo(Tornejos::class, 'idTorneig', 'idTorneig');
+    }
+
+    public function emparellaments(){
+        return $this->hasMany(Emparellaments::class);
+    }
 }
