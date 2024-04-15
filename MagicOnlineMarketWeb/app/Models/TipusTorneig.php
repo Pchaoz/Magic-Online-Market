@@ -12,7 +12,7 @@ class TipusTorneig extends Model
     protected $primaryKey = "idTipusTorneig";
     protected $fillable = ["idTipusTorneig","descripcio"];
 
-    public function lines(){
+    public function torneigTipus(){
         return $this->hasMany(Tornejos::class);
     }
 
