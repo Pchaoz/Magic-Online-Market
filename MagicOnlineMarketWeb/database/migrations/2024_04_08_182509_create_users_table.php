@@ -10,9 +10,9 @@ return new class extends Migration
     {
         Schema::create('usuaris', function (Blueprint $table) {
             $table->bigIncrements("idUsuari");
-            $table->string('nick');
-            $table->string('nom');
-            $table->string('cognom');
+            $table->string('nick')->unique();
+            $table->string('name');
+            $table->string('cognom')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
