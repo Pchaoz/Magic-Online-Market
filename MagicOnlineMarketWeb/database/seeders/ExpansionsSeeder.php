@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+
 use Illuminate\Support\Facades\Schema;
 
 
@@ -16,6 +17,7 @@ class ExpansionsSeeder extends Seeder
     {
 
         Schema::disableForeignKeyConstraints();
+
         DB::table('expansions')->insert([
             'nom' => 'Dominaria Unida',
             'dataSortida' =>  '2022-09-02',
@@ -51,7 +53,9 @@ class ExpansionsSeeder extends Seeder
             'dataSortida' =>  '2015-09-26',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+
         Schema::enableForeignKeyConstraints();
+
 
     }
 }
