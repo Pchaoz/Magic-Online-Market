@@ -12,4 +12,10 @@ class TipusCartes extends Model
     protected $primaryKey = "idTipusCarta";
     protected $fillable = ["idTipusCarta","nom"];
 
+
+    public function tipuscartes(){
+        return $this->belongsToMany(Cartes::class, 'cartes','idTipusCarta','idCarta')->using(TipusCartesCartes::class)->withTimestamps();
+    }
+
+
 }

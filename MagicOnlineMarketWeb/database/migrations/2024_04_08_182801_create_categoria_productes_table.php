@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    protected $fillable = ["idEexpansioCartes"];
 
     public function up(): void
     {
-        Schema::create('expansio_cartas', function (Blueprint $table) {
-            $table->bigIncrements("idEexpansioCartes");
+        Schema::create('categoria_productes', function (Blueprint $table) {
+            $table->bigIncrements("idCategoriaProductes");
+            $table->string("nom");
             $table->timestamps();
         });
     }
@@ -21,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expansio_cartas');
+        Schema::dropIfExists('categoria_productes');
     }
 };

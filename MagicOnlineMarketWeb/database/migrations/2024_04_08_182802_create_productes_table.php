@@ -12,6 +12,8 @@ return new class extends Migration
         Schema::create('productes', function (Blueprint $table) {
             $table->bigIncrements("idProducte");
             $table->string("nom");
+            $table->foreignId("idCategoriaProducte")->default(1)->constrained('categoria_productes')->references('idCategoriaProductes');
+            $table->foreignId("idExpansioCarta")->nullable()->constrained('expansio_cartes')->references('idExpansioCarta');
             $table->timestamps();
         });
     }

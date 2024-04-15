@@ -14,6 +14,7 @@ return new class extends Migration
             $table->bigIncrements("idBaralla");
             $table->string("nom",40);
             $table->boolean("isPublic")->default(false);
+            $table->foreignId('idCreador')->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

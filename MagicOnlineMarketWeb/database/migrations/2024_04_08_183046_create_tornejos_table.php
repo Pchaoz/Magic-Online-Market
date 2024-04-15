@@ -15,6 +15,7 @@ return new class extends Migration
             $table->integer("minParticipants")->default(2);
             $table->integer("maxParticipants");
             $table->integer("numeroRondes")->default(1);
+            $table->foreignId('idOrganitzador')->constrained('usuaris')->references('idUsuari');
             $table->timestamp("horaInici");
             $table->timestamps();
         });
