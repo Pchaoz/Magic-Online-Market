@@ -1,38 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:magic_market_mobile/dashaboard.dart';
-import 'package:magic_market_mobile/register.dart';
 
 import 'login.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(AuthenticationApp());
 }
 
-const bool isLoged = false;
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class AuthenticationApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: "MAGIC MARKET ONLINE",
-      routerConfig: _router,
+    return MaterialApp(
+      title: 'Authentication App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: AuthenticationWrapper(),
     );
   }
+}
 
-  final GoRouter _router = GoRouter(
-      redirect: (context, state) {
-        if (isLoged) {
-          return '/dashboard';
-        }
-        return '/login';
-      },
-      routes: [
-        GoRoute(path: "/login", builder: (context, state) => const Login()),
-        GoRoute(
-            path: "/register", builder: (context, state) => const Register()),
-        GoRoute(
-            path: "/dashboard", builder: (context, state) => const Dashboard())
-      ]);
+class AuthenticationWrapper extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // Aquí puedes agregar lógica para verificar si el usuario ha iniciado sesión o no
+    // Por ejemplo, podrías utilizar un estado global, SharedPreferences, etc.
+    bool isAuthenticated = false;
+
+    return isAuthenticated ? HomePage() : LoginPage();
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Home'),
+      ),
+      body: Center(
+        child: Text('Welcome!'),
+      ),
+    );
+  }
 }

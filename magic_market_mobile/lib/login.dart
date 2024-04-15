@@ -1,108 +1,91 @@
 import 'package:flutter/material.dart';
-import 'package:magic_market_mobile/register.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
-class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
-  @override
-  _MyLogin createState() => _MyLogin();
+void main() {
+  runApp(LoginApp());
 }
 
-class _MyLogin extends State<Login> {
+Future<Map<String, dynamic>> loginUser(String email, String password) async {
+  final response = await http.post(
+    Uri.parse('http://tu-dominio.com/login'),
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(<String, String>{
+      'email': email,
+      'password': password,
+    }),
+  );
+
+  if (response.statusCode == 200) {
+    //Usuari logeado correctamente, falta manejar el token de inicio de session
+    return {'success': true};
+  } else {
+    // El usuario no se ha podido autentificar
+    throw Exception('Failed to authenticate user');
+  }
+}
+
+class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //VARIABLES
+    return MaterialApp(
+      title: 'Login App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: LoginPage(),
+    );
+  }
+}
 
-    //V - FORM LOGIN
-    final usernameController = TextEditingController();
-    final passwordController = TextEditingController();
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
 
-    //V - ETC
-    bool _passwordVisible = false;
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-    //LAYOUT
+  void _login() {
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    loginUser(email, password);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("LOGIN"),
+        title: Text('Login'),
       ),
-      body: Center(
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            //INPUT USERNAME
-            TextFormField(
-              controller: usernameController,
-              maxLength: 20,
-              decoration: const InputDecoration(
-                  icon: Icon(Icons.account_circle),
-                  labelText: 'Usuari',
-                  labelStyle: TextStyle(color: Color(0xFF6200EE)),
-                  helperText: '',
-                  /*suffixIcon: Icon(
-                  Icons.check_circle,
-                ),*/
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF6200EE)))),
+          children: [
+            TextField(
+              controller: _emailController,
+              decoration: InputDecoration(labelText: 'Email'),
             ),
-
-            //INPUT CONTRASENYA
-            TextFormField(
-              keyboardType: TextInputType.text,
-              controller: passwordController,
-              maxLength: 20,
-              obscureText: !_passwordVisible,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.key),
-                labelText: 'Contrasenya',
-                labelStyle: TextStyle(color: Color(0xFF6200EE)),
-                helperText: '',
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Color(0xFF6200EE))),
-              ),
+            SizedBox(height: 20),
+            TextField(
+              controller: _passwordController,
+              decoration: InputDecoration(labelText: 'Password'),
+              obscureText: true,
             ),
-            OutlinedButton(
-              onPressed: () {
-                print("USERNAME: " +
-                    usernameController.text +
-                    " PASSWORD: " +
-                    passwordController.text);
-                _dialogBuilder(context);
-              },
-              child: const Text('CheckLogin'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _login,
+              child: Text('Login'),
             ),
-            OutlinedButton(
-              onPressed: () {
-                print("LOADING REGISTER PAGE");
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Register()),
-                );
-              },
-              child: const Text('Registrarse'),
-            )
           ],
         ),
       ),
-    );
-  }
-
-  Future<void> _dialogBuilder(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('ERROR'),
-          content: Text('NO SE PUEDE CONECTAR CON LA \n'
-              'BASE DE DATOS..'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Ok'),
-            )
-          ],
-        );
-      },
     );
   }
 }
