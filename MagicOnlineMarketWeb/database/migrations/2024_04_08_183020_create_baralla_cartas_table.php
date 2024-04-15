@@ -10,9 +10,11 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('baralla_cartas', function (Blueprint $table) {
+        Schema::create('baralla_cartes', function (Blueprint $table) {
             $table->bigIncrements("idBarallaCarta");
             $table->integer("quantitat")->default(1);
+            $table->foreignId("idCarta")->constrained('cartes')->references('idCarta');
+            $table->foreignId("idBaralla")->constrained('baralles')->references('idBaralla');
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('baralla_cartas');
+        Schema::dropIfExists('baralla_cartes');
     }
 };

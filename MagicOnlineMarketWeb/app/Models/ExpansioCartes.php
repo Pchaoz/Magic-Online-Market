@@ -9,6 +9,10 @@ class ExpansioCartes extends Model
 {
     use HasFactory;
     protected $table = "expansioCartes";
-    protected $primaryKey = "idEexpansioCartes";
-    protected $fillable = ["idEexpansioCartes"];
+    protected $primaryKey = "idEexpansioCarta";
+    protected $fillable = ["idEexpansioCarta","idCarta","idExpansio"];
+
+    public function productes(){
+        return $this->hasMany(Productes::class);
+    }
 }

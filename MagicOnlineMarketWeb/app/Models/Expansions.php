@@ -12,4 +12,9 @@ class Expansions extends Model
     protected $primaryKey = "idExpansio";
     protected $fillable = ["idExpansio","nom","dataSortida"];
 
+
+    public function expansioncartes(){
+        return $this->belongsToMany(Cartes::class, 'expansioCartes', 'idExpansio','idCarta')->using(ExpansioCartes::class)->withTimestamps();
+    }
+
 }

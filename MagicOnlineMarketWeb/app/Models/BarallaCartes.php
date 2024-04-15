@@ -10,5 +10,5 @@ class BarallaCartes extends Model
     use HasFactory;
     protected $table = "barallaCartes";
     protected $primaryKey = "idBarallaCarta";
-    protected $fillable = ["idBarallaCarta","quantitat"];
+    protected $fillable = ["idBarallaCarta","quantitat","idBaralla","idCarta"];
 }

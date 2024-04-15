@@ -11,4 +11,8 @@ class Tornejos extends Model
     protected $table = "tornejos";
     protected $primaryKey = "idTorneig";
     protected $fillable = ["idTorneig","numparticipants","minParticipants","maxParticipants","numeroRondes","horaInici"];
+
+    public function organitzador(){
+        return $this->BelongsTo(User::class, 'idUsuari', 'idOrganitzador');
+    }
 }

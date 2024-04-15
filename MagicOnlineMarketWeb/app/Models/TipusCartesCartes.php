@@ -10,5 +10,5 @@ class TipusCartesCartes extends Model
     use HasFactory;
     protected $table = "tipusCartesCartes";
     protected $primaryKey = "idTipusCartaCarta";
-    protected $fillable = ["idTipusCartaCarta"];
+    protected $fillable = ["idTipusCartaCarta","idCarta","idTipusCarta"];
 }
