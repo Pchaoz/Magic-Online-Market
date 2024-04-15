@@ -11,12 +11,6 @@ class RolsSeeder extends Seeder
 {
     public function run(): void
     {
-
-        DB::table('rols')->insert([
-            'nom' => 'administrador',
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-
         DB::table('rols')->insert([
             'nom' => 'administrador',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
