@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('rondes', function (Blueprint $table) {
             $table->bigIncrements("idRonda");
             $table->integer("numeroRonda")->default(1);
+            $table->foreignId('idTorneig')->constrained('tornejos')->references('idTorneig');
             $table->timestamps();
         });
     }

@@ -15,4 +15,22 @@ class Tornejos extends Model
     public function organitzador(){
         return $this->BelongsTo(User::class, 'idUsuari', 'idOrganitzador');
     }
+
+
+    public function isncrits(){
+        return $this->belongsToMany(User::class, 'participants', 'idUsuari','idTorneig')->using(Participants::class)->withTimestamps();
+    }
+
+
+    public function tipus(){
+        return $this->BelongsTo(TipusTorneig::class, 'idTipusTorneig', 'idTipusTorneig');
+    }
+
+    public function rondes(){
+        return $this->hasMany(Rondes::class);
+    }
+
+    public function premis(){
+        return $this->belongsToMany(Productes::class, 'premis', 'idPremi','idProducte')->using(Premis::class)->withTimestamps();
+    }
 }
