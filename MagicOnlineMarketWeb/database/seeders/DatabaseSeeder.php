@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Raresa;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([PaissosSeeder::class]);
         $this->call([CiutatsSeeder::class]);
         $this->call([ExpansionsSeeder::class]);
+        $this->call([RaresaSeeder::class]);
+        $this->call([CartesSeeder::class]);
     }
 }

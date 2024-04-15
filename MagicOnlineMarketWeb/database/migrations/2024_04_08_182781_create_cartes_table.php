@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('cartes', function (Blueprint $table) {
             $table->bigIncrements("idCarta");
             $table->string("nom");
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

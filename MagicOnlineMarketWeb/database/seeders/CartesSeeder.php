@@ -14,41 +14,42 @@ class CartesSeeder extends Seeder
     public function run(): void
     {
         Schema::disableForeignKeyConstraints();
-        DB::table('expansions')->insert([
-            'nom' => 'Dominaria Unida',
-            'dataSortida' =>  '2022-09-02',
+        DB::table('cartes')->insert([
+            'nom' => 'Ulamog, El Hambre que no Cesa',
+            'costMana' =>  '10',
+            'idRaresa'=> '4',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('expansions')->insert([
-            'nom' => 'La Guerra de los Hermanos',
-            'dataSortida' =>  '2022-11-11',
+        DB::table('cartes')->insert([
+            'nom' => 'Choque',
+            'costMana' =>  'R',
+            'idRaresa'=> '1',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('expansions')->insert([
-            'nom' => 'Kamigawa:Dinastía de Neon',
-            'dataSortida' =>  '2022-02-11',
+        DB::table('cartes')->insert([
+            'nom' => 'Tejedora de armonía',
+            'costMana' =>  '1G',
+            'idRaresa'=> '3',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('expansions')->insert([
-            'nom' => 'Strixhaven:Academia de Magos',
-            'dataSortida' =>  '2021-04-16',
+        DB::table('cartes')->insert([
+            'nom' => 'Coacción',
+            'costMana' =>  'B',
+            'idRaresa'=> '1',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('expansions')->insert([
-            'nom' => 'La Guerra de la Chispa',
-            'dataSortida' =>  '2019-04-27',
+        DB::table('cartes')->insert([
+            'nom' => 'Optar',
+            'costMana' =>  'U',
+            'idRaresa'=> '1',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('expansions')->insert([
-            'nom' => 'Amonkhet',
-            'dataSortida' =>  '2017-04-28',
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-        DB::table('expansions')->insert([
-            'nom' => 'La Batalla por Zendikar',
-            'dataSortida' =>  '2015-09-26',
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
+
         Schema::enableForeignKeyConstraints();
     }
 }
