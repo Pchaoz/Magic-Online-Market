@@ -14,6 +14,8 @@ return new class extends Migration
             $table->integer("quantitat")->default(1);
             $table->foreignId("idProducte")->nullable()->constrained('productes')->references('idProducte');
             $table->foreignId("idVenedor")->nullable()->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->double("preu");
         });
     }

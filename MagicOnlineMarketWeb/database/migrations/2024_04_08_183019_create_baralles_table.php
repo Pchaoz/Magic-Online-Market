@@ -15,6 +15,8 @@ return new class extends Migration
             $table->string("nom",40);
             $table->boolean("isPublic")->default(false);
             $table->foreignId('idCreador')->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

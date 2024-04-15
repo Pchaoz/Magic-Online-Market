@@ -18,4 +18,12 @@ class Linies extends Model
     public function oferta(){
         return $this->BelongsTo(Ofertes::class, 'idOferta', 'idOferta');
     }
+
+    public function creador(){
+        return $this->BelongsTo(User::class, 'idUser', 'updated_by');
+    }
+
+    public function actualizador(){
+        return $this->BelongsTo(User::class, 'idUser', 'created_by');
+    }
 }

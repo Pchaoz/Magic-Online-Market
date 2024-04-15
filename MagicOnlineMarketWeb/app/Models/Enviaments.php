@@ -22,4 +22,12 @@ class Enviaments extends Model
     public function comanda(){
         return $this->hasOne(Comandes::class);
     }
+
+    public function creador(){
+        return $this->BelongsTo(User::class, 'idUser', 'updated_by');
+    }
+
+    public function actualizador(){
+        return $this->BelongsTo(User::class, 'idUser', 'created_by');
+    }
 }

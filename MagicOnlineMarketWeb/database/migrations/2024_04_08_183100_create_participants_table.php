@@ -13,6 +13,8 @@ return new class extends Migration
             $table->integer("puntuacio")->default(0);
             $table->foreignId("idUsuari")->constrained('usuaris')->references('idUsuari');
             $table->foreignId("idTorneig")->constrained('tornejos')->references('idTorneig');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

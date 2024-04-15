@@ -13,6 +13,8 @@ return new class extends Migration
             $table->bigIncrements("idTipusEnviament");
             $table->string("nom",30);
             $table->double("preu");
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

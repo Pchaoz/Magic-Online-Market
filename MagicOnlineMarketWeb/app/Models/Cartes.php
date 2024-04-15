@@ -23,4 +23,11 @@ class Cartes extends Model
     public function barallescartes(){
         return $this->belongsToMany(Baralles::class, 'baralla_cartes', 'idCarta','idbaralla')->using(BarallaCartes::class)->withTimestamps();
     }
+    public function creador(){
+        return $this->BelongsTo(User::class, 'idUser', 'updated_by');
+    }
+
+    public function actualizador(){
+        return $this->BelongsTo(User::class, 'idUser', 'created_by');
+    }
 }

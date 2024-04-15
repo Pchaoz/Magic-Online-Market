@@ -33,4 +33,12 @@ class Tornejos extends Model
     public function premis(){
         return $this->belongsToMany(Productes::class, 'premis', 'idPremi','idProducte')->using(Premis::class)->withTimestamps();
     }
+
+    public function creador(){
+        return $this->BelongsTo(User::class, 'idUser', 'updated_by');
+    }
+
+    public function actualizador(){
+        return $this->BelongsTo(User::class, 'idUser', 'created_by');
+    }
 }

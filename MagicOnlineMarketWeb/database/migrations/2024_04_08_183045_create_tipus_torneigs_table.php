@@ -11,6 +11,8 @@ return new class extends Migration
         Schema::create('tipus_torneigs', function (Blueprint $table) {
             $table->bigIncrements("idTipusTorneig");
             $table->string('descripcio',1000);
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

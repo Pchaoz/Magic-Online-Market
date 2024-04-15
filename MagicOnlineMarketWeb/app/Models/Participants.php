@@ -12,6 +12,12 @@ class Participants extends Model
     protected $primaryKey = "idParticipant";
     protected $fillable = ["idParticipant","puntuacio","idUsuari","idTorneig"];
 
+    public function creador(){
+        return $this->BelongsTo(User::class, 'idUser', 'updated_by');
+    }
 
+    public function actualizador(){
+        return $this->BelongsTo(User::class, 'idUser', 'created_by');
+    }
 
 }
