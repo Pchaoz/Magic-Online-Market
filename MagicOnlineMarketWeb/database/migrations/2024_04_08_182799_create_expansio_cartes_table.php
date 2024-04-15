@@ -6,16 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    protected $fillable = ["idEexpansioCartes"];
+
     public function up(): void
     {
-        Schema::create('enviaments', function (Blueprint $table) {
-
-            $table->bigIncrements("idEnviament");
-            $table->foreignId('idDesti')->nullable()->constrained('direccions')->references('idDireccio');
-            $table->foreignId('idTipusEnviament')->nullable()->constrained('tipus_enviaments')->references('idTipusEnviament');
+        Schema::create('expansio_cartes', function (Blueprint $table) {
+            $table->bigIncrements("idExpansioCarta");
+            $table->foreignId("idCarta")->nullable()->constrained('cartes')->references('idCarta');
+            $table->foreignId("idExpansio")->nullable()->constrained('expansions')->references('idExpansio');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('enviaments');
+        Schema::dropIfExists('expansio_cartes');
     }
 };

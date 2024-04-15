@@ -12,6 +12,8 @@ return new class extends Migration
             $table->bigIncrements("idCarta");
             $table->string("nom");
             $table->string("costMana");
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

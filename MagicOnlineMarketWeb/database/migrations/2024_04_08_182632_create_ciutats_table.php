@@ -13,6 +13,8 @@ return new class extends Migration
             $table->bigIncrements("idCiutat");
             $table->string("nom",30);
             $table->foreignId('idPais')->nullable()->constrained('paissos')->references('idPais');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

@@ -11,6 +11,10 @@ return new class extends Migration
     {
         Schema::create('tipus_cartes_cartes', function (Blueprint $table) {
             $table->bigIncrements("idTipusCartaCarta");
+            $table->foreignId("idCarta")->constrained('cartes')->references('idCarta');
+            $table->foreignId("idTipusCarta")->constrained('tipus_cartes')->references('idTipusCarta');
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }

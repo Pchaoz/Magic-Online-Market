@@ -12,6 +12,8 @@ return new class extends Migration
         Schema::create('paissos', function (Blueprint $table) {
             $table->bigIncrements("idPais");
             $table->string("nom",30);
+            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
     }
