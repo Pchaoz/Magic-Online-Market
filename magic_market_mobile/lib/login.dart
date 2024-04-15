@@ -7,9 +7,10 @@ void main() {
 }
 
 Future<Map<String, dynamic>> loginUser(String email, String password) async {
+  print("MAIL:" + email + " PASSWORD: " + password);
   //Peticion al servidor
   final response = await http.post(
-    Uri.parse('http://127.0.0.1:8000/login'),
+    Uri.parse('http://162.19.74.238:8080/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -51,11 +52,15 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
+  void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-
-    loginUser(email, password);
+    try {
+      Map<String, dynamic> loginResponse = await loginUser(email, password);
+      print('Login response: $loginResponse');
+    } catch (e) {
+      print("ERROR.. $e");
+    }
   }
 
   @override

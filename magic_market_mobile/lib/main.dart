@@ -24,7 +24,7 @@ class AuthenticationApp extends StatelessWidget {
 class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    bool isAuthenticated = true;
+    bool isAuthenticated = false;
 
     return isAuthenticated ? HomePage() : LoginPage();
   }

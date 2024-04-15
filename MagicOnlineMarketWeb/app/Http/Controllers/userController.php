@@ -9,6 +9,6 @@ class UserController extends Controller
 {
     public function getAllUser(){
         $usuaris= User::all();
-        return $usuaris;
+        return response()->json($usuaris);
     }
 }
