@@ -12,8 +12,8 @@ class Cartes extends Model
     protected $primaryKey = "idCarta";
     protected $fillable = ["idCarta","nom","descripcio","imatge"];
 
-    public function expansioncartes(){
-        return $this->belongsToMany(ExpansioCartes::class, 'expansioCartes', 'idCarta','idExpansio')->using(ExpansioCartes::class)->withTimestamps();
+    public function producte(){
+        return $this->hasOne(Productes::class);
     }
 
     public function tipuscartes(){

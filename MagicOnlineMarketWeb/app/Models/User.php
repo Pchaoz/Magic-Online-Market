@@ -61,7 +61,7 @@ class User extends Authenticatable
         return $this->hasMany(Baralles::class);
     }
 
-    public function tornejos()
+    public function creartornejos()
     {
         return $this->hasMany(Tornejos::class);
     }

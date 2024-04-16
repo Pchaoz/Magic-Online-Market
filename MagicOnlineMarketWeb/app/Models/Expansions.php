@@ -16,6 +16,10 @@ class Expansions extends Model
     public function expansioncartes(){
         return $this->belongsToMany(Cartes::class, 'expansioCartes', 'idExpansio','idCarta')->using(ExpansioCartes::class)->withTimestamps();
     }
+    public function direccions()
+    {
+        return $this->hasMany(Productes::class);
+    }
 
 
     public function creador(){

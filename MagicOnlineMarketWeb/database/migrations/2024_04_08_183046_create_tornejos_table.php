@@ -13,7 +13,7 @@ return new class extends Migration
             $table->bigIncrements("idTorneig");
             $table->integer("numparticipants")->default(2);
             $table->integer("minParticipants")->default(2);
-            $table->integer("maxParticipants");
+            $table->integer("maxParticipants")->nullable();
             $table->integer("numeroRondes")->default(1);
             $table->foreignId('idOrganitzador')->constrained('usuaris')->references('idUsuari');
             $table->foreignId('idTipusTorneig')->constrained('tipus_torneigs')->references('idTipusTorneig');
