@@ -24,8 +24,8 @@ class Productes extends Model
         return $this->BelongsTo(CategoriaProductes::class, 'idCategoriesProductes', 'idCategoriesProductes');
     }
 
-    public function expansioCarta(){
-        return $this->BelongsTo(ExpansioCartes::class, 'idEexpansioCarta', 'idEexpansioCarta');
+    public function carta(){
+        return $this->BelongsTo(Cartes::class, 'idCarta', 'idCarta');
     }
 
     public function creador(){

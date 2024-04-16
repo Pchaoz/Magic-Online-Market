@@ -182,16 +182,6 @@ class User extends Authenticatable
         return $this->hasMany(Enviaments::class);
     }
 
-    public function crearExpansioCarta()
-    {
-        return $this->hasMany(ExpansioCartes::class);
-    }
-
-    public function actualitzarExpansioCarta()
-    {
-        return $this->hasMany(ExpansioCartes::class);
-    }
-
     public function crearExpansio()
     {
         return $this->hasMany(Expansions::class);

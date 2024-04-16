@@ -21,6 +21,10 @@ class Baralles extends Model
         return $this->BelongsTo(User::class, 'idUsuari', 'idCreador');
     }
 
+    public function productes(){
+        return $this->hasMany(Productes::class);
+    }
+
     public function creador(){
         return $this->BelongsTo(User::class, 'idUser', 'updated_by');
     }
