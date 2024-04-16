@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Participants extends Model
+class Raresa extends Model
 {
     use HasFactory;
-    protected $table = "participants";
-    protected $primaryKey = "idParticipant";
-    protected $fillable = ["idParticipant","puntuacio","idUsuari","idTorneig"];
+    protected $table = "rareses";
+    protected $primaryKey = "idRaresa";
+    protected $fillable = ["idRaresa","nom"];
+
+    public function raresaCarta(){
+        return $this->hasMany(Cartes::class);
+    }
 
     public function creador(){
         return $this->BelongsTo(User::class, 'idUser', 'updated_by');
@@ -19,5 +23,7 @@ class Participants extends Model
     public function actualizador(){
         return $this->BelongsTo(User::class, 'idUser', 'created_by');
     }
+
+
 
 }

@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('premis', function (Blueprint $table) {
             $table->bigIncrements("idPremi");
             $table->integer("posicio")->default(1);
+            $table->integer("quantitat")->default(1);
             $table->foreignId("idProducte")->constrained('productes')->references('idProducte');
             $table->foreignId("idTorneig")->constrained('tornejos')->references('idTorneig');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

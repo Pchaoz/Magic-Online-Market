@@ -6,19 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('noticies', function (Blueprint $table) {
-            $table->bigIncrements("idNoticia");
-            $table->string("títol",100);
-            $table->string("contingut");
-            $table->timestamp("dataHoraPublicacio")->default(now());
-            $table->foreignId('idCreador')->nullable()->constrained('usuaris')->references('idUsuari');
+        Schema::disableForeignKeyConstraints();
+        Schema::create('usuari_direccions', function (Blueprint $table) {
+            $table->bigIncrements("idUsuariDireccio");
+            $table->foreignId("idUsuari")->constrained('usuaris')->references('idUsuari');
+            $table->foreignId("idDireccio")->constrained('direccions')->references('idDireccio');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
+
     }
 
     /**
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('noticies');
+        Schema::dropIfExists('usuari_direccios');
     }
 };

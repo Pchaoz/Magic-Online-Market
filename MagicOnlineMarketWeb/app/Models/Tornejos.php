@@ -18,7 +18,7 @@ class Tornejos extends Model
 
 
     public function isncrits(){
-        return $this->belongsToMany(User::class, 'participants', 'idUsuari','idTorneig')->using(Participants::class)->withTimestamps();
+        return $this->belongsToMany(User::class, 'participants', 'idUsuari','idTorneig')->using(Participacions::class)->withTimestamps();
     }
 
 
@@ -26,8 +26,8 @@ class Tornejos extends Model
         return $this->BelongsTo(TipusTorneig::class, 'idTipusTorneig', 'idTipusTorneig');
     }
 
-    public function rondes(){
-        return $this->hasMany(Rondes::class);
+    public function emparellaments(){
+        return $this->hasMany(Emparellaments::class);
     }
 
     public function premis(){

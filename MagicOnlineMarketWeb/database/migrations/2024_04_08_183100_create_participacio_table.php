@@ -6,13 +6,13 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
     public function up(): void
     {
-        Schema::create('rondes', function (Blueprint $table) {
-            $table->bigIncrements("idRonda");
-            $table->integer("numeroRonda")->default(1);
-            $table->foreignId('idTorneig')->constrained('tornejos')->references('idTorneig');
+        Schema::create('participacions', function (Blueprint $table) {
+            $table->bigIncrements("idParticipacio");
+            $table->integer("puntuacio")->default(0);
+            $table->foreignId("idUsuari")->constrained('usuaris')->references('idUsuari');
+            $table->foreignId("idTorneig")->constrained('tornejos')->references('idTorneig');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rondes');
+        Schema::dropIfExists('participants');
     }
 };

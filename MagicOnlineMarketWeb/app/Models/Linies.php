@@ -16,7 +16,7 @@ class Linies extends Model
         return $this->BelongsTo(Comandes::class, 'idComanda', 'idComanda');
     }
     public function oferta(){
-        return $this->BelongsTo(Ofertes::class, 'idOferta', 'idOferta');
+        return $this->BelongsTo(Articles::class, 'idOferta', 'idOferta');
     }
 
     public function creador(){

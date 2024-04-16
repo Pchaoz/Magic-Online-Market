@@ -8,6 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+
         Schema::create('usuaris', function (Blueprint $table) {
             $table->bigIncrements("idUsuari");
             $table->string('nick')->unique();
@@ -17,14 +18,13 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->double('saldo')->default(0);
-            $table->integer('numeroVendes')->default(0);
-            $table->double('mitjanaVenedor')->default(0);
-            $table->foreignId('idCreador')->nullable()->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('idRol')->default(1)->constrained('rols')->references('idRol');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->rememberToken();
             $table->timestamps();
         });
+
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
