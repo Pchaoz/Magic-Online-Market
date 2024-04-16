@@ -16,24 +16,39 @@ class RolsSeeder extends Seeder
         DB::table('rols')->insert([
             'nom' => 'usuari',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+
         ]);
         DB::table('rols')->insert([
             'nom' => 'administrador',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+
         ]);
 
         DB::table('rols')->insert([
             'nom' => 'venedor',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+
         ]);
 
         DB::table('rols')->insert([
             'nom' => 'venedor_premium',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
         DB::table('rols')->insert([
             'nom' => 'usuari_ban',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+
+        ]);
+
+        DB::table('rols')->insert([
+            'nom' => 'deshabilitat',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
         Schema::enableForeignKeyConstraints();
 

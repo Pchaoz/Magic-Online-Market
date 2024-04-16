@@ -14,7 +14,7 @@ return new class extends Migration
             $table->double("preuUnitari");
             $table->double("total");
             $table->foreignId("idComanda")->nullable()->constrained('comandes')->references('idComanda');
-            $table->foreignId("idOferta")->nullable()->constrained('ofertes')->references('idOferta');
+            $table->foreignId("idArticle")->nullable()->constrained('articles')->references('idArticle');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();

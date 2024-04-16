@@ -20,8 +20,6 @@ class User extends Authenticatable
         'cognom',
         'email',
         'password',
-        'mitjanaVenedor',
-        'numeroVendes',
         'saldo'
 
     ];
@@ -70,7 +68,8 @@ class User extends Authenticatable
 
     public function direccions()
     {
-        return $this->hasMany(Direccions::class);
+        return $this->belongsToMany(Direccions::class, 'usuari_direccions', 'idUsuari','idDireccio')->using(UsuariDireccio::class)->withTimestamps();
+
     }
 
     public function comandas()
@@ -78,12 +77,12 @@ class User extends Authenticatable
         return $this->hasMany(Comandes::class);
     }
 
-    public function Ofertes(){
-        return $this->belongsToMany(Productes::class, 'ofertes', 'idUsuari','idProducte')->using(Ofertes::class)->withTimestamps();
+    public function Articles(){
+        return $this->belongsToMany(Productes::class, 'articles', 'idUsuari','idArticle')->using(Articles::class)->withTimestamps();
     }
 
     public function inscriure(){
-        return $this->belongsToMany(Tornejos::class, 'participants', 'idUsuari','idTorneig')->using(Participants::class)->withTimestamps();
+        return $this->belongsToMany(Tornejos::class, 'participants', 'idUsuari','idTorneig')->using(Participacions::class)->withTimestamps();
     }
 
     //creador y actualizador de tablas
@@ -232,14 +231,14 @@ class User extends Authenticatable
         return $this->hasMany(Paisos::class);
     }
 
-    public function crearParticipant()
+    public function crearParticipacio()
     {
-        return $this->hasMany(Participants::class);
+        return $this->hasMany(Participacions::class);
     }
 
-    public function actualitzarParticipant()
+    public function actualitzarParticipacio()
     {
-        return $this->hasMany(Participants::class);
+        return $this->hasMany(Participacions::class);
     }
 
     public function crearPremi()
@@ -338,6 +337,38 @@ class User extends Authenticatable
     public function actualitzarRol()
     {
         return $this->hasMany(Rols::class);
+
+    }
+
+    public function crearArticle()
+    {
+        return $this->hasMany(Articles::class);
+    }
+
+    public function actualitzarArticle()
+    {
+        return $this->hasMany(Articles::class);
+    }
+
+    public function crearUsuariDireccio()
+    {
+        return $this->hasMany(UsuariDireccio::class);
+    }
+
+    public function actualitzarUsuariDireccio()
+    {
+        return $this->hasMany(UsuariDireccio::class);
+
+    }
+
+    public function crearUsuariResultat()
+    {
+        return $this->hasMany(Resultats::class);
+    }
+
+    public function actualitzarUsuariResultat()
+    {
+        return $this->hasMany(Resultats::class);
 
     }
 

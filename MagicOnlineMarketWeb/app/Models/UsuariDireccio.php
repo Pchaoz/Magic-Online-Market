@@ -5,16 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Noticies extends Model
+class UsuariDireccio extends Model
 {
-    protected $table = "notices";
-    protected $primaryKey = "idNoticia";
-    protected $fillable = ["idNoticia","titol","contingut","dataHoraPublicacio"];
-
-
-    public function user(){
-        return $this->BelongsTo(User::class, 'idUsuari', 'idUsuari');
-    }
+    use HasFactory;
+    protected $table = "usuari_direccions";
+    protected $primaryKey = "idUsuariDireccio";
+    protected $fillable = ["idUsuariDireccio","idUsuari","idDireccio"];
 
     public function creador(){
         return $this->BelongsTo(User::class, 'idUser', 'updated_by');

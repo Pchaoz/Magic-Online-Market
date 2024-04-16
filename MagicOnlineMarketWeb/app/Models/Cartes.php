@@ -10,7 +10,7 @@ class Cartes extends Model
     use HasFactory;
     protected $table = "cartes";
     protected $primaryKey = "idCarta";
-    protected $fillable = ["idCarta","nom","costMana"];
+    protected $fillable = ["idCarta","nom","descripcio","imatge"];
 
     public function expansioncartes(){
         return $this->belongsToMany(ExpansioCartes::class, 'expansioCartes', 'idCarta','idExpansio')->using(ExpansioCartes::class)->withTimestamps();

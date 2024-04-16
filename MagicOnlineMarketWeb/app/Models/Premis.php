@@ -10,7 +10,7 @@ class Premis extends Model
     use HasFactory;
     protected $table = "premis";
     protected $primaryKey = "idPremi";
-    protected $fillable = ["idPremi","posicio","idProducte","idTornig"];
+    protected $fillable = ["idPremi","posicio","idProducte","idTornig","quantitat"];
 
     public function creador(){
         return $this->BelongsTo(User::class, 'idUser', 'updated_by');

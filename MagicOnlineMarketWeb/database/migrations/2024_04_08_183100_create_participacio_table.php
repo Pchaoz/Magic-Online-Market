@@ -8,8 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('participants', function (Blueprint $table) {
-            $table->bigIncrements("idParticipant");
+        Schema::create('participacions', function (Blueprint $table) {
+            $table->bigIncrements("idParticipacio");
             $table->integer("puntuacio")->default(0);
             $table->foreignId("idUsuari")->constrained('usuaris')->references('idUsuari');
             $table->foreignId("idTorneig")->constrained('tornejos')->references('idTorneig');
