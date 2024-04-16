@@ -14,7 +14,6 @@ return new class extends Migration
             $table->string("direccio",50);
             $table->string("codiPostal",20);
             $table->foreignId('idCiutat')->nullable()->constrained('ciutats')->references('idCiutat');
-            $table->foreignId('idPropietari')->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();

@@ -9,20 +9,20 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('ofertes', function (Blueprint $table) {
-            $table->bigIncrements("idOferta");
-            $table->integer("quantitat")->default(1);
+
+        Schema::create('articles', function (Blueprint $table) {
+            $table->bigIncrements("idArticle");
+            $table->integer("quantitatDisponible")->default(1);
+            $table->double("preuUnitari");
             $table->foreignId("idProducte")->nullable()->constrained('productes')->references('idProducte');
             $table->foreignId("idVenedor")->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
-            $table->double("preu");
+            $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('ofertes');

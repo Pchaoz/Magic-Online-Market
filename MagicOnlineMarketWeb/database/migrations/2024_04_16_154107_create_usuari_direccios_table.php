@@ -6,17 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::create('rondes', function (Blueprint $table) {
-            $table->bigIncrements("idRonda");
-            $table->integer("numeroRonda")->default(1);
-            $table->foreignId('idTorneig')->constrained('tornejos')->references('idTorneig');
+        Schema::disableForeignKeyConstraints();
+        Schema::create('usuari_direccions', function (Blueprint $table) {
+            $table->bigIncrements("idUsuariDireccio");
+            $table->foreignId("idUsuari")->constrained('usuaris')->references('idUsuari');
+            $table->foreignId("idDireccio")->constrained('direccions')->references('idDireccio');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
+
     }
 
     /**
@@ -24,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rondes');
+        Schema::dropIfExists('usuari_direccios');
     }
 };

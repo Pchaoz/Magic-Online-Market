@@ -18,8 +18,6 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->double('saldo')->default(0);
-            $table->integer('numeroVendes')->default(0);
-            $table->double('mitjanaVenedor')->default(0);
             $table->foreignId('idRol')->default(1)->constrained('rols')->references('idRol');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');

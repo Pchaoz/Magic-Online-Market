@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Participants extends Model
+class Resultats extends Model
 {
     use HasFactory;
-    protected $table = "participants";
-    protected $primaryKey = "idParticipant";
-    protected $fillable = ["idParticipant","puntuacio","idUsuari","idTorneig"];
+    protected $table = "resultats";
+    protected $primaryKey = "idResultat";
+    protected $fillable = ["idResultat","resultatJugadorA","ResultatJugadorB"];
+
+    public function empparellament(){
+        return $this->hasMany(Emparellaments::class);
+    }
 
     public function creador(){
         return $this->BelongsTo(User::class, 'idUser', 'updated_by');
@@ -18,6 +22,4 @@ class Participants extends Model
 
     public function actualizador(){
         return $this->BelongsTo(User::class, 'idUser', 'created_by');
-    }
-
-}
+    }}

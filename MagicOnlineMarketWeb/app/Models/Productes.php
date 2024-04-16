@@ -10,10 +10,10 @@ class Productes extends Model
     use HasFactory;
     protected $table = "productes";
     protected $primaryKey = "idProducte";
-    protected $fillable = ["idProducte","nom"];
+    protected $fillable = ["idProducte","nom","descripcio","imatge"];
 
     public function ofertes(){
-        return $this->belongsToMany(User::class, 'ofertes', 'idProducte','idUsuari')->using(Ofertes::class)->withTimestamps();
+        return $this->belongsToMany(User::class, 'ofertes', 'idProducte','idUsuari')->using(Articles::class)->withTimestamps();
     }
 
     public function premis(){
