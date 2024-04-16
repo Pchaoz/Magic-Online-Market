@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/register.dart';
+
+import 'home.dart';
 
 void main() {
   runApp(LoginApp());
@@ -16,7 +19,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
       await http.get(Uri.parse('http://10.1.85.13:8000/getAllUsers')); */
 
   final response = await http.post(
-    Uri.parse('http://10.1.85.13:8000/api/login'),
+    Uri.parse('http://162.19.74.238:8080/api/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -66,9 +69,20 @@ class _LoginPageState extends State<LoginPage> {
     try {
       Map<String, dynamic> loginResponse = await loginUser(email, password);
       print('Login response: $loginResponse');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     } catch (e) {
       print("ERROR.. $e");
     }
+  }
+
+  void _goToSignUpPage() {
+    Navigator.pushReplacement(
+      context as BuildContext,
+      MaterialPageRoute(builder: (context) => RegisterPage()),
+    );
   }
 
   @override
@@ -96,6 +110,17 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               child: Text('Login'),
+            ),
+            SizedBox(height: 10),
+            GestureDetector(
+              onTap: _goToSignUpPage,
+              child: Text(
+                'Don\'t have an account? Sign up here',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
           ],
         ),
