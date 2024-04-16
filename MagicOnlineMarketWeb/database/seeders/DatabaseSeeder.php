@@ -22,5 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call([ExpansionsSeeder::class]);
         $this->call([RaresaSeeder::class]);
         $this->call([CartesSeeder::class]);
+        $this->call([BarallaCartaSeeder::class]);
+        $this->call([BarallesSeeder::class]);
+
     }
 }

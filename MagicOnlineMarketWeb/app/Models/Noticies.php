@@ -9,7 +9,7 @@ class Noticies extends Model
 {
     protected $table = "notices";
     protected $primaryKey = "idNoticia";
-    protected $fillable = ["idNoticia","titol","contingut"];
+    protected $fillable = ["idNoticia","titol","contingut","dataHoraPublicacio"];
 
 
     public function user(){

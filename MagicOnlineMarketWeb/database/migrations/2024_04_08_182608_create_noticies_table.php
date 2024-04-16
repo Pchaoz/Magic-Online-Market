@@ -13,6 +13,7 @@ return new class extends Migration
             $table->bigIncrements("idNoticia");
             $table->string("títol",100);
             $table->string("contingut");
+            $table->timestamp("dataHoraPublicacio")->default(now());
             $table->foreignId('idCreador')->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');

@@ -12,7 +12,7 @@ return new class extends Migration
         Schema::create('cartes', function (Blueprint $table) {
             $table->bigIncrements("idCarta");
             $table->string("nom");
-            $table->string("descripcio");
+            $table->string("descripcio",2000);
             $table->string("imatge")->nullable();
             $table->foreignId('idRaresa')->default(1)->constrained('rareses')->references('idRaresa');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
