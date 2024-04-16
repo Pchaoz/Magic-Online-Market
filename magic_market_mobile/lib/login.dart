@@ -7,8 +7,16 @@ void main() {
 }
 
 Future<Map<String, dynamic>> loginUser(String email, String password) async {
+  print("MAIL:" + email + " PASSWORD: " + password);
+
+  //IP SERVIDOR -> 162.19.74.238:8080
+  //IP LOCAL PRUEBAS -> 10.1.85.13:8000
+
+  /* final getallsusers =     //ESTA FUNCONA
+      await http.get(Uri.parse('http://10.1.85.13:8000/getAllUsers')); */
+
   final response = await http.post(
-    Uri.parse('http://tu-dominio.com/login'),
+    Uri.parse('http://10.1.85.13:8000/api/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -17,6 +25,8 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
       'password': password,
     }),
   );
+  //print("GET USERS STATUS CODE: " + getallsusers.statusCode.toString());
+  print("GET USERS STATUS CODE: " + response.statusCode.toString());
 
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
@@ -31,7 +41,7 @@ class LoginApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login App',
+      title: 'Login',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -50,11 +60,15 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
+  void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-
-    loginUser(email, password);
+    try {
+      Map<String, dynamic> loginResponse = await loginUser(email, password);
+      print('Login response: $loginResponse');
+    } catch (e) {
+      print("ERROR.. $e");
+    }
   }
 
   @override
