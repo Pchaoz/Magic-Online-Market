@@ -8,9 +8,15 @@ void main() {
 
 Future<Map<String, dynamic>> loginUser(String email, String password) async {
   print("MAIL:" + email + " PASSWORD: " + password);
-  //Peticion al servidor
+
+  //IP SERVIDOR -> 162.19.74.238:8080
+  //IP LOCAL PRUEBAS -> 10.1.85.13:8000
+
+  /* final getallsusers =     //ESTA FUNCONA
+      await http.get(Uri.parse('http://10.1.85.13:8000/getAllUsers')); */
+
   final response = await http.post(
-    Uri.parse('http://162.19.74.238:8080/login'),
+    Uri.parse('http://10.1.85.13:8000/api/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -19,6 +25,8 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
       'password': password,
     }),
   );
+  //print("GET USERS STATUS CODE: " + getallsusers.statusCode.toString());
+  print("GET USERS STATUS CODE: " + response.statusCode.toString());
 
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
