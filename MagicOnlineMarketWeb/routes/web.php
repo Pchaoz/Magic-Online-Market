@@ -29,6 +29,13 @@ Route::middleware('auth')->group(function () {
 Route::get('/getAllUsers', [\App\Http\Controllers\userController::class,'getAllUser'])->name('getAllUser');
 require __DIR__.'/auth.php';
 
+//funciones controller cartas
+Route::get('/getAllCartes', [\App\Http\Controllers\CartesController::class,'getAllCartes'])->name('getAllCartes');
+Route::get('/getAllCartesByRaresa/{raresa}', [\App\Http\Controllers\CartesController::class,'getAllCartesByRaresa'])->name('getAllCartesByRaresa');
+Route::get('/formulariCrearCartes',function (){
+    return Inertia::render('formulariCreacioCartes');
+});
+Route::get('/deleteCarta/{id}', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
 
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
