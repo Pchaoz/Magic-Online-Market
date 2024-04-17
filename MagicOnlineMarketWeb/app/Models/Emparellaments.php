@@ -10,12 +10,15 @@ class Emparellaments extends Model
     use HasFactory;
     protected $table = "emparellaments";
     protected $primaryKey = "idEmparellament";
-    protected $fillable = ["idEmparellament","resultat","numRonda","ronda"];
+    protected $fillable = ["idEmparellament","numRonda","ronda"];
 
     public function torneig(){
         return $this->BelongsTo(Tornejos::class, 'idTorneig', 'idTorneig');
     }
 
+    public function resultats(){
+        return $this->hasOne(Resultats::class);
+    }
 
     public function participantA(){
         return $this->BelongsTo(Participacions::class, 'idParticipant', 'idParticipantA');

@@ -11,8 +11,6 @@ return new class extends Migration
         Schema::create('linies', function (Blueprint $table) {
             $table->bigIncrements("idLinia");
             $table->integer("quantitat")->default(1);
-            $table->double("preuUnitari");
-            $table->double("total");
             $table->foreignId("idComanda")->nullable()->constrained('comandes')->references('idComanda');
             $table->foreignId("idArticle")->nullable()->constrained('articles')->references('idArticle');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

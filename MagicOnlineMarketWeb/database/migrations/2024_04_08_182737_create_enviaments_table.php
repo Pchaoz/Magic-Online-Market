@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::create('enviaments', function (Blueprint $table) {
-
             $table->bigIncrements("idEnviament");
             $table->foreignId('idDesti')->nullable()->constrained('direccions')->references('idDireccio');
             $table->foreignId('idTipusEnviament')->nullable()->constrained('tipus_enviaments')->references('idTipusEnviament');
+            $table->foreignId('idComanda')->nullable()->constrained('comandes')->references('idComanda');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**

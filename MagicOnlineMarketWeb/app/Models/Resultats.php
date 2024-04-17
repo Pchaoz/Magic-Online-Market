@@ -12,8 +12,8 @@ class Resultats extends Model
     protected $primaryKey = "idResultat";
     protected $fillable = ["idResultat","resultatJugadorA","ResultatJugadorB"];
 
-    public function empparellament(){
-        return $this->hasMany(Emparellaments::class);
+    public function emparellament(){
+        return $this->hasOne(Emparellaments::class);
     }
 
     public function creador(){

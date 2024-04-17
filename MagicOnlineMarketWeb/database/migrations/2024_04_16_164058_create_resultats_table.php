@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
         Schema::create('resultats', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements("idResultat");
             $table->integer("resultatJugadorA")->default(0);
             $table->integer("resultatJugadorB")->default(0);
-            $table->foreignId('idEmparellament')->default(1)->constrained('emparellaments')->references('idEmparellament');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
