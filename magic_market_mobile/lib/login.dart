@@ -15,7 +15,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
   print("MAIL:" + email + " PASSWORD: " + password);
 
   final response = await http.post(
-    Uri.parse(API_URI_LOCAL + '/login'),
+    Uri.parse(API_URI_SERVER + '/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -71,6 +71,23 @@ class _LoginPageState extends State<LoginPage> {
       );
     } catch (e) {
       print("ERROR.. $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to authenticate user'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 

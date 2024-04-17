@@ -69,6 +69,7 @@ class _RegisterPageState extends State<RegisterPage> {
         }
         Map<String, dynamic> registerResponse =
             await registerUser(firstName, lastName, nickname, email, password);
+
         print('Register response: $registerResponse');
       } catch (e) {
         print("ERROR.. $e");
@@ -83,6 +84,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  // ... (el resto de tu código)
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,93 +96,90 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: _firstNameController,
-                decoration: InputDecoration(labelText: 'Nombre'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Por favor, introduce tu nombre';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _lastNameController,
-                decoration: InputDecoration(labelText: 'Apellidos'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Por favor, introduce tus apellidos';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _nicknameController,
-                decoration: InputDecoration(labelText: 'Nickname'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Por favor, introduce tu nickname';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Correo'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Por favor, introduce tu correo';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Contraseña'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, ingresa una contraseña.';
-                  } else if (value.length < 8) {
-                    return 'La contraseña debe tener al menos 8 caracteres.';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _confirmPasswordController,
-                decoration: InputDecoration(labelText: 'Confirmar Contraseña'),
-                obscureText: true,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Por favor, confirma tu contraseña';
-                  } else if (value.length < 8) {
-                    return 'La contraseña debe tener al menos 8 caracteres.';
-                  } else if (value != _passwordController.text) {
-                    return 'Las contraseñas no coinciden';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _register,
-                child: Text('Registrar'),
-              ),
-              GestureDetector(
-                onTap: _goToLoginPage,
-                child: Text(
-                  '¿Ya tienes una cuenta? Inicia sesión aquí',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _firstNameController,
+                  decoration: InputDecoration(labelText: 'Nombre'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, introduce tu nombre';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _lastNameController,
+                  decoration: InputDecoration(labelText: 'Apellidos'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, introduce tus apellidos';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _nicknameController,
+                  decoration: InputDecoration(labelText: 'Nickname'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, introduce tu nickname';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(labelText: 'Email'),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, introduce tu email';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: InputDecoration(labelText: 'Password'),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, introduce tu contraseña';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  decoration: InputDecoration(labelText: 'Confirmar Password'),
+                  obscureText: true,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Por favor, confirma tu contraseña';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: _register,
+                  child: Text('Registrar'),
+                ),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: _goToLoginPage,
+                  child: Text(
+                    '¿Ya tienes una cuenta? Inicia sesión aquí',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
