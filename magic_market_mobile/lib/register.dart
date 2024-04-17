@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/globals.dart';
 
 import 'login.dart';
 
@@ -10,7 +11,7 @@ void main() {
 
 Future<Map<String, dynamic>> registerUser(String name, String email,
     String password, String cognom, String nick) async {
-  final Uri uri = Uri.parse('http://10.1.85.13:8000/api/register');
+  final Uri uri = Uri.parse(API_URI_LOCAL + '/register');
 
   final response = await http.post(
     uri,
@@ -28,6 +29,7 @@ Future<Map<String, dynamic>> registerUser(String name, String email,
 
   print("El statuscode de la peticion de registro es: " +
       response.statusCode.toString());
+  print("El body de la peticion de registro es: " + response.body.toString());
 
   if (response.statusCode == 200) {
     // Usuario registrado correctamente
