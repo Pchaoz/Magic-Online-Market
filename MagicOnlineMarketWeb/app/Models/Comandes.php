@@ -10,7 +10,7 @@ class Comandes extends Model
     use HasFactory;
     protected $table = "comandes";
     protected $primaryKey = "idComanda";
-    protected $fillable = ["idComanda","preu","isEnviament"];
+    protected $fillable = ["idComanda","preuTotal","isEnviament","EstatComanda"];
 
     public function enviament(){
         return $this->hasOne(Enviaments::class);

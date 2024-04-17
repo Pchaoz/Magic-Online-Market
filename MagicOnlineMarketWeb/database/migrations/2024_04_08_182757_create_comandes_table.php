@@ -11,8 +11,9 @@ return new class extends Migration
     {
         Schema::create('comandes', function (Blueprint $table) {
             $table->bigIncrements("idComanda");
-            $table->double("preu");
+            $table->double("preuTotal");
             $table->boolean("isEnviament")->default(false);
+            $table->enum("EstatComanda",["pagada","pendent enviament","pendent recollida","enviada","complerta","anulada"])->nullable();
             $table->foreignId("idEnviament")->nullable()->constrained('enviaments')->references('idEnviament');
             $table->foreignId("idComprador")->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

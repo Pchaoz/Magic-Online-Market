@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call([PaissosSeeder::class]);
         $this->call([CiutatsSeeder::class]);
         $this->call([ExpansionsSeeder::class]);
-        $this->call([RaresaSeeder::class]);
         $this->call([CartesSeeder::class]);
         $this->call([BarallaCartaSeeder::class]);
         $this->call([BarallesSeeder::class]);
@@ -32,6 +31,15 @@ class DatabaseSeeder extends Seeder
         $this->call([UsuariDireccioSeeder::class]);
         $this->call([TipusTorneigSeeder::class]);
         $this->call([TornejosSeeder::class]);
+        $this->call([ComandesSeeder::class]);
+        $this->call([LiniesSeeder::class]);
+        $this->call([EnviamentsSeeder::class]);
+        $this->call([TipusEnviamentsSeeder::class]);
+        $this->call([TipusCartesSeeder::class]);
+        $this->call([TipusCartesCartesSeeder::class]);
+        $this->call([EmparellamentsSeeder::class]);
+
+
 
     }
 }

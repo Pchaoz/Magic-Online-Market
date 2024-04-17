@@ -309,16 +309,6 @@ class User extends Authenticatable
         return $this->hasMany(Enviaments::class);
     }
 
-
-    public function crearRaresa()
-    {
-        return $this->hasMany(Raresa::class);
-    }
-
-    public function actualitzarRaresa()
-    {
-        return $this->hasMany(Raresa::class);
-    }
     public function crearRol()
     {
         return $this->hasMany(Rols::class);
