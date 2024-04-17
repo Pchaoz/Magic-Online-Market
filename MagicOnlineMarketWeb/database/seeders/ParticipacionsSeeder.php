@@ -14,23 +14,25 @@ class ParticipacionsSeeder extends Seeder
     public function run(): void
     {
 
-        Schema::create('participacions', function (Blueprint $table) {
-            $table->bigIncrements("idParticipacio");
-            $table->integer("puntuacio")->default(0);
-            $table->foreignId("idUsuari")->constrained('usuaris')->references('idUsuari');
-            $table->foreignId("idTorneig")->constrained('tornejos')->references('idTorneig');
-            $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
-            $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
-            $table->timestamps();
         Schema::disableForeignKeyConstraints();
-        DB::table('emparellaments')->insert([
-            'ronda'  => 26,
-            'minParticipants'  => 12,
-            'maxParticipants'  => 52,
-            'numeroRondes'  => 10,
-            'idOrganitzador'  => '1',
-            'idTipusTorneig'  => '1',
-            'diaHoraInici'  => '2024-04-16 9:00:00',
+        DB::table('participacions')->insert([
+            'puntuacio'  => 50,
+            'idUsuari'  => 1,
+            'idTorneig'  => 1,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('participacions')->insert([
+            'puntuacio'  => 0,
+            'idUsuari'  => 2,
+            'idTorneig'  => 2,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+        DB::table('participacions')->insert([
+            'puntuacio'  => 10,
+            'idUsuari'  => 2,
+            'idTorneig'  => 3,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

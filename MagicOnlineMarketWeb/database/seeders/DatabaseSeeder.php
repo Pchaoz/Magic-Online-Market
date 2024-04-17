@@ -38,6 +38,10 @@ class DatabaseSeeder extends Seeder
         $this->call([TipusCartesSeeder::class]);
         $this->call([TipusCartesCartesSeeder::class]);
         $this->call([EmparellamentsSeeder::class]);
+        $this->call([ParticipacionsSeeder::class]);
+        $this->call([PremisSeeder::class]);
+        $this->call([NoticiesSeeder::class]);
+
 
 
 
