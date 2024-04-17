@@ -35,6 +35,7 @@ Route::get('/getAllCartesByRaresa/{raresa}', [\App\Http\Controllers\CartesContro
 Route::get('/formulariCrearCartes',function (){
     return Inertia::render('formulariCreacioCartes');
 });
+Route::post('/AddCarta',[\App\Http\Controllers\CartesController::class, 'addCarta'])->name('addCarta');
 Route::get('/deleteCarta/{id}', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
 
 Route::post('/api/login', [AuthController::class, 'login']);
