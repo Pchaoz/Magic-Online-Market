@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/globals.dart';
+import 'package:magic_market_mobile/home.dart';
 
 import 'login.dart';
 
@@ -9,8 +10,9 @@ void main() {
   runApp(RegisterPage());
 }
 
-Future<Map<String, dynamic>> registerUser(String name, String email,
-    String password, String cognom, String nick) async {
+//await registerUser(firstName, lastName, nickname, email, password);
+Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
+    String nickname, String email, String password) async {
   final Uri uri = Uri.parse(API_URI_LOCAL + '/register');
 
   final response = await http.post(
@@ -19,23 +21,34 @@ Future<Map<String, dynamic>> registerUser(String name, String email,
       'Content-Type': 'application/json',
     },
     body: jsonEncode(<String, String>{
-      'name': name,
-      'cognom': cognom,
-      'nick': nick,
+      'firstName': firstName,
       'email': email,
       'password': password,
+      'lastName': lastName,
+      'nickname': nickname,
     }),
   );
 
   print("El statuscode de la peticion de registro es: " +
       response.statusCode.toString());
-  print("El body de la peticion de registro es: " + response.body.toString());
+
+  // Supongamos que 'response' es la respuesta de tu solicitud HTTP
+  var responseData = response.body;
+
+// Decodificar la respuesta JSON a un Map
+  var data = jsonDecode(responseData);
+
+  print(data.toString());
 
   if (response.statusCode == 200) {
     // Usuario registrado correctamente
+    setAuth(true);
     return {'success': true};
   } else {
     // Error al registrar el usuario
+    if (data["email"] == "[The email field must be a valid email address.]") {
+      throw Exception('Correo ya registrado..');
+    }
     throw Exception('Failed to register user');
   }
 }
@@ -63,16 +76,48 @@ class _RegisterPageState extends State<RegisterPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
+      print("FirstName: " +
+          firstName +
+          "\n" +
+          "LastName: " +
+          lastName +
+          "\n" +
+          "Nickname: " +
+          nickname +
+          "\n" +
+          "Email: " +
+          email +
+          "\n" +
+          "Password: " +
+          password);
+
       try {
-        if (_passwordController.text != _confirmPasswordController.text) {
-          throw Exception('Las contraseñas no coinciden');
-        }
+        print("Tamaño password: " + password.length.toString());
+
         Map<String, dynamic> registerResponse =
             await registerUser(firstName, lastName, nickname, email, password);
-
-        print('Register response: $registerResponse');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
       } catch (e) {
-        print("ERROR.. $e");
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text(e.toString()),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
       }
     }
   }
@@ -83,8 +128,6 @@ class _RegisterPageState extends State<RegisterPage> {
       MaterialPageRoute(builder: (context) => LoginPage()),
     );
   }
-
-  // ... (el resto de tu código)
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +150,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (value!.isEmpty) {
                       return 'Por favor, introduce tu nombre';
                     }
+                    if (value.length < 2) {
+                      return 'El nombre debe tener al menos 2 caracteres';
+                    }
                     return null;
                   },
                 ),
@@ -116,6 +162,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Por favor, introduce tus apellidos';
+                    }
+                    if (value.length < 2) {
+                      return 'El nombre debe tener al menos 2 caracteres';
                     }
                     return null;
                   },
@@ -148,6 +197,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     if (value!.isEmpty) {
                       return 'Por favor, introduce tu contraseña';
                     }
+                    if (value.length < 8) {
+                      return 'La contraseña debe tener al menos 8 caracteres';
+                    }
                     return null;
                   },
                 ),
@@ -158,6 +210,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Por favor, confirma tu contraseña';
+                    }
+                    if (value != _passwordController.text) {
+                      return 'Las contraseñas no coinciden';
                     }
                     return null;
                   },
