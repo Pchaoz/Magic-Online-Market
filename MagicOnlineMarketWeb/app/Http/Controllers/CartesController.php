@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Cartes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class CartesController extends Controller
 {
     public function getAllCartes(){
         $cartes= Cartes::all();
-        return response()->json($cartes);
+        return Inertia::render('llistaCartes',['cartes'=>$cartes]);
     }
     public function getAllCartesByRaresa($raresa){
         $cartes= Cartes::where('raresa',$raresa)->get();
