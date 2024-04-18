@@ -5,22 +5,38 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import {ref} from "vue";
 
 const formCarta = useForm({
     nom:'',
     descripcio:'',
     imatge:'',
-    raresa:'',
+    raresa:'Comun',
 })
 
-
-const submit = () => {
-    formCarta.post(route('AddCarta'));
-};
-
 const myfunction = () => {
-    formCarta.post(route('AddCarta'));
+    formCarta.post('/AddCarta');
 };
+
+const options= ref([
+    {
+        name:"Comun",
+        value:"Comun"
+    },
+    {
+        name:"Infrecuente",
+        value:"Infrecuente"
+    },
+    {
+        name:"Rara",
+        value:"Rara"
+    },
+    {
+        name:"Mitica",
+        value:"Mitica"
+    }
+])
+
 
 </script>
 
@@ -28,6 +44,18 @@ const myfunction = () => {
 <template>
     <GuestLayout>
         <Head><title>Afegir Carta</title></Head>
+        <div>
+            <InputLabel for="nom" value="Nom:" />
+            <TextInput
+                id="nom"
+                type="text"
+                class="mt-1 block w-full"
+                v-model="formCarta.nom"
+                required
+                autofocus
+                autocomplete="nom"
+            />
+        </div>
         <div>
             <InputLabel for="descripcio" value="Descripcio:" />
             <TextInput
@@ -52,25 +80,15 @@ const myfunction = () => {
                 autocomplete="imatge"
             />
         </div>
+
         <div>
-            <InputLabel for="nom" value="Nom:" />
-            <TextInput
-                id="nom"
-                type="text"
-                class="mt-1 block w-full"
-                v-model="formCarta.nom"
-                required
-                autofocus
-                autocomplete="nom"
-            />
-        </div>
-        <div>
-            <b-dropdown id="dropdown-1" text="Dropdown Button" class="m-md-2">
-                <b-dropdown-item>Comun</b-dropdown-item>
-                <b-dropdown-item>Infrecuente</b-dropdown-item>
-                <b-dropdown-item>Rara</b-dropdown-item>
-                <b-dropdown-item>Mitica</b-dropdown-item>
-            </b-dropdown>
+            <select  id="raresa" v-model="formCarta.raresa">
+                <option v-for="option in options" v-bind:key="option.name" v-bind:value="option.value">
+                    {{ option.name }}
+                </option>
+
+            </select>
+
         </div>
         <div class="flex items-center justify-end mt-4">
             <PrimaryButton @click="myfunction" class="ms-4" :class="{ 'opacity-25': formCarta.processing }" :disabled="formCarta.processing">
