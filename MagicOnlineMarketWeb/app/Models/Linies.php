@@ -10,7 +10,7 @@ class Linies extends Model
     use HasFactory;
     protected $table = "linies";
     protected $primaryKey = "idLinia";
-    protected $fillable = ["idLinia","quantitat","preuUnitari","total"];
+    protected $fillable = ["idLinia","quantitat","total"];
 
     public function comanda(){
         return $this->BelongsTo(Comandes::class, 'idComanda', 'idComanda');

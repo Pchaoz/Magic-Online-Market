@@ -61,7 +61,7 @@ class User extends Authenticatable
         return $this->hasMany(Baralles::class);
     }
 
-    public function tornejos()
+    public function creartornejos()
     {
         return $this->hasMany(Tornejos::class);
     }
@@ -180,16 +180,6 @@ class User extends Authenticatable
     public function actualitzarEnviament()
     {
         return $this->hasMany(Enviaments::class);
-    }
-
-    public function crearExpansioCarta()
-    {
-        return $this->hasMany(ExpansioCartes::class);
-    }
-
-    public function actualitzarExpansioCarta()
-    {
-        return $this->hasMany(ExpansioCartes::class);
     }
 
     public function crearExpansio()
@@ -319,16 +309,6 @@ class User extends Authenticatable
         return $this->hasMany(Enviaments::class);
     }
 
-
-    public function crearRaresa()
-    {
-        return $this->hasMany(Raresa::class);
-    }
-
-    public function actualitzarRaresa()
-    {
-        return $this->hasMany(Raresa::class);
-    }
     public function crearRol()
     {
         return $this->hasMany(Rols::class);

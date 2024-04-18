@@ -20,12 +20,19 @@ class Productes extends Model
         return $this->belongsToMany(Tornejos::class, 'premis', 'idProducte','idPremi')->using(Premis::class)->withTimestamps();
     }
 
+    public function cartes(){
+        return $this->hasOne(Cartes::class);
+    }
+
     public function categoriaProducte(){
         return $this->BelongsTo(CategoriaProductes::class, 'idCategoriesProductes', 'idCategoriesProductes');
     }
+    public function expansioProducte(){
+        return $this->BelongsTo(Expansions::class, 'idExpansio', 'idExpansio');
+    }
 
-    public function expansioCarta(){
-        return $this->BelongsTo(ExpansioCartes::class, 'idEexpansioCarta', 'idEexpansioCarta');
+    public function carta(){
+        return $this->BelongsTo(Cartes::class, 'idCarta', 'idCarta');
     }
 
     public function creador(){

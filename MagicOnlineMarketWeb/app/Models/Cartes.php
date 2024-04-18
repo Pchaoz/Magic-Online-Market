@@ -10,10 +10,10 @@ class Cartes extends Model
     use HasFactory;
     protected $table = "cartes";
     protected $primaryKey = "idCarta";
-    protected $fillable = ["idCarta","nom","descripcio","imatge"];
+    protected $fillable = ["idCarta","nom","descripcio","imatge","raresa"];
 
-    public function expansioncartes(){
-        return $this->belongsToMany(ExpansioCartes::class, 'expansioCartes', 'idCarta','idExpansio')->using(ExpansioCartes::class)->withTimestamps();
+    public function producte(){
+        return $this->hasOne(Productes::class);
     }
 
     public function tipuscartes(){
@@ -23,9 +23,7 @@ class Cartes extends Model
     public function barallescartes(){
         return $this->belongsToMany(Baralles::class, 'baralla_cartes', 'idCarta','idbaralla')->using(BarallaCartes::class)->withTimestamps();
     }
-    public function raresa(){
-        return $this->BelongsTo(Raresa::class, 'idRaresa', 'idRaresa');
-    }
+
 
     public function creador(){
         return $this->BelongsTo(User::class, 'idUser', 'updated_by');
