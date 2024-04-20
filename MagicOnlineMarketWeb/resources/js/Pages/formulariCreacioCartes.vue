@@ -69,12 +69,11 @@ const options= ref([
             />
         </div>
         <div>
-            <InputLabel for="imatge" value="Imatge:" />
-            <TextInput
+            <InputLabel for="imatge" value="Imatge:"  v-model="formCarta.imatge" />
+            <input
                 id="imatge"
-                type="text"
+                type="file"
                 class="mt-1 block w-full"
-                v-model="formCarta.imatge"
                 required
                 autofocus
                 autocomplete="imatge"

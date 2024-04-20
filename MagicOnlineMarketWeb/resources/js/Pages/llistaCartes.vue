@@ -11,8 +11,7 @@ defineProps({
 </script>
 
 <template>
-    <GuestLayout>
-        <table class="table table-striped">
+        <table class="table table-striped" style="min-width: 1000px;">
             <thead>
             <tr>
                 <th>Nom Carta</th>
@@ -31,7 +30,6 @@ defineProps({
             </tbody>
         </table>
 
-    </GuestLayout>
 </template>
 
 <style scoped>
