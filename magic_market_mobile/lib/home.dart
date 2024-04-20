@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:magic_market_mobile/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'globals.dart';
 
 void main() {
   runApp(HomePage());
+}
+
+void LogOut() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  isAuthenticated = false;
+  prefs.setBool("Auth", isAuthenticated);
 }
 
 class HomePage extends StatelessWidget {
@@ -28,6 +38,14 @@ class _HomePageContentState extends State<HomePageContent> {
     'https://via.placeholder.com/600x300?text=Image+2',
     'https://via.placeholder.com/600x300?text=Image+3',
   ];
+
+  void _LogOut() {
+    LogOut();
+    Navigator.pushReplacement(
+      context as BuildContext,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -116,6 +134,11 @@ class _HomePageContentState extends State<HomePageContent> {
               onTap: () {
                 // Implementar la acción de About
               },
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: _LogOut,
             ),
           ],
         ),

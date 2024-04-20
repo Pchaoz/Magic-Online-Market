@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/register.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'globals.dart';
+import 'home.dart';
 
 void main() {
   runApp(LoginApp());
@@ -9,14 +14,8 @@ void main() {
 Future<Map<String, dynamic>> loginUser(String email, String password) async {
   print("MAIL:" + email + " PASSWORD: " + password);
 
-  //IP SERVIDOR -> 162.19.74.238:8080
-  //IP LOCAL PRUEBAS -> 10.1.85.13:8000
-
-  /* final getallsusers =     //ESTA FUNCONA
-      await http.get(Uri.parse('http://10.1.85.13:8000/getAllUsers')); */
-
   final response = await http.post(
-    Uri.parse('http://10.1.85.13:8000/api/login'),
+    Uri.parse(API_URI_SERVER + '/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -30,6 +29,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
 
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
+    setAuth(true);
     return {'success': true};
   } else {
     // El usuario no se ha podido autentificar
@@ -65,10 +65,37 @@ class _LoginPageState extends State<LoginPage> {
     String password = _passwordController.text;
     try {
       Map<String, dynamic> loginResponse = await loginUser(email, password);
-      print('Login response: $loginResponse');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
     } catch (e) {
       print("ERROR.. $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to authenticate user'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
+  }
+
+  void _goToSignUpPage() {
+    Navigator.pushReplacement(
+      context as BuildContext,
+      MaterialPageRoute(builder: (context) => RegisterPage()),
+    );
   }
 
   @override
@@ -96,6 +123,17 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               onPressed: _login,
               child: Text('Login'),
+            ),
+            SizedBox(height: 10),
+            GestureDetector(
+              onTap: _goToSignUpPage,
+              child: Text(
+                'Don\'t have an account? Sign up here',
+                style: TextStyle(
+                  color: Colors.blue,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
             ),
           ],
         ),

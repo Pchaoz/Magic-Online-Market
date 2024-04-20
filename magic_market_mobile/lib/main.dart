@@ -1,31 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home.dart';
 import 'login.dart';
 
 void main() {
-  runApp(AuthenticationApp());
+  runApp(MyApp());
 }
 
-class AuthenticationApp extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Authentication App',
+      title: 'MagicMarketOnline - App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: AuthenticationWrapper(),
+      home: FutureBuilder(
+        future: isAuthenticated(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else {
+            if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              return (snapshot.data ?? false) ? HomePage() : LoginPage();
+            }
+          }
+        },
+      ),
     );
   }
-}
 
-class AuthenticationWrapper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    bool isAuthenticated = false;
-
-    return isAuthenticated ? HomePage() : LoginPage();
+  Future<bool> isAuthenticated() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool("Auth") ?? false;
   }
 }

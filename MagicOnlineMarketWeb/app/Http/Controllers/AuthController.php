@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -27,24 +28,26 @@ class AuthController extends Controller
     public function register(Request $request)
     {
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'cognom' => 'required|string',
-            'nick' => 'required|string'
-
+        $validator = Validator::make($request->all(), [
+            'nickname'=>'required|string|max:20',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'string|max:30',
+            'email' => 'required|string|max:255|unique:'.User::class,
+            'password' => 'required',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
 
         $user = User::create([
-            'name' => $request->name,
+            'firstName' => $request->firstName,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'nick' => $request->nick,
-            'cognom' => $request->cognom,
+            'nickname' => $request->nickname,
+            'lastName' => $request->lastName,
         ]);
-
-        Auth::login($user);
+        //Auth::login($user);
 
         return response()->json(['user' => $user]);
     }
