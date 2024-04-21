@@ -41,6 +41,14 @@ class CartesController extends Controller
 
         return "Carta creada correctamente!";
     }
+
+    public function alterDescripcioCarta($id,$descipcio){
+        $carta= Cartes::where('idCarta',$id)->first();
+        $carta->descripcio=$descipcio;
+        $carta->save();
+        return "Carta modificada correctamente!";
+    }
+
     public function deleteCarta($id){
         $carta= Cartes::find($id);
         $carta->delete();
