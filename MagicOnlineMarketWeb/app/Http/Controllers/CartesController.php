@@ -19,13 +19,27 @@ class CartesController extends Controller
     }
     public function addCarta(Request $request)
     {
+        $request->validate([
+            'nom' => 'required',
+            'descripcio' => 'required',
+            'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'raresa' => 'required',
+        ]);
+
         $carta = new Cartes();
         $carta->nom = $request->nom;
         $carta->descripcio = $request->descripcio;
-        $carta->imatge = $request->imatge;
         $carta->raresa = $request->raresa;
+
+        if($request->hasFile('imatge')){
+            $imageName = time().'.'.$request->imatge->extension();
+            $request->imatge->move(public_path('images/cartes'), $imageName);
+            $carta->imatge = 'cartes/' . $imageName;
+        }
+
         $carta->save();
-        return "Carta creada correctament!";
+
+        return "Carta creada correctamente!";
     }
     public function deleteCarta($id){
         $carta= Cartes::find($id);

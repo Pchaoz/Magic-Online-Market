@@ -1,5 +1,4 @@
 <script setup>
-import GuestLayout from "@/Layouts/GuestLayout.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 
 
@@ -11,7 +10,8 @@ defineProps({
 </script>
 
 <template>
-        <table class="table table-striped" style="min-width: 1000px;">
+    <div class="d-flex justify-content-center">
+        <table class="table table-striped table-dark w-50">
             <thead>
             <tr>
                 <th>Nom Carta</th>
@@ -24,11 +24,12 @@ defineProps({
             <tr v-for="carta in cartes" :key="carta.id">
                 <td>{{carta.nom}}</td>
                 <td>{{carta.descripcio}}</td>
-                <td>{{carta.imatge}}</td>
+                <td><img :src="'/images/' + carta.imatge" alt="Imagen de la carta" width="50" height="100"></td>
                 <td>{{carta.raresa}}</td>
             </tr>
             </tbody>
         </table>
+    </div>
 
 </template>
 

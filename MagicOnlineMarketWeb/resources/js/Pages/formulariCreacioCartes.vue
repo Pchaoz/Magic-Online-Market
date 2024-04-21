@@ -7,16 +7,42 @@ import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
 
-const formCarta = useForm({
-    nom:'',
-    descripcio:'',
-    imatge:'',
-    raresa:'Comun',
-})
+
+    const formCarta = useForm({
+        nom:'',
+        descripcio:'',
+        imatge:'',
+        raresa:'Comun',
+        imatgeMiniatura:'',
+
+    })
+
+
+const obtenirImatge = (e) => {
+
+    let file =e.target.files[0];
+    formCarta.imatge =file;
+    mostrarImatge(file);
+};
+
+
+const mostrarImatge = (file) => {
+    let reader = new FileReader();
+    reader.onload=(e) =>{
+        formCarta.imatgeMiniatura= e.target.result;
+    }
+    reader.readAsDataURL(file);
+
+}
+
+const imatgePrevia = () =>{
+        return formCarta.imatgeMiniatura;
+
+}
 
 const myfunction = () => {
     formCarta.post('/AddCarta');
-};
+}
 
 const options= ref([
     {
@@ -44,6 +70,7 @@ const options= ref([
 <template>
     <GuestLayout>
         <Head><title>Afegir Carta</title></Head>
+        <form enctype="multipart/form-data">
         <div>
             <InputLabel for="nom" value="Nom:" />
             <TextInput
@@ -77,6 +104,7 @@ const options= ref([
                 required
                 autofocus
                 autocomplete="imatge"
+                @change="obtenirImatge"
             />
         </div>
 
@@ -89,11 +117,19 @@ const options= ref([
             </select>
 
         </div>
-        <div class="flex items-center justify-end mt-4">
+        <figure>
+
+            <img width="200" height="200" :src="formCarta.imatgeMiniatura" alt="Foto Carta">
+
+        </figure>
+
+
+            <div class="flex items-center justify-end mt-4">
             <PrimaryButton @click="myfunction" class="ms-4" :class="{ 'opacity-25': formCarta.processing }" :disabled="formCarta.processing">
                 Afegir
             </PrimaryButton>
         </div>
+        </form>
 
     </GuestLayout>
 
