@@ -1,5 +1,6 @@
 <script setup>
 import 'bootstrap/dist/css/bootstrap.css';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 
 defineProps({
@@ -10,6 +11,7 @@ defineProps({
 </script>
 
 <template>
+    <AuthenticatedLayout>
     <div class="d-flex justify-content-center">
         <table class="table table-striped table-dark w-50">
             <thead>
@@ -30,7 +32,7 @@ defineProps({
             </tbody>
         </table>
     </div>
-
+    </AuthenticatedLayout>
 </template>
 
 <style scoped>

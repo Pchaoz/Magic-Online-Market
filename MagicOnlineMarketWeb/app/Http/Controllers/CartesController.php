@@ -9,7 +9,7 @@ use Inertia\Inertia;
 
 class CartesController extends Controller
 {
-    public function getAllCartes(){
+    public function ListCartes(){
         $cartes= Cartes::all();
         return Inertia::render('llistaCartes',['cartes'=>$cartes]);
     }

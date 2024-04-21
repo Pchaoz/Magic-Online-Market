@@ -6,6 +6,7 @@ import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 
 
     const formCarta = useForm({
@@ -41,7 +42,7 @@ const imatgePrevia = () =>{
 }
 
 const myfunction = () => {
-    formCarta.post('/AddCarta');
+    formCarta.post('/crearCarta');
 }
 
 const options= ref([
@@ -65,75 +66,73 @@ const options= ref([
 
 
 </script>
-
-
 <template>
-    <GuestLayout>
-        <Head><title>Afegir Carta</title></Head>
-        <form enctype="multipart/form-data">
-        <div>
-            <InputLabel for="nom" value="Nom:" />
-            <TextInput
-                id="nom"
-                type="text"
-                class="mt-1 block w-full"
-                v-model="formCarta.nom"
-                required
-                autofocus
-                autocomplete="nom"
-            />
+    <AuthenticatedLayout>
+
+        <div class="d-flex justify-content-center">
+            <form enctype="multipart/form-data" class="w-25">
+                <div>
+                    <InputLabel for="nom" value="Nom:" />
+                    <TextInput
+                        id="nom"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="formCarta.nom"
+                        required
+                        autofocus
+                        autocomplete="nom"
+                    />
+                </div>
+                <div>
+                    <InputLabel for="descripcio" value="Descripcio:" />
+                    <TextInput
+                        id="descripcio"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="formCarta.descripcio"
+                        required
+                        autofocus
+                        autocomplete="descripcio"
+                    />
+                </div>
+                <div class="d-flex flex-column align-items-center">
+                <div>
+                    <InputLabel for="imatge" value="Imatge:"  v-model="formCarta.imatge" />
+                    <input
+                        id="imatge"
+                        type="file"
+                        class="mt-1 block w-full"
+                        required
+                        autofocus
+                        autocomplete="imatge"
+                        @change="obtenirImatge"
+                    />
+                </div>
+
+                <div>
+                    <select  id="raresa" v-model="formCarta.raresa">
+                        <option v-for="option in options" v-bind:key="option.name" v-bind:value="option.value">
+                            {{ option.name }}
+                        </option>
+                    </select>
+                </div>
+                <figure>
+                    <img width="200" height="200" :src="formCarta.imatgeMiniatura" alt="Foto Carta">
+                </figure>
+
+                <div class="flex items-center justify-end mt-4">
+                    <PrimaryButton @click="myfunction" class="ms-4" :class="{ 'opacity-25': formCarta.processing }" :disabled="formCarta.processing">
+                        Afegir
+                    </PrimaryButton>
+                </div>
+                </div>
+            </form>
         </div>
-        <div>
-            <InputLabel for="descripcio" value="Descripcio:" />
-            <TextInput
-                id="descripcio"
-                type="text"
-                class="mt-1 block w-full"
-                v-model="formCarta.descripcio"
-                required
-                autofocus
-                autocomplete="descripcio"
-            />
-        </div>
-        <div>
-            <InputLabel for="imatge" value="Imatge:"  v-model="formCarta.imatge" />
-            <input
-                id="imatge"
-                type="file"
-                class="mt-1 block w-full"
-                required
-                autofocus
-                autocomplete="imatge"
-                @change="obtenirImatge"
-            />
-        </div>
-
-        <div>
-            <select  id="raresa" v-model="formCarta.raresa">
-                <option v-for="option in options" v-bind:key="option.name" v-bind:value="option.value">
-                    {{ option.name }}
-                </option>
-
-            </select>
-
-        </div>
-        <figure>
-
-            <img width="200" height="200" :src="formCarta.imatgeMiniatura" alt="Foto Carta">
-
-        </figure>
 
 
-            <div class="flex items-center justify-end mt-4">
-            <PrimaryButton @click="myfunction" class="ms-4" :class="{ 'opacity-25': formCarta.processing }" :disabled="formCarta.processing">
-                Afegir
-            </PrimaryButton>
-        </div>
-        </form>
-
-    </GuestLayout>
-
+    </AuthenticatedLayout>
 </template>
+
 
 <style scoped>
 

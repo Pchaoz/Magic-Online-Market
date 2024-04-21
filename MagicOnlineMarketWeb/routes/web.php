@@ -30,12 +30,12 @@ Route::get('/getAllUsers', [\App\Http\Controllers\userController::class,'getAllU
 require __DIR__.'/auth.php';
 
 //funciones controller cartas
-Route::get('/getAllCartes', [\App\Http\Controllers\CartesController::class,'getAllCartes'])->name('getAllCartes');
+Route::get('/getAllCartes', [\App\Http\Controllers\CartesController::class,'ListCartes'])->name('getAllCartes');
 Route::get('/getAllCartesByRaresa/{raresa}', [\App\Http\Controllers\CartesController::class,'getAllCartesByRaresa'])->name('getAllCartesByRaresa');
 Route::get('/formulariCrearCartes',function (){
     return Inertia::render('formulariCreacioCartes');
-});
-Route::post('/AddCarta',[\App\Http\Controllers\CartesController::class, 'addCarta'])->name('addCarta');
+})->name('formulariCartes');
+Route::post('/crearCarta',[\App\Http\Controllers\CartesController::class, 'addCarta'])->name('addCarta');
 
 Route::get('/alterDescripcioCarta/{id}/{descripcio}', [\App\Http\Controllers\CartesController::class,'alterDescripcioCarta'])->name('alterDescripcioCarta');
 Route::get('/deleteCarta/{id}', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');

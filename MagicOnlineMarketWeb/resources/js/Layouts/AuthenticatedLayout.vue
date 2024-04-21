@@ -28,10 +28,184 @@ const showingNavigationDropdown = ref(false);
                             </div>
 
                             <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div class="space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    Pàgina Principal
                                 </NavLink>
+                                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                    <div class="ms-3 relative">
+                                    <Dropdown align="left" width="48">
+                                        <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                             <button
+                                                 type="button"
+                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                             >
+                                                Comprador
+                                                  <svg
+                                                      class="ms-2 -me-0.5 h-4 w-4"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 20 20"
+                                                      fill="currentColor"
+                                                  >
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd"
+                                                    />
+                                                </svg>
+                                               </button>
+                                        </span>
+                                        </template>
+                                        <template #content>
+                                            <DropdownLink> Conmprar Articles </DropdownLink>
+                                            <DropdownLink> Comandes </DropdownLink>
+                                        </template>
+                                    </Dropdown>
+                                </div>
+                            </div>
+                                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                    <div class="ms-3 relative">
+                                        <Dropdown align="left" width="48">
+                                            <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                             <button
+                                                 type="button"
+                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                             >
+                                                Venedor
+                                                  <svg
+                                                      class="ms-2 -me-0.5 h-4 w-4"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 20 20"
+                                                      fill="currentColor"
+                                                  >
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd"
+                                                    />
+                                                </svg>
+                                               </button>
+                                        </span>
+                                            </template>
+                                            <template #content>
+                                                <DropdownLink> Pujar Articles </DropdownLink>
+                                                <DropdownLink > Administrar Articles</DropdownLink>
+                                                <DropdownLink > Administrar Vendes</DropdownLink>
+                                            </template>
+                                        </Dropdown>
+                                    </div>
+                                </div>
+                                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                    <div class="ms-3 relative">
+                                        <Dropdown align="left" width="48">
+                                            <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                             <button
+                                                 type="button"
+                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                             >
+                                                Tornejos
+                                                  <svg
+                                                      class="ms-2 -me-0.5 h-4 w-4"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 20 20"
+                                                      fill="currentColor"
+                                                  >
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd"
+                                                    />
+                                                </svg>
+                                               </button>
+                                        </span>
+                                            </template>
+                                            <template #content>
+                                                <DropdownLink> Crear Torneig</DropdownLink>
+                                                <DropdownLink> Veure Tornejos</DropdownLink>
+                                                <DropdownLink> Els meus Tornejos</DropdownLink>
+                                                <DropdownLink> Modificar Tornejos</DropdownLink>
+
+                                            </template>
+                                        </Dropdown>
+                                    </div>
+                                </div>
+                                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                    <div class="ms-3 relative">
+                                        <Dropdown align="left" width="48">
+                                            <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                             <button
+                                                 type="button"
+                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                             >
+                                                Baralles
+                                                  <svg
+                                                      class="ms-2 -me-0.5 h-4 w-4"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 20 20"
+                                                      fill="currentColor"
+                                                  >
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd"
+                                                    />
+                                                </svg>
+                                               </button>
+                                        </span>
+                                            </template>
+                                            <template #content>
+                                                <DropdownLink> Veure Baralles </DropdownLink>
+                                                <DropdownLink> Crear Baralla</DropdownLink>
+                                                <DropdownLink> Les meves Baralles</DropdownLink>
+                                                <DropdownLink :href="route('getAllCartes')"> Veure cartes</DropdownLink>
+                                            </template>
+                                        </Dropdown>
+                                    </div>
+                                </div>
+                                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                    <div class="ms-3 relative">
+
+                                                Noticies
+
+                                    </div>
+                                </div>
+
+                                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                    <div class="ms-3 relative">
+                                        <Dropdown align="left" width="48">
+                                            <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                             <button
+                                                 type="button"
+                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                             >
+                                                Administrador
+                                                  <svg
+                                                      class="ms-2 -me-0.5 h-4 w-4"
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      viewBox="0 0 20 20"
+                                                      fill="currentColor"
+                                                  >
+                                                    <path
+                                                        fill-rule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clip-rule="evenodd"
+                                                    />
+                                                </svg>
+                                               </button>
+                                        </span>
+                                            </template>
+                                            <template #content>
+                                                <DropdownLink :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
+                                                <DropdownLink> Crear Expansions </DropdownLink>
+                                            </template>
+                                        </Dropdown>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
