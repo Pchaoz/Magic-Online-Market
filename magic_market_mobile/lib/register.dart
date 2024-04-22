@@ -13,7 +13,7 @@ void main() {
 //await registerUser(firstName, lastName, nickname, email, password);
 Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
     String nickname, String email, String password) async {
-  final Uri uri = Uri.parse(API_URI_LOCAL + '/register');
+  final Uri uri = Uri.parse(API_URI_SERVER + '/register');
 
   final response = await http.post(
     uri,

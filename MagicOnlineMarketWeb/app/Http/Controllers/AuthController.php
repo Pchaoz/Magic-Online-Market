@@ -47,7 +47,7 @@ class AuthController extends Controller
             'name' => $request->nickname,
             'cognom' => $request->lastName,
         ]);
-        //Auth::login($user);
+        Auth::login($user);
 
         return response()->json(['user' => $user]);
     }
