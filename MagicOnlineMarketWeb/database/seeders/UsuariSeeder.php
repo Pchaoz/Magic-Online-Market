@@ -18,7 +18,7 @@ class UsuariSeeder extends Seeder
 
         DB::table('usuaris')->insert([
             'nick' => 'admin',
-            'name' => 'Administrador',
+            'name' => 'admin',
             'cognom'=> 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123456789'),

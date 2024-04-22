@@ -13,10 +13,19 @@ class CartesController extends Controller
         $cartes= Cartes::all();
         return Inertia::render('llistaCartes',['cartes'=>$cartes]);
     }
-    public function getAllCartesByRaresa($raresa){
-        $cartes= Cartes::where('raresa',$raresa)->get();
+
+    public function APIListCartes(){
+        $cartes= Cartes::all();
         return response()->json($cartes);
     }
+
+    public function getAllCartesByRaresa($raresa){
+        $cartes= Cartes::where('raresa',$raresa)->get();
+        return Inertia::render('llistaCartes',['cartes'=>$cartes]);
+    }
+
+
+
     public function addCarta(Request $request)
     {
         $request->validate([
@@ -52,6 +61,7 @@ class CartesController extends Controller
     public function deleteCarta($id){
         $carta= Cartes::find($id);
         $carta->delete();
+
         return "Carta eliminada";
     }
 
