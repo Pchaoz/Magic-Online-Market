@@ -54,6 +54,13 @@ Route::get('/eliminarRol/{id}/',[\App\Http\Controllers\RolsController::class, 'e
 Route::get('/api/getAllRols', [\App\Http\Controllers\RolsController::class,'APIListRols'])->name('APIListRols');
 
 
+//funcions controller productes
+Route::get('/getAllProductes', [\App\Http\Controllers\ProductesController::class,'ListProductes'])->name('ListProductes');
+
+
+
+//-----------------------------------API----------------------------------------//
+Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::class,'APIListProductes'])->name('APIListProductes');
 
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
