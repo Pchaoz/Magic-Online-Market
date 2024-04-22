@@ -12,9 +12,5 @@ void setAuth(bool auth) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   isAuthenticated = auth;
-  if (prefs.containsKey("Auth")) {
-    prefs.setBool("Auth", auth);
-  } else {
-    throw Exception('Auth var does not exist...');
-  }
+  prefs.setBool("Auth", auth);
 }

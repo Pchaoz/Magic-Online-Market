@@ -99,7 +99,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -112,8 +111,7 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('Assets/MMO_logo.png',
-                  height: 300), // Añade tu logo aquí
+              Image.asset('Assets/MMO_logo.png', height: 300),
               SizedBox(height: 20),
               TextField(
                 controller: _emailController,

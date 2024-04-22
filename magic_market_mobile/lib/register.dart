@@ -143,6 +143,8 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Image.asset('Assets/MMO_logo.png', height: 200),
+                SizedBox(height: 20),
                 TextFormField(
                   controller: _firstNameController,
                   decoration: InputDecoration(labelText: 'Nombre'),
