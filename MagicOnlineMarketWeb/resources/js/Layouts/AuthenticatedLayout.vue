@@ -58,7 +58,7 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                         </template>
                                         <template #content>
-                                            <DropdownLink> Conmprar Articles </DropdownLink>
+                                            <DropdownLink> Comprar Articles </DropdownLink>
                                             <DropdownLink> Comandes </DropdownLink>
                                         </template>
                                     </Dropdown>
@@ -90,9 +90,9 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
-                                                <DropdownLink> Pujar Articles </DropdownLink>
-                                                <DropdownLink > Administrar Articles</DropdownLink>
-                                                <DropdownLink > Administrar Vendes</DropdownLink>
+                                                <DropdownLink :href="route('ListProductes')"> Pujar Articles </DropdownLink>
+                                                <DropdownLink> Administrar Articles</DropdownLink>
+                                                <DropdownLink> Administrar Vendes</DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>

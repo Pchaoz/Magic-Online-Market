@@ -9,8 +9,6 @@ defineProps({
     },
 });
 
-
-
 </script>
 
 <template>
@@ -32,8 +30,8 @@ defineProps({
                     <td>{{producte.nom}}</td>
                     <td class="text-center mx-2" style="width: 300px">{{producte.descripcio}}</td>
                     <td><img :src="'/images/' + producte.imatge" alt="Imatge del producte" width="150" height="200"></td>
-                    <td>  </td>
-                    <td></td>
+                    <td class="text-center"> {{producte.idCategoriaProducte}} </td>
+                    <td class="text-center"> {{producte.idExpansio}}</td>
                 </tr>
                 </tbody>
             </table>

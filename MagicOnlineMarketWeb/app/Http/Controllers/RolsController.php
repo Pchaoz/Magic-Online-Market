@@ -19,6 +19,12 @@ class RolsController extends Controller
         return response()->json($rols);
     }
 
+    public function getRol($id){
+        $rol= Rols::where('idRol',$id)->get();
+        return response()->json($rol);
+    }
+
+
     public function addRol($nom){
         $rol= new Rols();
         $rol->nom=$nom;
