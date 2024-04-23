@@ -18,7 +18,7 @@ class ProductesSeeder extends Seeder
         DB::table('productes')->insert([
             'nom' => 'Ulamog, El Hambre que no Cesa',
             'descripcio' => 'Cuando lances a Ulamog, el Hambre Que No Cesa, exilia dos permanentes objetivo.Indestructible.Siempre que Ulamog ataque, el jugador defensor exilia las veinte primeras cartas de su biblioteca.',
-            'imatge'  => 'imatge.carta',
+            'imatge'  => 'productes/ulamogHambre.jpg',
             'idCategoriaProducte'  => '1',
             'idExpansio'  => '7',
             'idCarta'  => '1',
@@ -28,7 +28,7 @@ class ProductesSeeder extends Seeder
         DB::table('productes')->insert([
             'nom' => 'Llanura',
             'descripcio' => '({T}: Add {W}.)',
-            'imatge'  => 'llanura.amonkhet',
+            'imatge'  => 'productes/llanuraAmonkhet.jpg',
             'idCategoriaProducte'  => '1',
             'idExpansio'  => '6',
             'idCarta'  => '7',
@@ -38,7 +38,7 @@ class ProductesSeeder extends Seeder
         DB::table('productes')->insert([
             'nom' => 'Llanura',
             'descripcio' => '({T}: Add {W}.)',
-            'imatge'  => 'llanura.dominariaunida',
+            'imatge'  => 'productes/llanuraDominariaUnida.jpg',
             'idCategoriaProducte'  => '1',
             'idExpansio'  => '1',
             'idCarta'  => '7',
@@ -48,7 +48,7 @@ class ProductesSeeder extends Seeder
         DB::table('productes')->insert([
             'nom' => 'Llanura',
             'descripcio' => '({T}: Add {W}.)',
-            'imatge'  => 'llanura.guerrahermanos',
+            'imatge'  => 'productes/llanuraGuerraHermanos.jpg',
             'idCategoriaProducte'  => '1',
             'idExpansio'  => '2',
             'idCarta'  => '7',
@@ -58,7 +58,7 @@ class ProductesSeeder extends Seeder
         DB::table('productes')->insert([
             'nom' => 'Caja sobres de Amonkhet',
             'descripcio' => 'Caja de 36 sobres',
-            'imatge'  => 'cjasobresamonkhet',
+            'imatge'  => 'productes/cajaAmonkhet.jpg',
             'idCategoriaProducte'  => '2',
             'idExpansio'  => '6',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -67,7 +67,7 @@ class ProductesSeeder extends Seeder
         DB::table('productes')->insert([
             'nom' => 'Tapete Elesh Norn',
             'descripcio' => 'Tapete de 24*13.5 seriegrafiado',
-            'imatge'  => 'tapetefoto',
+            'imatge'  => 'productes/tapeteEleshNorn.jpg',
             'idCategoriaProducte'  => '4',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),

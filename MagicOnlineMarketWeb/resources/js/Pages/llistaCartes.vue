@@ -13,7 +13,7 @@ defineProps({
 <template>
     <AuthenticatedLayout>
     <div class="d-flex justify-content-center">
-        <table class="table table-striped table-dark w-50">
+        <table class="table table-striped table-dark w-75">
             <thead>
             <tr>
                 <th>Nom Carta</th>
