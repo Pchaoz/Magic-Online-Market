@@ -23,4 +23,31 @@ class ProductesController extends Controller
         $productes= Productes::all();
         return response()->json($productes);
     }
+
+    public function getProducte($id){
+        $producte= Productes::where('idProducte',$id)->get();
+        return response()->json($producte);
+    }
+
+    public function addProducte($nom,$descripcio,$idcategoria){
+        $producte= new Productes();
+        $producte->nom=$nom;
+        $producte->descripcio=$descripcio;
+        $producte->idCategoriaProducte=$idcategoria;
+        $producte->save();
+        return "Producte creat exitosament!";
+    }
+    public function modProducte($id,$descripcio){
+        $producte= Productes::where('idProducte',$id)->first();
+        $producte->descripcio=$descripcio;
+        $producte->save();
+        return "Descripcio de producte modificada exitosament!";
+    }
+
+    public function eliminarProducte($id){
+        $producte= Productes::find($id);
+        $producte->delete();
+        return "Producte eliminat exitosament!";
+    }
+
 }
