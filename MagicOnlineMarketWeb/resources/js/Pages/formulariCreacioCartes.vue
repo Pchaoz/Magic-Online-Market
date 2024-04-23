@@ -129,5 +129,8 @@ const options= ref([
 
 
 <style scoped>
-
+form {
+    background-color: #888888;
+    color: white;
+}
 </style>
