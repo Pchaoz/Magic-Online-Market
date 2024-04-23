@@ -13,7 +13,7 @@ defineProps({
 <template>
     <AuthenticatedLayout>
     <div class="d-flex justify-content-center">
-        <table class="table table-striped table-dark w-75">
+        <table class="table table-striped table-dark w-50">
             <thead>
             <tr>
                 <th>Nom Carta</th>
@@ -26,7 +26,9 @@ defineProps({
             <tr v-for="carta in cartes" :key="carta.id">
                 <td>{{carta.nom}}</td>
                 <td>{{carta.descripcio}}</td>
-                <td><img :src="'/images/' + carta.imatge" alt="Imagen de la carta" width="50" height="100"></td>
+                <td>
+                    <img :src="'/images/' + carta.imatge" alt="Imagen de la carta" width="150" height="200" class="zoomable-image">
+                </td>
                 <td>{{carta.raresa}}</td>
             </tr>
             </tbody>
@@ -42,5 +44,13 @@ defineProps({
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.zoomable-image {
+    transition: transform 0.3s ease;
+}
+
+.zoomable-image:hover {
+    transform: scale(4);
 }
 </style>
