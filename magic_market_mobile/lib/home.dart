@@ -34,7 +34,7 @@ class _HomePageContentState extends State<HomePageContent> {
   int _current = 0;
 
   final List<String> images = [
-    'https://via.placeholder.com/600x300?text=Image+1',
+    'https://media.wizards.com/2017/images/daily/41mztsnrdm.jpg',
     'https://via.placeholder.com/600x300?text=Image+2',
     'https://via.placeholder.com/600x300?text=Image+3',
   ];
@@ -137,13 +137,12 @@ class _HomePageContentState extends State<HomePageContent> {
                 ),
                 DataColumn(
                   label: Text(
-                    'Acción',
+                    'Mes ',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
               ],
               rows: <DataRow>[
-                // Aquí se ha eliminado la palabra clave 'const'
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Text('Producto 1')),
@@ -151,7 +150,7 @@ class _HomePageContentState extends State<HomePageContent> {
                     DataCell(Text('Precio 1')),
                     DataCell(
                       IconButton(
-                        icon: Icon(Icons.add_outlined),
+                        icon: Icon(Icons.remove_red_eye),
                         onPressed: () {
                           // Implementar la acción de ver detalles
                         },
@@ -197,17 +196,24 @@ class _HomePageContentState extends State<HomePageContent> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: Icon(Icons.account_circle),
+              title: Text('Perfil'),
               onTap: () {
-                // Implementar la acción de Settings
+                // Implementar la acción de Perfil
               },
             ),
             ListTile(
               leading: Icon(Icons.info),
-              title: Text('About'),
+              title: Text('Productos'),
               onTap: () {
-                // Implementar la acción de About
+                // Implementar la acción de Productos
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.article_rounded),
+              title: Text('Cartas'),
+              onTap: () {
+                // Implementar la acción de Cartas
               },
             ),
             ListTile(

@@ -24,6 +24,11 @@ class ProductesController extends Controller
         return response()->json($productes);
     }
 
+    public function APILastProductes(){
+        $productes = Productes::orderBy('created_at', 'desc')->take(10)->get();
+        return response()->json($productes);
+    }
+
     public function getProducte($id){
         $producte= Productes::where('idProducte',$id)->get();
         return response()->json($producte);

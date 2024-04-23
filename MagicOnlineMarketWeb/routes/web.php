@@ -65,6 +65,7 @@ Route::get('/eliminarProducte/{id}/',[\App\Http\Controllers\ProductesController:
 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::class,'APIListProductes'])->name('APIListProductes');
+Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::class,'APILastProductes'])->name('APILastProductes');
 
 
 
