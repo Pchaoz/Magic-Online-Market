@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cartes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -11,7 +12,8 @@ class CartesController extends Controller
 {
     public function ListCartes(){
         $cartes= Cartes::all();
-        return Inertia::render('llistaCartes',['cartes'=>$cartes]);
+        $idRolUser= [\App\Http\Controllers\userController::class,'getUserRolid'];
+        return Inertia::render('llistaCartes',['cartes'=>$cartes],['idRolUser'=>$idRolUser]);
     }
 
     public function APIListCartes(){

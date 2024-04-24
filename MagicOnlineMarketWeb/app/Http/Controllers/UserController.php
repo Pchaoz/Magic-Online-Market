@@ -11,4 +11,11 @@ class UserController extends Controller
         $usuaris= User::all();
         return response()->json($usuaris);
     }
+
+
+    public function getUserRolId(){
+        $usuari= User::find(Auth::id());
+        $idRol=$usuari->idRol;
+        return $idRol;
+    }
 }
