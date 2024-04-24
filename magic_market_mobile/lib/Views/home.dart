@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:magic_market_mobile/Classes/product.dart';
-import 'package:magic_market_mobile/Util/LateralMenu.dart';
+import 'package:magic_market_mobile/Util/lateralMenu.dart';
 import 'package:magic_market_mobile/Views/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Util/globals.dart';
 
@@ -124,7 +123,6 @@ class _HomePageContentState extends State<HomePageContent> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text('Noticias recientes'),
             CarouselSlider(
               items: images.asMap().entries.map((entry) {
                 int index = entry.key;
@@ -176,6 +174,8 @@ class _HomePageContentState extends State<HomePageContent> {
             ),
             Text('Productos recientes'),
             DataTable(
+              headingRowColor: MaterialStateColor.resolveWith(
+                  (states) => Color.fromARGB(125, 11, 214, 153)),
               columns: <DataColumn>[
                 DataColumn(
                   label: Text(
@@ -202,15 +202,24 @@ class _HomePageContentState extends State<HomePageContent> {
                   ),
                 ),
               ],
-              rows: <DataRow>[
-                DataRow(
+              rows: List<DataRow>.generate(
+                10,
+                (index) => DataRow(
+                  color: MaterialStateProperty.resolveWith<Color>(
+                      (Set<MaterialState> states) {
+                    if (index % 2 == 0) {
+                      return Colors.white;
+                    }
+                    return Color.fromARGB(101, 207, 207, 207);
+                  }),
                   cells: <DataCell>[
-                    DataCell(Text('Producto 1')),
-                    DataCell(Text('Fecha 1')),
-                    DataCell(Text('Precio 1')),
+                    DataCell(Text('Producto ${index + 1}')),
+                    DataCell(Text('Fecha ${index + 1}')),
+                    DataCell(Text('Precio ${index + 1}')),
                     DataCell(
                       IconButton(
                         icon: Icon(Icons.remove_red_eye),
+                        color: Color.fromARGB(255, 11, 214, 153),
                         onPressed: () {
                           // Implementar la acción de ver detalles
                         },
@@ -218,23 +227,7 @@ class _HomePageContentState extends State<HomePageContent> {
                     ),
                   ],
                 ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('Producto 2')),
-                    DataCell(Text('Fecha 2')),
-                    DataCell(Text('Precio 2')),
-                    DataCell(
-                      IconButton(
-                        icon: Icon(Icons.add_outlined),
-                        onPressed: () {
-                          // Implementar la acción de ver detalles
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                //A partir de aqui puedo añadir mas filas
-              ],
+              ),
             ),
           ],
         ),

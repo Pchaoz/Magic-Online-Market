@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:magic_market_mobile/Views/home.dart';
+import 'package:magic_market_mobile/Views/profile.dart';
 
 import '../Util/globals.dart';
 
@@ -26,28 +28,50 @@ class LateralMenu extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.account_circle),
+            leading: Icon(Icons.home, color: Color.fromARGB(255, 11, 214, 153)),
+            title: Text('Incio'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle,
+                color: Color.fromARGB(255, 11, 214, 153)),
             title: Text('Perfil'),
             onTap: () {
-              // Implementar la acción de Perfil
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileApp()),
+              );
             },
           ),
           ListTile(
-            leading: Icon(Icons.info),
+            leading: Icon(Icons.info, color: Color.fromARGB(255, 11, 214, 153)),
             title: Text('Productos'),
             onTap: () {
-              // Implementar la acción de Productos
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileApp()),
+              );
             },
           ),
           ListTile(
-            leading: Icon(Icons.article_rounded),
+            leading: Icon(Icons.article_rounded,
+                color: Color.fromARGB(255, 11, 214, 153)),
             title: Text('Cartas'),
             onTap: () {
-              // Implementar la acción de Cartas
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileApp()),
+              );
             },
           ),
           ListTile(
-            leading: Icon(Icons.logout),
+            leading:
+                Icon(Icons.logout, color: Color.fromARGB(255, 11, 214, 153)),
             title: Text('Logout'),
             onTap: onTapLogout,
           ),
