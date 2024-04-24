@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Views/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../globals.dart';
+import '../Util/globals.dart';
 import 'home.dart';
 
 void main() {
@@ -35,7 +35,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
 
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
-    setAuth(true, "");
+    setAuth(true, data["user"]["nick"]);
     return {'success': true};
   } else {
     // El usuario no se ha podido autentificar

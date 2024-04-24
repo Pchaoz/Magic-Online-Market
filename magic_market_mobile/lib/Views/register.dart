@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/globals.dart';
+import 'package:magic_market_mobile/Util/globals.dart';
 import 'package:magic_market_mobile/Views/home.dart';
 
 import 'login.dart';
@@ -40,7 +40,7 @@ Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
 
   if (response.statusCode == 200) {
     // Usuario registrado correctamente
-    setAuth(true, "");
+    setAuth(true, data["user"]["nick"]);
     return {'success': true};
   } else {
     // Error al registrar el usuario

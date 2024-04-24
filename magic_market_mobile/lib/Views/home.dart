@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:magic_market_mobile/Classes/product.dart';
+import 'package:magic_market_mobile/Util/LateralMenu.dart';
 import 'package:magic_market_mobile/Views/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../globals.dart';
+import '../Util/globals.dart';
 
 void main() {
   runApp(HomePage());
@@ -24,10 +25,29 @@ Future<List<Product>> obtenerProductos() async {
   }
 }
 
-void LogOut() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  isAuthenticated = false;
-  prefs.setBool("Auth", isAuthenticated);
+Future<Map<String, dynamic>> logOut() async {
+  final response = await http.post(
+    Uri.parse(API_URI_SERVER + '/logout'),
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+  );
+
+  print("GET USERS STATUS CODE: " + response.statusCode.toString());
+
+  var responseData = response.body;
+  // Decodificar la respuesta JSON a un Map
+  var data = jsonDecode(responseData);
+  // Printear el resultado
+  print(data.toString());
+
+  if (response.statusCode == 200) {
+    //Usuario ha cerrado la session correctamente
+    return {'success': true};
+  } else {
+    // El usuario no se ha podido desconectar
+    throw Exception('Failed to logout');
+  }
 }
 
 class HomePage extends StatelessWidget {
@@ -55,11 +75,34 @@ class _HomePageContentState extends State<HomePageContent> {
   ];
 
   void _LogOut() {
-    LogOut();
-    Navigator.pushReplacement(
-      context as BuildContext,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
+    try {
+      logOut();
+      clearPrefs();
+
+      Navigator.pushReplacement(
+        context as BuildContext,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } catch (e) {
+      print("ERROR.. $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to authenticate user'),
+            actions: <Widget>[
+              TextButton(
+                child: Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -142,7 +185,7 @@ class _HomePageContentState extends State<HomePageContent> {
                 ),
                 DataColumn(
                   label: Text(
-                    'Fecha',
+                    'Usuario',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
@@ -196,50 +239,8 @@ class _HomePageContentState extends State<HomePageContent> {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color.fromARGB(255, 11, 214, 153),
-              ),
-              child: Text(
-                'Menu',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Perfil'),
-              onTap: () {
-                // Implementar la acción de Perfil
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.info),
-              title: Text('Productos'),
-              onTap: () {
-                // Implementar la acción de Productos
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.article_rounded),
-              title: Text('Cartas'),
-              onTap: () {
-                // Implementar la acción de Cartas
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: _LogOut,
-            ),
-          ],
-        ),
+      drawer: LateralMenu(
+        onTapLogout: _LogOut,
       ),
     );
   }

@@ -13,5 +13,15 @@ void setAuth(bool auth, String username) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   isAuthenticated = auth;
+  userName = username;
+
   prefs.setBool("Auth", auth);
+  prefs.setString("userName", username);
+}
+
+void clearPrefs() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  prefs.remove("Auth");
+  prefs.remove("userName");
 }
