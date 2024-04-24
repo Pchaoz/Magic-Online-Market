@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../Util/globals.dart';
 
 class LateralMenu extends StatelessWidget {
