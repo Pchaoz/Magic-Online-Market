@@ -48,7 +48,7 @@ class CartesController extends Controller
 
         $carta->save();
 
-        return "Carta creada correctamente!";
+        return "Carta creada correctament!";
     }
 
     public function alterDescripcioCarta($id,$descipcio){

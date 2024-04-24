@@ -6,6 +6,7 @@ import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import 'bootstrap/dist/css/bootstrap.css';
 
 
     const formCarta = useForm({
@@ -32,12 +33,6 @@ const mostrarImatge = (file) => {
         formCarta.imatgeMiniatura= e.target.result;
     }
     reader.readAsDataURL(file);
-
-}
-
-const imatgePrevia = () =>{
-        return formCarta.imatgeMiniatura;
-
 }
 
 const myfunction = () => {
