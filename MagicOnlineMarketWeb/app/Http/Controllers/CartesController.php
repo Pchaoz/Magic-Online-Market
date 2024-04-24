@@ -12,8 +12,9 @@ class CartesController extends Controller
 {
     public function ListCartes(){
         $cartes= Cartes::all();
-        $idRolUser= [\App\Http\Controllers\userController::class,'getUserRolid'];
-        return Inertia::render('llistaCartes',['cartes'=>$cartes],['idRolUser'=>$idRolUser]);
+        $userController = new UserController;
+        $idRol = $userController->getUserRolId();
+        return Inertia::render('llistaCartes',['cartes'=>$cartes,'idRolUser'=>$idRol]);
     }
 
     public function APIListCartes(){

@@ -1,7 +1,8 @@
 <script setup>
+import {ref} from "vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-
+import Modal from '@/Components/Modal.vue'
 
 defineProps({
     cartes: {
@@ -12,6 +13,14 @@ defineProps({
         type:String
     }
 });
+let showModal = ref(false);
+const abrirModalConfirmacion = () => {
+    showModal.value = true;
+}
+
+const cerrarModal = () => {
+    showModal.value = false;
+}
 </script>
 
 <template>
@@ -32,10 +41,11 @@ defineProps({
                 <tr v-for="carta in cartes" :key="carta.id">
                     <td>{{carta.nom}}</td>
                     <td>
-                        <button v-if="user.role === 'administrador'" class="btn btn-primary rounded-circle">Mod</button>
+                        <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle">Mod</button>
                     </td>
                     <td>
-                        <button class="btn btn-primary rounded-circle">Elim</button>
+                        <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle"
+                                @click="abrirModalConfirmacion">Elim</button>
                     </td>
                     <td>{{carta.descripcio}}</td>
                     <td>
@@ -45,7 +55,19 @@ defineProps({
                 </tr>
                 </tbody>
             </table>
-        </div>
+            <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
+                <div class="modal-content w-100">
+                    <span class="close" @click="cerrarModal">×</span>
+                    <div class="d-flex justify-content-center m-3 ">
+                    <p>¿Estás seguro de que quieres eliminar esta carta?</p>
+                    </div>
+                    <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-danger mr-5" @click="cerrarModal">No</button>
+                    <button type="button" class="btn btn-primary ml-5">Sí</button>
+                    </div>
+                </div>
+            </Modal>
+            </div>
     </AuthenticatedLayout>
 </template>
 
@@ -57,4 +79,6 @@ defineProps({
 .zoomable-image:hover {
     transform: scale(4);
 }
+
+
 </style>
