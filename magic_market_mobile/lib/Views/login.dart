@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/register.dart';
+import 'package:magic_market_mobile/Views/register.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'globals.dart';
+import '../globals.dart';
 import 'home.dart';
 
 void main() {
@@ -27,9 +27,15 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
   //print("GET USERS STATUS CODE: " + getallsusers.statusCode.toString());
   print("GET USERS STATUS CODE: " + response.statusCode.toString());
 
+  var responseData = response.body;
+  // Decodificar la respuesta JSON a un Map
+  var data = jsonDecode(responseData);
+  // Printear el resultado
+  print(data.toString());
+
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
-    setAuth(true);
+    setAuth(true, "");
     return {'success': true};
   } else {
     // El usuario no se ha podido autentificar
@@ -134,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: Text(
                   'No tienes cuenta? Registrate aqui.',
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 11, 214, 153),
                     decoration: TextDecoration.underline,
                   ),
                 ),

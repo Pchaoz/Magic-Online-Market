@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'home.dart';
-import 'login.dart';
+import 'Views/home.dart';
+import 'Views/login.dart';
 
 void main() {
   runApp(MyApp());

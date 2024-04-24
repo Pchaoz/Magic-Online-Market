@@ -41,10 +41,10 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'nick' => $request->firstName,
+            'nick' => $request->nickname,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'name' => $request->nickname,
+            'name' => $request->firstName,
             'cognom' => $request->lastName,
         ]);
         Auth::login($user);

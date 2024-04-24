@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:magic_market_mobile/login.dart';
+import 'package:magic_market_mobile/Classes/product.dart';
+import 'package:magic_market_mobile/Views/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'globals.dart';
+import '../globals.dart';
 
 void main() {
   runApp(HomePage());
+}
+
+Future<List<Product>> obtenerProductos() async {
+  final response =
+      await http.get(Uri.parse(API_URI_SERVER + "/getLastProductes"));
+
+  if (response.statusCode == 200) {
+    List jsonResponse = json.decode(response.body);
+    return jsonResponse.map((item) => Product.fromJson(item)).toList();
+  } else {
+    throw Exception('Error al obtener los productos.');
+  }
 }
 
 void LogOut() async {
@@ -109,7 +124,9 @@ class _HomePageContentState extends State<HomePageContent> {
                   margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: _current == index ? Colors.blue : Colors.grey,
+                    color: _current == index
+                        ? Color.fromARGB(255, 11, 214, 153)
+                        : Colors.grey,
                   ),
                 );
               }).toList(),
@@ -185,7 +202,7 @@ class _HomePageContentState extends State<HomePageContent> {
           children: <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Color.fromARGB(255, 11, 214, 153),
               ),
               child: Text(
                 'Menu',

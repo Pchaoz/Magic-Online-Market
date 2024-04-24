@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/globals.dart';
-import 'package:magic_market_mobile/home.dart';
+import 'package:magic_market_mobile/Views/home.dart';
 
 import 'login.dart';
 
@@ -32,17 +32,15 @@ Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
   print("El statuscode de la peticion de registro es: " +
       response.statusCode.toString());
 
-  // Supongamos que 'response' es la respuesta de tu solicitud HTTP
   var responseData = response.body;
-
-// Decodificar la respuesta JSON a un Map
+  // Decodificar la respuesta JSON a un Map
   var data = jsonDecode(responseData);
-
+  // Printear el resultado
   print(data.toString());
 
   if (response.statusCode == 200) {
     // Usuario registrado correctamente
-    setAuth(true);
+    setAuth(true, "");
     return {'success': true};
   } else {
     // Error al registrar el usuario
@@ -230,7 +228,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   child: Text(
                     '¿Ya tienes una cuenta? Inicia sesión aquí',
                     style: TextStyle(
-                      color: Colors.blue,
+                      color: Color.fromARGB(255, 11, 214, 153),
                       decoration: TextDecoration.underline,
                     ),
                   ),
