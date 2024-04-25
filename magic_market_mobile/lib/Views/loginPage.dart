@@ -34,7 +34,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
 
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
-    setAuth(true, data["user"]["nick"]);
+    setAuth(true, data['user']['nick']);
     return {'success': true};
   } else {
     // El usuario no se ha podido autentificar
@@ -68,8 +68,10 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
+
     try {
       Map<String, dynamic> loginResponse = await loginUser(email, password);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

@@ -25,3 +25,10 @@ void clearPrefs() async {
   prefs.remove("Auth");
   prefs.remove("userName");
 }
+
+void reloadPref() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  isAuthenticated = prefs.getBool('Auth')!;
+  userName = prefs.getString('userName')!;
+}

@@ -41,6 +41,11 @@ class MyApp extends StatelessWidget {
 
   Future<bool> isAuthenticated() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print(prefs.getBool("Auth"));
+    if (prefs.containsKey("Auth")) {
+      return prefs.getBool("Auth") ?? false;
+    }
+    prefs.setBool("Auth", false);
     return prefs.getBool("Auth") ?? false;
   }
 }

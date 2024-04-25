@@ -5,10 +5,23 @@ import 'package:magic_market_mobile/Views/profilePage.dart';
 
 import '../Util/globals.dart';
 
-class LateralMenu extends StatelessWidget {
+class LateralMenu extends StatefulWidget {
   final VoidCallback onTapLogout;
 
   LateralMenu({required this.onTapLogout});
+
+  @override
+  _LateralMenuState createState() => _LateralMenuState();
+}
+
+class _LateralMenuState extends State<LateralMenu> {
+  String userName = '';
+
+  @override
+  void initState() {
+    super.initState();
+    reloadPref();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +34,7 @@ class LateralMenu extends StatelessWidget {
               color: Color.fromARGB(255, 11, 214, 153),
             ),
             child: Text(
-              'Bienvenido $userName',
+              'Bienvenido' + userName,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -76,7 +89,7 @@ class LateralMenu extends StatelessWidget {
             leading: const Icon(Icons.logout,
                 color: Color.fromARGB(255, 11, 214, 153)),
             title: const Text('Logout'),
-            onTap: onTapLogout,
+            onTap: widget.onTapLogout,
           ),
         ],
       ),

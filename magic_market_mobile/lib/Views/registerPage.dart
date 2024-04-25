@@ -78,7 +78,8 @@ class _RegisterPageState extends State<RegisterPage> {
 
       try {
         print("Tamaño password: ${password.length}");
-
+        Map<String, dynamic> registerResponse =
+            await registerUser(firstName, lastName, nickname, email, password);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
