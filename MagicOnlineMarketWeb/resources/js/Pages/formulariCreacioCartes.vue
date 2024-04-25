@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import 'bootstrap/dist/css/bootstrap.css';
+import Modal from "@/Components/Modal.vue";
 
 
     const formCarta = useForm({
@@ -17,6 +18,17 @@ import 'bootstrap/dist/css/bootstrap.css';
         imatgeMiniatura:'',
 
     })
+
+const abrirModal = () => {
+    showModal.value = true;
+
+}
+
+const cerrarModal = () => {
+    showModal.value = false;
+}
+
+let showModal = ref(false);
 
 
 const obtenirImatge = (e) => {
@@ -37,6 +49,8 @@ const mostrarImatge = (file) => {
 
 const myfunction = () => {
     formCarta.post('/crearCarta');
+    location.reload();
+    abrirModal();
 }
 
 const options= ref([
@@ -125,6 +139,14 @@ const options= ref([
                 </div>
             </form>
         </div>
+            <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
+                <div class="modal-content w-100">
+                    <span class="close" @click="cerrarModal">×</span>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <p>Carta Creada!</p>
+                    </div>
+                </div>
+            </Modal>
         </div>
     </AuthenticatedLayout>
 </template>

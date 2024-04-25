@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Modal from '@/Components/Modal.vue';
 import axios from 'axios';
+import {useForm} from "@inertiajs/vue3";
 
 
 defineProps({
@@ -18,11 +19,11 @@ defineProps({
 let showModal = ref(false);
 let showModalElim = ref(false);
 let cartaId =ref(null);
+
 const abrirModalConfirmacion = (id) => {
     showModal.value = true;
     cartaId.value = id;
 }
-
 
 
 const cerrarModal = () => {
@@ -41,6 +42,20 @@ const eliminarCarta = async () => {
         console.error(error);
     }
 }
+
+const form = useForm({
+    idCartaModificada: null,
+
+});
+
+const abrirFormularioEdicion=(id)=>{
+    form.idCartaModificada=id;
+    form.get(route('FormEditCarta'));
+
+}
+
+
+
 
 </script>
 
@@ -62,7 +77,8 @@ const eliminarCarta = async () => {
                 <tr v-for="carta in cartes" :key="carta.id">
                     <td>{{carta.nom}}</td>
                     <td>
-                        <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle">Mod</button>
+                        <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle"
+                                @click="abrirFormularioEdicion(carta.idCarta)">Mod</button>
                     </td>
                     <td>
                         <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle"

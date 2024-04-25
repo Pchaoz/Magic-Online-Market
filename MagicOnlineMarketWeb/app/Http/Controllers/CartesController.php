@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cartes;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,11 +49,39 @@ class CartesController extends Controller
             $request->imatge->move(public_path('images/cartes'), $imageName);
             $carta->imatge = 'cartes/' . $imageName;
         }
-
+        $carta->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $userController = new UserController;
+        $idRol = $userController->getUserRolId();
+        $carta->created_by=$idRol;
+        $carta->updated_by=$idRol;
         $carta->save();
 
-        return "Carta creada correctament!";
     }
+
+    public function FormEditCarta(Request $request){
+
+        $carta= Cartes::where('idCarta',$request->idCartaModificada)->first();
+        return Inertia::render('FormulariModificacioCartes',['carta'=>$carta]);
+    }
+    public  function editarCarta(Request $request){
+
+        $carta= Cartes::where('idCarta',$request->id)->first();
+        $carta->nom = $request->nom;
+        $carta->descripcio = $request->descripcio;
+        $carta->raresa = $request->raresa;
+        if($request->hasFile('imatge')){
+            $imageName = time().'.'.$request->imatge->extension();
+            $request->imatge->move(public_path('images/cartes'), $imageName);
+            $carta->imatge = 'cartes/' . $imageName;
+        }
+        $carta->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $userController = new UserController;
+        $idRol = $userController->getUserRolId();
+        $carta->updated_by=$idRol;
+        $carta->save();
+
+    }
+
 
     public function alterDescripcioCarta($id,$descipcio){
         $carta= Cartes::where('idCarta',$id)->first();
