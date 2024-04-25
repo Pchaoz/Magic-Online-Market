@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Util/globals.dart';
-import 'package:magic_market_mobile/Views/home.dart';
+import 'package:magic_market_mobile/Views/homePage.dart';
 
-import 'login.dart';
+import 'loginPage.dart';
 
 void main() {
   runApp(RegisterPage());
@@ -13,7 +13,7 @@ void main() {
 //await registerUser(firstName, lastName, nickname, email, password);
 Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
     String nickname, String email, String password) async {
-  final Uri uri = Uri.parse(API_URI_SERVER + '/register');
+  final Uri uri = Uri.parse('$API_URI_SERVER/register');
 
   final response = await http.post(
     uri,
@@ -29,8 +29,7 @@ Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
     }),
   );
 
-  print("El statuscode de la peticion de registro es: " +
-      response.statusCode.toString());
+  print("El statuscode de la peticion de registro es: ${response.statusCode}");
 
   var responseData = response.body;
   // Decodificar la respuesta JSON a un Map
@@ -74,26 +73,12 @@ class _RegisterPageState extends State<RegisterPage> {
       String email = _emailController.text;
       String password = _passwordController.text;
 
-      print("FirstName: " +
-          firstName +
-          "\n" +
-          "LastName: " +
-          lastName +
-          "\n" +
-          "Nickname: " +
-          nickname +
-          "\n" +
-          "Email: " +
-          email +
-          "\n" +
-          "Password: " +
-          password);
+      print(
+          "FirstName: $firstName\nLastName: $lastName\nNickname: $nickname\nEmail: $email\nPassword: $password");
 
       try {
-        print("Tamaño password: " + password.length.toString());
+        print("Tamaño password: ${password.length}");
 
-        Map<String, dynamic> registerResponse =
-            await registerUser(firstName, lastName, nickname, email, password);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => HomePage()),
@@ -103,11 +88,11 @@ class _RegisterPageState extends State<RegisterPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Error'),
+              title: const Text('Error'),
               content: Text(e.toString()),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Close'),
+                  child: const Text('Close'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -131,10 +116,10 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Registro'),
+        title: const Text('Registro'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -142,10 +127,10 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset('Assets/MMO_logo.png', height: 200),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _firstNameController,
-                  decoration: InputDecoration(labelText: 'Nombre'),
+                  decoration: const InputDecoration(labelText: 'Nombre'),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Por favor, introduce tu nombre';
@@ -158,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextFormField(
                   controller: _lastNameController,
-                  decoration: InputDecoration(labelText: 'Apellidos'),
+                  decoration: const InputDecoration(labelText: 'Apellidos'),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Por favor, introduce tus apellidos';
@@ -171,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextFormField(
                   controller: _nicknameController,
-                  decoration: InputDecoration(labelText: 'Nickname'),
+                  decoration: const InputDecoration(labelText: 'Nickname'),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Por favor, introduce tu nickname';
@@ -181,7 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextFormField(
                   controller: _emailController,
-                  decoration: InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Email'),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Por favor, introduce tu email';
@@ -191,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: const InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -205,7 +190,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 TextFormField(
                   controller: _confirmPasswordController,
-                  decoration: InputDecoration(labelText: 'Confirmar Password'),
+                  decoration:
+                      const InputDecoration(labelText: 'Confirmar Password'),
                   obscureText: true,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -217,15 +203,15 @@ class _RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _register,
-                  child: Text('Registrar'),
+                  child: const Text('Registrar'),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 GestureDetector(
                   onTap: _goToLoginPage,
-                  child: Text(
+                  child: const Text(
                     '¿Ya tienes una cuenta? Inicia sesión aquí',
                     style: TextStyle(
                       color: Color.fromARGB(255, 11, 214, 153),

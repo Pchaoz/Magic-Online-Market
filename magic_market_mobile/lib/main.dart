@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'Views/home.dart';
-import 'Views/login.dart';
+import 'Views/homePage.dart';
+import 'Views/loginPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         future: isAuthenticated(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else {
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');

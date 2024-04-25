@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:magic_market_mobile/Classes/product.dart';
 import 'package:magic_market_mobile/Util/lateralMenu.dart';
-import 'package:magic_market_mobile/Views/login.dart';
+import 'package:magic_market_mobile/Views/loginPage.dart';
 
 import '../Util/globals.dart';
 
@@ -14,7 +14,7 @@ void main() {
 
 Future<List<Product>> obtenerProductos() async {
   final response =
-      await http.get(Uri.parse(API_URI_SERVER + "/getLastProductes"));
+      await http.get(Uri.parse("$API_URI_SERVER/getLastProductes"));
 
   if (response.statusCode == 200) {
     List jsonResponse = json.decode(response.body);
@@ -26,7 +26,7 @@ Future<List<Product>> obtenerProductos() async {
 
 Future<Map<String, dynamic>> logOut() async {
   final response = await http.post(
-    Uri.parse(API_URI_SERVER + '/logout'),
+    Uri.parse('$API_URI_SERVER/logout'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -73,13 +73,14 @@ class _HomePageContentState extends State<HomePageContent> {
     'https://via.placeholder.com/600x300?text=Image+3',
   ];
 
+  // ignore: non_constant_identifier_names
   void _LogOut() {
     try {
       logOut();
       clearPrefs();
 
       Navigator.pushReplacement(
-        context as BuildContext,
+        context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
     } catch (e) {
@@ -88,11 +89,11 @@ class _HomePageContentState extends State<HomePageContent> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to authenticate user'),
+            title: const Text('Error'),
+            content: const Text('Failed to authenticate user'),
             actions: <Widget>[
               TextButton(
-                child: Text('Close'),
+                child: const Text('Close'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -108,7 +109,8 @@ class _HomePageContentState extends State<HomePageContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inicio'),
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        title: const Text('Inicio'),
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -133,13 +135,11 @@ class _HomePageContentState extends State<HomePageContent> {
                     // Por ejemplo, puedes usar Navigator para redirigir a otra página.
                     print('Imagen tocada: $item, índice: $index');
                   },
-                  child: Container(
-                    child: Center(
-                      child: Image.network(
-                        item,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                      ),
+                  child: Center(
+                    child: Image.network(
+                      item,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                   ),
                 );
@@ -162,45 +162,53 @@ class _HomePageContentState extends State<HomePageContent> {
                 return Container(
                   width: 8.0,
                   height: 8.0,
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 2.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: _current == index
-                        ? Color.fromARGB(255, 11, 214, 153)
+                        ? const Color.fromARGB(255, 11, 214, 153)
                         : Colors.grey,
                   ),
                 );
               }).toList(),
             ),
-            Text('Productos recientes'),
             DataTable(
               headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => Color.fromARGB(125, 11, 214, 153)),
-              columns: <DataColumn>[
+                  (states) => const Color.fromARGB(125, 11, 214, 153)),
+              columns: const <DataColumn>[
                 DataColumn(
-                  label: Text(
+                    label: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
                     'Producto',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
-                ),
+                )),
                 DataColumn(
-                  label: Text(
+                    label: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
                     'Usuario',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
-                ),
+                )),
                 DataColumn(
-                  label: Text(
+                    label: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
                     'Precio',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
-                ),
+                )),
                 DataColumn(
-                  label: Text(
-                    'Mes ',
+                    label: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    'Mas',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
-                ),
+                )),
               ],
               rows: List<DataRow>.generate(
                 10,
@@ -210,16 +218,31 @@ class _HomePageContentState extends State<HomePageContent> {
                     if (index % 2 == 0) {
                       return Colors.white;
                     }
-                    return Color.fromARGB(101, 207, 207, 207);
+                    return const Color.fromARGB(101, 207, 207, 207);
                   }),
                   cells: <DataCell>[
-                    DataCell(Text('Producto ${index + 1}')),
-                    DataCell(Text('Fecha ${index + 1}')),
-                    DataCell(Text('Precio ${index + 1}')),
+                    DataCell(
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text('Producto ${index + 1}'),
+                      ),
+                    ),
+                    DataCell(
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text('Usuario ${index + 1}'),
+                      ),
+                    ),
+                    DataCell(
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text('Precio ${index + 1}'),
+                      ),
+                    ),
                     DataCell(
                       IconButton(
-                        icon: Icon(Icons.remove_red_eye),
-                        color: Color.fromARGB(255, 11, 214, 153),
+                        icon: const Icon(Icons.remove_red_eye),
+                        color: const Color.fromARGB(255, 11, 214, 153),
                         onPressed: () {
                           // Implementar la acción de ver detalles
                         },

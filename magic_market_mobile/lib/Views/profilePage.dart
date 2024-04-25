@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/LateralMenu.dart';
 
 void main() {
-  runApp(ProfileApp());
+  runApp(ProfilePage());
 }
 
-class ProfileApp extends StatelessWidget {
+class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,9 +16,10 @@ class ProfileApp extends StatelessWidget {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Profile'),
+          backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+          title: const Text('Profile'),
         ),
-        body: Center(
+        body: const Center(
           child: Text('Hello World!'),
         ),
         drawer: LateralMenu(

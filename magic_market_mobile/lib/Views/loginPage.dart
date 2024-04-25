@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/Views/register.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:magic_market_mobile/Views/registerPage.dart';
 
 import '../Util/globals.dart';
-import 'home.dart';
+import 'homePage.dart';
 
 void main() {
   runApp(LoginApp());
 }
 
 Future<Map<String, dynamic>> loginUser(String email, String password) async {
-  print("MAIL:" + email + " PASSWORD: " + password);
+  print("MAIL:$email PASSWORD: $password");
 
   final response = await http.post(
-    Uri.parse(API_URI_SERVER + '/login'),
+    Uri.parse('$API_URI_SERVER/login'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -25,7 +24,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
     }),
   );
   //print("GET USERS STATUS CODE: " + getallsusers.statusCode.toString());
-  print("GET USERS STATUS CODE: " + response.statusCode.toString());
+  print("GET USERS STATUS CODE: ${response.statusCode}");
 
   var responseData = response.body;
   // Decodificar la respuesta JSON a un Map
@@ -81,11 +80,11 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to authenticate user'),
+            title: const Text('Error'),
+            content: const Text('Failed to authenticate user'),
             actions: <Widget>[
               TextButton(
-                child: Text('Close'),
+                child: const Text('Close'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -99,7 +98,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _goToSignUpPage() {
     Navigator.pushReplacement(
-      context as BuildContext,
+      context,
       MaterialPageRoute(builder: (context) => RegisterPage()),
     );
   }
@@ -108,36 +107,36 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inicio de sesion'),
+        title: const Text('Inicio de sesion'),
       ),
       body: SingleChildScrollView(
         // Añade esto
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset('Assets/MMO_logo.png', height: 300),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'Correo'),
+                decoration: const InputDecoration(labelText: 'Correo'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Contraseña'),
+                decoration: const InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _login,
-                child: Text('Iniciar sesion'),
+                child: const Text('Iniciar sesion'),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               GestureDetector(
                 onTap: _goToSignUpPage,
-                child: Text(
+                child: const Text(
                   'No tienes cuenta? Registrate aqui.',
                   style: TextStyle(
                     color: Color.fromARGB(255, 11, 214, 153),
