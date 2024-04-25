@@ -2,7 +2,9 @@
 import {ref} from "vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import Modal from '@/Components/Modal.vue'
+import Modal from '@/Components/Modal.vue';
+import axios from 'axios';
+
 
 defineProps({
     cartes: {
@@ -14,13 +16,32 @@ defineProps({
     }
 });
 let showModal = ref(false);
-const abrirModalConfirmacion = () => {
+let showModalElim = ref(false);
+let cartaId =ref(null);
+const abrirModalConfirmacion = (id) => {
     showModal.value = true;
+    cartaId.value = id;
 }
+
+
 
 const cerrarModal = () => {
     showModal.value = false;
+    showModalElim.value=false;
 }
+
+const eliminarCarta = async () => {
+    try {
+        const response = await axios.delete(`/deleteCarta/${cartaId.value}`);
+        console.log(response.data);
+        cerrarModal();
+        location.reload();
+        showModalElim.value = true;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
 </script>
 
 <template>
@@ -45,7 +66,7 @@ const cerrarModal = () => {
                     </td>
                     <td>
                         <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle"
-                                @click="abrirModalConfirmacion">Elim</button>
+                                @click="abrirModalConfirmacion(carta.idCarta)">Elim</button>
                     </td>
                     <td>{{carta.descripcio}}</td>
                     <td>
@@ -63,11 +84,21 @@ const cerrarModal = () => {
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
                     <button type="button" class="btn btn-danger mr-5" @click="cerrarModal">No</button>
-                    <button type="button" class="btn btn-primary ml-5">Sí</button>
+                    <button type="button" class="btn btn-primary ml-5"
+                        @click="eliminarCarta">Sí</button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal :show="showModalElim" maxWidth="2xl" closeable @close="cerrarModal" >
+                <div class="modal-content w-100">
+                    <span class="close" @click="cerrarModal">×</span>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <p>Carta Eliminada!</p>
                     </div>
                 </div>
             </Modal>
             </div>
+
     </AuthenticatedLayout>
 </template>
 

@@ -64,8 +64,6 @@ class CartesController extends Controller
     public function deleteCarta($id){
         $carta= Cartes::find($id);
         $carta->delete();
-
-        return "Carta eliminada";
     }
 
 
