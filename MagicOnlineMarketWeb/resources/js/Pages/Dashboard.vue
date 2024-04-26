@@ -8,32 +8,68 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Pàgina Principal" />
 
     <AuthenticatedLayout>
-        <template #header>
+        <div>
             <div class="flex justify-center items-center">
             <h2 class=" font-semibold text-xl text-gray-800 leading-tight">Noticias</h2>
             </div>
+            <div class="flex justify-center items-center">
+            <Carousel v-bind="settings" :breakpoints="breakpoints" class="w-50">
+                <Slide v-for="(slide, index) in slides" :key="index">
+                    <div class="carousel__item">
+                        <a :href="getUrlForSlide(index)"> <img :src="getImageForSlide(index)" alt="Slide {{ index + 1 }}" /></a>
+                    </div>
+                </Slide>
 
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img class="d-block w-100" src='/images/noticias/karlov.jpg' alt="Primera diapositiva">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src='/images/noticias/karlov.jpg' alt="Segunda diapositiva">
-                </div>
-                <div class="carousel-item">
-                    <img class="d-block w-100" src="" alt="Tercera diapositiva">
-                </div>
+                <template #addons>
+                    <Pagination />
+                    <Navigation />
+                </template>
+            </Carousel>
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Anterior</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Siguiente</span>
-            </a>
         </div>
-        </template>
     </AuthenticatedLayout>
 </template>
+
+<script>
+// If you are using PurgeCSS, make sure to whitelist the carousel CSS classes
+import 'vue3-carousel/dist/carousel.css'
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+
+export default {
+    name: 'App',
+    components: {
+        Carousel,
+        Slide,
+        Pagination,
+        Navigation,
+    },
+    data() {
+        return {
+            slides: [
+                // Add your image URLs here
+                '/images/noticias/karlov.jpg',
+                '/images/noticias/thunder.jpg',
+                '/images/noticias/moderhorizons.jpg',
+                // ... more images ...
+            ],
+            urls: [
+                // Add your image URLs here
+                '/images/noticias/karlov1.jpg',
+                '/images/noticias/thunder1.jpg',
+                '/images/noticias/moderhorizons1.jpg',
+                // ... more URLs ...
+            ]
+        };
+    },
+    methods: {
+        getImageForSlide(index) {
+            // Return the image URL for the given slide index
+            return this.slides[index];
+        },
+        getUrlForSlide(index) {
+            // Return the image URL for the given slide index
+            return this.urls[index];
+        },
+    }
+}
+</script>
