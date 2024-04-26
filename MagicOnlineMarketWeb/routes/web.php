@@ -25,9 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+//funcions per usuaris/es
 Route::get('/getAllUsers', [\App\Http\Controllers\userController::class,'getAllUser'])->name('getAllUser');
 require __DIR__.'/auth.php';
+Route::get('/getAllUsersForm', [\App\Http\Controllers\userController::class,'getUsersForm'])->name('getUsersForm');
+require __DIR__.'/auth.php';
+Route::delete('/deleteUser/{id}', [\App\Http\Controllers\userController::class,'deleteUser'])->name('deleteUser');
+
+
 
 //funciones controller cartas
 Route::get('/getAllCartes', [\App\Http\Controllers\CartesController::class,'ListCartes'])->name('getAllCartes');

@@ -204,7 +204,7 @@ const showingNavigationDropdown = ref(false);
                                                 <DropdownLink  :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
                                                 <DropdownLink> Crear Expansions </DropdownLink>
                                                 <DropdownLink v-if="$page.props.auth.user.idRol==1"> Administarar Rols </DropdownLink>
-                                                <DropdownLink v-if="$page.props.auth.user.idRol==1"> Administarar Usuaris </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('getUsersForm')"> Administarar Usuaris </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>

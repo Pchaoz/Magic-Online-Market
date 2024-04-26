@@ -50,10 +50,8 @@ class CartesController extends Controller
             $carta->imatge = 'cartes/' . $imageName;
         }
         $carta->updated_at = Carbon::now()->format('Y-m-d H:i:s');
-        $userController = new UserController;
-        $idRol = $userController->getUserRolId();
-        $carta->created_by=$idRol;
-        $carta->updated_by=$idRol;
+        $carta->created_by=Auth::id();
+        $carta->updated_by=Auth::id();
         $carta->save();
 
     }
@@ -75,9 +73,7 @@ class CartesController extends Controller
             $carta->imatge = 'cartes/' . $imageName;
         }
         $carta->updated_at = Carbon::now()->format('Y-m-d H:i:s');
-        $userController = new UserController;
-        $idRol = $userController->getUserRolId();
-        $carta->updated_by=$idRol;
+        $carta->updated_by=Auth::id();
         $carta->save();
 
     }
