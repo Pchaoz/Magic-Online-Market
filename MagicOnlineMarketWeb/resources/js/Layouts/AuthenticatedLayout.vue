@@ -8,6 +8,7 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
 </script>
 
 <template>
@@ -174,7 +175,7 @@ const showingNavigationDropdown = ref(false);
                                     </div>
                                 </div>
 
-                                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                <div class="hidden sm:flex sm:items-center sm:ms-6"  v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
                                     <div class="ms-3 relative">
                                         <Dropdown align="left" width="48">
                                             <template #trigger>
@@ -200,8 +201,10 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
-                                                <DropdownLink :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
+                                                <DropdownLink  :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
                                                 <DropdownLink> Crear Expansions </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1"> Administarar Rols </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1"> Administarar Usuaris </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
