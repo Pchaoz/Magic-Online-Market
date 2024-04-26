@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rols;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 
 class RolsController extends Controller
@@ -10,7 +12,8 @@ class RolsController extends Controller
 
     public function ListRols(){
         $rols= Rols::all();
-        return response()->json($rols);
+        return Inertia::render('administradorRols',['rols'=>$rols]);
+
     }
 
 
@@ -25,11 +28,11 @@ class RolsController extends Controller
     }
 
 
-    public function addRol($nom){
+    public function addRol(Request $request){
         $rol= new Rols();
-        $rol->nom=$nom;
+        $rol->nom=$request->nom;
         $rol->save();
-        return "Rol creat exitosament!";
+
     }
     public function modRol($id,$nom){
         $rol= Rols::where('idRol',$id)->first();

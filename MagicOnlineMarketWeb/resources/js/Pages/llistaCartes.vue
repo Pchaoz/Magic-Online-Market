@@ -77,11 +77,11 @@ const abrirFormularioEdicion=(id)=>{
                 <tr v-for="carta in cartes" :key="carta.id">
                     <td>{{carta.nom}}</td>
                     <td>
-                        <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle"
+                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-primary rounded-circle"
                                 @click="abrirFormularioEdicion(carta.idCarta)">Mod</button>
                     </td>
                     <td>
-                        <button v-if="idRolUser == '2'" class="btn btn-primary rounded-circle"
+                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-primary rounded-circle"
                                 @click="abrirModalConfirmacion(carta.idCarta)">Elim</button>
                     </td>
                     <td>{{carta.descripcio}}</td>
@@ -96,7 +96,7 @@ const abrirFormularioEdicion=(id)=>{
                 <div class="modal-content w-100">
                     <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
-                    <p>¿Estás seguro de que quieres eliminar esta carta?</p>
+                    <p>¿Estas segur de que vols eliminar aquesta carta?</p>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
                     <button type="button" class="btn btn-danger mr-5" @click="cerrarModal">No</button>
