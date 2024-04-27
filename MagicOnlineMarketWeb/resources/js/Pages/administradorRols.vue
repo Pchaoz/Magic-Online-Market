@@ -16,12 +16,15 @@ defineProps({
 
 
 let showModal = ref(false);
-let showModalElim = ref(false);
+let showModalEliminacio = ref(false);
 let showModalCreacio=ref(false);
+let showModalModificacio=ref(false);
+let showModalModificacioConfirmacio=ref(false);
 let rolId =ref(null);
 
 const abrirModalCreacio = () =>{
     cerrarModal();
+    formRol.nom="";
     showModalCreacio.value=true;
 }
 
@@ -37,29 +40,47 @@ const abrirModalConfirmacion = (id) => {
 
 const cerrarModal = () => {
     showModal.value = false;
-    showModalElim.value=false;
+    showModalEliminacio.value=false;
+}
+
+const abrirModalMod = (nom,id) =>{
+    cerrarModal();
+    showModalModificacio.value=true;
+    formRol.nom=nom;
+    formRol.id=id;
+
+}
+
+const modificarRol = () => {
+    formRol.post('editarRol');
+    cerrarModalMod();
+    showModalModificacioConfirmacio=true;
+    location.reload();
+
+}
+
+const cerrarModalMod = () => {
+    showModalModificacioConfirmacio.value=false;
+    showModalModificacio.value=false;
 }
 
 const eliminarRol = async () => {
     try {
-        const response = await axios.delete(`/deleteRol/${rolId.value}`);
+        const response = await axios.get(`/eliminarRol/${rolId.value}`);
         console.log(response.data);
         cerrarModal();
+        showModalEliminacio.value = true;
         location.reload();
-        showModalElim.value = true;
+
     } catch (error) {
         console.error(error);
     }
 }
 
-const form = useForm({
-    idCartaModificada: null,
-
-});
-
 
 const formRol= useForm({
     nom: null,
+    id:null,
 })
 const crearRol=()=> {
 
@@ -90,7 +111,7 @@ const crearRol=()=> {
                     </td>
                     <td>
                         <button  class="btn btn-primary rounded-circle"
-                                 @click="abrirModalConfirmacion()">Mod</button>
+                                 @click="abrirModalMod(rol.nom,rol.idRol)">Mod</button>
                     </td>
                 </tr>
                 </tbody>
@@ -109,11 +130,11 @@ const crearRol=()=> {
                     </div>
                 </div>
             </Modal>
-            <Modal :show="showModalElim" maxWidth="2xl" closeable @close="cerrarModal" >
+            <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
                     <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
-                        <p>Usuari/a Eliminat/da</p>
+                        <p>Rol Eliminat</p>
                     </div>
                 </div>
             </Modal>
@@ -133,6 +154,33 @@ const crearRol=()=> {
                             style="color: black;">
                         <button type="button" class="btn btn-success ml-5"
                                 @click="crearRol">Crear</button>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
+                <div class="modal-content w-100">
+                    <span class="close" @click="cerrarModalMod">×</span>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <InputLabel for="nom" value="Nom nou del rol" class="m-2"  style="font-size: 16px;"/>
+                        <input
+                            id="nom"
+                            type="text"
+                            class="mt-1 block w-full"
+                            v-model="formRol.nom"
+                            required
+                            autofocus
+                            style="color: black;">
+                        <button type="button" class="btn btn-success ml-5"
+                                @click="modificarRol">Modificar</button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
+                <div class="modal-content w-100">
+                    <span class="close" @click="cerrarModalMod">×</span>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <p>Rol Modificat</p>
                     </div>
                 </div>
             </Modal>

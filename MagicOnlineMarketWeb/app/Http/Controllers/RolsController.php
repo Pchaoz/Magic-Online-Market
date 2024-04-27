@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rols;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 
@@ -41,10 +43,18 @@ class RolsController extends Controller
         return "Nom de rol modificat exitosament!";
     }
 
-    public function eliminarRol($id){
+    public function editarRol(Request $request)
+    {
+        $rol= Rols::where('idRol',$request->id)->first();
+        $rol->nom = $request->nom;
+        $rol->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $rol->updated_by=Auth::id();
+        $rol->save();
+    }
+
+    public function deleteRol($id){
         $rol= Rols::find($id);
         $rol->delete();
-        return "Rol eliminat exitosament!";
     }
 
 }
