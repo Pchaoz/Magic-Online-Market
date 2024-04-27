@@ -55,7 +55,8 @@ Route::get('/getAllRols', [\App\Http\Controllers\RolsController::class,'ListRols
 Route::get('/getRol/{id}', [\App\Http\Controllers\RolsController::class,'getRol'])->name('getRol');
 Route::post('/crearRol',[\App\Http\Controllers\RolsController::class, 'addRol'])->name('addRol');
 Route::get('/modificarNomRol/{id}/{nom}',[\App\Http\Controllers\RolsController::class, 'modRol'])->name('modRol');
-Route::get('/eliminarRol/{id}/',[\App\Http\Controllers\RolsController::class, 'eliminarRol'])->name('eliminarRol');
+Route::post('/editarRol',[\App\Http\Controllers\RolsController::class,'editarRol'])->name('editarRol');
+Route::get('/eliminarRol/{id}/',[\App\Http\Controllers\RolsController::class, 'deleteRol'])->name('deleteRol');
 
 
 //-----------------------------------API----------------------------------------//
