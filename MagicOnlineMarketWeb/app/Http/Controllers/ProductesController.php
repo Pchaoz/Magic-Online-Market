@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Productes;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -12,21 +13,38 @@ class ProductesController extends Controller
         $productes = DB::table('productes')
             ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')
             ->leftJoin('expansions', 'productes.idExpansio', '=', 'expansions.idExpansio')
-            ->select('productes.nom AS nom', 'productes.descripcio AS descripcio', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom', 'expansions.nom AS expansioNom')
+            ->select('productes.nom AS nom', 'productes.descripcio AS descripcio', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom',
+                'expansions.nom AS expansioNom','productes.idProducte as idProducte')
+            ->get();
+        $categoriesProducte = DB::table('categoria_productes')
+            ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes')
+            ->get();
+        $expansions = DB::table('expansions')
+            ->select('expansions.nom as nom','expansions.idExpansio')
             ->get();
 
-        return Inertia::render('llistaProductes', ['productes' => $productes]);
+
+        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions]);
     }
 
     public function whereProductes($idCategoriaProductes){
         $productes = DB::table('productes')
             ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')
             ->leftJoin('expansions', 'productes.idExpansio', '=', 'expansions.idExpansio')
-            ->select('productes.nom AS nom', 'productes.descripcio AS descripcio', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom', 'expansions.nom AS expansioNom')
+            ->select('productes.nom AS nom', 'productes.descripcio AS descripcio', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom',
+                'expansions.nom AS expansioNom','productes.idProducte as idProducte')
             ->where('productes.idCategoriaProducte','=',$idCategoriaProductes)
             ->get();
 
-        return Inertia::render('llistaProductes', ['productes' => $productes]);
+        $categoriesProducte = DB::table('categoria_productes')
+            ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes')
+            ->get();
+        $expansions = DB::table('expansions')
+            ->select('expansions.nom as nom','expansions.idExpansio')
+            ->get();
+
+
+        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions]);
     }
 
 
@@ -60,10 +78,11 @@ class ProductesController extends Controller
         return "Descripcio de producte modificada exitosament!";
     }
 
-    public function eliminarProducte($id){
-        $producte= Productes::find($id);
+    public function eliminarProducte(Request $request){
+
+        $producte= Productes::where('idProducte',$request->idProducte)->first();
         $producte->delete();
-        return "Producte eliminat exitosament!";
+
     }
 
 }
