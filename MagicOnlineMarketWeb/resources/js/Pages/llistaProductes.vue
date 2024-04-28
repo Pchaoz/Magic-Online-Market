@@ -22,6 +22,8 @@ defineProps({
                     <th>Imatge Producte</th>
                     <th class="text-center mx-2">Categoria Producte</th>
                     <th class="text-center mx-2">Expansio Producte</th>
+                    <th></th>
+                    <th></th>
 
                 </tr>
                 </thead>
@@ -32,6 +34,13 @@ defineProps({
                     <td><img :src="'/images/' + producte.imatge" alt="Imatge del producte" width="150" height="200"></td>
                     <td class="text-center"> {{producte.categoriaProducteNom}} </td>
                     <td class="text-center"> {{producte.expansioNom}}</td>
+                    <td>
+                        <b-button  class="btn btn-success rounded-circle"
+                                 @click="abrirModalConfirmacion(rol.idRol)">Elim</b-button>
+                    </td>
+                    <td>
+
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -42,9 +51,11 @@ defineProps({
 <style scoped>
 
 
-.card {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+
+
+td,th{
+    text-align: center;
+    vertical-align: middle;
+    padding-left: 10px;
 }
 </style>

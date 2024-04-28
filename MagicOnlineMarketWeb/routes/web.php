@@ -65,11 +65,11 @@ Route::get('/api/getAllRols', [\App\Http\Controllers\RolsController::class,'APIL
 
 //funcions controller productes
 Route::get('/getAllProductes', [\App\Http\Controllers\ProductesController::class,'ListProductes'])->name('ListProductes');
+Route::get('/whereProductes/{idCategoriaProductes}', [\App\Http\Controllers\ProductesController::class,'whereProductes'])->name('whereProductes');
 Route::get('/getProducte/{id}', [\App\Http\Controllers\ProductesController::class,'getProducte'])->name('getProducte');
 Route::get('/crearProducte/{nom}/{descripcio}/{idcategoria}',[\App\Http\Controllers\ProductesController::class, 'addProducte'])->name('addProducte');
 Route::get('/modificarDescripcioProducte/{id}/{nom}',[\App\Http\Controllers\ProductesController::class, 'modProducte'])->name('modProducte');
-Route::get('/eliminarProducte/{id}/',[\App\Http\Controllers\ProductesController::class, 'eliminarProducte'])->name('eliminarProducte');
-
+Route::get('/eliminarProducte/{id}',[\App\Http\Controllers\ProductesController::class, 'eliminarProducte'])->name('eliminarProducte');
 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::class,'APIListProductes'])->name('APIListProductes');
