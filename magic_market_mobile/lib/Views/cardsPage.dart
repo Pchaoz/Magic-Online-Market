@@ -1,120 +1,128 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
 
-import 'package:magic_market_mobile/Util/globals.dart';
+import '../Util/LateralMenu.dart';
+import '../Util/globals.dart';
 
-void main() {
-  runApp(CardsPage());
+class CardsPage extends StatefulWidget {
+  @override
+  _CardsPageState createState() => _CardsPageState();
 }
 
-class CardsPage extends StatelessWidget {
+class _CardsPageState extends State<CardsPage> {
+  List cards = [];
+  String filter = '';
+
+  // Función para obtener las cartas del servidor
+  Future getCards() async {
+    final response = await http.get(Uri.parse('$API_URI_SERVER/getAllCartes'));
+    if (response.statusCode == 200) {
+      setState(() {
+        cards = json.decode(response.body);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCards();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-          title: const Text('Cartas'),
-        ),
-        body: FutureBuilder<List>(
-          future: fetchCards(),
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-            if (snapshot.hasData) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columns: const <DataColumn>[
-                    DataColumn(
-                        label: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        'Nombre',
-                        style: TextStyle(fontStyle: FontStyle.italic),
+    // Filtrar las cartas segun el nombre de ellas
+    List filteredCards = cards
+        .where(
+            (card) => card['nom'].toLowerCase().contains(filter.toLowerCase()))
+        .toList();
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        title: const Text('Cartas'),
+      ),
+      body: Column(
+        children: <Widget>[
+          TextField(
+            onChanged: (value) {
+              setState(() {
+                filter = value;
+              });
+            },
+            decoration: const InputDecoration(
+              labelText: "Buscar carta",
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredCards.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(filteredCards[index]['nom']),
+                  subtitle: Text(filteredCards[index]['raresa']),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            CardDetailPage(card: filteredCards[index]),
                       ),
-                    )),
-                    DataColumn(
-                        label: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        'Rareza',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    )),
-                    DataColumn(
-                        label: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        'Detalles',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    )),
-                  ],
-                  rows: snapshot.data!
-                      .map((item) => DataRow(cells: <DataCell>[
-                            DataCell(FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(item['nom'] ?? 'Desconocido'),
-                            )),
-                            DataCell(FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: Text(item['raresa'] ?? 'Desconocido'),
-                            )),
-                            DataCell(FittedBox(
-                              fit: BoxFit.scaleDown,
-                              child: IconButton(
-                                icon: const Icon(Icons.remove_red_eye),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          DetailPage(item['idCarta'] ?? 0),
-                                    ),
-                                  );
-                                },
-                              ),
-                            )),
-                          ]))
-                      .toList(),
-                ),
-              );
-            } else if (snapshot.hasError) {
-              return Text("${snapshot.error}");
-            }
-            return const CircularProgressIndicator();
-          },
-        ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+      drawer: LateralMenu(
+        onTapLogout: _LogOut,
       ),
     );
   }
 
-  Future<List> fetchCards() async {
-    final response = await http.get(Uri.parse('$API_URI_SERVER/getAllCartes'));
-
-    print("STATUS GET CARTES: " + response.statusCode.toString());
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load cards');
-    }
-  }
+  void _LogOut() {}
 }
 
-class DetailPage extends StatelessWidget {
-  final int idCarta;
+class CardDetailPage extends StatelessWidget {
+  final Map card;
 
-  const DetailPage(this.idCarta, {super.key});
+  CardDetailPage({Key? key, required this.card}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detalles de la carta $idCarta'),
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        title: Text(card['nom']),
       ),
-      body: Center(
-        child: Text('Aquí van los detalles de la carta $idCarta'),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(card['nom'], style: Theme.of(context).textTheme.headlineSmall),
+            SizedBox(height: 20), // Espacio entre los elementos
+            Text(card['raresa'],
+                style: Theme.of(context).textTheme.titleMedium),
+            SizedBox(height: 20), // Espacio entre los elementos
+            Flexible(
+              child: Text(
+                card['descripcio'],
+                style: Theme.of(context).textTheme.bodyText2,
+              ),
+            ),
+            SizedBox(height: 20), // Espacio entre los elementos
+            Flexible(
+              child: Center(
+                // Centrar la imagen
+                child: Image.network('$URI_SERVER_IMAGES/${card['imatge']}'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

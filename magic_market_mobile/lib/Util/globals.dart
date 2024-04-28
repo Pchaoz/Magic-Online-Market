@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 String API_URI_LOCAL = 'http://10.1.85.13:8000/api';
 String API_URI_SERVER = 'http://162.19.74.238:8080/api';
+String URI_SERVER_IMAGES = 'http://162.19.74.238:8080/images/';
 
 bool isAuthenticated = false;
 String userName = "";
