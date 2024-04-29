@@ -58,6 +58,18 @@ class UsuariSeeder extends Seeder
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+
+
+        DB::table('usuaris')->insert([
+            'nick' => 'RinconFriki',
+            'name' => 'Rincon',
+            'cognom' => 'Friki',
+            'idRol'=>4,
+            'email' => 'rf@gmail.com',
+            'password' => Hash::make('magiconline'),
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
         Schema::enableForeignKeyConstraints();
 
     }
