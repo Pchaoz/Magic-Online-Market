@@ -20,7 +20,7 @@ class ProductesController extends Controller
             ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes')
             ->get();
         $expansions = DB::table('expansions')
-            ->select('expansions.nom as nom','expansions.idExpansio')
+            ->select('expansions.nom as nom','expansions.idExpansio as idExpansio')
             ->get();
 
 
@@ -40,7 +40,7 @@ class ProductesController extends Controller
             ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes as idCategoriaProductes')
             ->get();
         $expansions = DB::table('expansions')
-            ->select('expansions.nom as nom','expansions.idExpansio')
+            ->select('expansions.nom as nom','expansions.idExpansio as idExpansio')
             ->get();
 
 

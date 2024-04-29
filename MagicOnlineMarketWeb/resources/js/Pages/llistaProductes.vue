@@ -207,20 +207,23 @@ const mostrarImatge = (file) => {
                                 />
                             </div>
                             <div class="m-2">
+                                <div>Categoria de Producte</div>
                                 <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
                                     <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
                                         {{ categoria.nom }}
                                     </option>
                                 </select>
                             </div>
-                            <div class="m-2">
-                                <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
-                                    <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
-                                        {{ categoria.nom }}
+                            <div class="m-2 text-center font-weight-bold">
+                                <div>Expansió</div>
+                                <select  id="idExpansio" v-model="formProducte.idExpansio" style="color: black;">
+                                    <option v-for="expansio in expansions" v-bind:key="expansio.idExpansio" v-bind:value="expansio.nom">
+                                        {{ expansio.nom }}
                                     </option>
                                 </select>
                             </div>
-                            <div class="m-2">
+                            <div class="m-2 text-center font-weight-bold">
+                                <div>Carta a la que fa referencia</div>
                                 <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
                                     <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
                                         {{ categoria.nom }}
