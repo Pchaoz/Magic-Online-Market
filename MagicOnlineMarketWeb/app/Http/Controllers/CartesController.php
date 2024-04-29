@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cartes;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -11,7 +13,9 @@ class CartesController extends Controller
 {
     public function ListCartes(){
         $cartes= Cartes::all();
-        return Inertia::render('llistaCartes',['cartes'=>$cartes]);
+        $userController = new UserController;
+        $idRol = $userController->getUserRolId();
+        return Inertia::render('llistaCartes',['cartes'=>$cartes,'idRolUser'=>$idRol]);
     }
 
     public function APIListCartes(){
@@ -45,11 +49,35 @@ class CartesController extends Controller
             $request->imatge->move(public_path('images/cartes'), $imageName);
             $carta->imatge = 'cartes/' . $imageName;
         }
-
+        $carta->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $carta->created_by=Auth::id();
+        $carta->updated_by=Auth::id();
         $carta->save();
 
-        return "Carta creada correctament!";
     }
+
+    public function FormEditCarta(Request $request){
+
+        $carta= Cartes::where('idCarta',$request->idCartaModificada)->first();
+        return Inertia::render('FormulariModificacioCartes',['carta'=>$carta]);
+    }
+    public  function editarCarta(Request $request){
+
+        $carta= Cartes::where('idCarta',$request->id)->first();
+        $carta->nom = $request->nom;
+        $carta->descripcio = $request->descripcio;
+        $carta->raresa = $request->raresa;
+        if($request->hasFile('imatge')){
+            $imageName = time().'.'.$request->imatge->extension();
+            $request->imatge->move(public_path('images/cartes'), $imageName);
+            $carta->imatge = 'cartes/' . $imageName;
+        }
+        $carta->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $carta->updated_by=Auth::id();
+        $carta->save();
+
+    }
+
 
     public function alterDescripcioCarta($id,$descipcio){
         $carta= Cartes::where('idCarta',$id)->first();
@@ -61,8 +89,6 @@ class CartesController extends Controller
     public function deleteCarta($id){
         $carta= Cartes::find($id);
         $carta->delete();
-
-        return "Carta eliminada";
     }
 
 

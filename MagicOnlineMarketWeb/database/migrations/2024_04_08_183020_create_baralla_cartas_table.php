@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('baralla_cartes', function (Blueprint $table) {
             $table->bigIncrements("idBarallaCarta");
             $table->integer("quantitat")->default(1);
-            $table->foreignId("idCarta")->constrained('cartes')->references('idCarta');
+            $table->foreignId("idCarta")->constrained('cartes')->references('idCarta')->onDelete('cascade');
             $table->foreignId("idBaralla")->constrained('baralles')->references('idBaralla');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');

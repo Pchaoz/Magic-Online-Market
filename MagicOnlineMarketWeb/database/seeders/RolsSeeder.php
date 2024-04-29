@@ -13,14 +13,21 @@ class RolsSeeder extends Seeder
     public function run(): void
     {
         Schema::disableForeignKeyConstraints();
+
         DB::table('rols')->insert([
-            'nom' => 'usuari',
+            'nom' => 'superadmin',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 
         ]);
         DB::table('rols')->insert([
             'nom' => 'administrador',
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+
+        ]);
+        DB::table('rols')->insert([
+            'nom' => 'usuari',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 

@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import 'bootstrap/dist/css/bootstrap.css';
+import Modal from "@/Components/Modal.vue";
 
 
     const formCarta = useForm({
@@ -17,6 +18,17 @@ import 'bootstrap/dist/css/bootstrap.css';
         imatgeMiniatura:'',
 
     })
+
+const abrirModal = () => {
+    showModal.value = true;
+
+}
+
+const cerrarModal = () => {
+    showModal.value = false;
+}
+
+let showModal = ref(false);
 
 
 const obtenirImatge = (e) => {
@@ -37,6 +49,8 @@ const mostrarImatge = (file) => {
 
 const myfunction = () => {
     formCarta.post('/crearCarta');
+    location.reload();
+    abrirModal();
 }
 
 const options= ref([
@@ -62,10 +76,10 @@ const options= ref([
 </script>
 <template>
     <AuthenticatedLayout>
-
-        <div class="d-flex justify-content-center">
-            <form enctype="multipart/form-data" class="w-25">
-                <div>
+        <div  class="d-flex justify-content-center ">
+            <div class=" w-25 rounded" style="background-color: black; padding: 20px; margin: 20px;">
+                <form enctype="multipart/form-data" class="w-100 rounded">
+                <div class="m-2">
                     <InputLabel for="nom" value="Nom:" />
                     <TextInput
                         id="nom"
@@ -75,9 +89,10 @@ const options= ref([
                         required
                         autofocus
                         autocomplete="nom"
+                        style="color: black;"
                     />
                 </div>
-                <div>
+                <div class="m-2">
                     <InputLabel for="descripcio" value="Descripcio:" />
                     <TextInput
                         id="descripcio"
@@ -87,9 +102,10 @@ const options= ref([
                         required
                         autofocus
                         autocomplete="descripcio"
+                        style="color: black;"
                     />
                 </div>
-                <div class="d-flex flex-column align-items-center">
+                <div class="d-flex flex-column align-items-center m-2">
                 <div>
                     <InputLabel for="imatge" value="Imatge:"  v-model="formCarta.imatge" />
                     <input
@@ -100,21 +116,22 @@ const options= ref([
                         autofocus
                         autocomplete="imatge"
                         @change="obtenirImatge"
+
                     />
                 </div>
 
-                <div>
-                    <select  id="raresa" v-model="formCarta.raresa">
+                <div class="m-2">
+                    <select  id="raresa" v-model="formCarta.raresa" style="color: black;">
                         <option v-for="option in options" v-bind:key="option.name" v-bind:value="option.value">
                             {{ option.name }}
                         </option>
                     </select>
                 </div>
                 <figure>
-                    <img width="200" height="200" :src="formCarta.imatgeMiniatura" alt="Foto Carta">
+                    <img width="200" height="200" :src="formCarta.imatgeMiniatura">
                 </figure>
 
-                <div class="flex items-center justify-end mt-4">
+                <div class="flex items-center justify-end mt-4 m-2">
                     <PrimaryButton @click="myfunction" class="ms-4" :class="{ 'opacity-25': formCarta.processing }" :disabled="formCarta.processing">
                         Afegir
                     </PrimaryButton>
@@ -122,12 +139,22 @@ const options= ref([
                 </div>
             </form>
         </div>
-
-
+            <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
+                <div class="modal-content w-100">
+                    <span class="close" @click="cerrarModal">×</span>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <p>Carta Creada!</p>
+                    </div>
+                </div>
+            </Modal>
+        </div>
     </AuthenticatedLayout>
 </template>
 
 
 <style scoped>
-
+form {
+    background-color: #888888;
+    color: white;
+}
 </style>

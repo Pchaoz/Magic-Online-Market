@@ -23,7 +23,7 @@ class UsuariSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('123456789'),
             'saldo' => '100',
-            'idRol'=>2,
+            'idRol'=>1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

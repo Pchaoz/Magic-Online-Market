@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rols;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 
 class RolsController extends Controller
@@ -10,7 +14,8 @@ class RolsController extends Controller
 
     public function ListRols(){
         $rols= Rols::all();
-        return response()->json($rols);
+        return Inertia::render('administradorRols',['rols'=>$rols]);
+
     }
 
 
@@ -25,11 +30,11 @@ class RolsController extends Controller
     }
 
 
-    public function addRol($nom){
+    public function addRol(Request $request){
         $rol= new Rols();
-        $rol->nom=$nom;
+        $rol->nom=$request->nom;
         $rol->save();
-        return "Rol creat exitosament!";
+
     }
     public function modRol($id,$nom){
         $rol= Rols::where('idRol',$id)->first();
@@ -38,10 +43,18 @@ class RolsController extends Controller
         return "Nom de rol modificat exitosament!";
     }
 
-    public function eliminarRol($id){
+    public function editarRol(Request $request)
+    {
+        $rol= Rols::where('idRol',$request->id)->first();
+        $rol->nom = $request->nom;
+        $rol->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $rol->updated_by=Auth::id();
+        $rol->save();
+    }
+
+    public function deleteRol($id){
         $rol= Rols::find($id);
         $rol->delete();
-        return "Rol eliminat exitosament!";
     }
 
 }

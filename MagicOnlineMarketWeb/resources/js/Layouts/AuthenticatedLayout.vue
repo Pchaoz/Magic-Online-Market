@@ -8,13 +8,12 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
 </script>
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
-                <!-- Primary Navigation Menu -->
+        <div class="min-h-screen bg-gray-100" style="background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.7)), url('images/fondoPagina.jpg'); background-size: cover; background-position: center center; position: relative;">            <nav class="border-b border-gray-100">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
@@ -27,11 +26,8 @@ const showingNavigationDropdown = ref(false);
                                 </Link>
                             </div>
 
-                            <!-- Navigation Links -->
+
                             <div class="space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Pàgina Principal
-                                </NavLink>
                                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                                     <div class="ms-3 relative">
                                     <Dropdown align="left" width="48">
@@ -174,7 +170,7 @@ const showingNavigationDropdown = ref(false);
                                     </div>
                                 </div>
 
-                                <div class="hidden sm:flex sm:items-center sm:ms-6">
+                                <div class="hidden sm:flex sm:items-center sm:ms-6"  v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
                                     <div class="ms-3 relative">
                                         <Dropdown align="left" width="48">
                                             <template #trigger>
@@ -200,8 +196,10 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
-                                                <DropdownLink :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
+                                                <DropdownLink  :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
                                                 <DropdownLink> Crear Expansions </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('ListRols')"> Administrar Rols </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('getUsersForm')"> Administarar Usuaris </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
@@ -325,5 +323,8 @@ const showingNavigationDropdown = ref(false);
 </template>
 
 <style>
+nav {
+    background-color: rgb(0, 214, 153);
 
+}
 </style>

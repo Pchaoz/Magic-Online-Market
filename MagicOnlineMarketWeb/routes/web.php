@@ -25,9 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
+//funcions per usuaris/es
 Route::get('/getAllUsers', [\App\Http\Controllers\userController::class,'getAllUser'])->name('getAllUser');
 require __DIR__.'/auth.php';
+Route::get('/getAllUsersForm', [\App\Http\Controllers\userController::class,'getUsersForm'])->name('getUsersForm');
+require __DIR__.'/auth.php';
+Route::delete('/deleteUser/{id}', [\App\Http\Controllers\userController::class,'deleteUser'])->name('deleteUser');
+
+
 
 //funciones controller cartas
 Route::get('/getAllCartes', [\App\Http\Controllers\CartesController::class,'ListCartes'])->name('getAllCartes');
@@ -36,8 +41,10 @@ Route::get('/formulariCrearCartes',function (){
     return Inertia::render('formulariCreacioCartes');
 })->name('formulariCartes');
 Route::post('/crearCarta',[\App\Http\Controllers\CartesController::class, 'addCarta'])->name('addCarta');
+Route::get('/formulariEditarCarta', [\App\Http\Controllers\CartesController::class,'FormEditCarta'])->name('FormEditCarta');
+Route::post('/editarCarta',[\App\Http\Controllers\CartesController::class, 'editarCarta'])->name('editarCarta');
 Route::get('/alterDescripcioCarta/{id}/{descripcio}', [\App\Http\Controllers\CartesController::class,'alterDescripcioCarta'])->name('alterDescripcioCarta');
-Route::get('/deleteCarta/{id}', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
+Route::delete('/deleteCarta/{id}', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllCartes', [\App\Http\Controllers\CartesController::class,'APIListCartes'])->name('APIgetAllCartes');
 
@@ -46,9 +53,10 @@ Route::get('/api/getAllCartes', [\App\Http\Controllers\CartesController::class,'
 //funcions controller rols
 Route::get('/getAllRols', [\App\Http\Controllers\RolsController::class,'ListRols'])->name('ListRols');
 Route::get('/getRol/{id}', [\App\Http\Controllers\RolsController::class,'getRol'])->name('getRol');
-Route::get('/crearRol/{nom}',[\App\Http\Controllers\RolsController::class, 'addRol'])->name('addRol');
+Route::post('/crearRol',[\App\Http\Controllers\RolsController::class, 'addRol'])->name('addRol');
 Route::get('/modificarNomRol/{id}/{nom}',[\App\Http\Controllers\RolsController::class, 'modRol'])->name('modRol');
-Route::get('/eliminarRol/{id}/',[\App\Http\Controllers\RolsController::class, 'eliminarRol'])->name('eliminarRol');
+Route::post('/editarRol',[\App\Http\Controllers\RolsController::class,'editarRol'])->name('editarRol');
+Route::get('/eliminarRol/{id}/',[\App\Http\Controllers\RolsController::class, 'deleteRol'])->name('deleteRol');
 
 
 //-----------------------------------API----------------------------------------//
