@@ -76,7 +76,15 @@ Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::c
 Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::class,'APILastProductes'])->name('APILastProductes');
 
 
+//funcions controller Categoria Productes
 
+
+
+//-----------------------------------API----------------------------------------//
+Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProducteController::class,'APICategoriaProductes'])->name('APICategoriaProductes');
+
+
+//----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/logout', [AuthController::class, 'logout']);
