@@ -65,10 +65,11 @@ Route::get('/api/getAllRols', [\App\Http\Controllers\RolsController::class,'APIL
 
 //funcions controller productes
 Route::get('/getAllProductes', [\App\Http\Controllers\ProductesController::class,'ListProductes'])->name('ListProductes');
+Route::get('/whereProductes/{idCategoriaProductes}', [\App\Http\Controllers\ProductesController::class,'whereProductes'])->name('whereProductes');
 Route::get('/getProducte/{id}', [\App\Http\Controllers\ProductesController::class,'getProducte'])->name('getProducte');
 Route::get('/crearProducte/{nom}/{descripcio}/{idcategoria}',[\App\Http\Controllers\ProductesController::class, 'addProducte'])->name('addProducte');
 Route::get('/modificarDescripcioProducte/{id}/{nom}',[\App\Http\Controllers\ProductesController::class, 'modProducte'])->name('modProducte');
-Route::get('/eliminarProducte/{id}/',[\App\Http\Controllers\ProductesController::class, 'eliminarProducte'])->name('eliminarProducte');
+Route::delete('/eliminarProducte',[\App\Http\Controllers\ProductesController::class, 'eliminarProducte'])->name('eliminarProducte');
 Route::post('/modificarProducte',[\App\Http\Controllers\ProductesController::class, 'modificarProducte'])->name('modificarProducte');
 Route::post('/crearProducte',[\App\Http\Controllers\ProductesController::class, 'crearProducte'])->name('crearProducte');
 
