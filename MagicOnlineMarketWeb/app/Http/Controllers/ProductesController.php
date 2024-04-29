@@ -14,7 +14,7 @@ class ProductesController extends Controller
             ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')
             ->leftJoin('expansions', 'productes.idExpansio', '=', 'expansions.idExpansio')
             ->select('productes.nom AS nom', 'productes.descripcio AS descripcio', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom',
-                'expansions.nom AS expansioNom','productes.idProducte as idProducte')
+                'expansions.nom AS expansioNom','productes.idProducte as idProducte','productes.idCategoriaProducte as idCategoriaProducte','productes.idExpansio as idExpansio','productes.idCarta as idCarta')
             ->get();
         $categoriesProducte = DB::table('categoria_productes')
             ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes')
@@ -32,12 +32,12 @@ class ProductesController extends Controller
             ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')
             ->leftJoin('expansions', 'productes.idExpansio', '=', 'expansions.idExpansio')
             ->select('productes.nom AS nom', 'productes.descripcio AS descripcio', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom',
-                'expansions.nom AS expansioNom','productes.idProducte as idProducte')
+                'expansions.nom AS expansioNom','productes.idProducte as idProducte','productes.idCategoriaProducte as idCategoriaProducte','productes.idExpansio as idExpansio','productes.idCarta as idCarta')
             ->where('productes.idCategoriaProducte','=',$idCategoriaProductes)
             ->get();
 
         $categoriesProducte = DB::table('categoria_productes')
-            ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes')
+            ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes as idCategoriaProductes')
             ->get();
         $expansions = DB::table('expansions')
             ->select('expansions.nom as nom','expansions.idExpansio')

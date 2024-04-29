@@ -7,6 +7,7 @@ import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
+import TextInput from "@/Components/TextInput.vue";
 
 defineProps({
     productes: {
@@ -55,19 +56,44 @@ const eliminarProducte =()=> {
 //modificació de producte
 const abrirModalModificacio = (producte) =>{
     showModalModificacio.value=true;
-
+    formProducte.nom=producte.nom;
+    formProducte.descripcio=producte.descripcio;
+    formProducte.idProducte=producte.idProducte;
+    formProducte.imatge='/images/'+producte.imatge;
+    formProducte.idCategoriaProducte=producte.idCategoriaProducte;
+    formProducte.idCategoriaProducte=producte.idCategoriaProducte;
+    formProducte.idExpansio=producte.idExpansio;
+    formProducte.idCarta = producte.idCarta;
 }
 const cerrarModalModificacio = () => {
-    showModalEliminacio.value=false;
-    showModalEliminacioConfirmacio.value=false;
+    showModalModificacio.value=false;
+    showModalModificacioConfirmacio.value=false;
 }
 
 const modificarProducte =()=> {
-    formProducte.delete('eliminarProducte');
-    showModalEliminacioConfirmacio=true;
+    formProducte.delete('modificarProducte');
+    showModalModificacioConfirmacio=true;
     location.reload();
 
 }
+let imatgeUrl=null;
+
+
+const obtenirImatge = (e) => {
+    let file = e.target.files[0];
+    formProducte.imatge = file
+    mostrarImatge(file)
+}
+
+
+const mostrarImatge = (file) => {
+    let reader = new FileReader()
+    reader.onload = (e) => {
+        formProducte.imatge = e.target.result;
+    }
+    reader.readAsDataURL(file)
+}
+
 
 
 </script>
@@ -138,11 +164,13 @@ const modificarProducte =()=> {
                 </div>
             </div>
         </Modal>
-        <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
+        <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalModificacio" >
             <div class="modal-content w-100">
-                <span class="close" @click="cerrarModalMod">×</span>
+                <span class="close" @click="cerrarModalModificacio">×</span>
                 <div class="d-flex justify-content-center m-3 ">
-                    <InputLabel for="nom" value="Nom nou del rol" class="m-2"  style="font-size: 16px;"/>
+                    <form enctype="multipart/form-data" class="w-100 rounded">
+                        <div class="m-2">
+                    <InputLabel for="nom" value="Nom" class="m-2"  style="font-size: 16px;"/>
                     <input
                         id="nom"
                         type="text"
@@ -151,14 +179,67 @@ const modificarProducte =()=> {
                         required
                         autofocus
                         style="color: black;">
+                        </div>
+                        <div class="m-2">
+                            <InputLabel for="descripcio" value="Descripcio:" />
+                            <TextInput
+                                id="descripcio"
+                                type="text"
+                                class="mt-1 block w-full"
+                                v-model="formProducte.descripcio"
+                                required
+                                autofocus
+                                autocomplete="descripcio"
+                                style="color: black;"
+                            />
+                        </div>
+                        <div class="d-flex flex-column align-items-center m-2">
+                            <div>
+                                <InputLabel for="imatge" value="Imatge:"  v-model="formProducte.imatge" />
+                                <input
+                                    id="imatge"
+                                    type="file"
+                                    class="mt-1 block w-full"
+                                    required
+                                    autofocus
+                                    autocomplete="imatge"
+                                    @change="obtenirImatge"
+                                />
+                            </div>
+                            <div class="m-2">
+                                <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
+                                    <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
+                                        {{ categoria.nom }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="m-2">
+                                <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
+                                    <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
+                                        {{ categoria.nom }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="m-2">
+                                <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
+                                    <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
+                                        {{ categoria.nom }}
+                                    </option>
+                                </select>
+                            </div>
+                            <figure>
+                                <img width="200" height="200" :src="formProducte.imatge">
+                            </figure>
                     <button type="button" class="btn btn-success ml-5"
-                            @click="modificarRol">Modificar</button>
+                            @click="modificarProducte">Modificar</button>
+                </div>
+                    </form>
                 </div>
             </div>
         </Modal>
-        <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
+        <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalModificacio" >
             <div class="modal-content w-100">
-                <span class="close" @click="cerrarModalMod">×</span>
+                <span class="close" @click="cerrarModalModificacio">×</span>
                 <div class="d-flex justify-content-center m-3 ">
                     <p>Rol Modificat</p>
                 </div>
