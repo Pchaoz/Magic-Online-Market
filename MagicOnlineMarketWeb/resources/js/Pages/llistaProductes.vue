@@ -18,6 +18,9 @@ defineProps({
     },
     categoriesProducte:{
         type: Array(String),
+    },
+    cartes:{
+        type: Array(String),
     }
 });
 
@@ -25,7 +28,7 @@ let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 let showModalModificacio=ref(false);
 let showModalModificacioConfirmacio=ref(false);
-let showModalCreacio=ref(false);
+let insert=false;
 
 const formProducte= useForm({
     idProducte:null,
@@ -49,52 +52,78 @@ const cerrarModalEliminacio = () => {
 
 const eliminarProducte =()=> {
     formProducte.delete('eliminarProducte');
+
+    recargaPaginaElim();
+}
+
+const recargaPaginaElim = () => {
+    showModalEliminacio.value=false;
     showModalEliminacioConfirmacio=true;
     location.reload();
 
 }
+
 //modificació de producte
 const abrirModalModificacio = (producte) =>{
+    insert=false;
     showModalModificacio.value=true;
     formProducte.nom=producte.nom;
     formProducte.descripcio=producte.descripcio;
     formProducte.idProducte=producte.idProducte;
     formProducte.imatge='/images/'+producte.imatge;
-    formProducte.idCategoriaProducte=producte.idCategoriaProducte;
-    formProducte.idCategoriaProducte=producte.idCategoriaProducte;
-    formProducte.idExpansio=producte.idExpansio;
-    formProducte.idCarta = producte.idCarta;
+    imatgeUrl='/images/'+producte.imatge;
+    producte.idCategoriaProducte==null?  formProducte.idCategoriaProducte=null: formProducte.idCategoriaProducte=producte.idCategoriaProducte;
+    producte.idExpansio==null?  formProducte.idExpansio=null: formProducte.idExpansio=producte.idExpansio;
+    producte.idCarta==null?  formProducte.idCarta=null: formProducte.idCarta=producte.idCarta;
 }
 const cerrarModalModificacio = () => {
     showModalModificacio.value=false;
     showModalModificacioConfirmacio.value=false;
 }
 
-const modificarProducte =()=> {
-    formProducte.delete('modificarProducte');
-    showModalModificacioConfirmacio=true;
-    location.reload();
-
+const modProducte =()=> {
+    if(!insert){
+        formProducte.post('modificarProducte');
+    }else{
+        formProducte.post('crearProducte');
+    }
+    recargaPagina();
 }
 let imatgeUrl=null;
 
 
 const obtenirImatge = (e) => {
     let file = e.target.files[0];
-    formProducte.imatge = file
-    mostrarImatge(file)
+    formProducte.imatge = file;
+    mostrarImatge(file);
 }
 
 
 const mostrarImatge = (file) => {
     let reader = new FileReader()
     reader.onload = (e) => {
-        formProducte.imatge = e.target.result;
+        imatgeUrl = e.target.result
     }
     reader.readAsDataURL(file)
 }
 
+const recargaPagina = () => {
+    showModalModificacioConfirmacio.value=true;
+    location.reload();
+}
 
+const abrirModalInsert =()=>{
+    insert=true;
+    showModalModificacio.value=true;
+    formProducte.nom="";
+    formProducte.descripcio="";
+    formProducte.idProducte="";
+    formProducte.imatge="";
+    imatgeUrl="";
+    formProducte.idCategoriaProducte=null;
+    formProducte.idExpansio=null;
+    formProducte.idCarta=null;
+}
 
 </script>
 
@@ -208,33 +237,42 @@ const mostrarImatge = (file) => {
                             </div>
                             <div class="m-2">
                                 <div>Categoria de Producte</div>
-                                <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
-                                    <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
+                                <select id="idCategoriaProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
+                                    <option v-for="categoria in categoriesProducte"  v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.idCategoriaProductes">
                                         {{ categoria.nom }}
+                                    </option>
+                                    <option >
+                                        {{ " " }}
                                     </option>
                                 </select>
                             </div>
                             <div class="m-2 text-center font-weight-bold">
                                 <div>Expansió</div>
                                 <select  id="idExpansio" v-model="formProducte.idExpansio" style="color: black;">
-                                    <option v-for="expansio in expansions" v-bind:key="expansio.idExpansio" v-bind:value="expansio.nom">
+                                    <option v-for="expansio in expansions" v-bind:key="expansio.idExpansio" v-bind:value="expansio.idExpansio">
                                         {{ expansio.nom }}
+                                    </option>
+                                    <option >
+                                        {{ " " }}
                                     </option>
                                 </select>
                             </div>
                             <div class="m-2 text-center font-weight-bold">
                                 <div>Carta a la que fa referencia</div>
-                                <select  id="idCategoriProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
-                                    <option v-for="categoria in categoriesProducte" v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.nom">
-                                        {{ categoria.nom }}
+                                <select  id="idCarta" v-model="formProducte.idCarta" style="color: black;">
+                                    <option v-for="carta in cartes" v-bind:key="carta.idCarta" v-bind:value="carta.idCarta">
+                                        {{ carta.nom }}
+                                    </option>
+                                    <option >
+                                        {{ " " }}
                                     </option>
                                 </select>
                             </div>
                             <figure>
-                                <img width="200" height="200" :src="formProducte.imatge">
+                                <img width="200" height="200" :src="imatgeUrl">
                             </figure>
                     <button type="button" class="btn btn-success ml-5"
-                            @click="modificarProducte">Modificar</button>
+                            @click="modProducte">Guardar</button>
                 </div>
                     </form>
                 </div>
@@ -244,22 +282,19 @@ const mostrarImatge = (file) => {
             <div class="modal-content w-100">
                 <span class="close" @click="cerrarModalModificacio">×</span>
                 <div class="d-flex justify-content-center m-3 ">
-                    <p>Rol Modificat</p>
+                    <p>Operació realitzada!</p>
                 </div>
             </div>
         </Modal>
 
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
-            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="abrirModalConfirmacion(rol.idRol)">Crear Nou producte</b-button>
+            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="abrirModalInsert">Crear Nou producte</b-button>
         </div>
 
     </AuthenticatedLayout>
 </template>
 
 <style scoped>
-
-
-
 
 td,th{
     text-align: center;

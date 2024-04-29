@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Productes;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -22,9 +24,12 @@ class ProductesController extends Controller
         $expansions = DB::table('expansions')
             ->select('expansions.nom as nom','expansions.idExpansio as idExpansio')
             ->get();
+        $cartes = DB::table('cartes')
+            ->select('cartes.nom as nom','cartes.idCarta as idCarta')
+            ->get();
 
 
-        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions]);
+        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes]);
     }
 
     public function whereProductes($idCategoriaProductes){
@@ -35,16 +40,17 @@ class ProductesController extends Controller
                 'expansions.nom AS expansioNom','productes.idProducte as idProducte','productes.idCategoriaProducte as idCategoriaProducte','productes.idExpansio as idExpansio','productes.idCarta as idCarta')
             ->where('productes.idCategoriaProducte','=',$idCategoriaProductes)
             ->get();
-
         $categoriesProducte = DB::table('categoria_productes')
             ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes as idCategoriaProductes')
             ->get();
         $expansions = DB::table('expansions')
             ->select('expansions.nom as nom','expansions.idExpansio as idExpansio')
             ->get();
+        $cartes = DB::table('cartes')
+            ->select('cartes.nom as nom','cartes.idCarta as idCarta')
+            ->get();
 
-
-        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions]);
+        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes]);
     }
 
 
@@ -83,6 +89,44 @@ class ProductesController extends Controller
         $producte= Productes::where('idProducte',$request->idProducte)->first();
         $producte->delete();
 
+    }
+    public function modificarProducte(Request $request){
+
+
+        $producte= Productes::where('idProducte',$request->idProducte)->first();
+        $producte->nom=$request->nom;
+        $producte->descripcio=$request->descripcio;
+        if($request->hasFile('imatge')){
+            $imageName = time().'.'.$request->imatge->extension();
+            $request->imatge->move(public_path('images/productes'), $imageName);
+            $producte->imatge = 'productes/' . $imageName;
+        }
+        $producte->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $producte ->updated_by=Auth::id();
+        $producte->idCategoriaProducte=$request->idCategoriaProducte;
+        $producte->idExpansio=$request->idExpansio;
+        $producte->idCarta=$request->idCarta;
+        $producte->save();
+    }
+
+
+    public function crearProducte(Request $request){
+
+
+        $producte= new Productes();
+        $producte->nom=$request->nom;
+        $producte->descripcio=$request->descripcio;
+        if($request->hasFile('imatge')){
+            $imageName = time().'.'.$request->imatge->extension();
+            $request->imatge->move(public_path('images/productes'), $imageName);
+            $producte->imatge = 'productes/' . $imageName;
+        }
+        $producte->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $producte ->updated_by=Auth::id();
+        $producte->idCategoriaProducte=$request->idCategoriaProducte;
+        $producte->idExpansio=$request->idExpansio;
+        $producte->idCarta=$request->idCarta;
+        $producte->save();
     }
 
 }

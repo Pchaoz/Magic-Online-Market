@@ -59,20 +59,20 @@ const myfunction = () => {
 
 const options= ref([
     {
-        name:"comun",
-        value:"comun"
+        name:"Comun",
+        value:"Comun"
     },
     {
-        name:"infrecuente",
-        value:"infrecuente"
+        name:"Infrecuente",
+        value:"Infrecuente"
     },
     {
-        name:"rara",
-        value:"rara"
+        name:"Rara",
+        value:"Rara"
     },
     {
-        name:"mitica",
-        value:"mitica"
+        name:"Mitica",
+        value:"Mitica"
     }
 ])
 
