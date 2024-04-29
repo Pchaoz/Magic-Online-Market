@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Views/cardsPage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
+import 'package:magic_market_mobile/Views/productsPage.dart';
 import 'package:magic_market_mobile/Views/profilePage.dart';
 
 import '../Util/globals.dart';
@@ -15,8 +16,6 @@ class LateralMenu extends StatefulWidget {
 }
 
 class _LateralMenuState extends State<LateralMenu> {
-  String userName = '';
-
   @override
   void initState() {
     super.initState();
@@ -34,7 +33,7 @@ class _LateralMenuState extends State<LateralMenu> {
               color: Color.fromARGB(255, 11, 214, 153),
             ),
             child: Text(
-              'Bienvenido$userName',
+              'Bienvenido $userName',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -70,7 +69,7 @@ class _LateralMenuState extends State<LateralMenu> {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
+                MaterialPageRoute(builder: (context) => ProductsPage()),
               );
             },
           ),

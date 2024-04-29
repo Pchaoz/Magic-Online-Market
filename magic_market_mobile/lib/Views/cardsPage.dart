@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import '../Util/LateralMenu.dart';
 import '../Util/globals.dart';
+import 'loginPage.dart';
 
 class CardsPage extends StatefulWidget {
   @override
@@ -28,6 +29,21 @@ class _CardsPageState extends State<CardsPage> {
   void initState() {
     super.initState();
     getCards();
+  }
+
+  Color getColorByRarity(String rarity) {
+    switch (rarity) {
+      case 'comun':
+        return Colors.green;
+      case 'infrecuente':
+        return Colors.blue;
+      case 'rara':
+        return Colors.purple;
+      case 'mitica':
+        return Colors.yellow;
+      default:
+        return Colors.black;
+    }
   }
 
   @override
@@ -61,7 +77,12 @@ class _CardsPageState extends State<CardsPage> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(filteredCards[index]['nom']),
-                  subtitle: Text(filteredCards[index]['raresa']),
+                  subtitle: Text(
+                    filteredCards[index]['raresa'],
+                    style: TextStyle(
+                      color: getColorByRarity(filteredCards[index]['raresa']),
+                    ),
+                  ),
                   onTap: () {
                     Navigator.push(
                       context,
@@ -78,12 +99,41 @@ class _CardsPageState extends State<CardsPage> {
         ],
       ),
       drawer: LateralMenu(
-        onTapLogout: _LogOut,
+        onTapLogout: () => _LogOut(context),
       ),
     );
   }
 
-  void _LogOut() {}
+  void _LogOut(context) {
+    try {
+      logOut();
+      clearPrefs();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } catch (e) {
+      print("ERROR.. $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Failed to authenticate user'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 }
 
 class CardDetailPage extends StatelessWidget {
@@ -98,28 +148,36 @@ class CardDetailPage extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
         title: Text(card['nom']),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Text(card['nom'], style: Theme.of(context).textTheme.headlineSmall),
-            SizedBox(height: 20), // Espacio entre los elementos
+            const SizedBox(height: 10),
             Text(card['raresa'],
                 style: Theme.of(context).textTheme.titleMedium),
-            SizedBox(height: 20), // Espacio entre los elementos
+            const SizedBox(height: 10),
             Flexible(
               child: Text(
                 card['descripcio'],
-                style: Theme.of(context).textTheme.bodyText2,
+                style: Theme.of(context).textTheme.bodyMedium,
+                textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 20), // Espacio entre los elementos
+            const SizedBox(height: 10),
             Flexible(
-              child: Center(
-                // Centrar la imagen
-                child: Image.network('$URI_SERVER_IMAGES/${card['imatge']}'),
-              ),
+              child: Image.network('$URI_SERVER_IMAGES/${card['imatge']}'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {}, // TODO funcionalidad ver ofertas
+              child: const Text('Ver ofertas'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {}, // TODO funcionalidad añadir a un mazo
+              child: const Text('Añadir a mazo'),
             ),
           ],
         ),

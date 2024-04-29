@@ -24,31 +24,6 @@ Future<List<Product>> obtenerProductos() async {
   }
 }
 
-Future<Map<String, dynamic>> logOut() async {
-  final response = await http.post(
-    Uri.parse('$API_URI_SERVER/logout'),
-    headers: <String, String>{
-      'Content-Type': 'application/json',
-    },
-  );
-
-  print("GET USERS STATUS CODE: " + response.statusCode.toString());
-
-  var responseData = response.body;
-  // Decodificar la respuesta JSON a un Map
-  var data = jsonDecode(responseData);
-  // Printear el resultado
-  print(data.toString());
-
-  if (response.statusCode == 200) {
-    //Usuario ha cerrado la session correctamente
-    return {'success': true};
-  } else {
-    // El usuario no se ha podido desconectar
-    throw Exception('Failed to logout');
-  }
-}
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

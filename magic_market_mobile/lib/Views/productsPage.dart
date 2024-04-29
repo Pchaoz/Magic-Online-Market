@@ -5,14 +5,14 @@ import '../Util/globals.dart';
 import 'loginPage.dart';
 
 void main() {
-  runApp(ProfilePage());
+  runApp(ProductsPage());
 }
 
-class ProfilePage extends StatelessWidget {
+class ProductsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Profile',
+      title: 'Productos',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -20,7 +20,7 @@ class ProfilePage extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-          title: const Text('Profile'),
+          title: const Text('Productos'),
         ),
         body: const Center(
           child: Text('Hello World!'),
@@ -32,6 +32,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   void _LogOut(context) {
     try {
       logOut();
