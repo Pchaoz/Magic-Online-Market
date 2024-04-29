@@ -34,7 +34,7 @@ class _LateralMenuState extends State<LateralMenu> {
               color: Color.fromARGB(255, 11, 214, 153),
             ),
             child: Text(
-              'Bienvenido' + userName,
+              'Bienvenido$userName',
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 24,
