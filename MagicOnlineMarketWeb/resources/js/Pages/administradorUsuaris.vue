@@ -73,13 +73,13 @@ const abrirModalModificacio=(user)=>{
 
 const modificarUser = () => {
     formUsuari.post('editarUsuari');
-
+    finModificacio();
 
 }
 
 const finModificacio=()=>{
-    cerrarModalMod();
-    showModalModificacioConfirmacio=true;
+    showModalModificacio.value=false
+    showModalModificacioConfirmacio.value=true;
     location.reload();
 }
 
@@ -111,7 +111,7 @@ const finModificacio=()=>{
                     <td>{{usuari.nomRol}}</td>
                     <td>
                         <button  class="btn btn-success rounded-pill"
-                                 @click="abrirModalModificacio">Modificar</button>
+                                 @click="abrirModalModificacio(usuari)">Modificar</button>
                     </td>
                     <td>
                         <button  class="btn btn-danger rounded-pill"
@@ -144,9 +144,9 @@ const finModificacio=()=>{
             <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3 ">
-                        <form enctype="multipart/form-data" class="w-100 rounded">
+                        <form enctype="multipart/form-data" class="w-50 rounded">
                             <div class="m-2">
-                                <InputLabel for="nick" value="Nick" class="m-2"  style="font-size: 16px;"/>
+                                <InputLabel for="nick" value="Nick:" class="m-2"  style="font-size: 16px;"/>
                                 <input
                                     id="nick"
                                     type="text"
@@ -195,7 +195,7 @@ const finModificacio=()=>{
                                     style="color: black;"
                                 />
                             </div>
-                            <div class="m-2">
+                            <div class="m-2 text-center font-weight-bold">
                                     <div>Rol Usuari/a</div>
                                     <select id="idRol" v-model="formUsuari.idRol" style="color: black;">
                                         <option v-for="rol in rols"  v-bind:key="rol.idRol" v-bind:value="rol.idRol">

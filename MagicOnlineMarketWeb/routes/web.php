@@ -31,6 +31,7 @@ require __DIR__.'/auth.php';
 Route::get('/getAllUsersForm', [\App\Http\Controllers\userController::class,'getUsersForm'])->name('getUsersForm');
 require __DIR__.'/auth.php';
 Route::delete('/deleteUser/{id}', [\App\Http\Controllers\userController::class,'deleteUser'])->name('deleteUser');
+Route::post('/editarUsuari', [\App\Http\Controllers\userController::class,'editarUsuari'])->name('editarUsuari');
 
 
 

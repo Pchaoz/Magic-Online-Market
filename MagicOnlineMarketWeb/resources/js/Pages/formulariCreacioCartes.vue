@@ -19,14 +19,7 @@ import Modal from "@/Components/Modal.vue";
 
     })
 
-const abrirModal = () => {
-    showModal.value = true;
 
-}
-
-const cerrarModal = () => {
-    showModal.value = false;
-}
 
 let showModal = ref(false);
 
@@ -49,10 +42,12 @@ const mostrarImatge = (file) => {
 
 const myfunction = () => {
     formCarta.post('/crearCarta');
-    location.reload();
-    abrirModal();
+    //cerrarForm();
 }
-
+const cerrarForm = () => {
+    location.reload();
+    showModal.value = true;
+}
 const options= ref([
     {
         name:"Comun",
@@ -77,9 +72,9 @@ const options= ref([
 <template>
     <AuthenticatedLayout>
         <div  class="d-flex justify-content-center ">
-            <div class=" w-25 rounded" style="background-color: black; padding: 20px; margin: 20px;">
+            <div class=" w-15 rounded" style="background-color: rgba(0,214,153,0.8);; padding: 10px; margin: 20px;">
                 <form enctype="multipart/form-data" class="w-100 rounded">
-                <div class="m-2">
+                <div class="m-4 p-1">
                     <InputLabel for="nom" value="Nom:" />
                     <TextInput
                         id="nom"
@@ -92,7 +87,7 @@ const options= ref([
                         style="color: black;"
                     />
                 </div>
-                <div class="m-2">
+                <div class="m-4  p-1">
                     <InputLabel for="descripcio" value="Descripcio:" />
                     <TextInput
                         id="descripcio"
@@ -105,9 +100,10 @@ const options= ref([
                         style="color: black;"
                     />
                 </div>
-                <div class="d-flex flex-column align-items-center m-2">
-                <div>
+                <div class="d-flex flex-column align-items-center m-4 p-1">
+
                     <InputLabel for="imatge" value="Imatge:"  v-model="formCarta.imatge" />
+
                     <input
                         id="imatge"
                         type="file"
@@ -115,10 +111,11 @@ const options= ref([
                         required
                         autofocus
                         autocomplete="imatge"
+                        style="color: black"
                         @change="obtenirImatge"
 
                     />
-                </div>
+
 
                 <div class="m-2">
                     <select  id="raresa" v-model="formCarta.raresa" style="color: black;">
@@ -141,7 +138,6 @@ const options= ref([
         </div>
             <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Carta Creada!</p>
                     </div>
@@ -154,7 +150,7 @@ const options= ref([
 
 <style scoped>
 form {
-    background-color: #888888;
+    background-color: rgba(136, 136, 136, 0.7);
     color: white;
 }
 </style>
