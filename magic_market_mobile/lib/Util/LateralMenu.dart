@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Views/cardsPage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
+import 'package:magic_market_mobile/Views/newsCard.dart';
 import 'package:magic_market_mobile/Views/productsPage.dart';
 import 'package:magic_market_mobile/Views/profilePage.dart';
 
@@ -63,6 +64,17 @@ class _LateralMenuState extends State<LateralMenu> {
             },
           ),
           ListTile(
+            leading: const Icon(Icons.newspaper,
+                color: Color.fromARGB(255, 11, 214, 153)),
+            title: const Text('Noticias'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => NewsPage()),
+              );
+            },
+          ),
+          ListTile(
             leading: const Icon(Icons.info,
                 color: Color.fromARGB(255, 11, 214, 153)),
             title: const Text('Productos'),
@@ -77,6 +89,17 @@ class _LateralMenuState extends State<LateralMenu> {
             leading: const Icon(Icons.article_rounded,
                 color: Color.fromARGB(255, 11, 214, 153)),
             title: const Text('Cartas'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => CardsPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.shopping_cart,
+                color: Color.fromARGB(255, 11, 214, 153)),
+            title: const Text('Cesta compra'),
             onTap: () {
               Navigator.pushReplacement(
                 context,

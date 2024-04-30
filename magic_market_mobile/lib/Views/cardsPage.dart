@@ -33,13 +33,13 @@ class _CardsPageState extends State<CardsPage> {
 
   Color getColorByRarity(String rarity) {
     switch (rarity) {
-      case 'comun':
+      case 'Comun':
         return Colors.green;
-      case 'infrecuente':
+      case 'Infrecuente':
         return Colors.blue;
-      case 'rara':
+      case 'Rara':
         return Colors.purple;
-      case 'mitica':
+      case 'Mitica':
         return Colors.yellow;
       default:
         return Colors.black;

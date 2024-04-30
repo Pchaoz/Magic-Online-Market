@@ -23,6 +23,7 @@ class _ProductsPageState extends State<ProductsPage> {
   fetchProducts() async {
     final response =
         await http.get(Uri.parse('$API_URI_SERVER/getAllProductes'));
+    print(json.decode(response.body));
     setState(() {
       products = json.decode(response.body);
     });
@@ -32,7 +33,8 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Productos'),
+        title: const Text('Productos'),
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
       ),
       body: Expanded(
         child: ListView.builder(
@@ -62,6 +64,7 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   void _LogOut(context) {
     try {
       logOut();
@@ -108,10 +111,36 @@ class ProductDetailPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Image.network(URI_SERVER_IMAGES + "/" + product['imatge']),
-            Text(product['nom'], style: TextStyle(fontSize: 24)),
-            Text(product['descripcio']),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 3,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image:
+                      NetworkImage(URI_SERVER_IMAGES + "/" + product['imatge']),
+                  fit: BoxFit.scaleDown,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              product['nom'],
+              style: const TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              product['descripcio'],
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Ofertas',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),
