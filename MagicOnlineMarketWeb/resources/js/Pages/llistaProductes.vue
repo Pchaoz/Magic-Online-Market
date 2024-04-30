@@ -91,7 +91,7 @@ const cerrarModalModificacio = () => {
 
 const modProducte =()=> {
     if(!insert){
-        formProducte.post('modificarProducte');
+        formProducte.get('/modificarProducte');
     }else{
         formProducte.post('crearProducte');
     }

@@ -79,7 +79,7 @@ function handleImageError() {
 
                 <p> Pàgina per a la compra i venta de producte de cartes coleccionables.</p>
                 <p>Podras crear baralles amb la nostra base de dades.      </p>
-                <p> I inscriure't en les diversos tornejos que organitzen les nostres tendes</p>
+                <p> I inscriure't en els diversos tornejos que organitzen les nostres tendes.</p>
             </div>
         </div>
 
