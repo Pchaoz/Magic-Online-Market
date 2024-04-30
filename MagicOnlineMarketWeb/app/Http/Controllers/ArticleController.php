@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Articles;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,19 @@ class ArticleController extends Controller
             ->get();
 
         return Inertia::render('OfertesArticle', ['producte' => $producte, 'articles' => $articles]);
+    }
+
+
+    public function modArticle (Request $request)
+    {
+
+        return response()->json($request);
+        $article= Articles::where('idArticle',$request->idArticle)->first();
+        $article->quantitatDisponible = $request->quantitatDisponible;
+        $article->preuUnitari = $request->preuUnitari;
+        $article->updated_by = Auth::id();
+        $article->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $article->save();
     }
 
 }

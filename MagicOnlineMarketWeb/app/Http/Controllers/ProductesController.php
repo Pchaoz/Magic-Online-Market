@@ -91,8 +91,6 @@ class ProductesController extends Controller
 
     }
     public function modificarProducte(Request $request){
-
-
         $producte= Productes::where('idProducte',$request->idProducte)->first();
         $producte->nom=$request->nom;
         $producte->descripcio=$request->descripcio;

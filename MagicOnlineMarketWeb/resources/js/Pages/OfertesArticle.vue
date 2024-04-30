@@ -3,6 +3,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import Modal from "@/Components/Modal.vue";
+import TextInput from "@/Components/TextInput.vue";
+import {ref} from "vue";
+import {useForm} from "@inertiajs/vue3";
 
 defineProps({
     producte: {
@@ -12,7 +17,41 @@ defineProps({
         type: Array(String),
     },
 
+
 });
+
+let showModalOferta=ref(false);
+
+const formOferta= useForm({
+    idArticle:null,
+    quantitatDisponible: 0,
+    preuUnitari:0,
+})
+
+const abrirModalModArticle =(article)=>{
+    formOferta.idArticle=article.idArticle;
+    formOferta.quantitatDisponible= article.quantitat;
+    formOferta.preuUnitari=article.preu;
+    showModalOferta.value=true;
+
+}
+
+const cerrarModalOferta = () => {
+    showModalOferta.value=false;
+}
+
+const ModOferta =()=> {
+    formOferta.get('modArticle');
+   // cerrarModalOferta();
+    //recargaPaginaOferta();
+}
+
+const recargaPaginaOferta = () => {
+
+    location.reload();
+}
+
+
 </script>
 
 <template>
@@ -56,7 +95,7 @@ defineProps({
                         </td>
                         <td>
                             <button v-if="$page.props.auth.user.idUsuari===article.idVenedor" class="btn btn-primary rounded-circle"
-                                    @click="">Mod</button>
+                                    @click="abrirModalModArticle(article)">Mod</button>
                         </td>
                         <td>
                             <button v-if="$page.props.auth.user.idUsuari===article.idVenedor" class="btn btn-primary rounded-circle"
@@ -68,6 +107,50 @@ defineProps({
                 </table>
         </div>
 
+        <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
+            <div class="modal-content w-100">
+                <span class="close" @click="cerrarModalOferta">×</span>
+                <div class="d-flex justify-content-center m-3">
+                    <form class="w-100 rounded">
+                        <div class="m-2 text-center font-weight-bold">
+                            <div class="m-2 text-center font-weight-bold">
+                                <InputLabel for="quantitat" value="Quantitat" class="m-2" style="font-size: 16px;" />
+                                <div class="d-flex justify-content-center">
+                                    <input
+                                        id="quantitat"
+                                        type="number"
+                                        class="mt-1 block w-full"
+                                        v-model="formOferta.quantitatDisponible"
+                                        min="1"
+                                        step="1"
+                                        required
+                                        style="color: black; width: 100px;"
+                                    />
+                                </div>
+                            </div>
+                            <div class="m-2 text-center font-weight-bold">
+                                <InputLabel for="preuUnitari" value="Preu Unitari" />
+                                <div class="d-flex justify-content-center">
+                                    <TextInput
+                                        id="preuUnitari"
+                                        type="number"
+                                        class="mt-1 block w-full"
+                                        v-model="formOferta.preuUnitari"
+                                        min="0"
+                                        required
+                                        step="0.01"
+                                        style="color: black; width: 100px;"
+                                    />
+                                </div  >
+                            </div>
+                            <div class="d-flex justify-content-center m-3">
+                                <button type="button" class="btn btn-success ml-5" @click="ModOferta">Modificar Oferta</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>
 
