@@ -2,7 +2,6 @@
 import { Head, Link } from '@inertiajs/vue3';
 import 'bootstrap/dist/css/bootstrap.css';
 
-
 defineProps({
     canLogin: {
         type: Boolean,
@@ -32,51 +31,47 @@ function handleImageError() {
     <Head title="Welcome" />
     <div class="min-h-screen bg-gray-100" style="background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.7)), url('/images/fondoPagina.jpg'); background-size: cover; background-position: center center; position: relative;">
 
+        <div class="text-center pt-5">
+            <h4>Benvingut a Magic Online Market</h4>
+        </div>
 
         <img
             id="background"
-            class="absolute left-1/2 top-1/4 transform -translate-x-1/2 -translate-y-1/2 max-w-[700px]"
+            class="absolute left-1/2 top-1/3 transform -translate-x-1/2 -translate-y-1/2 max-w-[700px]"
             style="height: 400px;"
             src="images/MMO_logo.png"
         />
-        <div>
-        <h4> Benvingut a Magic Online Market</h4>
-        </div >
 
+        <div class="relative w-full px-6">
 
+            <nav v-if="canLogin" class="flex justify-end">
+                <Link
+                    v-if="$page.props.auth.user"
+                    :href="route('dashboard')"
+                    class="rounded-md px-5 py-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                >
+                    Dashboard
+                </Link>
 
+                <template v-else>
+                    <Link
+                        :href="route('login')"
+                        class="rounded-md px-5 py-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                    >
+                        Log in
+                    </Link>
 
-        <div class="relative w-full max-w-2xl px-6 lg:max-w-7xl justify-content-center">
+                    <Link
+                        v-if="canRegister"
+                        :href="route('register')"
+                        class="rounded-md px-5 py-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+                    >
+                        Register
+                    </Link>
+                </template>
+            </nav>
 
-
-                    <nav v-if="canLogin" class="-mx-3 flex flex-1 justify-end">
-                        <Link
-                            v-if="$page.props.auth.user"
-                            :href="route('dashboard')"
-                            class="rounded-md px-5 py-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                        >
-                            Dashboard
-                        </Link>
-
-                        <template v-else>
-                            <Link
-                                :href="route('login')"
-                                class="rounded-md px-5 py-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Log in
-                            </Link>
-
-                            <Link
-                                v-if="canRegister"
-                                :href="route('register')"
-                                class="rounded-md px-5 py-3 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-                            >
-                                Register
-                            </Link>
-                        </template>
-                    </nav>
-
-            </div>
+        </div>
 
         <div class="flex flex-col h-screen justify-between">
 
@@ -88,18 +83,12 @@ function handleImageError() {
             </div>
         </div>
 
-
-
     </div>
-
-
 </template>
-
 
 <style>
 nav {
     background-color: rgb(0, 214, 153);
+    width: 100%;
 }
-
-
 </style>
