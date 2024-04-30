@@ -21,6 +21,8 @@ defineProps({
 });
 
 let showModalOferta=ref(false);
+let showModalEliminacio = ref(false);
+let showModalEliminacioConfirmacio = ref(false);
 
 const formOferta= useForm({
     idArticle:null,
@@ -51,6 +53,31 @@ const recargaPaginaOferta = () => {
     location.reload();
 }
 
+
+const abrirModalEliminacio = (article) =>{
+    showModalEliminacio.value=true;
+    formOferta.idArticle=article.idArticle;
+    formOferta.quantitatDisponible= null;
+    formOferta.preuUnitari=null;
+
+}
+const cerrarModalEliminacio = () => {
+    showModalEliminacio.value=false;
+    showModalEliminacioConfirmacio.value=false;
+}
+
+const eliminarArticle =()=> {
+    formOferta.get('/eliminarArticle');
+
+    recargaPaginaElim();
+}
+
+const recargaPaginaElim = () => {
+    showModalEliminacio.value=false;
+    showModalEliminacioConfirmacio=true;
+    location.reload();
+
+}
 
 </script>
 
@@ -99,7 +126,7 @@ const recargaPaginaOferta = () => {
                         </td>
                         <td>
                             <button v-if="$page.props.auth.user.idUsuari===article.idVenedor" class="btn btn-primary rounded-circle"
-                                    @click="">Elim</button>
+                                    @click="abrirModalEliminacio(article)">Elim</button>
                         </td>
 
                     </tr>
@@ -148,6 +175,27 @@ const recargaPaginaOferta = () => {
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
+            <div class="modal-content w-100">
+                <span class="close" @click="cerrarModalEliminacio">×</span>
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>¿Estas segur de que vols eliminar aquest article?</p>
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-danger mr-5" @click="cerrarModalEliminacio">No</button>
+                    <button type="button" class="btn btn-primary ml-5"
+                            @click="eliminarArticle">Sí</button>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalEliminacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
+            <div class="modal-content w-100">
+                <span class="close" @click="cerrarModalEliminacio">×</span>
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Article Eliminat</p>
                 </div>
             </div>
         </Modal>

@@ -54,4 +54,10 @@ class ArticleController extends Controller
         $article->save();
     }
 
+
+    public function eliminarArticle(Request $request)
+    {
+        $article= Articles::where('idArticle',$request->idArticle)->first();
+        $article->delete();
+    }
 }
