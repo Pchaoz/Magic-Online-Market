@@ -20,9 +20,13 @@ class UserController extends Controller
     public function getUsersForm(){
        $usuaris= DB::table('usuaris')
             ->leftJoin('rols', 'usuaris.idRol', '=', 'rols.idRol')
-            ->select('usuaris.idUsuari AS idUsuari','usuaris.nick AS nick', 'usuaris.name AS descripcio', 'usuaris.cognom AS cognom', 'usuaris.email AS email', 'rols.nom AS nomRol')
+            ->select('usuaris.idUsuari AS idUsuari','usuaris.nick AS nick', 'usuaris.name AS nom', 'usuaris.cognom AS cognom', 'usuaris.email AS email', 'rols.nom AS nomRol')
             ->get();
-        return Inertia::render('administradorUsuaris',['usuaris'=>$usuaris]);
+
+       $rols =DB::table('rols')
+           ->select('rols.nom AS nom','rols.idRol AS idRol')
+           ->get();
+        return Inertia::render('administradorUsuaris',['usuaris'=>$usuaris,'rols'=>$rols]);
     }
 
 

@@ -208,7 +208,7 @@ const confirmacionCreacio=()=>{
 
             <Modal :show="showModalCreacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
                 <div class="modal-content w-100">
-                   
+
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Rol Creat</p>
                     </div>

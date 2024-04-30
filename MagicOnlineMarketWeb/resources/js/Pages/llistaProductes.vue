@@ -5,7 +5,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Modal from "@/Components/Modal.vue";
 import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
-import axios from "axios";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 
