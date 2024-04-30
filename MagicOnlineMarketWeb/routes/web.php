@@ -89,6 +89,9 @@ Route::get('/ver-ofertas/{id}',[\App\Http\Controllers\ArticleController::class, 
 Route::get('/modificarArticle',[\App\Http\Controllers\ArticleController::class, 'modificarArticle'])->name('modificarArticle');
 Route::get('/eliminarArticle',[\App\Http\Controllers\ArticleController::class, 'eliminarArticle'])->name('eliminarArticle');
 
+//-----------------------------------API----------------------------------------//
+Route::get('/api/ofertes/{id}',[\App\Http\Controllers\ArticleController::class, 'APIgetArticleById'])->name('APIgetArticleById');
+
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);

@@ -23,7 +23,6 @@ class _ProductsPageState extends State<ProductsPage> {
   fetchProducts() async {
     final response =
         await http.get(Uri.parse('$API_URI_SERVER/getAllProductes'));
-    print(json.decode(response.body));
     setState(() {
       products = json.decode(response.body);
     });
@@ -33,8 +32,7 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Productos'),
-        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        title: Text('Productos'),
       ),
       body: Expanded(
         child: ListView.builder(
@@ -64,7 +62,6 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
-  // ignore: non_constant_identifier_names
   void _LogOut(context) {
     try {
       logOut();
@@ -97,52 +94,62 @@ class _ProductsPageState extends State<ProductsPage> {
   }
 }
 
-class ProductDetailPage extends StatelessWidget {
+class ProductDetailPage extends StatefulWidget {
   final dynamic product;
 
   ProductDetailPage({Key? key, this.product}) : super(key: key);
 
   @override
+  _ProductDetailPageState createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  late Future<List<dynamic>> futureOffers;
+
+  @override
+  void initState() {
+    super.initState();
+    futureOffers = fetchOffers();
+  }
+
+  Future<List<dynamic>> fetchOffers() async {
+    final response =
+        await http.get(Uri.parse(API_URI_LOCAL + widget.product['idArticulo']));
+    print("RESPUESTA DEL SERVIDOR: " + response.body);
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load offers');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(product['nom']),
+        title: Center(child: Text(widget.product['nom'])), // Título centrado
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 3,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image:
-                      NetworkImage(URI_SERVER_IMAGES + "/" + product['imatge']),
-                  fit: BoxFit.scaleDown,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              product['nom'],
-              style: const TextStyle(fontSize: 24),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              product['descripcio'],
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Ofertas',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+      body: FutureBuilder<List<dynamic>>(
+        future: futureOffers,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(snapshot.data![index]['nick']),
+                  subtitle: Text('Precio: ${snapshot.data![index]['precio']}€'),
+                  onTap: () {
+                    // Aquí puedes definir qué sucede cuando se hace clic en un elemento de la lista
+                  },
+                );
+              },
+            );
+          } else if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          }
+          return const CircularProgressIndicator();
+        },
       ),
     );
   }
