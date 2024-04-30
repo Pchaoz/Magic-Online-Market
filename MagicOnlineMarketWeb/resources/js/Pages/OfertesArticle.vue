@@ -41,9 +41,9 @@ const cerrarModalOferta = () => {
 }
 
 const ModOferta =()=> {
-    formOferta.get('modArticle');
-   // cerrarModalOferta();
-    //recargaPaginaOferta();
+    formOferta.get('/modificarArticle');
+    cerrarModalOferta();
+    recargaPaginaOferta();
 }
 
 const recargaPaginaOferta = () => {

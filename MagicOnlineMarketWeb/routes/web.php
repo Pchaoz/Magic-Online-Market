@@ -86,7 +86,7 @@ Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProd
 //funcions controller Articles
 Route::post('/crearArticle',[\App\Http\Controllers\ArticleController::class, 'crearArticle'])->name('crearArticle');
 Route::get('/ver-ofertas/{id}',[\App\Http\Controllers\ArticleController::class, 'mostrarOfertesArticle'])->name('mostrarOfertesArticle');
-Route::get('/modificarArticle',[\App\Http\Controllers\ArticleController::class, 'modArticle'])->name('modArticle');
+Route::get('/modificarArticle',[\App\Http\Controllers\ArticleController::class, 'modificarArticle'])->name('modificarArticle');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

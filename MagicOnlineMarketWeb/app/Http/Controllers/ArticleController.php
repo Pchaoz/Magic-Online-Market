@@ -43,10 +43,9 @@ class ArticleController extends Controller
     }
 
 
-    public function modArticle (Request $request)
+    public function modificarArticle (Request $request)
     {
 
-        return response()->json($request);
         $article= Articles::where('idArticle',$request->idArticle)->first();
         $article->quantitatDisponible = $request->quantitatDisponible;
         $article->preuUnitari = $request->preuUnitari;
