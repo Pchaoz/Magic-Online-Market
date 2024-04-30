@@ -148,7 +148,7 @@ const cerrarModalOferta = () => {
 }
 
 const crearOferta =()=> {
-    formOferta.post('crearArticle');
+    formOferta.get('/crearArticle');
     cerrarModalOferta();
     recargaPaginaOferta();
 }
