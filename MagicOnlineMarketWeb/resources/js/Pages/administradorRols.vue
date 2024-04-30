@@ -84,7 +84,6 @@ const formRol= useForm({
 })
 const crearRol=()=> {
 
-    console.log(formRol.nom);
     formRol.post('crearRol');
     location.reload();
 }

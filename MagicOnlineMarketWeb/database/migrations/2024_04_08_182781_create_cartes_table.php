@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string("nom");
             $table->string("descripcio",2000);
             $table->string("imatge")->nullable();
-            $table->enum('raresa',["comun","infrecuente","rara","mitica"])->default('comun');
+            $table->enum('raresa',["Comun","Infrecuente","Rara","Mitica"])->default('Comun');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();

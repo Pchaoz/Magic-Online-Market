@@ -65,11 +65,13 @@ Route::get('/api/getAllRols', [\App\Http\Controllers\RolsController::class,'APIL
 
 //funcions controller productes
 Route::get('/getAllProductes', [\App\Http\Controllers\ProductesController::class,'ListProductes'])->name('ListProductes');
+Route::get('/whereProductes/{idCategoriaProductes}', [\App\Http\Controllers\ProductesController::class,'whereProductes'])->name('whereProductes');
 Route::get('/getProducte/{id}', [\App\Http\Controllers\ProductesController::class,'getProducte'])->name('getProducte');
 Route::get('/crearProducte/{nom}/{descripcio}/{idcategoria}',[\App\Http\Controllers\ProductesController::class, 'addProducte'])->name('addProducte');
 Route::get('/modificarDescripcioProducte/{id}/{nom}',[\App\Http\Controllers\ProductesController::class, 'modProducte'])->name('modProducte');
-Route::get('/eliminarProducte/{id}/',[\App\Http\Controllers\ProductesController::class, 'eliminarProducte'])->name('eliminarProducte');
-
+Route::delete('/eliminarProducte',[\App\Http\Controllers\ProductesController::class, 'eliminarProducte'])->name('eliminarProducte');
+Route::get('/modificarProducte',[\App\Http\Controllers\ProductesController::class, 'modificarProducte'])->name('modificarProducte');
+Route::post('/crearProducte',[\App\Http\Controllers\ProductesController::class, 'crearProducte'])->name('crearProducte');
 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::class,'APIListProductes'])->name('APIListProductes');
@@ -78,11 +80,14 @@ Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::
 
 //funcions controller Categoria Productes
 
-
-
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProducteController::class,'APICategoriaProductes'])->name('APICategoriaProductes');
 
+//funcions controller Articles
+Route::get('/crearArticle',[\App\Http\Controllers\ArticleController::class, 'crearArticle'])->name('crearArticle');
+Route::get('/ver-ofertas/{id}',[\App\Http\Controllers\ArticleController::class, 'mostrarOfertesArticle'])->name('mostrarOfertesArticle');
+Route::get('/modificarArticle',[\App\Http\Controllers\ArticleController::class, 'modificarArticle'])->name('modificarArticle');
+Route::get('/eliminarArticle',[\App\Http\Controllers\ArticleController::class, 'eliminarArticle'])->name('eliminarArticle');
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
