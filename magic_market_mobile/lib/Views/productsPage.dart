@@ -1,38 +1,67 @@
 import 'package:flutter/material.dart';
-import 'package:magic_market_mobile/Util/LateralMenu.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
+import '../Util/LateralMenu.dart';
 import '../Util/globals.dart';
 import 'loginPage.dart';
 
-void main() {
-  runApp(ProductsPage());
+class ProductsPage extends StatefulWidget {
+  @override
+  _ProductsPageState createState() => _ProductsPageState();
 }
 
-class ProductsPage extends StatelessWidget {
+class _ProductsPageState extends State<ProductsPage> {
+  List<dynamic> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProducts();
+  }
+
+  fetchProducts() async {
+    final response =
+        await http.get(Uri.parse('$API_URI_SERVER/getAllProductes'));
+    setState(() {
+      products = json.decode(response.body);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Productos',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Productos'),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-          title: const Text('Productos'),
+      body: Expanded(
+        child: ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Image.network(
+                  URI_SERVER_IMAGES + "/" + products[index]['imatge']),
+              title: Text(products[index]['nom']),
+              subtitle: Text(products[index]['idCategoriaProducte'].toString()),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        ProductDetailPage(product: products[index]),
+                  ),
+                );
+              },
+            );
+          },
         ),
-        body: const Center(
-          child: Text('Hello World!'),
-        ),
-        drawer: LateralMenu(
-          onTapLogout: () => _LogOut(context),
-        ),
+      ),
+      drawer: LateralMenu(
+        onTapLogout: () => _LogOut(context),
       ),
     );
   }
 
-  // ignore: non_constant_identifier_names
   void _LogOut(context) {
     try {
       logOut();
@@ -62,5 +91,30 @@ class ProductsPage extends StatelessWidget {
         },
       );
     }
+  }
+}
+
+class ProductDetailPage extends StatelessWidget {
+  final dynamic product;
+
+  ProductDetailPage({Key? key, this.product}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product['nom']),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Image.network(URI_SERVER_IMAGES + "/" + product['imatge']),
+            Text(product['nom'], style: TextStyle(fontSize: 24)),
+            Text(product['descripcio']),
+          ],
+        ),
+      ),
+    );
   }
 }
