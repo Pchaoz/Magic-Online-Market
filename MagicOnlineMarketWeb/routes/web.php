@@ -80,10 +80,12 @@ Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::
 
 //funcions controller Categoria Productes
 
-
-
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProducteController::class,'APICategoriaProductes'])->name('APICategoriaProductes');
+
+//funcions controller Articles
+Route::post('/crearArticle',[\App\Http\Controllers\ArticleController::class, 'crearArticle'])->name('crearArticle');
+Route::get('/ver-ofertas/{id}',[\App\Http\Controllers\ArticleController::class, 'mostrarOfertesArticle'])->name('mostrarOfertesArticle');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

@@ -29,6 +29,7 @@ let showModalEliminacioConfirmacio = ref(false);
 let showModalModificacio=ref(false);
 let showModalModificacioConfirmacio=ref(false);
 let insert=false;
+let showModalOferta=ref(false);
 
 const formProducte= useForm({
     idProducte:null,
@@ -38,6 +39,13 @@ const formProducte= useForm({
     idCategoriaProducte:"",
     idExpansio:"",
     idCarta:""
+})
+
+const formOferta= useForm({
+    idProducte:null,
+    nomProducte:"",
+    quantitatDisponible: 0,
+    preuUnitari:0,
 })
 //eliminació de producte
 const abrirModalEliminacio = (id) =>{
@@ -63,7 +71,7 @@ const recargaPaginaElim = () => {
 
 }
 
-//modificació de producte
+//modificació i inserció de productes
 const abrirModalModificacio = (producte) =>{
     insert=false;
     showModalModificacio.value=true;
@@ -125,6 +133,32 @@ const abrirModalInsert =()=>{
     formProducte.idCarta=null;
 }
 
+//creacio d'oferta
+
+const abrirModalCreacioArticle =(id,nom)=>{
+    showModalOferta.value=true;
+    formOferta.idProducte=id;
+    formOferta.nomProducte=nom;
+    formOferta.quantitatDisponible= 0;
+    formOferta.preuUnitari=0;
+}
+
+const cerrarModalOferta = () => {
+    showModalOferta.value=false;
+}
+
+const crearOferta =()=> {
+    formOferta.post('crearArticle');
+    cerrarModalOferta();
+    recargaPaginaOferta();
+}
+
+const recargaPaginaOferta = () => {
+    showModalModificacioConfirmacio.value=true;
+    location.reload();
+}
+
+
 </script>
 
 <template>
@@ -146,7 +180,9 @@ const abrirModalInsert =()=>{
                 </thead>
                 <tbody>
                 <tr v-for="producte in productes" :key="producte.id">
-                    <td>{{producte.nom}}</td>
+                    <td>
+                        <a :href="'/ver-ofertas/' + producte.idProducte">{{ producte.nom }}</a>
+                    </td>
                     <td class="text-center mx-2" style="width: 300px">{{producte.descripcio}}</td>
                     <td><img :src="'/images/' + producte.imatge" alt="Imatge del producte" width="150" height="200"></td>
                     <td class="text-center"> {{producte.categoriaProducteNom}} </td>
@@ -163,7 +199,7 @@ const abrirModalInsert =()=>{
                     <td style=" padding-left: 30px" v-if="$page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4 ">
 
                         <b-button  class="btn btn-success rounded-pill"
-                                   @click="abrirModalCreacioArticle(producte.idProducte)">Crear Oferta</b-button>
+                                   @click="abrirModalCreacioArticle(producte.idProducte,producte.nom)">Crear Oferta</b-button>
 
                     </td>
                 </tr>
@@ -286,6 +322,52 @@ const abrirModalInsert =()=>{
                 </div>
             </div>
         </Modal>
+        <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
+            <div class="modal-content w-100">
+                <span class="close" @click="cerrarModalOferta">×</span>
+                <div class="d-flex justify-content-center m-3">
+                    <form class="w-100 rounded">
+                        <div class="m-2 text-center font-weight-bold">
+                            Producte seleccionat: {{ formOferta.nomProducte }}
+                            <div class="m-2 text-center font-weight-bold">
+                                <InputLabel for="quantitat" value="Quantitat" class="m-2" style="font-size: 16px;" />
+                                <div class="d-flex justify-content-center">
+                                <input
+                                    id="quantitat"
+                                    type="number"
+                                    class="mt-1 block w-full"
+                                    v-model="formOferta.quantitatDisponible"
+                                    min="1"
+                                    step="1"
+                                    required
+                                    style="color: black; width: 100px;"
+                                />
+                                </div>
+                            </div>
+                            <div class="m-2 text-center font-weight-bold">
+                                <InputLabel for="preuUnitari" value="Preu Unitari" />
+                            <div class="d-flex justify-content-center">
+                                <TextInput
+                                    id="preuUnitari"
+                                    type="number"
+                                    class="mt-1 block w-full"
+                                    v-model="formOferta.preuUnitari"
+                                    min="0"
+                                    required
+                                    step="0.01"
+                                    style="color: black; width: 100px;"
+                                />
+                            </div  >
+                            </div>
+                            <div class="d-flex justify-content-center m-3">
+                                <button type="button" class="btn btn-success ml-5" @click="crearOferta">Crear Oferta</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </Modal>
+
 
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
             <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="abrirModalInsert">Crear Nou producte</b-button>
@@ -301,5 +383,11 @@ td,th{
     vertical-align: middle;
     padding-left: 10px;
 }
+
+form {
+    background-color: #888888;
+    color: white;
+}
+
 
 </style>

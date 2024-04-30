@@ -111,8 +111,6 @@ class ProductesController extends Controller
 
 
     public function crearProducte(Request $request){
-
-
         $producte= new Productes();
         $producte->nom=$request->nom;
         $producte->descripcio=$request->descripcio;
@@ -121,7 +119,7 @@ class ProductesController extends Controller
             $request->imatge->move(public_path('images/productes'), $imageName);
             $producte->imatge = 'productes/' . $imageName;
         }
-        $producte->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $producte ->created_by=Auth::id();
         $producte ->updated_by=Auth::id();
         $producte->idCategoriaProducte=$request->idCategoriaProducte;
         $producte->idExpansio=$request->idExpansio;
