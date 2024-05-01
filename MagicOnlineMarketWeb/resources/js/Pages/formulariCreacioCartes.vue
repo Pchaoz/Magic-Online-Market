@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Modal from "@/Components/Modal.vue";
 import { required } from '@vee-validate/rules';
 import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-validate';
-import SecondaryButton from "@/Components/SecondaryButton.vue";
+
 
 defineRule('required', required);
 
@@ -69,7 +69,7 @@ const options = ref([
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center pt-16 ">
-            <div class="w-15 rounded" style="background-color: rgba(0,214,153,0.8); padding: 10px; margin: 20px;">
+            <div class="w-25 rounded"  style="background-color: rgba(0,214,153,0.8);padding: 20px; margin: 20px;">
                 <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />

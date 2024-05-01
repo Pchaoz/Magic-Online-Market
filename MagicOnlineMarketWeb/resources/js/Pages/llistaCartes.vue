@@ -18,6 +18,7 @@ defineProps({
 });
 let showModal = ref(false);
 let showModalElim = ref(false);
+let showModalImage = ref(false);
 let cartaId =ref(null);
 
 const abrirModalConfirmacion = (id) => {
@@ -29,6 +30,7 @@ const abrirModalConfirmacion = (id) => {
 const cerrarModal = () => {
     showModal.value = false;
     showModalElim.value=false;
+    showModalImage.value =false;
 }
 
 const eliminarCarta = async () => {
@@ -54,20 +56,25 @@ const abrirFormularioEdicion=(id)=>{
 
 }
 
+let selectedImage = ref(null);
 
+const openImageModal = (image) => {
+    selectedImage.value = image;
+    showModalImage.value = true;
+}
 
 
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <div class="d-flex justify-content-center m-3 ">
-            <table class="table table-striped table-dark w-50 ">
+        <div class="d-flex justify-content-center m-3 " >
+            <table class="table table-striped my-table w-50" >
                 <thead>
                 <tr>
                     <th class="col-1">Nom Carta</th>
                     <th class="col-3">Descripcio Carta</th>
-                    <th class="col-1">Imatge Carta</th>
+                    <th class="col-2">Imatge Carta</th>
                     <th class="col-1">Raresa Carta</th>
                     <th class="col-1"></th>
                     <th class="col-1"></th>
@@ -78,7 +85,7 @@ const abrirFormularioEdicion=(id)=>{
                     <td>{{carta.nom}}</td>
                     <td>{{carta.descripcio}}</td>
                     <td>
-                        <img :src="'/images/' + carta.imatge"  width="300" height="350" >
+                        <img :src="'/images/' + carta.imatge"  width="300" height="350"  @click="openImageModal(carta.imatge)">
                     </td>
                     <td>{{carta.raresa}}</td>
                     <td>
@@ -111,19 +118,21 @@ const abrirFormularioEdicion=(id)=>{
                     </div>
                 </div>
             </Modal>
+            <Modal :show="showModalImage" maxWidth="2xl" closeable @close="cerrarModal" >
+                    <div class="d-flex justify-content-center">
+                        <img :src="'/images/' + selectedImage" width="500" height="600">
+                    </div>
+            </Modal>
             </div>
 
     </AuthenticatedLayout>
 </template>
 
-<style scoped>
-.zoomable-image {
-    transition: transform 0.3s ease;
+<style>
+
+.my-table td, .my-table th {
+    background-color: rgba(0,214,153,0.5) !important;
+    text-align: center;
+    vertical-align: middle;
 }
-
-.zoomable-image:hover {
-    transform: scale(4);
-}
-
-
 </style>

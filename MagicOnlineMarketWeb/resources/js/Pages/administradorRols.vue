@@ -100,7 +100,7 @@ const confirmacionCreacio=()=>{
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
-            <table class="table table-striped table-dark w-25 ">
+            <table class="table table-striped my-table w-25 ">
                 <thead>
                 <tr>
                     <th>Nom</th>
@@ -216,7 +216,11 @@ const confirmacionCreacio=()=>{
     </AuthenticatedLayout>
 </template>
 
-<style scoped>
+<style>
 
-
+.my-table td, .my-table th {
+    background-color: rgba(0,214,153,0.7) !important;
+    text-align: center;
+    vertical-align: middle;
+}
 </style>

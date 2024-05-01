@@ -90,7 +90,7 @@ const finModificacio=()=>{
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
-            <table class="table table-striped table-dark w-50 ">
+            <table class="table table-striped my-table w-50 ">
                 <thead>
                 <tr>
                     <th>Nick</th>
@@ -231,5 +231,10 @@ const finModificacio=()=>{
 
 <style scoped>
 
+.my-table td, .my-table th {
+    background-color: rgba(0,214,153,0.5) !important;
+    text-align: center;
+    vertical-align: middle;
+}
 
 </style>
