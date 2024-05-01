@@ -65,49 +65,47 @@ const abrirFormularioEdicion=(id)=>{
             <table class="table table-striped table-dark w-50 ">
                 <thead>
                 <tr>
-                    <th>Nom Carta</th>
-                    <th></th>
-                    <th></th>
-                    <th>Descripcio Carta</th>
-                    <th>Imatge Carta</th>
-                    <th>Raresa Carta</th>
+                    <th class="col-1">Nom Carta</th>
+                    <th class="col-3">Descripcio Carta</th>
+                    <th class="col-1">Imatge Carta</th>
+                    <th class="col-1">Raresa Carta</th>
+                    <th class="col-1"></th>
+                    <th class="col-1"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="carta in cartes" :key="carta.id">
                     <td>{{carta.nom}}</td>
-                    <td>
-                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-primary rounded-circle"
-                                @click="abrirFormularioEdicion(carta.idCarta)">Mod</button>
-                    </td>
-                    <td>
-                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-primary rounded-circle"
-                                @click="abrirModalConfirmacion(carta.idCarta)">Elim</button>
-                    </td>
                     <td>{{carta.descripcio}}</td>
                     <td>
-                        <img :src="'/images/' + carta.imatge" alt="Imagen de la carta" width="150" height="200" class="zoomable-image">
+                        <img :src="'/images/' + carta.imatge"  width="300" height="350" >
                     </td>
                     <td>{{carta.raresa}}</td>
+                    <td>
+                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-success rounded-pill"
+                                @click="abrirFormularioEdicion(carta.idCarta)">Modificar</button>
+                    </td>
+                    <td>
+                        <button v-if="idRolUser == '2'||idRolUser == '1'"  class="btn btn-danger rounded-pill"
+                                @click="abrirModalConfirmacion(carta.idCarta)">Eliminar</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
             <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
-                    <p>¿Estas segur de que vols eliminar aquesta carta?</p>
+                        <p>¿Estas segur de que vols eliminar aquesta carta?</p>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
-                    <button type="button" class="btn btn-danger mr-5" @click="cerrarModal">No</button>
-                    <button type="button" class="btn btn-primary ml-5"
-                        @click="eliminarCarta">Sí</button>
+                        <button type="button" class="btn btn-success mr-5"
+                            @click="eliminarCarta">Sí</button>
+                        <button type="button" class="btn btn-danger ml-5" @click="cerrarModal">No</button>
                     </div>
                 </div>
             </Modal>
             <Modal :show="showModalElim" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Carta Eliminada!</p>
                     </div>

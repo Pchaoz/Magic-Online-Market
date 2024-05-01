@@ -19,8 +19,10 @@
         "vue": "^3.4.23"
     },
     "dependencies": {
+        "@vee-validate/rules": "^4.12.6",
         "bootstrap": "^5.3.3",
         "bootstrap-vue": "^2.23.1",
+        "vee-validate": "^4.12.6",
         "vue3-carousel": "^0.3.3"
     }
 }

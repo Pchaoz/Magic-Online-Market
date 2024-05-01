@@ -32,12 +32,6 @@ class CartesController extends Controller
 
     public function addCarta(Request $request)
     {
-        $request->validate([
-            'nom' => 'required',
-            'descripcio' => 'required',
-            'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'raresa' => 'required',
-        ]);
 
         $carta = new Cartes();
         $carta->nom = $request->nom;

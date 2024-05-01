@@ -127,7 +127,6 @@ const confirmacionCreacio=()=>{
 
             <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-
                     <div class="d-flex justify-content-center m-3 ">
                         <p>¿Estas segur de que vols eliminar aquest rol?</p>
                     </div>
@@ -141,7 +140,6 @@ const confirmacionCreacio=()=>{
             </Modal>
             <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Rol Eliminat</p>
                     </div>
@@ -168,8 +166,6 @@ const confirmacionCreacio=()=>{
                             @click="crearRol">Crear</button>
                         <button type="button" class="btn btn-danger ml-5"
                                 @click="cerrarModalCreacio">Cancelar</button>
-
-
                         </div>
                 </div>
             </Modal>
@@ -199,7 +195,6 @@ const confirmacionCreacio=()=>{
             </Modal>
             <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
                 <div class="modal-content w-100">
-
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Rol Modificat</p>
                     </div>
@@ -208,7 +203,6 @@ const confirmacionCreacio=()=>{
 
             <Modal :show="showModalCreacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
                 <div class="modal-content w-100">
-
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Rol Creat</p>
                     </div>
