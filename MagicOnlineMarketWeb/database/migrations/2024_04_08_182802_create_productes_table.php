@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string("nom");
             $table->string("descripcio")->nullable();
             $table->string("imatge")->nullable();
-            $table->foreignId("idCategoriaProducte")->default(1)->constrained('categoria_productes')->references('idCategoriaProductes');
+            $table->foreignId("idCategoriaProducte")->nullable()->constrained('categoria_productes')->references('idCategoriaProductes');
             $table->foreignId("idExpansio")->nullable()->constrained('expansions')->references('idExpansio');
             $table->foreignId("idCarta")->nullable()->constrained('cartes')->references('idCarta');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

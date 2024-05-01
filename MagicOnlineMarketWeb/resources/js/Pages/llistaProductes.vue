@@ -7,6 +7,10 @@ import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { required } from '@vee-validate/rules';
+import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-validate';
+
+defineRule('required', required);
 
 defineProps({
     productes: {
@@ -27,6 +31,7 @@ let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 let showModalModificacio=ref(false);
 let showModalModificacioConfirmacio=ref(false);
+let showModalImage = ref(false);
 let insert=false;
 let showModalOferta=ref(false);
 
@@ -90,11 +95,11 @@ const cerrarModalModificacio = () => {
 
 const modProducte =()=> {
     if(!insert){
-        formProducte.get('/modificarProducte');
+        formProducte.get('modificarProducte');
     }else{
-        formProducte.post('crearProducte');
+        formProducte.get('crearProducte');
     }
-    recargaPagina();
+    //recargaPagina();
 }
 let imatgeUrl=null;
 
@@ -157,23 +162,34 @@ const recargaPaginaOferta = () => {
     location.reload();
 }
 
+let selectedImage = ref(null);
+
+const openImageModal = (image) => {
+    selectedImage.value = image;
+    showModalImage.value = true;
+}
+
+const closeImageModal = () => {
+    selectedImage.value = null;
+    showModalImage.value = false;
+}
 
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <div class="d-flex justify-content-center">
-            <table class="table table-striped table-dark w-50">
+        <div class="d-flex justify-content-center m-3 " >
+            <table class="table table-striped my-table w-75" >
                 <thead>
                 <tr>
-                    <th>Nom Producte</th>
-                    <th class="text-center mx-2" style="width: 300px">Descripcio Producte</th>
-                    <th>Imatge Producte</th>
-                    <th class="text-center mx-2">Categoria Producte</th>
-                    <th class="text-center mx-2">Expansio Producte</th>
-                    <th v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
-                    <th v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
-                    <th v-if="$page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4 "></th>
+                    <th class="col-2">Nom Producte</th>
+                    <th class="col-3">Descripcio Producte</th>
+                    <th class="col-2">Imatge Producte</th>
+                    <th class="col-2">Categoria Producte</th>
+                    <th class="col-2">Expansio Producte</th>
+                    <th class="col-1" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
+                    <th class="col-1"v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
+                    <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4 "></th>
 
                 </tr>
                 </thead>
@@ -182,23 +198,25 @@ const recargaPaginaOferta = () => {
                     <td>
                         <a :href="'/ver-ofertas/' + producte.idProducte">{{ producte.nom }}</a>
                     </td>
-                    <td class="text-center mx-2" style="width: 300px">{{producte.descripcio}}</td>
-                    <td><img :src="'/images/' + producte.imatge" alt="Imatge del producte" width="150" height="200"></td>
-                    <td class="text-center"> {{producte.categoriaProducteNom}} </td>
-                    <td class="text-center"> {{producte.expansioNom}}</td>
+                    <td>{{producte.descripcio}}</td>
+                    <td>
+                        <img :src="'/images/' + producte.imatge" alt="Imatge del producte" width="300" height="350" @click="openImageModal(producte.imatge)">
+                    </td>
+                    <td> {{producte.categoriaProducteNom}} </td>
+                    <td> {{producte.expansioNom}}</td>
                     <td v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
                         <b-button  class="btn btn-success rounded-pill"
                                    @click="abrirModalModificacio(producte)">Modificar</b-button>
                     </td>
                     <td v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
 
-                        <b-button  class="btn btn-success rounded-pill"
+                        <b-button  class="btn btn-danger rounded-pill"
                                  @click="abrirModalEliminacio(producte.idProducte)">Eliminar</b-button>
                     </td>
-                    <td style=" padding-left: 30px" v-if="$page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4 ">
+                    <td  v-if="$page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==1">
 
                         <b-button  class="btn btn-success rounded-pill"
-                                   @click="abrirModalCreacioArticle(producte.idProducte,producte.nom)">Crear Oferta</b-button>
+                                   @click="abrirModalCreacioArticle(producte.idProducte,producte.nom)">Vendre</b-button>
 
                     </td>
                 </tr>
@@ -209,113 +227,110 @@ const recargaPaginaOferta = () => {
         </div>
         <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
             <div class="modal-content w-100">
-                <span class="close" @click="cerrarModalEliminacio">×</span>
                 <div class="d-flex justify-content-center m-3 ">
                     <p>¿Estas segur de que vols eliminar aquest producte?</p>
                 </div>
                 <div class="d-flex justify-content-center m-3 ">
-                    <button type="button" class="btn btn-danger mr-5" @click="cerrarModalEliminacio">No</button>
-                    <button type="button" class="btn btn-primary ml-5"
+                    <button type="button" class="btn btn-success mr-5"
                             @click="eliminarProducte">Sí</button>
+                    <button type="button" class="btn btn-danger ml-5" @click="cerrarModalEliminacio">No</button>
+
                 </div>
             </div>
         </Modal>
         <Modal :show="showModalEliminacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
             <div class="modal-content w-100">
-                <span class="close" @click="cerrarModalEliminacio">×</span>
                 <div class="d-flex justify-content-center m-3 ">
                     <p>Producte Eliminat</p>
                 </div>
             </div>
         </Modal>
         <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalModificacio" >
-            <div class="modal-content w-100">
-                <span class="close" @click="cerrarModalModificacio">×</span>
-                <div class="d-flex justify-content-center m-3 ">
-                    <form enctype="multipart/form-data" class="w-100 rounded">
-                        <div class="m-2">
-                    <InputLabel for="nom" value="Nom" class="m-2"  style="font-size: 16px;"/>
-                    <input
-                        id="nom"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="formProducte.nom"
-                        required
-                        autofocus
-                        style="color: black;">
-                        </div>
-                        <div class="m-2">
-                            <InputLabel for="descripcio" value="Descripcio:" />
-                            <TextInput
-                                id="descripcio"
+
+                    <VForm  class="w-100 rounded">
+                        <div class="d-flex flex-column align-items-center m-4 ">
+                            <InputLabel for="nom" value="Nom:" />
+                             <VField
+                                id="nom"
+                                name="nom"
                                 type="text"
+                                v-model="formProducte.nom"
+                                rules="required"
                                 class="mt-1 block w-full"
+                                style="color: black;"/>
+                        <ErrorMessage name="Nom" />
+                        </div>
+                        <div class="d-flex flex-column align-items-center m-4">
+                            <InputLabel for="descripcio" value="Descripcio:" />
+                            <VField
+                                id="descripcio"
+                                name="descripcio"
+                                type="text"
                                 v-model="formProducte.descripcio"
-                                required
-                                autofocus
-                                autocomplete="descripcio"
+                                rules="required"
+                                class="mt-1 block w-full"
                                 style="color: black;"
                             />
+                            <ErrorMessage name="Descripcio" />
                         </div>
-                        <div class="d-flex flex-column align-items-center m-2">
-                            <div>
-                                <InputLabel for="imatge" value="Imatge:"  v-model="formProducte.imatge" />
-                                <input
-                                    id="imatge"
-                                    type="file"
-                                    class="mt-1 block w-full"
-                                    required
-                                    autofocus
-                                    autocomplete="imatge"
-                                    @change="obtenirImatge"
+                        <div class="d-flex flex-column align-items-center m-4 ">
+                            <InputLabel for="imatge" value="Imatge:"  v-model="formProducte.imatge"/>
+                            <VField
+                                id="imatge"
+                                name="imatge"
+                                type="file"
+                                rules="required"
+                                class="mt-1 block w-full"
+                                @change="obtenirImatge"
                                 />
                             </div>
-                            <div class="m-2">
+                        <div class="d-flex flex-column align-items-center m-4">
                                 <div>Categoria de Producte</div>
                                 <select id="idCategoriaProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
                                     <option v-for="categoria in categoriesProducte"  v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.idCategoriaProductes">
                                         {{ categoria.nom }}
                                     </option>
                                     <option >
-                                        {{ " " }}
+                                        {{ "Sense Categoria" }}
                                     </option>
                                 </select>
                             </div>
-                            <div class="m-2 text-center font-weight-bold">
+                        <div class="d-flex flex-column align-items-center m-4">
                                 <div>Expansió</div>
                                 <select  id="idExpansio" v-model="formProducte.idExpansio" style="color: black;">
                                     <option v-for="expansio in expansions" v-bind:key="expansio.idExpansio" v-bind:value="expansio.idExpansio">
                                         {{ expansio.nom }}
                                     </option>
                                     <option >
-                                        {{ " " }}
+                                        {{ "Sense Expansio" }}
                                     </option>
                                 </select>
                             </div>
-                            <div class="m-2 text-center font-weight-bold">
+                        <div class="d-flex flex-column align-items-center m-4 ">
                                 <div>Carta a la que fa referencia</div>
                                 <select  id="idCarta" v-model="formProducte.idCarta" style="color: black;">
                                     <option v-for="carta in cartes" v-bind:key="carta.idCarta" v-bind:value="carta.idCarta">
                                         {{ carta.nom }}
                                     </option>
                                     <option >
-                                        {{ " " }}
+                                        {{ "No Carta" }}
                                     </option>
                                 </select>
                             </div>
+                        <div class="d-flex flex-column align-items-center m-4">
                             <figure>
                                 <img width="200" height="200" :src="imatgeUrl">
                             </figure>
-                    <button type="button" class="btn btn-success ml-5"
-                            @click="modProducte">Guardar</button>
-                </div>
-                    </form>
-                </div>
-            </div>
+                        </div>
+                        <div class="d-flex justify-content-center m-3 ">
+                             <button type="button" class="btn btn-success mr-5"  @click="modProducte">Guardar</button>
+                            <button type="button" class="btn btn-danger ml-5"
+                                    @click="cerrarModalModificacio">Cancelar</button>
+                        </div>
+                    </VForm>
         </Modal>
         <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalModificacio" >
             <div class="modal-content w-100">
-                <span class="close" @click="cerrarModalModificacio">×</span>
                 <div class="d-flex justify-content-center m-3 ">
                     <p>Operació realitzada!</p>
                 </div>
@@ -323,7 +338,6 @@ const recargaPaginaOferta = () => {
         </Modal>
         <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
             <div class="modal-content w-100">
-                <span class="close" @click="cerrarModalOferta">×</span>
                 <div class="d-flex justify-content-center m-3">
                     <form class="w-100 rounded">
                         <div class="m-2 text-center font-weight-bold">
@@ -367,7 +381,11 @@ const recargaPaginaOferta = () => {
             </div>
         </Modal>
 
-
+        <Modal :show="showModalImage" maxWidth="2xl" closeable @close="closeImageModal" >
+            <div class="d-flex justify-content-center p-5">
+                <img :src="'/images/' + selectedImage" width="500" height="600">
+            </div>
+        </Modal>
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
             <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="abrirModalInsert">Crear Nou producte</b-button>
         </div>
@@ -377,15 +395,15 @@ const recargaPaginaOferta = () => {
 
 <style scoped>
 
-td,th{
+.my-table td, .my-table th {
+    background-color: rgba(0,214,153,0.5) !important;
     text-align: center;
     vertical-align: middle;
-    padding-left: 10px;
 }
 
 form {
-    background-color: #888888;
-    color: white;
+    background-color:rgba(0,214,153,0.8) !important;
+    color: black;
 }
 
 

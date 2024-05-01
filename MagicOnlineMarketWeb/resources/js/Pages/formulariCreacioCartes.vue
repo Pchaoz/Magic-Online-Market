@@ -69,7 +69,7 @@ const options = ref([
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center pt-16 ">
-            <div class="w-25 rounded"  style="background-color: rgba(0,214,153,0.8);padding: 20px; margin: 20px;">
+            <div class="w-25 rounded"  style="background-color: rgba(255,255,255,0.2);padding: 20px; margin: 20px;">
                 <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />
@@ -118,7 +118,7 @@ const options = ref([
 
 <style scoped>
 form {
-    background-color: rgba(136, 136, 136, 0.7);
+    background-color:rgba(0,214,153,0.8) !important;
     color: white;
 }
 </style>

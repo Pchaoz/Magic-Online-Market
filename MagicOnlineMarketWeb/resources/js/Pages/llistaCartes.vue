@@ -119,7 +119,7 @@ const openImageModal = (image) => {
                 </div>
             </Modal>
             <Modal :show="showModalImage" maxWidth="2xl" closeable @close="cerrarModal" >
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center  p-5">
                         <img :src="'/images/' + selectedImage" width="500" height="600">
                     </div>
             </Modal>

@@ -167,7 +167,7 @@ const showingNavigationDropdown = ref(false);
                                             </template>
                                             <template #content>
                                                 <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('ListRols')"> Administrar Rols </DropdownLink>
-                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('getUsersForm')"> Administarar Usuaris </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('getUsersForm')"> Administrar Usuaris </DropdownLink>
                                                 <DropdownLink  :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
                                                 <DropdownLink> Crear Expansions </DropdownLink>
 
