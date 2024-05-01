@@ -101,9 +101,9 @@ class ProductesController extends Controller
         }
         $producte->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $producte ->updated_by=Auth::id();
-        $producte->idCategoriaProducte=$request->idCategoriaProducte;
-        $producte->idExpansio=$request->idExpansio;
-        $producte->idCarta=$request->idCarta;
+        $request->idCategoriaProducte=="Sense Categoria"?$producte->idCategoriaProducte=null:$producte->idCategoriaProducte=$request->idCategoriaProducte;
+        $request->idExpansio=="Sense Expansio"?$producte->idExpansio=null:$producte->idExpansio=$request->idExpansio;
+        $request->idCarta=="No Carta"?$producte->idCarta=null:$producte->idCarta=$request->idCarta;
         $producte->save();
     }
 
@@ -119,9 +119,9 @@ class ProductesController extends Controller
         }
         $producte ->created_by=Auth::id();
         $producte ->updated_by=Auth::id();
-        $producte->idCategoriaProducte=$request->idCategoriaProducte;
-        $producte->idExpansio=$request->idExpansio;
-        $producte->idCarta=$request->idCarta;
+        $request->idCategoriaProducte=="Sense Categoria"?$producte->idCategoriaProducte=null:$producte->idCategoriaProducte=$request->idCategoriaProducte;
+        $request->idExpansio=="Sense Expansio"?$producte->idExpansio=null:$producte->idExpansio=$request->idExpansio;
+        $request->idCarta=="No Carta"?$producte->idCarta=null:$producte->idCarta=$request->idCarta;
         $producte->save();
     }
 
