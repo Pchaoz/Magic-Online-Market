@@ -82,7 +82,14 @@ class CartesController extends Controller
 
     public function deleteCarta($id){
         $carta= Cartes::find($id);
+        $imagen =$carta->imatge;
+        $rutaImagen = public_path('images/' . $imagen);
+        if (file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+
         $carta->delete();
+
     }
 
 
