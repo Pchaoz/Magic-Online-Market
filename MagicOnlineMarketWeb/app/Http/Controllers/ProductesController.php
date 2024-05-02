@@ -92,6 +92,7 @@ class ProductesController extends Controller
     }
     public function modificarProducte(Request $request){
         $producte= Productes::where('idProducte',$request->idProducte)->first();
+        return response()->json($request);
         $producte->nom=$request->nom;
         $producte->descripcio=$request->descripcio;
         if($request->hasFile('imatge')){

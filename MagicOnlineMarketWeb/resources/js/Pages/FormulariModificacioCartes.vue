@@ -87,12 +87,12 @@ const options= ref([
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />
                         <VField id="nom" name="nom" type="text" v-model="formCarta.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="Nom" />
+                        <ErrorMessage name="nom" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="descripcio" value="Descripcio:" />
                         <VField id="descripcio" name="descripcio" type="text" v-model="formCarta.descripcio" rules="required" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="Descripcio" />
+                        <ErrorMessage name="descripcio" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:" />
@@ -132,6 +132,9 @@ const options= ref([
 <style scoped>
 form {
     background-color:rgba(0,214,153,0.8) !important;
-    color: white;
+
 }
+
+
+
 </style>

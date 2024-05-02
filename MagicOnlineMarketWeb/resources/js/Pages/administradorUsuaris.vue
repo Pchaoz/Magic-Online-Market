@@ -7,7 +7,10 @@ import axios from 'axios';
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { required } from '@vee-validate/rules';
+import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-validate';
 
+defineRule('required', required);
 
 defineProps({
     usuaris: {
@@ -144,59 +147,60 @@ const finModificacio=()=>{
             <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3 ">
-                        <form enctype="multipart/form-data" class="w-50 rounded">
+                        <VForm v-slot="{ errors }" @submit="modificarUser" class="w-50 rounded">
                             <div class="m-2">
                                 <InputLabel for="nick" value="Nick:" class="m-2"  style="font-size: 16px;"/>
-                                <input
+                                <VField
                                     id="nick"
+                                    name="nick"
                                     type="text"
                                     class="mt-1 block w-full"
                                     v-model="formUsuari.nick"
-                                    required
-                                    autofocus
-                                    style="color: black;">
+                                    rules="required"
+                                    style="color: black;"/>
+                                <ErrorMessage name="nick" />
                             </div>
                             <div class="m-2">
                                 <InputLabel for="nom" value="Nom:" />
-                                <TextInput
+                                <VField
                                     id="nom"
+                                    name="nom"
                                     type="text"
                                     class="mt-1 block w-full"
                                     v-model="formUsuari.nom"
-                                    required
-                                    autofocus
-                                    autocomplete="nom"
+                                    rules="required"
                                     style="color: black;"
                                 />
+                                <ErrorMessage name="nom" />
                             </div>
                             <div class="m-2">
                                 <InputLabel for="cognom" value="Cognom:" />
-                                <TextInput
+                                <VField
                                     id="cognom"
+                                    name="cognom"
                                     type="text"
                                     class="mt-1 block w-full"
                                     v-model="formUsuari.cognom"
-                                    required
-                                    autofocus
                                     autocomplete="cognom"
                                     style="color: black;"
                                 />
                             </div>
                             <div class="m-2">
                                 <InputLabel for="email" value="Email:" />
-                                <TextInput
+                                <VField
                                     id="email"
+                                    name="email"
                                     type="text"
                                     class="mt-1 block w-full"
                                     v-model="formUsuari.email"
-                                    required
-                                    autofocus
+                                    rules="required"
                                     autocomplete="email"
                                     style="color: black;"
                                 />
+                                <ErrorMessage name="email" />
                             </div>
                             <div class="m-2 text-center font-weight-bold">
-                                    <div>Rol Usuari/a</div>
+                                    <div style="color: black">Rol Usuari/a</div>
                                     <select id="idRol" v-model="formUsuari.idRol" style="color: black;">
                                         <option v-for="rol in rols"  v-bind:key="rol.idRol" v-bind:value="rol.idRol">
                                             {{ rol.nom }}
@@ -205,13 +209,12 @@ const finModificacio=()=>{
                             </div>
 
                             <div class="d-flex justify-content-center m-3 ">
-                                <button type="button" class="btn btn-success ml-5"
-                                        @click="modificarUser">Modificar</button>
+                                <button class="btn btn-success mr-5" :class="{ 'opacity-25': formUsuari.processing }" :disabled="Object.keys(errors).length > 0">Modificar</button>
                                 <button type="button" class="btn btn-danger ml-5"
                                         @click="cerrarModal">Cancelar</button>
 
                             </div>
-                        </form>
+                        </VForm>
                     </div>
                 </div>
             </Modal>
@@ -236,5 +239,12 @@ const finModificacio=()=>{
     text-align: center;
     vertical-align: middle;
 }
+
+form {
+    background-color:rgba(0,214,153,0.8) !important;
+
+}
+
+
 
 </style>
