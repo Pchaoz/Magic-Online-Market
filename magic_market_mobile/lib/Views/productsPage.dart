@@ -36,27 +36,43 @@ class _ProductsPageState extends State<ProductsPage> {
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
         title: const Text('Productos'),
       ),
-      body: Expanded(
-        child: ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              leading: Image.network(
-                  URI_SERVER_IMAGES + "/" + products[index]['imatge']),
-              title: Text(products[index]['nom']),
-              subtitle: Text(products[index]['idCategoriaProducte'].toString()),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        ProductDetailPage(product: products[index]),
-                  ),
+      body: Stack(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Image.network(
+                      URI_SERVER_IMAGES + "/" + products[index]['imatge']),
+                  title: Text(products[index]['nom']),
+                  subtitle:
+                      Text(products[index]['idCategoriaProducte'].toString()),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ProductDetailPage(product: products[index]),
+                      ),
+                    );
+                  },
                 );
               },
-            );
-          },
-        ),
+            ),
+          ),
+          Positioned(
+            bottom: 50.0,
+            right: 30.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                //TODO esto te redirige a un fromulario para crear un producto nuevo
+              },
+              child: Icon(Icons.add),
+              backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+            ),
+          ),
+        ],
       ),
       drawer: LateralMenu(
         onTapLogout: () => _LogOut(context),

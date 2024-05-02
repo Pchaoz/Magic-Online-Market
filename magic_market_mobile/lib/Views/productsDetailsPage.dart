@@ -17,12 +17,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   List offerList = [];
 
   Future getOffers() async {
+    print("Buscando las ofertas del producto: " +
+        widget.product['idProducte'].toString());
+
     final response = await http.get(Uri.parse(
         API_URI_LOCAL + "/ofertes/" + widget.product['idProducte'].toString()));
-    print("El request a la ofertas del producto " +
-        widget.product['idProducte'] +
-        " ha sido: " +
-        json.decode(response.body));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -50,16 +49,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
                 child: Text(widget.product['descripcio'],
                     style: Theme.of(context).textTheme.titleMedium),
               ),
               const SizedBox(height: 10),
               Container(
                 margin: const EdgeInsets.all(25.0),
-                child: Flexible(
-                  child: Image.network(
-                      '$URI_SERVER_IMAGES/${widget.product['imatge']}'),
+                width: 300, // Ajusta el ancho como desees
+                height: 300, // Ajusta la altura como desees
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: NetworkImage(
+                        '$URI_SERVER_IMAGES/${widget.product['imatge']}'),
+                    fit: BoxFit.scaleDown,
+                  ),
                 ),
               ),
               Text('Ofertas', style: Theme.of(context).textTheme.titleLarge),
@@ -70,7 +74,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   itemBuilder: (context, index) {
                     return ListTile(
                         title: Text(offerList[index]['nick']),
-                        subtitle: Text(offerList[index]['quantitat']),
+                        subtitle:
+                            Text(offerList[index]['quantitat'].toString()),
+                        trailing: Text("${offerList[index]['preu']}€"),
                         onTap: () {
                           //TODO hacer el tema de la compra y todo el rollo
                         });
