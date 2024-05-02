@@ -55,10 +55,6 @@ const showingNavigationDropdown = ref(false);
                                             </template>
                                             <template #content>
                                                 <DropdownLink :href="route('ListProductes')"> Tots els Productes </DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','1')" >Cartes Soltes</DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','2')">Caixes de Sobres</DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','3')">Sobres de Cartes</DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','4')">Tapets</DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>

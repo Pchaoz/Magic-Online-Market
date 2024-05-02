@@ -20,7 +20,7 @@ class CategoriaProductesSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
         DB::table('categoria_productes')->insert([
-            'nom' => 'Caixa de cartes',
+            'nom' => 'Caixa de sobres',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

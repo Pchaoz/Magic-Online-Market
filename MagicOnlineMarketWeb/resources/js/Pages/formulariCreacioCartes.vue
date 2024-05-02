@@ -83,7 +83,9 @@ const options = ref([
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:" />
+                        <div class="d-flex flex-column align-items-center ">
                         <VField id="imatge" name="imatge" type="file" class="mt-1 block w-full" rules="required" style="color: black" @change="obtenirImatge" />
+                        </div>
                         <ErrorMessage name="imatge" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">

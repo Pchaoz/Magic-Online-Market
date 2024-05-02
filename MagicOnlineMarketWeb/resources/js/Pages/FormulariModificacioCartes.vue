@@ -96,7 +96,9 @@ const options= ref([
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:" />
-                        <VField id="imatge" name="imatge" type="file" class="mt-1 block w-full"  style="color: black" @change="obtenirImatge" />
+                        <div class="d-flex flex-column align-items-center ">
+                            <VField id="imatge" name="imatge" type="file" class="mt-1 block w-full"  style="color: black" @change="obtenirImatge" />
+                        </div>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <select id="raresa" required v-model="formCarta.raresa" style="color: black;">

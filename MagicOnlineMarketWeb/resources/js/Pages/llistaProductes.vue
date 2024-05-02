@@ -7,10 +7,7 @@ import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { required } from '@vee-validate/rules';
-import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-validate';
 
-defineRule('required', required);
 
 defineProps({
     productes: {
@@ -22,47 +19,21 @@ defineProps({
     categoriesProducte:{
         type: Array(String),
     },
-    cartes:{
-        type: Array(String),
-    }
 });
 
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
-let showModalModificacio=ref(false);
-let showModalCreacio=ref(false);
-let showModalConfirmacio=ref(false);
 let showModalImage = ref(false);
 let showModalOferta=ref(false);
 
 const formProducte= useForm({
     idProducte:null,
-    nom: "",
-    descripcio:"",
-    imatge:null,
-    idCategoriaProducte:"",
-    idExpansio:"",
-    idCarta:"",
-    imatgeMiniatura:''
 })
+const auxformInsert= useForm({
 
-const formProducteInsert= useForm({
-    idProducte:null,
-    nom: "",
-    descripcio:"",
-    imatge:null,
-    idCategoriaProducte:"",
-    idExpansio:"",
-    idCarta:"",
-    imatgeMiniatura:''
-})
+});
 
-const formOferta= useForm({
-    idProducte:null,
-    nomProducte:"",
-    quantitatDisponible: 0,
-    preuUnitari:0,
-})
+
 //eliminació de producte
 const abrirModalEliminacio = (id) =>{
     showModalEliminacio.value=true;
@@ -75,7 +46,7 @@ const cerrarModalEliminacio = () => {
 }
 
 const eliminarProducte =()=> {
-    formProducte.delete('eliminarProducte');
+    formProducte.get('eliminarProducte');
     recargaPaginaElim();
 }
 
@@ -87,84 +58,24 @@ const recargaPaginaElim = () => {
 }
 
 //modificació i inserció de productes
-const abrirModalModificacio = (producte) =>{
-    showModalModificacio.value=true;
-    formProducte.nom=producte.nom;
-    formProducte.descripcio=producte.descripcio;
-    formProducte.idProducte=producte.idProducte;
-    formProducte.imatge='/images/'+producte.imatge;
-    formProducte.imatgeMiniatura='/images/'+producte.imatge;
-    producte.idCategoriaProducte==null?  formProducte.idCategoriaProducte=null: formProducte.idCategoriaProducte=producte.idCategoriaProducte;
-    producte.idExpansio==null?  formProducte.idExpansio=null: formProducte.idExpansio=producte.idExpansio;
-    producte.idCarta==null?  formProducte.idCarta=null: formProducte.idCarta=producte.idCarta;
-}
-const cerrarModalModificacio = () => {
-    showModalModificacio.value=false;
 
+const crearProducte=()=> {
+    auxformInsert.get('/formCrearProducte');
 }
 
-const modProducte =()=> {
-    formProducte.get('/modificarProducte');
-    //recargaPagina();
-}
+const modProducte =(id)=> {
+    formProducte.idProducte=id;
+    formProducte.get('/formModificarProducte');
 
-
-const obtenirImatgeMod = (e) => {
-    let file = e.target.files[0];
-    formProducte.imatge = file;
-    mostrarImatge(file);
-}
-const mostrarImatge = (file) => {
-    let reader = new FileReader()
-    reader.onload = (e) => {
-        formProducte.imatgeMiniatura = e.target.result
-    }
-    reader.readAsDataURL(file)
-}
-
-
-const obtenirImatgeInsert= (e) => {
-    let file = e.target.files[0];
-    formProducteInsert.imatge = file;
-    mostrarImatgeInsert(file);
-}
-
-const mostrarImatgeInsert = (file) => {
-    let reader = new FileReader()
-    reader.onload = (e) => {
-        formProducteInsert.imatgeMiniatura= e.target.result
-    }
-    reader.readAsDataURL(file)
-}
-
-const recargaPagina = () => {
-    showModalConfirmacio.value=true;
-   // location.reload();
-}
-
-const abrirModalInsert =()=>{
-    formProducteInsert.nom="";
-    formProducteInsert.descripcio="";
-    formProducteInsert.idProducte="";
-    formProducteInsert.imatge=null;
-    formProducteInsert.imatgeMiniatura="";
-    formProducteInsert.idCategoriaProducte=null;
-    formProducteInsert.idExpansio=null;
-    formProducteInsert.idCarta=null;
-    showModalCreacio.value=true;
-}
-
-const insertProducte =()=>{
-    formProducteInsert.get('crearProducte');
-    recargaPagina();
-}
-
-const cerrarModalCreacio  = () => {
-    showModalCreacio.value=false;
 }
 
 //creacio d'oferta
-
+const formOferta= useForm({
+    idProducte:null,
+    nomProducte:"",
+    quantitatDisponible: 0,
+    preuUnitari:0,
+})
 const abrirModalCreacioArticle =(id,nom)=>{
     showModalOferta.value=true;
     formOferta.idProducte=id;
@@ -187,7 +98,7 @@ const recargaPaginaOferta = () => {
     showModalConfirmacio.value=true;
     location.reload();
 }
-
+//maximizar imagen
 let selectedImage = ref(null);
 
 const openImageModal = (image) => {
@@ -232,7 +143,7 @@ const closeImageModal = () => {
                     <td> {{producte.expansioNom}}</td>
                     <td v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
                         <b-button  class="btn btn-success rounded-pill"
-                                   @click="abrirModalModificacio(producte)">Modificar</b-button>
+                                   @click="modProducte(producte.idProducte)">Modificar</b-button>
                     </td>
                     <td v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
 
@@ -270,172 +181,6 @@ const closeImageModal = () => {
                     <p>Producte Eliminat</p>
                 </div>
             </div>
-        </Modal>
-        <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalModificacio" >
-                    <VForm v-slot="{ errors }" @submit="modProducte" class="w-100 rounded">
-                        <div class="d-flex flex-column align-items-center m-4 ">
-                            <InputLabel for="nom" value="Nom:" />
-                             <VField
-                                id="nom"
-                                name="nom"
-                                type="text"
-                                v-model="formProducte.nom"
-                                rules="required"
-                                class="mt-1 block w-full"
-                                style="color: black;"/>
-                        <ErrorMessage name="nom" />
-                        </div>
-                        <div class="d-flex flex-column align-items-center m-4">
-                            <InputLabel for="descripcio" value="Descripcio:" />
-                            <VField
-                                id="descripcio"
-                                name="descripcio"
-                                type="text"
-                                v-model="formProducte.descripcio"
-                                rules="required"
-                                class="mt-1 block w-full"
-                                style="color: black;"
-                            />
-                            <ErrorMessage name="descripcio" />
-                        </div>
-                        <div class="d-flex flex-column align-items-center m-4 ">
-                            <InputLabel for="imatge" value="Imatge:"/>
-                            <VField
-                                id="imatge"
-                                name="imatge"
-                                type="file"
-                                class="mt-1 block w-full"
-                                @change="obtenirImatgeMod"
-                                />
-                            </div>
-                        <div class="d-flex flex-column align-items-center m-4">
-                                <div>Categoria de Producte</div>
-                                <select id="idCategoriaProducte" v-model="formProducte.idCategoriaProducte" style="color: black;">
-                                    <option v-for="categoria in categoriesProducte"  v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.idCategoriaProductes">
-                                        {{ categoria.nom }}
-                                    </option>
-                                    <option >
-                                        {{ "Sense Categoria" }}
-                                    </option>
-                                </select>
-                            </div>
-                        <div class="d-flex flex-column align-items-center m-4">
-                                <div>Expansió</div>
-                                <select  id="idExpansio" v-model="formProducte.idExpansio" style="color: black;">
-                                    <option v-for="expansio in expansions" v-bind:key="expansio.idExpansio" v-bind:value="expansio.idExpansio">
-                                        {{ expansio.nom }}
-                                    </option>
-                                    <option >
-                                        {{ "Sense Expansio" }}
-                                    </option>
-                                </select>
-                            </div>
-                        <div class="d-flex flex-column align-items-center m-4 ">
-                                <div>Carta a la que fa referencia</div>
-                                <select  id="idCarta" v-model="formProducte.idCarta" style="color: black;">
-                                    <option v-for="carta in cartes" v-bind:key="carta.idCarta" v-bind:value="carta.idCarta">
-                                        {{ carta.nom }}
-                                    </option>
-                                    <option >
-                                        {{ "No Carta" }}
-                                    </option>
-                                </select>
-                            </div>
-                        <div class="d-flex flex-column align-items-center m-4">
-                            <figure>
-                                <img width="200" height="200" :src="formProducte.imatgeMiniatura">
-                            </figure>
-                        </div>
-                        <div class="d-flex justify-content-center m-3 ">
-                            <button class="btn btn-success mr-5" :class="{ 'opacity-25': formProducte.processing }" :disabled="Object.keys(errors).length > 0">Guardar</button>
-                            <button type="button" class="btn btn-danger ml-5"
-                                    @click="cerrarModalModificacio">Cancelar</button>
-                        </div>
-                    </VForm>
-        </Modal>
-        <Modal :show="showModalCreacio" maxWidth="2xl" closeable @close="cerrarModalCreacio" >
-            <VForm v-slot="{ errors }" @submit="insertProducte" class="w-100 rounded">
-                <div class="d-flex flex-column align-items-center m-4 ">
-                    <InputLabel for="nom" value="Nom:" />
-                    <VField
-                        id="nom"
-                        name="nom"
-                        type="text"
-                        v-model="formProducteInsert.nom"
-                        rules="required"
-                        class="mt-1 block w-full"
-                        style="color: black;"/>
-                    <ErrorMessage name="nom" />
-                </div>
-                <div class="d-flex flex-column align-items-center m-4">
-                    <InputLabel for="descripcio" value="Descripcio:" />
-                    <VField
-                        id="descripcio"
-                        name="descripcio"
-                        type="text"
-                        v-model="formProducteInsert.descripcio"
-                        rules="required"
-                        class="mt-1 block w-full"
-                        style="color: black;"
-                    />
-                    <ErrorMessage name="descripcio" />
-                </div>
-                <div class="d-flex flex-column align-items-center m-4 ">
-                    <InputLabel for="imatge" value="Imatge:"/>
-                    <VField
-                        id="imatge"
-                        name="imatge"
-                        type="file"
-                        class="mt-1 block w-full"
-                        @change="obtenirImatgeInsert"
-
-                    />
-                    <ErrorMessage name="imatge" />
-                </div>
-                <div class="d-flex flex-column align-items-center m-4">
-                    <div>Categoria de Producte</div>
-                    <select id="idCategoriaProducte" v-model="formProducteInsert.idCategoriaProducte" style="color: black;">
-                        <option v-for="categoria in categoriesProducte"  v-bind:key="categoria.idCategoriaProductes" v-bind:value="categoria.idCategoriaProductes">
-                            {{ categoria.nom }}
-                        </option>
-                        <option >
-                            {{ "Sense Categoria" }}
-                        </option>
-                    </select>
-                </div>
-                <div class="d-flex flex-column align-items-center m-4">
-                    <div>Expansió</div>
-                    <select  id="idExpansio" v-model="formProducteInsert.idExpansio" style="color: black;">
-                        <option v-for="expansio in expansions" v-bind:key="expansio.idExpansio" v-bind:value="expansio.idExpansio">
-                            {{ expansio.nom }}
-                        </option>
-                        <option >
-                            {{ "Sense Expansio" }}
-                        </option>
-                    </select>
-                </div>
-                <div class="d-flex flex-column align-items-center m-4 ">
-                    <div>Carta a la que fa referencia</div>
-                    <select  id="idCarta" v-model="formProducteInsert.idCarta" style="color: black;">
-                        <option v-for="carta in cartes" v-bind:key="carta.idCarta" v-bind:value="carta.idCarta">
-                            {{ carta.nom }}
-                        </option>
-                        <option >
-                            {{ "No Carta" }}
-                        </option>
-                    </select>
-                </div>
-                <div class="d-flex flex-column align-items-center m-4">
-                    <figure>
-                        <img width="200" height="200" :src="formProducteInsert.imatgeMiniatura">
-                    </figure>
-                </div>
-                <div class="d-flex justify-content-center m-3 ">
-                    <button class="btn btn-success mr-5" :class="{ 'opacity-25': formProducteInsert.processing }" :disabled="Object.keys(errors).length > 0">Guardar</button>
-                    <button type="button" class="btn btn-danger ml-5"
-                            @click="cerrarModalCreacio">Cancelar</button>
-                </div>
-            </VForm>
         </Modal>
 
         <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
@@ -490,15 +235,8 @@ const closeImageModal = () => {
             </div>
         </Modal>
 
-        <Modal :show="showModalConfirmacio" maxWidth="2xl" closeable @close="cerrarModalModificacio" >
-            <div class="modal-content w-100">
-                <div class="d-flex justify-content-center m-3 ">
-                    <p>Operació realitzada!</p>
-                </div>
-            </div>
-        </Modal>
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
-            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="abrirModalInsert">Crear Nou producte</b-button>
+            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="crearProducte">Crear Nou producte</b-button>
         </div>
     </AuthenticatedLayout>
 </template>

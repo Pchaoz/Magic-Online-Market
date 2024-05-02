@@ -27,21 +27,19 @@ class ProductesController extends Controller
         $cartes = DB::table('cartes')
             ->select('cartes.nom as nom','cartes.idCarta as idCarta')
             ->get();
-
-
         return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes]);
     }
 
-    public function whereProductes($idCategoriaProductes){
-        $productes = DB::table('productes')
+    public function formModificarProducte(Request $request){
+        $producte = DB::table('productes')
             ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')
             ->leftJoin('expansions', 'productes.idExpansio', '=', 'expansions.idExpansio')
             ->select('productes.nom AS nom', 'productes.descripcio AS descripcio', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom',
                 'expansions.nom AS expansioNom','productes.idProducte as idProducte','productes.idCategoriaProducte as idCategoriaProducte','productes.idExpansio as idExpansio','productes.idCarta as idCarta')
-            ->where('productes.idCategoriaProducte','=',$idCategoriaProductes)
-            ->get();
+            ->where("productes.idProducte",'=',$request->idProducte)
+            ->first();
         $categoriesProducte = DB::table('categoria_productes')
-            ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes as idCategoriaProductes')
+            ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes')
             ->get();
         $expansions = DB::table('expansions')
             ->select('expansions.nom as nom','expansions.idExpansio as idExpansio')
@@ -50,8 +48,24 @@ class ProductesController extends Controller
             ->select('cartes.nom as nom','cartes.idCarta as idCarta')
             ->get();
 
-        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes]);
+        return Inertia::render('formulariModificacioProductes',['producte'=>$producte,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes]);
     }
+
+    public function formCrearProducte(){
+        $categoriesProducte = DB::table('categoria_productes')
+            ->select('categoria_productes.nom as nom','categoria_productes.idCategoriaProductes')
+            ->get();
+        $expansions = DB::table('expansions')
+            ->select('expansions.nom as nom','expansions.idExpansio as idExpansio')
+            ->get();
+        $cartes = DB::table('cartes')
+            ->select('cartes.nom as nom','cartes.idCarta as idCarta')
+            ->get();
+
+        return Inertia::render('formulariCreacioProductes', ['categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes]);
+    }
+
+
 
 
     public function APIListProductes(){
@@ -92,7 +106,6 @@ class ProductesController extends Controller
     }
     public function modificarProducte(Request $request){
         $producte= Productes::where('idProducte',$request->idProducte)->first();
-        return response()->json($request);
         $producte->nom=$request->nom;
         $producte->descripcio=$request->descripcio;
         if($request->hasFile('imatge')){
@@ -106,6 +119,7 @@ class ProductesController extends Controller
         $request->idExpansio=="Sense Expansio"?$producte->idExpansio=null:$producte->idExpansio=$request->idExpansio;
         $request->idCarta=="No Carta"?$producte->idCarta=null:$producte->idCarta=$request->idCarta;
         $producte->save();
+
     }
 
 
@@ -124,6 +138,7 @@ class ProductesController extends Controller
         $request->idExpansio=="Sense Expansio"?$producte->idExpansio=null:$producte->idExpansio=$request->idExpansio;
         $request->idCarta=="No Carta"?$producte->idCarta=null:$producte->idCarta=$request->idCarta;
         $producte->save();
+
     }
 
 }
