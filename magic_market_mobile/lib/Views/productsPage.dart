@@ -5,6 +5,7 @@ import 'dart:convert';
 import '../Util/LateralMenu.dart';
 import '../Util/globals.dart';
 import 'loginPage.dart';
+import 'productsDetailsPage.dart';
 
 class ProductsPage extends StatefulWidget {
   @override
@@ -32,7 +33,8 @@ class _ProductsPageState extends State<ProductsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Productos'),
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        title: const Text('Productos'),
       ),
       body: Expanded(
         child: ListView.builder(
@@ -91,66 +93,5 @@ class _ProductsPageState extends State<ProductsPage> {
         },
       );
     }
-  }
-}
-
-class ProductDetailPage extends StatefulWidget {
-  final dynamic product;
-
-  ProductDetailPage({Key? key, this.product}) : super(key: key);
-
-  @override
-  _ProductDetailPageState createState() => _ProductDetailPageState();
-}
-
-class _ProductDetailPageState extends State<ProductDetailPage> {
-  late Future<List<dynamic>> futureOffers;
-
-  @override
-  void initState() {
-    super.initState();
-    futureOffers = fetchOffers();
-  }
-
-  Future<List<dynamic>> fetchOffers() async {
-    final response =
-        await http.get(Uri.parse(API_URI_LOCAL + widget.product['idArticulo']));
-    print("RESPUESTA DEL SERVIDOR: " + response.body);
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load offers');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: Text(widget.product['nom'])), // Título centrado
-      ),
-      body: FutureBuilder<List<dynamic>>(
-        future: futureOffers,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(snapshot.data![index]['nick']),
-                  subtitle: Text('Precio: ${snapshot.data![index]['precio']}€'),
-                  onTap: () {
-                    // Aquí puedes definir qué sucede cuando se hace clic en un elemento de la lista
-                  },
-                );
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Text("${snapshot.error}");
-          }
-          return const CircularProgressIndicator();
-        },
-      ),
-    );
   }
 }
