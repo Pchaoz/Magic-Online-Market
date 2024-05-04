@@ -11,13 +11,12 @@ defineProps({
     articles:{
         type: Array(String),
     },
-
-
 });
 
 let showModalOferta=ref(false);
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
+let quantitatComprada= ref(0);
 
 const formOferta= useForm({
     idArticle:null,
@@ -87,8 +86,12 @@ const closeImageModal = () => {
 //agregar al carrito
 
 const agregarCarrito = (id) => {
-    selectedImage.value = null;
-    showModalImage.value = false;
+    const  articlesCarrito=[];
+    articlesCarrito.push({
+        idArticle: id,
+        qtyComprada: quantitatComprada
+    })
+   localStorage.setItem('articulos', JSON.stringify(articlesCarrito));
 }
 
 
