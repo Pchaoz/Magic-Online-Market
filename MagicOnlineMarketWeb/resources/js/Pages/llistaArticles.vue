@@ -84,19 +84,13 @@ const closeImageModal = () => {
     selectedImage.value = null;
     showModalImage.value = false;
 }
+//agregar al carrito
 
-//funciones de ordenacion
-let sortOption = ref('');
-
-const sortArticles = (articles) => {
-
-
-        articles.value.sort((a, b) => a.preu - b.preu);
-    if (sortOption.value === 'alphabetical') {
-        articles.value.sort((a, b) => a.nick.localeCompare(b.nick));
-    }
-    articles.value.sort((a, b) => a.preu - b.preu);
+const agregarCarrito = (id) => {
+    selectedImage.value = null;
+    showModalImage.value = false;
 }
+
 
 
 </script>
@@ -107,14 +101,15 @@ const sortArticles = (articles) => {
             <table class="table  table-striped  my-table w-50 ">
                 <thead>
                 <tr>
-                    <th>Imatge</th>
-                    <th>Nom Article</th>
-                    <th>Venedor</th>
-                    <th>Quantitat</th>
-                    <th>Preu</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th class="col-1">Imatge</th>
+                    <th class="col-2">Nom Article</th>
+                    <th class="col-1">Venedor</th>
+                    <th class="col-1">Quantitat</th>
+                    <th class="col-1">Preu</th>
+                    <th class="col-1"></th>
+                    <th class="col-1"></th>
+                    <th class="col-1"></th>
+                    <th class="col-1"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -129,7 +124,11 @@ const sortArticles = (articles) => {
                     <td>{{article.quantitat}}</td>
                     <td>{{article.preu}}</td>
                     <td>
-                        <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);">
+                        <input type="number" class="form-control" placeholder="qty" v-model="quantitatComprada">
+
+                    </td>
+                    <td>
+                        <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="agregarCarrito(article.idArticle)">
                     </td>
                     <td>
                         <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
