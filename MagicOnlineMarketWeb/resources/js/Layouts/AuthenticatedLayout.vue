@@ -55,6 +55,7 @@ const showingNavigationDropdown = ref(false);
                                             </template>
                                             <template #content>
                                                 <DropdownLink :href="route('ListProductes')"> Tots els Productes </DropdownLink>
+                                                <DropdownLink :href="route('ListArticles')"> Tots els Articles </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
@@ -131,7 +132,13 @@ const showingNavigationDropdown = ref(false);
                                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                                     <div class="ms-3 relative">
 
-                                                Noticies
+                                        <button
+                                            type="button"
+                                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                        >
+                                            Noticies
+
+                                        </button>
 
                                     </div>
                                 </div>
