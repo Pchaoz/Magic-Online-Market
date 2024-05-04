@@ -133,7 +133,7 @@ const closeImageModal = () => {
                 <tbody>
                 <tr v-for="producte in productes" :key="producte.id">
                     <td>
-                        <a :href="'/ver-ofertas/' + producte.idProducte">{{ producte.nom }}</a>
+                        <a :href="'/veureOfertes/' + producte.idProducte">{{ producte.nom }}</a>
                     </td>
                     <td>{{producte.descripcio}}</td>
                     <td>

@@ -38,10 +38,28 @@ class ArticleController extends Controller
                 'articles.idArticle AS idArticle')
             ->where('articles.idProducte', '=', $id)
             ->get();
-
         return Inertia::render('OfertesArticle', ['producte' => $producte, 'articles' => $articles]);
     }
 
+
+    public function mostrarAllArticle()
+    {
+        $producte = DB::table('productes')
+            ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')
+            ->leftJoin('expansions', 'productes.idExpansio', '=', 'expansions.idExpansio')
+            ->select('productes.nom AS nom', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom',
+                'expansions.nom AS expansioNom')
+            ->where('productes.idProducte', '=', $id)
+            ->get();
+        $articles = DB::table('articles')
+            ->leftJoin('usuaris', 'articles.idVenedor', '=', 'usuaris.idUsuari')
+            ->select('usuaris.nick AS nick', 'articles.idVenedor AS idVenedor', 'articles.preuUnitari AS preu', 'articles.quantitatDisponible AS quantitat',
+                'articles.idArticle AS idArticle')
+            ->where('articles.idProducte', '=', $id)
+            ->get();
+
+        return Inertia::render('OfertesArticle', ['producte' => $producte, 'articles' => $articles]);
+    }
 
     public function modificarArticle (Request $request)
     {

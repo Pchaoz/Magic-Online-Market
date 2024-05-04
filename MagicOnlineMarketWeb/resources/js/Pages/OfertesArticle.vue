@@ -13,6 +13,7 @@ defineProps({
     producte: {
         type: Array(String),
     },
+
     articles:{
         type: Array(String),
     },
@@ -29,6 +30,8 @@ const formOferta= useForm({
     quantitatDisponible: 0,
     preuUnitari:0,
 })
+
+
 
 const abrirModalModArticle =(article)=>{
     formOferta.idArticle=article.idArticle;
@@ -85,15 +88,15 @@ const recargaPaginaElim = () => {
     <AuthenticatedLayout>
 
         <div class="rounded mx-auto" style="background-color: rgba(0,214,153,0.6); padding: 50px; margin-top: 50px; margin-bottom: 20px; width: 1000px">
-            <b-container class="d-flex" style="background-color: rgba(128,128,128,0.6)" ;>
+            <b-container class="d-flex" style="background-color: rgba(128,128,128,0.6)" >
                 <b-row class="d-flex w-75 m-3">
                     <b-col cols="6">
-                        <img :src="'/images/' + producte[0].imatge" alt="Foto del producto"  style="height: 350px; width: 300px " />                    </b-col>
+                        <img :src="'/images/' + producte[0].imatge" alt="Foto del producto"  style="height: 350px; width: 300px " />
+                    </b-col>
                     <b-col cols="6" class="text-white m-3">
-                        <h2>{{ producte[0].nom }}</h2>
+                    <h2>{{ producte[0].nom }}</h2>
                         <p>Categoria de producte: {{ producte[0].categoriaProducteNom }}</p>
                         <p>Expansió del producte: {{ producte[0].expansioNom }}</p>
-
                     </b-col>
                 </b-row>
             </b-container>
