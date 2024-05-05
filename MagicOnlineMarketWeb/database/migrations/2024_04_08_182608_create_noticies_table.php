@@ -11,8 +11,10 @@ return new class extends Migration
     {
         Schema::create('noticies', function (Blueprint $table) {
             $table->bigIncrements("idNoticia");
-            $table->string("títol",100);
-            $table->string("contingut");
+            $table->string("titol",100);
+            $table->string("subtitol",150)->nullable();
+            $table->string("imatge")->nullable();
+            $table->string("contingut")->nullable();
             $table->timestamp("dataHoraPublicacio")->default(now());
             $table->foreignId('idCreador')->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

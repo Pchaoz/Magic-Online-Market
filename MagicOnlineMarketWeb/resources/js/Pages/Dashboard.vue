@@ -47,16 +47,16 @@ export default {
         return {
             slides: [
                 // Add your image URLs here
-                '/images/noticias/karlov.jpg',
-                '/images/noticias/thunder.jpg',
-                '/images/noticias/moderhorizons.jpg',
+                '/images/noticies/karlov.jpg',
+                '/images/noticies/thunder.jpg',
+                '/images/noticies/moderhorizons.jpg',
                 // ... more images ...
             ],
             urls: [
                 // Add your image URLs here
-                '/images/noticias/karlov1.jpg',
-                '/images/noticias/thunder1.jpg',
-                '/images/noticias/moderhorizons1.jpg',
+                '/veureNoticia/1',
+                '/veureNoticia/2',
+                '/veureNoticia/3',
                 // ... more URLs ...
             ]
         };

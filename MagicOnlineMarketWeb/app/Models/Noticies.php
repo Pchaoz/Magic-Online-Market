@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Noticies extends Model
 {
-    protected $table = "notices";
+    protected $table = "noticies";
     protected $primaryKey = "idNoticia";
-    protected $fillable = ["idNoticia","titol","contingut","dataHoraPublicacio"];
+    protected $fillable = ["idNoticia","titol","subtitol","imatge","contingut","dataHoraPublicacio"];
 
 
     public function user(){

@@ -171,6 +171,8 @@ Siempre que lances un hechizo de permanente verde, pon un contador +1/+1 sobre c
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
 
+
+
         Schema::enableForeignKeyConstraints();
     }
 }

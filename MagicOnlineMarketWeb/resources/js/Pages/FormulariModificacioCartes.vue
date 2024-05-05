@@ -1,14 +1,15 @@
 <script setup>
 
 import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
 import {useForm} from "@inertiajs/vue3";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import {ref} from "vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import Modal from "@/Components/Modal.vue";
+import { required } from '@vee-validate/rules';
+import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-validate';
 
+defineRule('required', required);
 
 const props = defineProps({
     carta: Object
@@ -80,72 +81,46 @@ const options= ref([
 </script>
 <template>
     <AuthenticatedLayout>
-        <div  class="d-flex justify-content-center ">
-            <div class=" w-25 rounded" style="background-color: black; padding: 20px; margin: 20px;">
-                <form enctype="multipart/form-data" class="w-100 rounded">
-                    <div class="m-2">
+        <div  class="d-flex justify-content-center pt-16">
+            <div class="w-25 rounded"  style="background-color: rgba(255,255,255,0.2);padding: 20px; margin: 20px;">
+                <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
+                    <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />
-                        <TextInput
-                            id="nom"
-                            type="text"
-                            class="mt-1 block w-full"
-                            v-model="formCarta.nom"
-                            required
-                            autofocus
-                            autocomplete="nom"
-                            style="color: black;"
-                        />
+                        <VField id="nom" name="nom" type="text" v-model="formCarta.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <ErrorMessage name="nom" />
                     </div>
-                    <div class="m-2">
+                    <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="descripcio" value="Descripcio:" />
-                        <TextInput
-                            id="descripcio"
-                            type="text"
-                            class="mt-1 block w-full"
-                            v-model="formCarta.descripcio"
-                            required
-                            autofocus
-                            autocomplete="descripcio"
-                            style="color: black;"
-                        />
+                        <VField id="descripcio" name="descripcio" type="text" v-model="formCarta.descripcio" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <ErrorMessage name="descripcio" />
                     </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <div>
-                            <InputLabel for="imatge" value="Imatge:"  v-model="formCarta.imatge" />
-                            <input
-                                id="imatge"
-                                type="file"
-                                class="mt-1 block w-full"
-                                required
-                                autofocus
-                                autocomplete="imatge"
-                                @change="obtenirImatge"
-
-                            />
+                    <div class="d-flex flex-column align-items-center m-4 p-1">
+                        <InputLabel for="imatge" value="Imatge:" />
+                        <div class="d-flex flex-column align-items-center ">
+                            <VField id="imatge" name="imatge" type="file" class="mt-1 block w-full"  style="color: black" @change="obtenirImatge" />
                         </div>
-
-                        <div class="m-2">
-                            <select  id="raresa" v-model="formCarta.raresa" style="color: black;">
-                                <option v-for="option in options" v-bind:key="option.name" v-bind:value="option.value">
-                                    {{ option.name }}
-                                </option>
-                            </select>
-                        </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-center m-4 p-1">
+                        <select id="raresa" required v-model="formCarta.raresa" style="color: black;">
+                            <option v-for="option in options" :key="option.name" :value="option.value">
+                                {{ option.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="d-flex flex-column align-items-center m-4 p-1">
                         <figure>
                             <img width="200" height="200" :src="imatgeUrl">
                         </figure>
-
-                        <div class="flex items-center justify-end mt-4 m-2">
-                            <PrimaryButton @click="myfunction" class="ms-4" :class="{ 'opacity-25': formCarta.processing }" :disabled="formCarta.processing">
-                                Modificar
-                            </PrimaryButton>
-                        </div>
                     </div>
-                </form>
+                    <div class="d-flex flex-column align-items-center m-4 p-1">
+                        <button class="btn btn-success" :class="{ 'opacity-25': formCarta.processing }" :disabled="Object.keys(errors).length > 0">
+                            Modificar
+                        </button>
+                    </div>
+                </VForm>
             </div>
             <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Carta Modificada!</p>
                     </div>
@@ -158,7 +133,10 @@ const options= ref([
 
 <style scoped>
 form {
-    background-color: #888888;
-    color: white;
+    background-color:rgba(0,214,153,0.8) !important;
+
 }
+
+
+
 </style>

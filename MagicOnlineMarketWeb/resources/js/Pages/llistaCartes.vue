@@ -18,6 +18,7 @@ defineProps({
 });
 let showModal = ref(false);
 let showModalElim = ref(false);
+let showModalImage = ref(false);
 let cartaId =ref(null);
 
 const abrirModalConfirmacion = (id) => {
@@ -29,6 +30,7 @@ const abrirModalConfirmacion = (id) => {
 const cerrarModal = () => {
     showModal.value = false;
     showModalElim.value=false;
+    showModalImage.value =false;
 }
 
 const eliminarCarta = async () => {
@@ -54,78 +56,83 @@ const abrirFormularioEdicion=(id)=>{
 
 }
 
+let selectedImage = ref(null);
 
+const openImageModal = (image) => {
+    selectedImage.value = image;
+    showModalImage.value = true;
+}
 
 
 </script>
 
 <template>
     <AuthenticatedLayout>
-        <div class="d-flex justify-content-center m-3 ">
-            <table class="table table-striped table-dark w-50 ">
+        <div class="d-flex justify-content-center m-3 " >
+            <table class="table table-striped my-table w-50" >
                 <thead>
                 <tr>
-                    <th>Nom Carta</th>
-                    <th></th>
-                    <th></th>
-                    <th>Descripcio Carta</th>
-                    <th>Imatge Carta</th>
-                    <th>Raresa Carta</th>
+                    <th class="col-1">Nom Carta</th>
+                    <th class="col-3">Descripcio Carta</th>
+                    <th class="col-2">Imatge Carta</th>
+                    <th class="col-1">Raresa Carta</th>
+                    <th class="col-1"></th>
+                    <th class="col-1"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="carta in cartes" :key="carta.id">
                     <td>{{carta.nom}}</td>
-                    <td>
-                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-primary rounded-circle"
-                                @click="abrirFormularioEdicion(carta.idCarta)">Mod</button>
-                    </td>
-                    <td>
-                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-primary rounded-circle"
-                                @click="abrirModalConfirmacion(carta.idCarta)">Elim</button>
-                    </td>
                     <td>{{carta.descripcio}}</td>
                     <td>
-                        <img :src="'/images/' + carta.imatge" alt="Imagen de la carta" width="150" height="200" class="zoomable-image">
+                        <img :src="'/images/' + carta.imatge"  width="300" height="350"  @click="openImageModal(carta.imatge)">
                     </td>
                     <td>{{carta.raresa}}</td>
+                    <td>
+                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-success rounded-pill"
+                                @click="abrirFormularioEdicion(carta.idCarta)">Modificar</button>
+                    </td>
+                    <td>
+                        <button v-if="idRolUser == '2'||idRolUser == '1'"  class="btn btn-danger rounded-pill"
+                                @click="abrirModalConfirmacion(carta.idCarta)">Eliminar</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
             <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
-                    <p>¿Estas segur de que vols eliminar aquesta carta?</p>
+                        <p>¿Estas segur de que vols eliminar aquesta carta?</p>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
-                    <button type="button" class="btn btn-danger mr-5" @click="cerrarModal">No</button>
-                    <button type="button" class="btn btn-primary ml-5"
-                        @click="eliminarCarta">Sí</button>
+                        <button type="button" class="btn btn-success mr-5"
+                            @click="eliminarCarta">Sí</button>
+                        <button type="button" class="btn btn-danger ml-5" @click="cerrarModal">No</button>
                     </div>
                 </div>
             </Modal>
             <Modal :show="showModalElim" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Carta Eliminada!</p>
                     </div>
                 </div>
+            </Modal>
+            <Modal :show="showModalImage" maxWidth="2xl" closeable @close="cerrarModal" >
+                    <div class="d-flex justify-content-center  p-5">
+                        <img :src="'/images/' + selectedImage" width="500" height="600">
+                    </div>
             </Modal>
             </div>
 
     </AuthenticatedLayout>
 </template>
 
-<style scoped>
-.zoomable-image {
-    transition: transform 0.3s ease;
+<style>
+
+.my-table td, .my-table th {
+    background-color: rgba(0,214,153,0.5) !important;
+    text-align: center;
+    vertical-align: middle;
 }
-
-.zoomable-image:hover {
-    transform: scale(4);
-}
-
-
 </style>

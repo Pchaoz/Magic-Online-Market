@@ -55,10 +55,7 @@ const showingNavigationDropdown = ref(false);
                                             </template>
                                             <template #content>
                                                 <DropdownLink :href="route('ListProductes')"> Tots els Productes </DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','1')" >Cartes Soltes</DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','2')">Caixes de Sobres</DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','3')">Sobres de Cartes</DropdownLink>
-                                                <DropdownLink :href="route('whereProductes','4')">Tapets</DropdownLink>
+                                                <DropdownLink :href="route('ListArticles')"> Tots els Articles </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
@@ -134,9 +131,13 @@ const showingNavigationDropdown = ref(false);
                                 </div>
                                 <div class="hidden sm:flex sm:items-center sm:ms-6">
                                     <div class="ms-3 relative">
-
+                                        <Link :href="route('listNoticies')">
+                                            <button
+                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                            >
                                                 Noticies
-
+                                            </button>
+                                        </Link>
                                     </div>
                                 </div>
 
@@ -167,7 +168,7 @@ const showingNavigationDropdown = ref(false);
                                             </template>
                                             <template #content>
                                                 <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('ListRols')"> Administrar Rols </DropdownLink>
-                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('getUsersForm')"> Administarar Usuaris </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('getUsersForm')"> Administrar Usuaris </DropdownLink>
                                                 <DropdownLink  :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
                                                 <DropdownLink> Crear Expansions </DropdownLink>
 

@@ -18,6 +18,7 @@ defineProps({
 let showModal = ref(false);
 let showModalEliminacio = ref(false);
 let showModalCreacio=ref(false);
+let showModalCreacioConfirmacio=ref(false);
 let showModalModificacio=ref(false);
 let showModalModificacioConfirmacio=ref(false);
 let rolId =ref(null);
@@ -85,6 +86,12 @@ const formRol= useForm({
 const crearRol=()=> {
 
     formRol.post('crearRol');
+    confirmacionCreacio();
+}
+
+const confirmacionCreacio=()=>{
+    showModalCreacio.value=false;
+    showModalCreacioConfirmacio.value=true;
     location.reload();
 }
 
@@ -93,7 +100,7 @@ const crearRol=()=> {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
-            <table class="table table-striped table-dark w-25 ">
+            <table class="table table-striped my-table w-25 ">
                 <thead>
                 <tr>
                     <th>Nom</th>
@@ -105,12 +112,14 @@ const crearRol=()=> {
                 <tr v-for="rol in rols" :key="rol.id">
                     <td>{{rol.nom}}</td>
                     <td>
-                        <button  class="btn btn-primary rounded-circle"
-                                 @click="abrirModalConfirmacion(rol.idRol)">Elim</button>
+                        <button  class="btn btn-success rounded-pill"
+                                 @click="abrirModalMod(rol.nom,rol.idRol)">Modificar</button>
+
                     </td>
                     <td>
-                        <button  class="btn btn-primary rounded-circle"
-                                 @click="abrirModalMod(rol.nom,rol.idRol)">Mod</button>
+                        <button  class="btn btn-danger rounded-pill"
+                        @click="abrirModalConfirmacion(rol.idRol)">Eliminar</button>
+
                     </td>
                 </tr>
                 </tbody>
@@ -118,20 +127,19 @@ const crearRol=()=> {
 
             <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
                         <p>¿Estas segur de que vols eliminar aquest rol?</p>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
-                        <button type="button" class="btn btn-danger mr-5" @click="cerrarModal">No</button>
-                        <button type="button" class="btn btn-primary ml-5"
+                        <button type="button" class="btn btn-success mr-5"
                                 @click="eliminarRol">Sí</button>
+                        <button type="button" class="btn btn-danger ml-5" @click="cerrarModal">No</button>
+
                     </div>
                 </div>
             </Modal>
             <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModal" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModal">×</span>
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Rol Eliminat</p>
                     </div>
@@ -140,7 +148,7 @@ const crearRol=()=> {
 
             <Modal :show="showModalCreacio" maxWidth="2xl" closeable @close="cerrarModalCreacio" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModalCreacio">×</span>
+
                     <div class="d-flex justify-content-center m-3 ">
                         <InputLabel for="nom" value="Nom del nou rol" class="m-2"  style="font-size: 16px;"/>
                         <input
@@ -151,15 +159,20 @@ const crearRol=()=> {
                             required
                             autofocus
                             style="color: black;">
-                        <button type="button" class="btn btn-success ml-5"
-                                @click="crearRol">Crear</button>
+
                     </div>
+                        <div class="d-flex justify-content-center m-3 ">
+                        <button type="button" class="btn btn-success ml-5"
+                            @click="crearRol">Crear</button>
+                        <button type="button" class="btn btn-danger ml-5"
+                                @click="cerrarModalCreacio">Cancelar</button>
+                        </div>
                 </div>
             </Modal>
 
             <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModalMod">×</span>
+
                     <div class="d-flex justify-content-center m-3 ">
                         <InputLabel for="nom" value="Nom nou del rol" class="m-2"  style="font-size: 16px;"/>
                         <input
@@ -170,16 +183,28 @@ const crearRol=()=> {
                             required
                             autofocus
                             style="color: black;">
-                        <button type="button" class="btn btn-success ml-5"
-                                @click="modificarRol">Modificar</button>
+                    </div>
+                        <div class="d-flex justify-content-center m-3 ">
+                            <button type="button" class="btn btn-success ml-5"
+                                    @click="modificarRol">Modificar</button>
+                            <button type="button" class="btn btn-danger ml-5"
+                                    @click="cerrarModalMod">Cancelar</button>
+
                     </div>
                 </div>
             </Modal>
             <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
                 <div class="modal-content w-100">
-                    <span class="close" @click="cerrarModalMod">×</span>
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Rol Modificat</p>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal :show="showModalCreacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
+                <div class="modal-content w-100">
+                    <div class="d-flex justify-content-center m-3 ">
+                        <p>Rol Creat</p>
                     </div>
                 </div>
             </Modal>
@@ -191,7 +216,11 @@ const crearRol=()=> {
     </AuthenticatedLayout>
 </template>
 
-<style scoped>
+<style>
 
-
+.my-table td, .my-table th {
+    background-color: rgba(0,214,153,0.7) !important;
+    text-align: center;
+    vertical-align: middle;
+}
 </style>

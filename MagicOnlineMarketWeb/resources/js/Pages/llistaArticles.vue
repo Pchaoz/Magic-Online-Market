@@ -1,19 +1,13 @@
 <script setup>
-import 'bootstrap/dist/css/bootstrap.css';
-
-
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import Modal from "@/Components/Modal.vue";
-import TextInput from "@/Components/TextInput.vue";
 import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
+import 'bootstrap/dist/css/bootstrap.css';
+import Modal from "@/Components/Modal.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+
 
 defineProps({
-    producte: {
-        type: Array(String),
-    },
-
     articles:{
         type: Array(String),
     },
@@ -31,112 +25,124 @@ const formOferta= useForm({
     preuUnitari:0,
 })
 
+const abrirModalModArticle =(article)=> {
+    formOferta.idArticle = article.idArticle;
+    formOferta.quantitatDisponible = article.quantitat;
+    formOferta.preuUnitari = article.preu;
+    showModalOferta.value = true;
+}
+    const cerrarModalOferta = () => {
+        showModalOferta.value=false;
+    }
+
+    const ModOferta =()=> {
+        formOferta.get('/modificarArticle');
+        cerrarModalOferta();
+        recargaPaginaOferta();
+    }
+
+    const recargaPaginaOferta = () => {
+
+        location.reload();
+    }
 
 
-const abrirModalModArticle =(article)=>{
-    formOferta.idArticle=article.idArticle;
-    formOferta.quantitatDisponible= article.quantitat;
-    formOferta.preuUnitari=article.preu;
-    showModalOferta.value=true;
+    const abrirModalEliminacio = (article) =>{
+        showModalEliminacio.value=true;
+        formOferta.idArticle=article.idArticle;
+        formOferta.quantitatDisponible= null;
+        formOferta.preuUnitari=null;
 
+    }
+    const cerrarModalEliminacio = () => {
+        showModalEliminacio.value=false;
+        showModalEliminacioConfirmacio.value=false;
+    }
+
+    const eliminarArticle =()=> {
+        formOferta.get('/eliminarArticle');
+
+        recargaPaginaElim();
+    }
+
+    const recargaPaginaElim = () => {
+        showModalEliminacio.value=false;
+        showModalEliminacioConfirmacio=true;
+        location.reload();
+
+    }
+
+let selectedImage = ref(null);
+let showModalImage = ref(false);
+
+const openImageModal = (image) => {
+    selectedImage.value = image;
+    showModalImage.value = true;
 }
 
-const cerrarModalOferta = () => {
-    showModalOferta.value=false;
+const closeImageModal = () => {
+    selectedImage.value = null;
+    showModalImage.value = false;
 }
 
-const ModOferta =()=> {
-    formOferta.get('/modificarArticle');
-    cerrarModalOferta();
-    recargaPaginaOferta();
+//funciones de ordenacion
+let sortOption = ref('');
+
+const sortArticles = (articles) => {
+
+
+        articles.value.sort((a, b) => a.preu - b.preu);
+    if (sortOption.value === 'alphabetical') {
+        articles.value.sort((a, b) => a.nick.localeCompare(b.nick));
+    }
+    articles.value.sort((a, b) => a.preu - b.preu);
 }
 
-const recargaPaginaOferta = () => {
-
-    location.reload();
-}
-
-
-const abrirModalEliminacio = (article) =>{
-    showModalEliminacio.value=true;
-    formOferta.idArticle=article.idArticle;
-    formOferta.quantitatDisponible= null;
-    formOferta.preuUnitari=null;
-
-}
-const cerrarModalEliminacio = () => {
-    showModalEliminacio.value=false;
-    showModalEliminacioConfirmacio.value=false;
-}
-
-const eliminarArticle =()=> {
-    formOferta.get('/eliminarArticle');
-
-    recargaPaginaElim();
-}
-
-const recargaPaginaElim = () => {
-    showModalEliminacio.value=false;
-    showModalEliminacioConfirmacio=true;
-    location.reload();
-
-}
 
 </script>
 
 <template>
     <AuthenticatedLayout>
-
-        <div class="rounded mx-auto" style="background-color: rgba(0,214,153,0.6); padding: 50px; margin-top: 50px; margin-bottom: 20px; width: 1000px">
-            <b-container class="d-flex" style="background-color: rgba(128,128,128,0.6)" >
-                <b-row class="d-flex w-75 m-3">
-                    <b-col cols="6">
-                        <img :src="'/images/' + producte[0].imatge" alt="Foto del producto"  style="height: 350px; width: 300px " />
-                    </b-col>
-                    <b-col cols="6" class="text-white m-3">
-                    <h2>{{ producte[0].nom }}</h2>
-                        <p>Categoria de producte: {{ producte[0].categoriaProducteNom }}</p>
-                        <p>Expansió del producte: {{ producte[0].expansioNom }}</p>
-                    </b-col>
-                </b-row>
-            </b-container>
+        <div class="d-flex justify-content-center m-3 ">
+            <table class="table  table-striped  my-table w-50 ">
+                <thead>
+                <tr>
+                    <th>Imatge</th>
+                    <th>Nom Article</th>
+                    <th>Venedor</th>
+                    <th>Quantitat</th>
+                    <th>Preu</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="article in articles" :key="article.id">
+                    <td>
+                        <div class="d-flex justify-content-center m-3 ">
+                        <img :src="/images/+'camara.png'" alt="Imagen Foto" width="25" height="25" style="filter: brightness(0) invert(1);" @click="openImageModal(article.imatge)">
+                        </div>
+                    </td>
+                    <td>{{article.nom}}</td>
+                    <td>{{article.nick}}</td>
+                    <td>{{article.quantitat}}</td>
+                    <td>{{article.preu}}</td>
+                    <td>
+                        <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);">
+                    </td>
+                    <td>
+                        <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
+                                @click="abrirModalModArticle(article)">Modificar</button>
+                    </td>
+                    <td>
+                        <button v-if="$page.props.auth.user.idUsuari===article.idVenedor||$page.props.auth.user.idRol==1 " class="btn btn-danger rounded-pill"
+                                @click="abrirModalEliminacio(article)">Eliminar</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <h2 class="text-center">Ofertes del producte</h2>
-
-            <div class="d-flex justify-content-center m-3 ">
-                <table class="table  table-striped  my-table w-50 ">
-                    <thead>
-                    <tr>
-                        <th>Nick Venedor</th>
-                        <th>Quantitat</th>
-                        <th>Preu</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="article in articles" :key="article.id">
-                        <td>{{article.nick}}</td>
-                        <td>{{article.quantitat}}</td>
-                        <td>{{article.preu}}</td>
-                        <td>
-                            <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);">
-                        </td>
-                        <td>
-                            <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
-                                    @click="abrirModalModArticle(article)">Modificar</button>
-                        </td>
-                        <td>
-                            <button v-if="$page.props.auth.user.idUsuari===article.idVenedor||$page.props.auth.user.idRol==1 " class="btn btn-danger rounded-pill"
-                                    @click="abrirModalEliminacio(article)">Eliminar</button>
-                        </td>
-
-                    </tr>
-                    </tbody>
-                </table>
-        </div>
-
         <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
             <div class="modal-content w-100">
                 <div class="d-flex justify-content-center m-3">
@@ -160,7 +166,7 @@ const recargaPaginaElim = () => {
                             <div class="m-2 text-center font-weight-bold">
                                 <InputLabel for="preuUnitari" value="Preu Unitari" />
                                 <div class="d-flex justify-content-center">
-                                    <TextInput
+                                    <input
                                         id="preuUnitari"
                                         type="number"
                                         class="mt-1 block w-full"
@@ -203,19 +209,23 @@ const recargaPaginaElim = () => {
                 </div>
             </div>
         </Modal>
+
+        <Modal :show="showModalImage" maxWidth="2xl" closeable @close="closeImageModal" >
+            <div class="d-flex justify-content-center p-5">
+                <img :src="'/images/' + selectedImage" width="500" height="600">
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>
 
 <style scoped>
-
 .my-table td, .my-table th {
-    background-color: rgba(0,214,153,0.8) !important;
+    background-color: rgba(0,214,153,0.5) !important;
     text-align: center;
     vertical-align: middle;
 }
 
 form {
     background-color:rgba(0,214,153,0.8) !important;
-
 }
 </style>

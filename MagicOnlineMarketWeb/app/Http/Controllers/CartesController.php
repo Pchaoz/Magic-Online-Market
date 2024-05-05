@@ -6,7 +6,6 @@ use App\Models\Cartes;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class CartesController extends Controller
@@ -32,12 +31,6 @@ class CartesController extends Controller
 
     public function addCarta(Request $request)
     {
-        $request->validate([
-            'nom' => 'required',
-            'descripcio' => 'required',
-            'imatge' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'raresa' => 'required',
-        ]);
 
         $carta = new Cartes();
         $carta->nom = $request->nom;
@@ -88,7 +81,14 @@ class CartesController extends Controller
 
     public function deleteCarta($id){
         $carta= Cartes::find($id);
+        $imagen =$carta->imatge;
+        $rutaImagen = public_path('images/' . $imagen);
+        if (file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+
         $carta->delete();
+
     }
 
 
