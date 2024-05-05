@@ -30,6 +30,8 @@ const formOferta= useForm({
 const articleAfegit= useForm({
     idArticle:"",
     idVenedor:"",
+    nomArticle:"",
+    preuArticle:0,
     quantitatDisponible:0,
 })
 
@@ -71,8 +73,10 @@ const abrirModalModArticle =(article)=> {
 
     const cerrarModalQuantitat = () => {
     showModalQuantitat.value=false;
-    articleAfegit. idArticle="";
-    articleAfegit. idVenedor="";
+    articleAfegit.idArticle="";
+    articleAfegit.idVenedor="";
+    articleAfegit.nomArticle="";
+    articleAfegit.preuArticle=0;
     quantitatComprada.value=0;
     }
 
@@ -125,6 +129,8 @@ const agregarCarrito = () => {
             idArticleComprat:  articleAfegit.idArticle,
             qtyComprada: quantitatComprada.value,
             idVenedorArticles: articleAfegit.idVenedor,
+            nomArticleComprat: articleAfegit.nomArticle,
+            preuArticleComprat: articleAfegit.preuArticle,
 
         })
     }else{
@@ -134,6 +140,7 @@ const agregarCarrito = () => {
 
    localStorage.setItem('articlesCarrito', JSON.stringify(articlesCarrito));
     cerrarModalQuantitat();
+    location.reload();
 }
 const abrirModalQuantitat = (article) => {
 
@@ -141,6 +148,8 @@ const abrirModalQuantitat = (article) => {
     articleAfegit.idArticle=article.idArticle;
     articleAfegit.idVenedor=article.idVenedor;
     articleAfegit.quantitatDisponible=article.quantitat;
+    articleAfegit.nomArticle=article.nom;
+    articleAfegit.preuArticle=article.preu;
     showModalQuantitat.value=true;
 }
 
@@ -151,6 +160,7 @@ const cerrarModalQuantitatIncorrecta = () => {
 
 const limpiarLocalStorage = () => {
     localStorage.clear();
+    location.reload();
 }
 
 
@@ -279,7 +289,7 @@ const limpiarLocalStorage = () => {
             <div class="modal-content w-100">
 
                 <div class="d-flex justify-content-center m-3 ">
-                    <p>Quans articles desitges comprar?</p>
+                    <p>Quants articles desitges comprar?</p>
                 </div>
                 <div class="d-flex justify-content-center">
                     <input

@@ -1,11 +1,12 @@
 <script setup>
 import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
+import 'bootstrap/dist/js/bootstrap.bundle';
+import Carret from "@/Components/Carret.vue";
 
 const showingNavigationDropdown = ref(false);
 
@@ -141,6 +142,8 @@ const showingNavigationDropdown = ref(false);
                                     </div>
                                 </div>
 
+
+
                                 <div class="hidden sm:flex sm:items-center sm:ms-6"  v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
                                     <div class="ms-3 relative">
                                         <Dropdown align="left" width="48">
@@ -180,7 +183,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <!-- Settings Dropdown -->
+
                             <div class="ms-3 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -217,7 +220,10 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <!-- Hamburger -->
+                        <div class="hidden sm:flex sm:items-center sm:ms-6">
+                            <Carret>
+                            </Carret>
+                        </div>
                         <div class="-me-2 flex items-center sm:hidden">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
