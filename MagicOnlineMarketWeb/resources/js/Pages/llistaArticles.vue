@@ -11,19 +11,31 @@ defineProps({
     articles:{
         type: Array(String),
     },
-
-
 });
 
 let showModalOferta=ref(false);
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
+let showModalQuantitat = ref(false);
+let showModalQuantitatIncorrecta = ref(false);
+let quantitatComprada= ref(0);
+
 
 const formOferta= useForm({
     idArticle:null,
     quantitatDisponible: 0,
     preuUnitari:0,
 })
+
+const articleAfegit= useForm({
+    idArticle:"",
+    idVenedor:"",
+    nomArticle:"",
+    preuArticle:0,
+    quantitatDisponible:0,
+})
+
+
 
 const abrirModalModArticle =(article)=> {
     formOferta.idArticle = article.idArticle;
@@ -59,18 +71,26 @@ const abrirModalModArticle =(article)=> {
         showModalEliminacioConfirmacio.value=false;
     }
 
+    const cerrarModalQuantitat = () => {
+    showModalQuantitat.value=false;
+    articleAfegit.idArticle="";
+    articleAfegit.idVenedor="";
+    articleAfegit.nomArticle="";
+    articleAfegit.preuArticle=0;
+    quantitatComprada.value=0;
+    }
+
     const eliminarArticle =()=> {
         formOferta.get('/eliminarArticle');
 
         recargaPaginaElim();
     }
 
-    const recargaPaginaElim = () => {
+const recargaPaginaElim = () => {
         showModalEliminacio.value=false;
         showModalEliminacioConfirmacio=true;
         location.reload();
-
-    }
+ }
 
 let selectedImage = ref(null);
 let showModalImage = ref(false);
@@ -84,19 +104,65 @@ const closeImageModal = () => {
     selectedImage.value = null;
     showModalImage.value = false;
 }
+//agregar al carrito
 
-//funciones de ordenacion
-let sortOption = ref('');
-
-const sortArticles = (articles) => {
-
-
-        articles.value.sort((a, b) => a.preu - b.preu);
-    if (sortOption.value === 'alphabetical') {
-        articles.value.sort((a, b) => a.nick.localeCompare(b.nick));
+const agregarCarrito = () => {
+    //si compramos mas de lo que hay disponible no hacemos nada
+    if(articleAfegit.quantitatDisponible<quantitatComprada.value){
+        showModalQuantitatIncorrecta.value=true;
+        cerrarModalQuantitat();
+        return;
     }
-    articles.value.sort((a, b) => a.preu - b.preu);
+
+
+
+    const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
+    let ArticleExistent=null;
+    articlesCarrito.forEach((el) => {
+        if (parseInt(el.idArticleComprat) === parseInt(articleAfegit.idArticle)) {
+            ArticleExistent = el;
+        }
+    });
+
+    if(ArticleExistent===null){
+        articlesCarrito.push({
+            idArticleComprat:  articleAfegit.idArticle,
+            qtyComprada: quantitatComprada.value,
+            idVenedorArticles: articleAfegit.idVenedor,
+            nomArticleComprat: articleAfegit.nomArticle,
+            preuArticleComprat: articleAfegit.preuArticle,
+
+        })
+    }else{
+        ArticleExistent.qtyComprada+=quantitatComprada.value;
+    }
+
+
+   localStorage.setItem('articlesCarrito', JSON.stringify(articlesCarrito));
+    cerrarModalQuantitat();
+    location.reload();
 }
+const abrirModalQuantitat = (article) => {
+
+
+    articleAfegit.idArticle=article.idArticle;
+    articleAfegit.idVenedor=article.idVenedor;
+    articleAfegit.quantitatDisponible=article.quantitat;
+    articleAfegit.nomArticle=article.nom;
+    articleAfegit.preuArticle=article.preu;
+    showModalQuantitat.value=true;
+}
+
+const cerrarModalQuantitatIncorrecta = () => {
+    showModalQuantitatIncorrecta.value=false;
+}
+
+
+const limpiarLocalStorage = () => {
+    localStorage.clear();
+    location.reload();
+}
+
 
 
 </script>
@@ -107,14 +173,14 @@ const sortArticles = (articles) => {
             <table class="table  table-striped  my-table w-50 ">
                 <thead>
                 <tr>
-                    <th>Imatge</th>
-                    <th>Nom Article</th>
-                    <th>Venedor</th>
-                    <th>Quantitat</th>
-                    <th>Preu</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th class="col-1">Imatge</th>
+                    <th class="col-2">Nom Article</th>
+                    <th class="col-1">Venedor</th>
+                    <th class="col-1">Quantitat</th>
+                    <th class="col-1">Preu</th>
+                    <th class="col-1"></th>
+                    <th class="col-1"></th>
+                    <th class="col-1"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -129,7 +195,7 @@ const sortArticles = (articles) => {
                     <td>{{article.quantitat}}</td>
                     <td>{{article.preu}}</td>
                     <td>
-                        <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);">
+                        <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="abrirModalQuantitat(article)">
                     </td>
                     <td>
                         <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
@@ -142,6 +208,10 @@ const sortArticles = (articles) => {
                 </tr>
                 </tbody>
             </table>
+
+        </div>
+        <div class="d-flex justify-content-center m-3 ">
+            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="limpiarLocalStorage">Buidar Carret</b-button>
         </div>
         <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
             <div class="modal-content w-100">
@@ -215,6 +285,42 @@ const sortArticles = (articles) => {
                 <img :src="'/images/' + selectedImage" width="500" height="600">
             </div>
         </Modal>
+        <Modal :show="showModalQuantitat" maxWidth="2xl" closeable @close="cerrarModalQuantitat" >
+            <div class="modal-content w-100">
+
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Quants articles desitges comprar?</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <input
+                        id="quantitatComprada"
+                        type="number"
+                        placeholder="qty"
+                        class="mt-1 block w-full"
+                        v-model="quantitatComprada"
+                        min="1"
+                        step="1"
+                        required
+                        style="color: black; width: 100px;"
+                    />
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-success mr-5"
+                            @click="agregarCarrito">Aceptar</button>
+                    <button type="button" class="btn btn-danger ml-5" @click="cerrarModalQuantitat">Cancelar</button>
+
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
+            <div class="modal-content w-100">
+
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Quantitat incorrecta</p>
+                </div>
+            </div>
+        </Modal>
+
     </AuthenticatedLayout>
 </template>
 

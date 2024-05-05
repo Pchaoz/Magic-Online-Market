@@ -107,12 +107,13 @@ const recargaPaginaElim = () => {
                 <table class="table  table-striped  my-table w-50 ">
                     <thead>
                     <tr>
-                        <th>Nick Venedor</th>
-                        <th>Quantitat</th>
-                        <th>Preu</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th class="col-1">Venedor</th>
+                        <th class="col-1">Quantitat</th>
+                        <th class="col-1">Preu</th>
+                        <th class="col-1"></th>
+                        <th class="col-1"></th>
+                        <th class="col-1"></th>
+                        <th class="col-1"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -121,7 +122,11 @@ const recargaPaginaElim = () => {
                         <td>{{article.quantitat}}</td>
                         <td>{{article.preu}}</td>
                         <td>
-                            <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);">
+                            <input type="number" class="form-control" placeholder="qty" v-model="quantitatComprada">
+
+                        </td>
+                        <td>
+                            <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);" @click="agregarCarrito(article.idArticle)">
                         </td>
                         <td>
                             <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
