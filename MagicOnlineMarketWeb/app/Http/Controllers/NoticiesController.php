@@ -92,5 +92,26 @@ class NoticiesController extends Controller
         return Inertia::render('showNoticia', ['noticia' => $noticia]);
     }
 
+    public function getNoticiaByIdAPI($id) {
+        $noticia = DB::table('noticies')
+            ->leftJoin('usuaris', 'noticies.idCreador','=','usuaris.idUsuari')
+            ->select('usuaris.nick as nick','noticies.titol as titol','noticies.subtitol as subtitol',
+                'noticies.contingut as contingut','noticies.imatge as imatge','noticies.dataHoraPublicacio as dataHora','noticies.idNoticia')
+            ->where('noticies.idNoticia','=',$id)
+            ->get();
+
+        response()->json($noticia);
+    }
+
+    public function getNoticiesAPI() {
+
+        $noticies = DB::table('noticies')
+        ->leftJoin('usuaris', 'noticies.idCreador', '=', 'usuaris.idUsuari')
+        ->select('usuaris.nick AS nick', 'noticies.dataHoraPublicacio AS created', 'noticies.titol AS titol', 'noticies.idNoticia AS idNoticia')
+        ->orderBy('noticies.dataHoraPublicacio','desc')
+        ->get();
+
+        response()->json($noticies);
+    }
 
 }

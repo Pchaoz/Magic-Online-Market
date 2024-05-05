@@ -68,8 +68,8 @@ class _ProductsPageState extends State<ProductsPage> {
               onPressed: () {
                 //TODO esto te redirige a un fromulario para crear un producto nuevo
               },
-              child: Icon(Icons.add),
               backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+              child: const Icon(Icons.add),
             ),
           ),
         ],
