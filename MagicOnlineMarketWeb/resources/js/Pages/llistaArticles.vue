@@ -211,7 +211,7 @@ const limpiarLocalStorage = () => {
 
         </div>
         <div class="d-flex justify-content-center m-3 ">
-            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="limpiarLocalStorage">Limpiar Carrito</b-button>
+            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="limpiarLocalStorage">Buidar Carret</b-button>
         </div>
         <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
             <div class="modal-content w-100">
