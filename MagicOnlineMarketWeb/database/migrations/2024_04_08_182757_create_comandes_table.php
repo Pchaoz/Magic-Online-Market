@@ -13,7 +13,7 @@ return new class extends Migration
             $table->bigIncrements("idComanda");
             $table->double("preuTotal");
             $table->boolean("isEnviament")->default(false);
-            $table->enum("EstatComanda",["pendent confirmacio","pagada","pendent enviament","pendent recollida","enviada","complerta","anulada","incidencia"])->nullable();
+            $table->enum("EstatComanda",["pendent confirmacio","pagada","pendent recollida","enviada","complerta","anulada","incidencia"])->nullable();
             $table->foreignId("idEnviament")->nullable()->constrained('enviaments')->references('idEnviament');
             $table->foreignId("idComprador")->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId("idVenedor")->nullable()->constrained('usuaris')->references('idUsuari');

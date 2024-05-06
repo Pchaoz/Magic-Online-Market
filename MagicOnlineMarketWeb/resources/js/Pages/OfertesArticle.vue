@@ -24,6 +24,9 @@ defineProps({
 let showModalOferta=ref(false);
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
+let showModalQuantitat = ref(false);
+let showModalQuantitatIncorrecta = ref(false);
+let quantitatComprada= ref(0);
 
 const formOferta= useForm({
     idArticle:null,
@@ -31,7 +34,13 @@ const formOferta= useForm({
     preuUnitari:0,
 })
 
-
+const articleAfegit= useForm({
+    idArticle:"",
+    idVenedor:"",
+    nomArticle:"",
+    preuArticle:0,
+    quantitatDisponible:0,
+})
 
 const abrirModalModArticle =(article)=>{
     formOferta.idArticle=article.idArticle;
@@ -79,14 +88,87 @@ const recargaPaginaElim = () => {
     showModalEliminacio.value=false;
     showModalEliminacioConfirmacio=true;
     location.reload();
+}
 
+const cerrarModalQuantitat = () => {
+    showModalQuantitat.value=false;
+    articleAfegit.idArticle="";
+    articleAfegit.idVenedor="";
+    articleAfegit.nomArticle="";
+    articleAfegit.preuArticle=0;
+    quantitatComprada.value=0;
+}
+
+//agregar al carrito
+
+const agregarCarrito = () => {
+    //si compramos mas de lo que hay disponible no hacemos nada
+    if(articleAfegit.quantitatDisponible<quantitatComprada.value){
+        showModalQuantitatIncorrecta.value=true;
+        cerrarModalQuantitat();
+        return;
+    }
+
+    const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
+    let ArticleExistent=null;
+    let totalQty = 0;
+
+    articlesCarrito.forEach((el) => {
+        if (parseInt(el.idArticleComprat) === parseInt(articleAfegit.idArticle)) {
+            ArticleExistent = el;
+            totalQty += parseInt(el.qtyComprada);
+        }
+    });
+
+    if(totalQty + parseInt(quantitatComprada.value) > articleAfegit.quantitatDisponible){
+        showModalQuantitatIncorrecta.value=true;
+        cerrarModalQuantitat();
+        return;
+    }
+
+    if(ArticleExistent===null){
+        articlesCarrito.push({
+            idArticleComprat:  articleAfegit.idArticle,
+            qtyComprada: quantitatComprada.value,
+            idVenedorArticles: articleAfegit.idVenedor,
+            nomArticleComprat: articleAfegit.nomArticle,
+            preuArticleComprat: articleAfegit.preuArticle,
+
+        })
+    }else{
+        ArticleExistent.qtyComprada+=quantitatComprada.value;
+    }
+
+
+    localStorage.setItem('articlesCarrito', JSON.stringify(articlesCarrito));
+    cerrarModalQuantitat();
+    location.reload();
+}
+const abrirModalQuantitat = (article) => {
+
+
+    articleAfegit.idArticle=article.idArticle;
+    articleAfegit.idVenedor=article.idVenedor;
+    articleAfegit.quantitatDisponible=article.quantitat;
+    articleAfegit.nomArticle=article.nom;
+    articleAfegit.preuArticle=article.preu;
+    showModalQuantitat.value=true;
+}
+
+const cerrarModalQuantitatIncorrecta = () => {
+    showModalQuantitatIncorrecta.value=false;
+}
+
+
+const limpiarLocalStorage = () => {
+    localStorage.clear();
+    location.reload();
 }
 
 </script>
 
 <template>
     <AuthenticatedLayout>
-
         <div class="rounded mx-auto" style="background-color: rgba(0,214,153,0.6); padding: 50px; margin-top: 50px; margin-bottom: 20px; width: 1000px">
             <b-container class="d-flex" style="background-color: rgba(128,128,128,0.6)" >
                 <b-row class="d-flex w-75 m-3">
@@ -113,7 +195,6 @@ const recargaPaginaElim = () => {
                         <th class="col-1"></th>
                         <th class="col-1"></th>
                         <th class="col-1"></th>
-                        <th class="col-1"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -122,11 +203,7 @@ const recargaPaginaElim = () => {
                         <td>{{article.quantitat}}</td>
                         <td>{{article.preu}}</td>
                         <td>
-                            <input type="number" class="form-control" placeholder="qty" v-model="quantitatComprada">
-
-                        </td>
-                        <td>
-                            <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);" @click="agregarCarrito(article.idArticle)">
+                            <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="abrirModalQuantitat(article)">
                         </td>
                         <td>
                             <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
@@ -140,6 +217,9 @@ const recargaPaginaElim = () => {
                     </tr>
                     </tbody>
                 </table>
+        </div>
+        <div class="d-flex justify-content-center m-3 ">
+            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="limpiarLocalStorage">Buidar Carret</b-button>
         </div>
 
         <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
@@ -205,6 +285,41 @@ const recargaPaginaElim = () => {
 
                 <div class="d-flex justify-content-center m-3 ">
                     <p>Article Eliminat</p>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalQuantitat" maxWidth="2xl" closeable @close="cerrarModalQuantitat" >
+            <div class="modal-content w-100">
+
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Quants articles desitges comprar?</p>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <input
+                        id="quantitatComprada"
+                        type="number"
+                        placeholder="qty"
+                        class="mt-1 block w-full"
+                        v-model="quantitatComprada"
+                        min="1"
+                        step="1"
+                        required
+                        style="color: black; width: 100px;"
+                    />
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-success mr-5"
+                            @click="agregarCarrito">Aceptar</button>
+                    <button type="button" class="btn btn-danger ml-5" @click="cerrarModalQuantitat">Cancelar</button>
+
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
+            <div class="modal-content w-100">
+
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Quantitat incorrecta</p>
                 </div>
             </div>
         </Modal>

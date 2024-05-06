@@ -8,6 +8,7 @@ import {useForm} from "@inertiajs/vue3";
 const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
 
 let showModalCarret =ref(false);
+let showModal =ref(false);
 const abrirModalCarret =()=> {
     showModalCarret.value = true;
 }
@@ -67,22 +68,15 @@ const confirmarCompra = (articles) => {
     comandas.forEach((comanda) => {
         formComanda.idVenedor = comanda.idVenedor;
         formComanda.totalComanda = comanda.totalComanda;
+        formComanda.linies = comanda.linias.map(linia => ({
+            idArticle: linia.idArticle,
+            qtyLinia: linia.qty,
+        }));
 
-     formComanda.post('/crearComanda').then(response => {
-
-         const idComanda = response.data.idComanda;
-
-         comanda.linias.forEach((linia) => {
-             formLinia.idArticle = linia.idArticle;
-             formLinia.qtyLinia = linia.qty;
-             formLinia.idComanda = idComanda;
-             formLinia.post('/crearLinia');
-
-         });
-
-     });
-
+        formComanda.post('/crearComanda');
     });
+    showModal.value=true;
+    limpiarLocalStorage();
 }
 
 
@@ -129,14 +123,24 @@ const confirmarCompra = (articles) => {
                         </tbody>
                     </table>
                 </div>
+                <div class="d-flex justify-content-center m-3 ">
+                <button class="btn btn-success rounded-pill ml-5"  @click="confirmarCompra(articlesCarrito)">Confirmar compra</button>
+                </div >
                 <div class="modal-footer">
-                    <button class="btn btn-danger rounded-pill ml-5"  @click="confirmarCompra(articlesCarrito)">Confirmar compra</button>
                     <button class="btn btn-danger rounded-pill ml-5"  @click="limpiarLocalStorage">Buidar Carret</button>
                 </div>
             </div>
         </div>
     </div>
 </Modal>
+
+    <Modal :show="showModal" maxWidth="2xl" >
+        <div class="modal-content w-100">
+            <div class="d-flex justify-content-center m-3 ">
+                <p>Comandes realitzades!</p>
+            </div>
+        </div>
+    </Modal>
 </template>
 
 <style scoped>

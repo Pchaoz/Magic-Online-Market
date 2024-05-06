@@ -34,9 +34,11 @@ class ArticleController extends Controller
             ->get();
         $articles = DB::table('articles')
             ->leftJoin('usuaris', 'articles.idVenedor', '=', 'usuaris.idUsuari')
+            ->leftJoin('productes', 'articles.idProducte', '=', 'productes.idProducte')
             ->select('usuaris.nick AS nick', 'articles.idVenedor AS idVenedor', 'articles.preuUnitari AS preu', 'articles.quantitatDisponible AS quantitat',
-                'articles.idArticle AS idArticle')
+                'articles.idArticle AS idArticle','productes.nom as nom')
             ->where('articles.idProducte', '=', $id)
+            ->where('articles.quantitatDisponible', '>', 0)
             ->get();
         return Inertia::render('OfertesArticle', ['producte' => $producte, 'articles' => $articles]);
     }
@@ -49,6 +51,7 @@ class ArticleController extends Controller
             ->leftJoin('productes', 'articles.idProducte', '=', 'productes.idProducte')
             ->select('usuaris.nick AS nick', 'articles.idVenedor AS idVenedor', 'articles.preuUnitari AS preu', 'articles.quantitatDisponible AS quantitat',
                 'articles.idArticle AS idArticle', 'productes.imatge as imatge', 'productes.nom as nom')
+            ->where('articles.quantitatDisponible', '>', 0)
             ->orderBy('articles.preuUnitari', 'desc')
             ->get();
 
