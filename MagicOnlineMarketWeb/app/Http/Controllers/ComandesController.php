@@ -51,4 +51,12 @@ class ComandesController extends Controller
 
     }
 
+
+    public function eliminarComanda (Request $request)
+    {
+        $comanda = Comandes::where('idComanda', $request->idComanda)->first();
+        $comanda->delete();
+
+    }
+
 }

@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('linies', function (Blueprint $table) {
             $table->bigIncrements("idLinia");
             $table->integer("quantitat")->default(1);
-            $table->foreignId("idComanda")->nullable()->constrained('comandes')->references('idComanda');
+            $table->foreignId("idComanda")->nullable()->constrained('comandes')->references('idComanda')->onDelete('cascade');;
             $table->foreignId("idArticle")->nullable()->constrained('articles')->references('idArticle');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
