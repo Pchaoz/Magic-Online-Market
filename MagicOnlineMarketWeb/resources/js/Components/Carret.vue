@@ -2,6 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from "@/Components/Modal.vue";
 import {ref} from "vue";
+import {useForm} from "@inertiajs/vue3";
 
 
 const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
@@ -20,6 +21,74 @@ const limpiarLocalStorage = () => {
     localStorage.clear();
     location.reload();
 }
+
+const confirmarCompra = (articles) => {
+
+    const comandas = [];
+    articles.forEach((articulo) => {
+
+
+        let comandaExistente = comandas.find(comanda => comanda.idVenedor === articulo.idVenedorArticles);
+        let totalLinia= articulo.qtyComprada*articulo.preuArticleComprat;
+
+        if (comandaExistente) {
+            comandaExistente.linias.push({
+                idArticle: articulo.idArticleComprat,
+                qty: articulo.qtyComprada,
+
+            });
+            comandaExistente.totalComanda +=totalLinia;
+        } else {
+
+            comandas.push({
+                idVenedor: articulo.idVenedorArticles,
+                totalComanda:totalLinia,
+                linias: [{
+                    idArticle: articulo.idArticleComprat,
+                    qty: articulo.qtyComprada,
+                }]
+            });
+        }
+    })
+
+    const formComanda= useForm({
+        idVenedor:"",
+        totalComanda:0,
+        linies:[],
+    })
+    const formLinia= useForm({
+        idArticle:"",
+        idComanda:"",
+        qtyLinia:0,
+
+    })
+
+
+    comandas.forEach((comanda) => {
+        formComanda.idVenedor = comanda.idVenedor;
+        formComanda.totalComanda = comanda.totalComanda;
+
+     formComanda.post('/crearComanda').then(response => {
+
+         const idComanda = response.data.idComanda;
+
+         comanda.linias.forEach((linia) => {
+             formLinia.idArticle = linia.idArticle;
+             formLinia.qtyLinia = linia.qty;
+             formLinia.idComanda = idComanda;
+             formLinia.post('/crearLinia');
+
+         });
+
+     });
+
+    });
+}
+
+
+
+
+
 </script>
 
 <template>
@@ -61,6 +130,7 @@ const limpiarLocalStorage = () => {
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-danger rounded-pill ml-5"  @click="confirmarCompra(articlesCarrito)">Confirmar compra</button>
                     <button class="btn btn-danger rounded-pill ml-5"  @click="limpiarLocalStorage">Buidar Carret</button>
                 </div>
             </div>

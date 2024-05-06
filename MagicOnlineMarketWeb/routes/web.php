@@ -105,6 +105,14 @@ Route::get('/formModNoticia',[\App\Http\Controllers\NoticiesController::class, '
 Route::post('/modNoticia',[\App\Http\Controllers\NoticiesController::class, 'modNoticia'])->name('modNoticia');
 
 
+//funcions controller Comandes
+Route::post('/crearComanda',[\App\Http\Controllers\ComandesController::class, 'addComanda'])->name('addComanda');
+
+//funcions controller Linies
+Route::post('/crearLinia',[\App\Http\Controllers\LiniesController::class, 'addLinia'])->name('addLinia');
+
+
+
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);

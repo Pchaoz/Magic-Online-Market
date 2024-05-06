@@ -72,7 +72,12 @@ class User extends Authenticatable
 
     }
 
-    public function comandas()
+    public function comandesComprador()
+    {
+        return $this->hasMany(Comandes::class);
+    }
+
+    public function comandesVenedor()
     {
         return $this->hasMany(Comandes::class);
     }
