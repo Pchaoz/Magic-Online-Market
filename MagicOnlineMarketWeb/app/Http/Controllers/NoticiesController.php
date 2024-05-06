@@ -89,7 +89,6 @@ class NoticiesController extends Controller
         $noticia->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $noticia->updated_by =Auth::id();
         $noticia->save();
-        return Inertia::render('showNoticia', ['noticia' => $noticia]);
     }
 
     public function getNoticiaByIdAPI($id) {

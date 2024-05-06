@@ -2,11 +2,13 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from "@/Components/Modal.vue";
 import {ref} from "vue";
+import {useForm} from "@inertiajs/vue3";
 
 
 const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
 
 let showModalCarret =ref(false);
+let showModal =ref(false);
 const abrirModalCarret =()=> {
     showModalCarret.value = true;
 }
@@ -20,6 +22,67 @@ const limpiarLocalStorage = () => {
     localStorage.clear();
     location.reload();
 }
+
+const confirmarCompra = (articles) => {
+
+    const comandas = [];
+    articles.forEach((articulo) => {
+
+
+        let comandaExistente = comandas.find(comanda => comanda.idVenedor === articulo.idVenedorArticles);
+        let totalLinia= articulo.qtyComprada*articulo.preuArticleComprat;
+
+        if (comandaExistente) {
+            comandaExistente.linias.push({
+                idArticle: articulo.idArticleComprat,
+                qty: articulo.qtyComprada,
+
+            });
+            comandaExistente.totalComanda +=totalLinia;
+        } else {
+
+            comandas.push({
+                idVenedor: articulo.idVenedorArticles,
+                totalComanda:totalLinia,
+                linias: [{
+                    idArticle: articulo.idArticleComprat,
+                    qty: articulo.qtyComprada,
+                }]
+            });
+        }
+    })
+
+    const formComanda= useForm({
+        idVenedor:"",
+        totalComanda:0,
+        linies:[],
+    })
+    const formLinia= useForm({
+        idArticle:"",
+        idComanda:"",
+        qtyLinia:0,
+
+    })
+
+
+    comandas.forEach((comanda) => {
+        formComanda.idVenedor = comanda.idVenedor;
+        formComanda.totalComanda = comanda.totalComanda;
+        formComanda.linies = comanda.linias.map(linia => ({
+            idArticle: linia.idArticle,
+            qtyLinia: linia.qty,
+        }));
+
+        formComanda.post('/crearComanda');
+    });
+    showModal.value=true;
+    limpiarLocalStorage();
+}
+
+
+
+
+
 </script>
 
 <template>
@@ -60,6 +123,9 @@ const limpiarLocalStorage = () => {
                         </tbody>
                     </table>
                 </div>
+                <div class="d-flex justify-content-center m-3 ">
+                <button class="btn btn-success rounded-pill ml-5"  @click="confirmarCompra(articlesCarrito)">Confirmar compra</button>
+                </div >
                 <div class="modal-footer">
                     <button class="btn btn-danger rounded-pill ml-5"  @click="limpiarLocalStorage">Buidar Carret</button>
                 </div>
@@ -67,6 +133,14 @@ const limpiarLocalStorage = () => {
         </div>
     </div>
 </Modal>
+
+    <Modal :show="showModal" maxWidth="2xl" >
+        <div class="modal-content w-100">
+            <div class="d-flex justify-content-center m-3 ">
+                <p>Comandes realitzades!</p>
+            </div>
+        </div>
+    </Modal>
 </template>
 
 <style scoped>

@@ -114,15 +114,22 @@ const agregarCarrito = () => {
         return;
     }
 
-
-
     const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
     let ArticleExistent=null;
+    let totalQty = 0;
+
     articlesCarrito.forEach((el) => {
         if (parseInt(el.idArticleComprat) === parseInt(articleAfegit.idArticle)) {
             ArticleExistent = el;
+            totalQty += parseInt(el.qtyComprada);
         }
     });
+
+    if(totalQty + parseInt(quantitatComprada.value) > articleAfegit.quantitatDisponible){
+        showModalQuantitatIncorrecta.value=true;
+        cerrarModalQuantitat();
+        return;
+    }
 
     if(ArticleExistent===null){
         articlesCarrito.push({
@@ -320,7 +327,6 @@ const limpiarLocalStorage = () => {
                 </div>
             </div>
         </Modal>
-
     </AuthenticatedLayout>
 </template>
 

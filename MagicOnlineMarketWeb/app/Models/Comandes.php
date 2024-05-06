@@ -20,6 +20,10 @@ class Comandes extends Model
         return $this->BelongsTo(User::class, 'idUsuari', 'idComprador');
     }
 
+    public function venedor(){
+        return $this->BelongsTo(User::class, 'idUsuari', 'idVenedor');
+    }
+
     public function lines(){
         return $this->hasMany(Linies::class);
     }
