@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import '../Util/LateralMenu.dart';
 import '../Util/globals.dart';
+import 'homePage.dart';
 import 'loginPage.dart';
 
 class NewsPage extends StatefulWidget {
@@ -38,14 +39,40 @@ class __NewsPageState extends State<NewsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Noticias'),
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        title: const Text('Magic Online Market'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
+          Container(
+            color: const Color.fromARGB(255, 11, 214, 153),
+            width: double
+                .infinity, // Asegura que el contenedor ocupe todo el ancho
+            child: const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Noticias',
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: news.length,
+              separatorBuilder: (context, index) =>
+                  const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(news[index]['titol'].toString()),

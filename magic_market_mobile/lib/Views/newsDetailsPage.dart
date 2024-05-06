@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../Util/globals.dart';
+import 'homePage.dart';
 
 class NewsDetailsPage extends StatefulWidget {
   final Map<String, dynamic> info;
@@ -50,7 +51,18 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: const Text('Detalles de la Noticia'),
+        title: const Text('Magic Online Market'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<dynamic>>(
         future: _newsData,
@@ -58,15 +70,14 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            print(snapshot
-                .error); //He necesitado hacer ese print para poder saber que habia hecho el terrorista del Raul para que no funcionara 👍
+            print(snapshot.error);
             return const Center(child: Text('Error al cargar los datos'));
           } else {
             final news = snapshot.data!;
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center, // Cambia aquí
                 children: [
                   Text(news[0]['titol'],
                       style: const TextStyle(

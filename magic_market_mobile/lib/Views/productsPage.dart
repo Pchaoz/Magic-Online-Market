@@ -36,11 +36,25 @@ class _ProductsPageState extends State<ProductsPage> {
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
         title: const Text('Productos'),
       ),
-      body: Stack(
+      body: Column(
         children: <Widget>[
+          Container(
+            color: const Color.fromARGB(255, 11, 214, 153),
+            width: double.infinity,
+            child: const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Perfil',
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: products.length,
+              separatorBuilder: (context, index) =>
+                  const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
               itemBuilder: (context, index) {
                 return ListTile(
                   leading: Image.network(
@@ -61,18 +75,14 @@ class _ProductsPageState extends State<ProductsPage> {
               },
             ),
           ),
-          Positioned(
-            bottom: 50.0,
-            right: 30.0,
-            child: FloatingActionButton(
-              onPressed: () {
-                //TODO esto te redirige a un fromulario para crear un producto nuevo
-              },
-              backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-              child: const Icon(Icons.add),
-            ),
-          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //TODO esto te redirige a un formulario para crear un producto nuevo
+        },
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        child: const Icon(Icons.add),
       ),
       drawer: LateralMenu(
         onTapLogout: () => _LogOut(context),

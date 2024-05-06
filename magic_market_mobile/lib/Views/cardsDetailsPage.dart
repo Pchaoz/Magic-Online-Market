@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../Util/globals.dart';
+import 'homePage.dart';
 
 class CardDetailPage extends StatelessWidget {
   final Map card;
@@ -12,7 +13,18 @@ class CardDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: Text(card['nom']),
+        title: const Text('Magic Online Market'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(

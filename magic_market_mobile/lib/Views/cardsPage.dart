@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../Util/LateralMenu.dart';
 import '../Util/globals.dart';
 import 'cardsDetailsPage.dart';
+import 'homePage.dart';
 import 'loginPage.dart';
 
 class CardsPage extends StatefulWidget {
@@ -58,10 +59,34 @@ class _CardsPageState extends State<CardsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: const Text('Cartas'),
+        title: const Text('Magic Online Market'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
+          Container(
+            color: const Color.fromARGB(255, 11, 214, 153),
+            width: double
+                .infinity, // Asegura que el contenedor ocupe todo el ancho
+            child: const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Cartas',
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
           TextField(
             onChanged: (value) {
               setState(() {
@@ -73,8 +98,10 @@ class _CardsPageState extends State<CardsPage> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
+            child: ListView.separated(
               itemCount: filteredCards.length,
+              separatorBuilder: (context, index) =>
+                  const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(filteredCards[index]['nom']),

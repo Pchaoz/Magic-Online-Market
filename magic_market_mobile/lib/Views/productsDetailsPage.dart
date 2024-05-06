@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import '../Util/globals.dart';
+import 'homePage.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final dynamic product;
@@ -40,7 +41,18 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: Text(widget.product['nom']),
+        title: const Text('Magic Online Market'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
