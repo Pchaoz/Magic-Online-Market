@@ -17,7 +17,7 @@ class __NewsPageState extends State<NewsPage> {
 
   // Función para obtener las noticias del servidor
   Future fetchNews() async {
-    final response = await http.get(Uri.parse('$API_URI_LOCAL/noticies'));
+    final response = await http.get(Uri.parse('$API_URI_SERVER/noticies'));
 
     print("LA RESPUESTA DEL SERVIDOR ES: ${response.statusCode}");
 

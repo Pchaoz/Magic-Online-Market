@@ -1,11 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import '../Util/globals.dart';
 
 class NewsDetailsPage extends StatefulWidget {
-  final dynamic info;
+  final Map<String, dynamic> info;
 
   const NewsDetailsPage({Key? key, required this.info}) : super(key: key);
 
@@ -14,29 +14,35 @@ class NewsDetailsPage extends StatefulWidget {
 }
 
 class _NewsDetailsPageState extends State<NewsDetailsPage> {
-  late Map<String, dynamic> news;
-
-  Future<void> getNotice() async {
-    print("Buscando la noticia con la id: ${widget.info['idNoticia']}");
-
-    final response = await http.get(
-      Uri.parse("$API_URI_LOCAL/noticies/${widget.info['idNoticia']}"),
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> decodedList = json.decode(response.body);
-      if (decodedList.isNotEmpty) {
-        setState(() {
-          news = decodedList[0];
-        });
-      }
-    }
-  }
+  late Future<List<dynamic>> _newsData;
 
   @override
   void initState() {
     super.initState();
-    getNotice();
+    _newsData = _fetchNewsData();
+
+    //Si, se que estoy haciendo un Foreach para un item lo siento
+    _newsData.then((list) {
+      for (var item in list) {
+        var contingut = item['contingut'];
+        if (contingut != null) {
+          item['contingut'] = contingut.replaceAll(RegExp(r'\s+'), ' ');
+        }
+      }
+    });
+  }
+
+  Future<List<dynamic>> _fetchNewsData() async {
+    final response = await http
+        .get(Uri.parse("$API_URI_SERVER/noticies/${widget.info['idNoticia']}"));
+
+    print("STATUS CODE IS: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load news data');
+    }
   }
 
   @override
@@ -44,7 +50,54 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: Text(news['titol'] ?? 'Noticia sin título'),
+        title: const Text('Detalles de la Noticia'),
+      ),
+      body: FutureBuilder<List<dynamic>>(
+        future: _newsData,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            print(snapshot
+                .error); //He necesitado hacer ese print para poder saber que habia hecho el terrorista del Raul para que no funcionara 👍
+            return const Center(child: Text('Error al cargar los datos'));
+          } else {
+            final news = snapshot.data!;
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(news[0]['titol'],
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 16),
+                  Text(news[0]['subtitol'],
+                      style: const TextStyle(fontSize: 14)),
+                  const SizedBox(height: 16),
+                  Container(
+                    constraints: const BoxConstraints(maxWidth: 500),
+                    child: Image.network(
+                      "$URI_SERVER_IMAGES/${news[0]['imatge']}",
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(news[0]['contingut'],
+                      style: const TextStyle(fontSize: 18)),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(news[0]['nick']),
+                      Text(news[0]['dataHora'].toString()),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }
