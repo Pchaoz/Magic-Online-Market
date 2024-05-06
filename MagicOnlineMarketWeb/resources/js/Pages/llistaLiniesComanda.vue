@@ -62,8 +62,8 @@ const recargaPaginaElim = () => {
             <table class="table  table-striped  my-table w-50 ">
                 <thead>
                 <tr>
-                    <th class="col-1">Comprador</th>
                     <th class="col-1">Venedor</th>
+                    <th class="col-1">Comprador</th>
                     <th class="col-1">Total</th>
                     <th class="col-1">Estat</th>
                 </tr>

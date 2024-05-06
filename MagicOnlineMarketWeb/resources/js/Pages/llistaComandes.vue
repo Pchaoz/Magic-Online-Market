@@ -50,8 +50,8 @@ const recargaPaginaElim = () => {
                 <thead>
                 <tr>
                     <th class="col-1">ID</th>
-                    <th class="col-1">Comprador</th>
                     <th class="col-1">Venedor</th>
+                    <th class="col-1">Comprador</th>
                     <th class="col-1">Total</th>
                     <th class="col-1">Estat</th>
                     <th class="col-1"></th>
