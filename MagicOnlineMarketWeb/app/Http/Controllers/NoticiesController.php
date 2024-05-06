@@ -100,7 +100,7 @@ class NoticiesController extends Controller
             ->where('noticies.idNoticia','=',$id)
             ->get();
 
-        response()->json($noticia);
+        return response()->json($noticia);
     }
 
     public function getNoticiesAPI() {
@@ -108,10 +108,9 @@ class NoticiesController extends Controller
         $noticies = DB::table('noticies')
         ->leftJoin('usuaris', 'noticies.idCreador', '=', 'usuaris.idUsuari')
         ->select('usuaris.nick AS nick', 'noticies.dataHoraPublicacio AS created', 'noticies.titol AS titol', 'noticies.idNoticia AS idNoticia')
-        ->orderBy('noticies.dataHoraPublicacio','desc')
         ->get();
 
-        response()->json($noticies);
+        return response()->json($noticies);
     }
 
 }
