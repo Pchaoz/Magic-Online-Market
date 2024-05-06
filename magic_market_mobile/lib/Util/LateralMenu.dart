@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Views/cardsPage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
-import 'package:magic_market_mobile/Views/newsCard.dart';
+import 'package:magic_market_mobile/Views/newsPage.dart';
 import 'package:magic_market_mobile/Views/productsPage.dart';
 import 'package:magic_market_mobile/Views/profilePage.dart';
 

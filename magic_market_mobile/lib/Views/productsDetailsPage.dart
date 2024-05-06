@@ -17,11 +17,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   List offerList = [];
 
   Future getOffers() async {
-    print("Buscando las ofertas del producto: " +
-        widget.product['idProducte'].toString());
+    print("Buscando las ofertas del producto: ${widget.product['idProducte']}");
 
-    final response = await http.get(Uri.parse(
-        API_URI_LOCAL + "/ofertes/" + widget.product['idProducte'].toString()));
+    final response = await http.get(
+        Uri.parse("$API_URI_LOCAL/ofertes/${widget.product['idProducte']}"));
 
     if (response.statusCode == 200) {
       setState(() {
@@ -56,8 +55,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               const SizedBox(height: 10),
               Container(
                 margin: const EdgeInsets.all(25.0),
-                width: 300, // Ajusta el ancho como desees
-                height: 300, // Ajusta la altura como desees
+                width: 300,
+                height: 300,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(

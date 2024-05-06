@@ -13,6 +13,18 @@ class NewsPage extends StatefulWidget {
 }
 
 class __NewsPageState extends State<NewsPage> {
+  List news = [];
+
+  // Función para obtener las cartas del servidor
+  Future fetchNews() async {
+    final response = await http.get(Uri.parse('$API_URI_LOCAL/api/noticies/'));
+    if (response.statusCode == 200) {
+      setState(() {
+        news = json.decode(response.body);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,21 +32,7 @@ class __NewsPageState extends State<NewsPage> {
         title: const Text('Noticias'),
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                return const ListTile(
-                  title: Text("Nombre noticia"),
-                  subtitle: Text('Dia de subida de la oferta o tags (?)'),
-                );
-              },
-            ),
-          ),
-        ]),
-      ),
+      body: Column(),
       drawer: LateralMenu(
         onTapLogout: () => _LogOut(context),
       ),
