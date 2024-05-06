@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/Views/newsDetailsPage.dart';
 import 'dart:convert';
 
 import '../Util/LateralMenu.dart';
@@ -15,14 +15,23 @@ class NewsPage extends StatefulWidget {
 class __NewsPageState extends State<NewsPage> {
   List news = [];
 
-  // Función para obtener las cartas del servidor
+  // Función para obtener las noticias del servidor
   Future fetchNews() async {
-    final response = await http.get(Uri.parse('$API_URI_LOCAL/api/noticies/'));
+    final response = await http.get(Uri.parse('$API_URI_LOCAL/noticies'));
+
+    print("LA RESPUESTA DEL SERVIDOR ES: ${response.statusCode}");
+
     if (response.statusCode == 200) {
       setState(() {
         news = json.decode(response.body);
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNews();
   }
 
   @override
@@ -32,15 +41,37 @@ class __NewsPageState extends State<NewsPage> {
         title: const Text('Noticias'),
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
       ),
-      body: Column(),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: news.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(news[index]['titol'].toString()),
+                  subtitle: Text("created by ${news[index]['nick']}"),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            NewsDetailsPage(info: news[index]),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
       drawer: LateralMenu(
-        onTapLogout: () => _LogOut(context),
+        onTapLogout: () => _logOut(context),
       ),
     );
   }
 
-  // ignore: non_constant_identifier_names
-  void _LogOut(context) {
+  void _logOut(context) {
     try {
       logOut();
       clearPrefs();
@@ -50,7 +81,7 @@ class __NewsPageState extends State<NewsPage> {
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
     } catch (e) {
-      print("ERROR.. $e");
+      print("ERROR: $e");
       showDialog(
         context: context,
         builder: (BuildContext context) {
