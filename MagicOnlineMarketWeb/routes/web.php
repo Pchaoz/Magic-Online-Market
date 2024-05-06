@@ -106,6 +106,7 @@ Route::post('/modNoticia',[\App\Http\Controllers\NoticiesController::class, 'mod
 
 
 //funcions controller Comandes
+Route::get('/listComandes',[\App\Http\Controllers\ComandesController::class, 'listComandes'])->name('listComandes');
 Route::post('/crearComanda',[\App\Http\Controllers\ComandesController::class, 'addComanda'])->name('addComanda');
 
 //funcions controller Linies
