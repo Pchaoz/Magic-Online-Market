@@ -7,22 +7,31 @@ import {useForm} from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
 
 defineProps({
-    comandes:{
-        type: Array(String),
+    comanda:{
+        type: Object,
     },
+    linies:{
+        type: Array(String),
+    }
 });
+
 
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
-const formComanda= useForm({
+const formLinia= useForm({
+    idLinia:null,
     idComanda:null,
-
+    quantitatLinia:0,
+    preuLinia:0,
 })
 
-const abrirModalEliminacio = (id) =>{
-    showModalEliminacio.value=true;
-    formComanda.idComanda=id;
 
+const abrirModalEliminacio = (linia) =>{
+    showModalEliminacio.value=true;
+    formLinia.idLinia=linia.idLinia;
+    formLinia.quantitatLinia=linia.quantitat;
+    formLinia.preuLinia=linia.preuUnitari;
+    formLinia.idComanda=linia.idComanda;
 
 }
 const cerrarModalEliminacio = () => {
@@ -31,7 +40,7 @@ const cerrarModalEliminacio = () => {
 }
 
 const eliminarLinia =()=> {
-    formComanda.delete('/eliminarComanda');
+    formLinia.delete('/eliminarLinia');
     recargaPaginaElim();
 }
 
@@ -46,44 +55,66 @@ const recargaPaginaElim = () => {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
+         <h2>Comanda</h2>
+        </div>
+        <div class="d-flex justify-content-center m-3 ">
+
             <table class="table  table-striped  my-table w-50 ">
                 <thead>
                 <tr>
-                    <th class="col-1">ID</th>
                     <th class="col-1">Comprador</th>
                     <th class="col-1">Venedor</th>
                     <th class="col-1">Total</th>
                     <th class="col-1">Estat</th>
-                    <th class="col-1"></th>
-                    <th class="col-1"></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="comanda in comandes" :key="comanda.id">
-                    <td>
-                        <a :href="'/veureLinies/' + comanda.idComanda"> {{comanda.idComanda}}</a>
-                    </td>
+                <tr>
                     <td>{{comanda.nickVenedor}}</td>
                     <td>{{comanda.nickComprador}}</td>
                     <td>{{comanda.total}}</td>
                     <td>{{comanda.estat}}</td>
-                    <td>
-                        <button class="btn btn-success rounded-pill"
-                                @click=" ">Administrar</button>
-                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="d-flex justify-content-center m-3 ">
+            <h2>Linies Comanda</h2>
+        </div>
+
+
+        <div class="d-flex justify-content-center m-3 ">
+            <table class="table  table-striped  my-table w-50 ">
+                <thead>
+                <tr>
+                    <th class="col-1">Nom Producte</th>
+                    <th class="col-1">Quantitat Comprada</th>
+                    <th class="col-1">Preu Unitari</th>
+                    <th class="col-1"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="linia in linies" :key="linia.id">
+                    <td>{{linia.nomProducte}}</td>
+                    <td>{{linia.quantitat}}</td>
+                    <td>{{linia.preuUnitari}}</td>
                     <td>
                         <button class="btn btn-danger rounded-pill"
-                                @click="abrirModalEliminacio(comanda.idComanda)">Eliminar</button>
+                                @click="abrirModalEliminacio(linia)">Eliminar</button>
                     </td>
+
 
                 </tr>
                 </tbody>
             </table>
+
             <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
                 <div class="modal-content w-100">
 
                     <div class="d-flex justify-content-center m-3 ">
-                        <p>¿Estas segur de que vols eliminar aquesta comanda?</p>
+                        <p>¿Estas segur de que vols eliminar aquesta linia?</p>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
                         <button type="button" class="btn btn-success mr-5"
@@ -97,7 +128,7 @@ const recargaPaginaElim = () => {
                 <div class="modal-content w-100">
 
                     <div class="d-flex justify-content-center m-3 ">
-                        <p>Comanda Eliminada</p>
+                        <p>Linia Eliminada</p>
                     </div>
                 </div>
             </Modal>
@@ -110,9 +141,5 @@ const recargaPaginaElim = () => {
     background-color: rgba(0,214,153,0.5) !important;
     text-align: center;
     vertical-align: middle;
-}
-
-form {
-    background-color:rgba(0,214,153,0.8) !important;
 }
 </style>

@@ -111,11 +111,14 @@ Route::get('/api/noticies/{id}',[\App\Http\Controllers\NoticiesController::class
 Route::get('/api/noticies/',[\App\Http\Controllers\NoticiesController::class, 'getNoticiesAPI'])->name('getNoticiesAPI');
 
 //funcions controller Comandes
+Route::get('/listComandes',[\App\Http\Controllers\ComandesController::class, 'listComandes'])->name('listComandes');
 Route::post('/crearComanda',[\App\Http\Controllers\ComandesController::class, 'addComanda'])->name('addComanda');
+Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::class, 'eliminarComanda'])->name('eliminarComanda');
+
 
 //funcions controller Linies
-Route::post('/crearLinia',[\App\Http\Controllers\LiniesController::class, 'addLinia'])->name('addLinia');
-
+Route::get('/veureLinies/{id}',[\App\Http\Controllers\LiniesController::class, 'veureLiniesComanda'])->name('veureLiniesComanda');
+Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, 'eliminarLinia'])->name('eliminarLinia');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

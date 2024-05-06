@@ -25,7 +25,7 @@ class Comandes extends Model
     }
 
     public function lines(){
-        return $this->hasMany(Linies::class);
+        return $this->hasMany(Linies::class)->cascadeDelete();
     }
 
     public function creador(){
