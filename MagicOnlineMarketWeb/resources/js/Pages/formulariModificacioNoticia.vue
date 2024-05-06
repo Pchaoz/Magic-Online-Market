@@ -47,12 +47,14 @@ const mostrarImatge = (file) => {
 
 const myfunction = () => {
     formNoticia.post('/modNoticia');
-    formNoticia.get('/veureNoticia/'+formNoticia.idNoticia);
+    confirmarCambios();
 }
 
-const cerrarForm = () => {
-    showModal.value = true;
 
+
+const confirmarCambios = () => {
+    showModal.value = true;
+    location.reload();
 
 }
 
