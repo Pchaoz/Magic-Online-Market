@@ -14,36 +14,45 @@ defineRule('required', required);
 const formCarta = useForm({
     nom:'',
     descripcio:'',
-    imatge:null,
+    imatge:"",
     raresa:'Comun',
     imatgeMiniatura:'',
 });
 
 let showModal = ref(false);
 
-const obtenirImatge = (e) => {
-    let file = e.target.files[0];
+const obtenirImatge = (event) => {
+    const file = event.target.files[0];
+    if (!file.type.match('image.*')) {
+        alert('Si us plau només imatges!');
+        event.target.value=null;
+        return;
+    }
+    if (file.size > 500000) {
+        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 500KB.');
+        event.target.value=null;
+        return;
+    }
     formCarta.imatge = file;
-    mostrarImatge(file);
-};
-
-const mostrarImatge = (file) => {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = (e) => {
         formCarta.imatgeMiniatura = e.target.result;
-    }
+    };
     reader.readAsDataURL(file);
 }
 
+
 const myfunction = () => {
-    formCarta.post('/crearCarta');
+    formCarta.post('crearCarta');
     cerrarForm()
 }
 
 const cerrarForm = () => {
     showModal.value = true;
+    setTimeout(() => {
+        showModal.value = false;
+    }, 2000);
     location.reload();
-
 }
 
 const options = ref([

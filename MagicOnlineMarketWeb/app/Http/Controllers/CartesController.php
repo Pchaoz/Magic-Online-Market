@@ -36,7 +36,6 @@ class CartesController extends Controller
         $carta->nom = $request->nom;
         $carta->descripcio = $request->descripcio;
         $carta->raresa = $request->raresa;
-
         if($request->hasFile('imatge')){
             $imageName = time().'.'.$request->imatge->extension();
             $request->imatge->move(public_path('images/cartes'), $imageName);
