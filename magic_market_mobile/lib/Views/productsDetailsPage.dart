@@ -21,8 +21,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     print("Buscando las ofertas del producto: ${widget.product['idProducte']}");
 
     final response = await http.get(
-        Uri.parse("$API_URI_LOCAL/ofertes/${widget.product['idProducte']}"));
+        Uri.parse("$API_URI_SERVER/ofertes/${widget.product['idProducte']}"));
 
+    print("STATUS CODE IS: " + response.statusCode.toString());
     if (response.statusCode == 200) {
       setState(() {
         offerList = json.decode(response.body);
@@ -80,8 +81,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               Text('Ofertas', style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 10),
               Expanded(
-                child: ListView.builder(
+                child: ListView.separated(
                   itemCount: offerList.length,
+                  separatorBuilder: (context, index) =>
+                      const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
                   itemBuilder: (context, index) {
                     return ListTile(
                         title: Text(offerList[index]['nick']),
@@ -95,6 +98,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
               )
             ]),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //TODO esto te redirige a un formulario para crear un producto nuevo
+        },
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        child: const Icon(Icons.add),
       ),
     );
   }

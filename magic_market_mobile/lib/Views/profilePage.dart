@@ -4,6 +4,7 @@ import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../Util/globals.dart';
 import 'loginPage.dart';
+import 'profileEditPage.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -49,9 +50,27 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
-            const Expanded(
-              child: Center(
-                child: Text('Hello World!'),
+            Expanded(
+              child: ListView(
+                children: ListTile.divideTiles(context: context, tiles: [
+                  ListTile(
+                    title: const Center(child: Text('Modificar perfil')),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileEditPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Center(child: Text('Barajas')),
+                    onTap: () {
+                      // Navega a la página de Barajas
+                    },
+                  )
+                ]).toList(),
               ),
             ),
           ],
@@ -64,6 +83,33 @@ class ProfilePage extends StatelessWidget {
   }
 
   void _LogOut(context) {
-    // ...
+    try {
+      logOut();
+      clearPrefs();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => LoginPage()),
+      );
+    } catch (e) {
+      print("ERROR.. $e");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Failed to authenticate user'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }

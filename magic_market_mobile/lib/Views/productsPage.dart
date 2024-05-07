@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import '../Util/LateralMenu.dart';
 import '../Util/globals.dart';
+import 'homePage.dart';
 import 'loginPage.dart';
 import 'productsDetailsPage.dart';
 
@@ -34,7 +35,18 @@ class _ProductsPageState extends State<ProductsPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: const Text('Productos'),
+        title: const Text('Magic Online Market'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -44,7 +56,7 @@ class _ProductsPageState extends State<ProductsPage> {
             child: const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                'Perfil',
+                'Productes',
                 style: TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
@@ -76,13 +88,6 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //TODO esto te redirige a un formulario para crear un producto nuevo
-        },
-        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        child: const Icon(Icons.add),
       ),
       drawer: LateralMenu(
         onTapLogout: () => _LogOut(context),
