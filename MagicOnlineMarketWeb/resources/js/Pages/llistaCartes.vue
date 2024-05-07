@@ -77,6 +77,9 @@ const closeImageModal = () => {
 
 <template>
     <AuthenticatedLayout>
+        <div class="d-flex justify-content-center m-3 ">
+            <h2>Llistat de Cartes</h2>
+        </div>
         <div class="d-flex justify-content-center m-3 " >
             <table class="table table-striped my-table w-50" >
                 <thead>
@@ -85,8 +88,8 @@ const closeImageModal = () => {
                     <th class="col-1">Nom Carta</th>
                     <th class="col-3">Descripcio Carta</th>
                     <th class="col-1">Raresa Carta</th>
-                    <th class="col-1"></th>
-                    <th class="col-1"></th>
+                    <th class="col-1" v-if="idRolUser == '2'||idRolUser == '1'"></th>
+                    <th class="col-1" v-if="idRolUser == '2'||idRolUser == '1'"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -99,12 +102,12 @@ const closeImageModal = () => {
                     <td>{{carta.nom}}</td>
                     <td>{{carta.descripcio}}</td>
                     <td>{{carta.raresa}}</td>
-                    <td>
-                        <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-success rounded-pill"
+                    <td v-if="carta.idCarta && (idRolUser == '2'||idRolUser == '1')">
+                        <button class="btn btn-success rounded-pill"
                                 @click="abrirFormularioEdicion(carta.idCarta)">Modificar</button>
                     </td>
-                    <td>
-                        <button v-if="idRolUser == '2'||idRolUser == '1'"  class="btn btn-danger rounded-pill"
+                    <td v-if="carta.idCarta && (idRolUser == '2'||idRolUser == '1')">
+                        <button class="btn btn-danger rounded-pill"
                                 @click="abrirModalConfirmacion(carta.idCarta)">Eliminar</button>
                     </td>
                 </tr>

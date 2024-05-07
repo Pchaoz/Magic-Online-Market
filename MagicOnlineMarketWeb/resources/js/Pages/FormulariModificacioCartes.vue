@@ -82,7 +82,10 @@ const options= ref([
 </script>
 <template>
     <AuthenticatedLayout>
-        <div  class="d-flex justify-content-center pt-16">
+        <div class="d-flex justify-content-center m-3 ">
+            <h2>Formulari modificació Cartes</h2>
+        </div>
+        <div  class="d-flex justify-content-center">
             <div class="w-25 rounded"  style="background-color: rgba(255,255,255,0.2);padding: 20px; margin: 20px;">
                 <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
