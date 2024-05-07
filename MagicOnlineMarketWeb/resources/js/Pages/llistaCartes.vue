@@ -18,7 +18,6 @@ defineProps({
 });
 let showModal = ref(false);
 let showModalElim = ref(false);
-let showModalImage = ref(false);
 let cartaId =ref(null);
 
 const abrirModalConfirmacion = (id) => {
@@ -56,14 +55,20 @@ const abrirFormularioEdicion=(id)=>{
 
 }
 
+
+
 let selectedImage = ref(null);
+let showModalImage = ref(false);
 
 const openImageModal = (image) => {
     selectedImage.value = image;
     showModalImage.value = true;
 }
 
-
+const closeImageModal = () => {
+    selectedImage.value = null;
+    showModalImage.value = false;
+}
 </script>
 
 <template>
@@ -72,9 +77,9 @@ const openImageModal = (image) => {
             <table class="table table-striped my-table w-50" >
                 <thead>
                 <tr>
+                    <th class="col-1"></th>
                     <th class="col-1">Nom Carta</th>
                     <th class="col-3">Descripcio Carta</th>
-                    <th class="col-2">Imatge Carta</th>
                     <th class="col-1">Raresa Carta</th>
                     <th class="col-1"></th>
                     <th class="col-1"></th>
@@ -82,11 +87,13 @@ const openImageModal = (image) => {
                 </thead>
                 <tbody>
                 <tr v-for="carta in cartes" :key="carta.id">
+                    <td>
+                        <div class="d-flex justify-content-center m-3 ">
+                            <img :src="/images/+'camara.png'" alt="Imagen Foto" width="25" height="25" style="filter: brightness(0) invert(1);" @click="openImageModal(carta.imatge)">
+                        </div>
+                    </td>
                     <td>{{carta.nom}}</td>
                     <td>{{carta.descripcio}}</td>
-                    <td>
-                        <img :src="'/images/' + carta.imatge"  width="300" height="350"  @click="openImageModal(carta.imatge)">
-                    </td>
                     <td>{{carta.raresa}}</td>
                     <td>
                         <button v-if="idRolUser == '2'||idRolUser == '1'" class="btn btn-success rounded-pill"

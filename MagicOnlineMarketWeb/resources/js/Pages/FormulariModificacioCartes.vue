@@ -15,10 +15,6 @@ const props = defineProps({
     carta: Object
 });
 
-const abrirModal = () => {
-    showModal.value = true;
-
-}
 
 const cerrarModal = () => {
     showModal.value = false;
@@ -37,26 +33,31 @@ const formCarta = useForm({
 
 let imatgeUrl = ref('/images/' + props.carta.imatge)
 
-const obtenirImatge = (e) => {
-    let file = e.target.files[0]
-    formCarta.imatge = file
-    mostrarImatge(file)
-}
-
-
-const mostrarImatge = (file) => {
-    let reader = new FileReader()
-    reader.onload = (e) => {
-        imatgeUrl.value = e.target.result
+const obtenirImatge = (event) => {
+    const file = event.target.files[0];
+    if (!file.type.match('image.*')) {
+        alert('Si us plau només imatges!');
+        event.target.value=null;
+        return;
     }
-    reader.readAsDataURL(file)
+    if (file.size > 500000) {
+        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 500KB.');
+        event.target.value=null;
+        return;
+    }
+    formCarta.imatge = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        formCarta.imatgeMiniatura = e.target.result;
+    };
+    reader.readAsDataURL(file);
 }
 
-const myfunction = () => {
-    formCarta.post('editarCarta');
-    location.reload();
-    abrirModal();
+const myfunction =   () => {
+     formCarta.post('editarCarta');
+
 }
+
 
 const options= ref([
     {
