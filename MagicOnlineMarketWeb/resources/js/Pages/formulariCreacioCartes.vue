@@ -42,15 +42,9 @@ const obtenirImatge = (event) => {
 }
 
 
-const myfunction  = async () => {
-    try {
-
-    const response= await formCarta.post('crearCarta');
-    console.log(response);
+const myfunction  =  () => {
+    formCarta.post('crearCarta');
     cerrarForm()
-    } catch (error) {
-        console.error(error);
-    }
 }
 
 const cerrarForm = () => {
@@ -58,7 +52,13 @@ const cerrarForm = () => {
     setTimeout(() => {
         showModal.value = false;
     }, 2000);
-    location.reload();
+    formCarta.nom='';
+    formCarta.descripcio='';
+    formCarta.imatge='';
+    formCarta.imatgeMiniatura='';
+    formCarta.raresa='Comun';
+    document.getElementById('imatge').value = '';
+    useForm.visit(window.location.pathname);
 }
 
 const options = ref([
