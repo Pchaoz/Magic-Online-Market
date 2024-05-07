@@ -55,8 +55,12 @@ const obtenirImatge = (event) => {
 
 const myfunction =   () => {
      formCarta.post('editarCarta');
-
+     completarModificacio();
 }
+const completarModificacio =   () => {
+    window.location.href = '/getAllCartes';
+}
+
 
 
 const options= ref([

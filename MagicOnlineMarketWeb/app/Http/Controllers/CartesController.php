@@ -67,7 +67,6 @@ class CartesController extends Controller
         $carta->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $carta->updated_by=Auth::id();
         $carta->save();
-        return $this->ListCartes();
 
     }
 
