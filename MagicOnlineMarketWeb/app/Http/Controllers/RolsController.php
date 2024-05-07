@@ -35,6 +35,7 @@ class RolsController extends Controller
         $rol->nom=$request->nom;
         $rol->save();
 
+
     }
     public function modRol($id,$nom){
         $rol= Rols::where('idRol',$id)->first();
@@ -50,11 +51,13 @@ class RolsController extends Controller
         $rol->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $rol->updated_by=Auth::id();
         $rol->save();
+
     }
 
     public function deleteRol($id){
         $rol= Rols::find($id);
         $rol->delete();
+
     }
 
 }
