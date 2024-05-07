@@ -37,8 +37,12 @@ const eliminarCarta = async () => {
         const response = await axios.delete(`/deleteCarta/${cartaId.value}`);
         console.log(response.data);
         cerrarModal();
-        location.reload();
         showModalElim.value = true;
+        setTimeout(() => {
+            showModalElim.value = false;
+        }, 2000);
+        location.reload();
+
     } catch (error) {
         console.error(error);
     }
@@ -125,7 +129,7 @@ const closeImageModal = () => {
                     </div>
                 </div>
             </Modal>
-            <Modal :show="showModalImage" maxWidth="2xl" closeable @close="cerrarModal" >
+            <Modal :show="showModalImage" maxWidth="2xl" closeable @close="closeImageModal" >
                     <div class="d-flex justify-content-center  p-5">
                         <img :src="'/images/' + selectedImage" width="500" height="600">
                     </div>
