@@ -6,9 +6,10 @@ import Modal from '@/Components/Modal.vue';
 import axios from 'axios';
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
-import TextInput from "@/Components/TextInput.vue";
 import { required } from '@vee-validate/rules';
 import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-validate';
+
+
 
 defineRule('required', required);
 
@@ -83,7 +84,10 @@ const modificarUser = () => {
 const finModificacio=()=>{
     showModalModificacio.value=false
     showModalModificacioConfirmacio.value=true;
-    window.location.reload();
+    setTimeout(() => {
+        showModalModificacioConfirmacio.value = false;
+    }, 2000);
+    useForm.visit(window.location.pathname);
 }
 
 
