@@ -26,12 +26,12 @@ Route::middleware('auth')->group(function () {
 });
 
 //funcions per usuaris/es
-Route::get('/getAllUsers', [\App\Http\Controllers\userController::class,'getAllUser'])->name('getAllUser');
+Route::get('/getAllUsers', [\App\Http\Controllers\UserController::class,'getAllUser'])->name('getAllUser');
 require __DIR__.'/auth.php';
-Route::get('/getAllUsersForm', [\App\Http\Controllers\userController::class,'getUsersForm'])->name('getUsersForm');
+Route::get('/getAllUsersForm', [\App\Http\Controllers\UserController::class,'getUsersForm'])->name('getUsersForm');
 require __DIR__.'/auth.php';
-Route::delete('/deleteUser/{id}', [\App\Http\Controllers\userController::class,'deleteUser'])->name('deleteUser');
-Route::post('/editarUsuari', [\App\Http\Controllers\userController::class,'editarUsuari'])->name('editarUsuari');
+Route::delete('/deleteUser/{id}', [\App\Http\Controllers\UserController::class,'deleteUser'])->name('deleteUser');
+Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'editarUsuari'])->name('editarUsuari');
 
 
 
