@@ -56,7 +56,10 @@ const modificarRol = () => {
     formRol.post('editarRol');
     cerrarModalMod();
     showModalModificacioConfirmacio=true;
-    location.reload();
+    setTimeout(() => {
+        showModalModificacioConfirmacio.value = false;
+    }, 2000);
+    useForm.visit(window.location.pathname);
 
 }
 
@@ -71,7 +74,10 @@ const eliminarRol = async () => {
         console.log(response.data);
         cerrarModal();
         showModalEliminacio.value = true;
-        location.reload();
+        setTimeout(() => {
+            showModalEliminacio.value = false;
+        }, 2000);
+        useForm.visit(window.location.pathname);
 
     } catch (error) {
         console.error(error);
@@ -99,6 +105,9 @@ const confirmacionCreacio=()=>{
 
 <template>
     <AuthenticatedLayout>
+        <div class="d-flex justify-content-center m-3 ">
+            <h2>Administrar Rols</h2>
+        </div>
         <div class="d-flex justify-content-center m-3 ">
             <table class="table table-striped my-table w-25 ">
                 <thead>

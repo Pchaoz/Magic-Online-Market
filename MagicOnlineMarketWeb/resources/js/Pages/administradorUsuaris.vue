@@ -47,8 +47,12 @@ const eliminarUsuari = async () => {
         const response = await axios.delete(`/deleteUser/${userId.value}`);
         console.log(response.data);
         cerrarModal();
-        location.reload();
         showModalEliminacioConfirmacio.value = true;
+        setTimeout(() => {
+            showModalEliminacioConfirmacio.value = false;
+        }, 2000);
+        useForm.visit(window.location.pathname);
+
     } catch (error) {
         console.error(error);
     }
@@ -96,6 +100,9 @@ const finModificacio=()=>{
 
 <template>
     <AuthenticatedLayout>
+        <div class="d-flex justify-content-center m-3 ">
+            <h2>Administrar Usuaris</h2>
+        </div>
         <div class="d-flex justify-content-center m-3 ">
             <table class="table table-striped my-table w-50 ">
                 <thead>
