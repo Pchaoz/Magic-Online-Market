@@ -42,9 +42,15 @@ const obtenirImatge = (event) => {
 }
 
 
-const myfunction = () => {
-    formCarta.post('crearCarta');
-    //cerrarForm()
+const myfunction  = async () => {
+    try {
+
+    const response= await formCarta.post('crearCarta');
+    console.log(response);
+    cerrarForm()
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 const cerrarForm = () => {
