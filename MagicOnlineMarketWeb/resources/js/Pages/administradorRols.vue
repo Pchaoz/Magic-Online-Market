@@ -55,11 +55,11 @@ const abrirModalMod = (nom,id) =>{
 const modificarRol = () => {
     formRol.post('editarRol');
     cerrarModalMod();
-    showModalModificacioConfirmacio=true;
+    showModalModificacioConfirmacio.value=true;
     setTimeout(() => {
         showModalModificacioConfirmacio.value = false;
     }, 2000);
-    useForm.visit(window.location.pathname);
+    window.location.reload();
 
 }
 
@@ -77,7 +77,7 @@ const eliminarRol = async () => {
         setTimeout(() => {
             showModalEliminacio.value = false;
         }, 2000);
-        useForm.visit(window.location.pathname);
+        window.location.reload();
 
     } catch (error) {
         console.error(error);
@@ -98,7 +98,10 @@ const crearRol=()=> {
 const confirmacionCreacio=()=>{
     showModalCreacio.value=false;
     showModalCreacioConfirmacio.value=true;
-    location.reload();
+    setTimeout(() => {
+        showModalCreacioConfirmacio.value = false;
+    }, 2000);
+    window.location.reload();
 }
 
 </script>
