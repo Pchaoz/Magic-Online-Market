@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/LateralMenu.dart';
+import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../Util/globals.dart';
 import 'loginPage.dart';
+import 'profileEditPage.dart';
 
 void main() {
   runApp(ProfilePage());
@@ -20,10 +22,58 @@ class ProfilePage extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-          title: const Text('Profile'),
+          title: const Text('Magic Online Market'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+            ),
+          ],
         ),
-        body: const Center(
-          child: Text('Hello World!'),
+        body: Column(
+          children: [
+            Container(
+              color: const Color.fromARGB(255, 11, 214, 153),
+              width: double
+                  .infinity, // Asegura que el contenedor ocupe todo el ancho
+              child: const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Perfil',
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: ListTile.divideTiles(context: context, tiles: [
+                  ListTile(
+                    title: const Center(child: Text('Modificar perfil')),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileEditPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    title: const Center(child: Text('Barajas')),
+                    onTap: () {
+                      // Navega a la página de Barajas
+                    },
+                  )
+                ]).toList(),
+              ),
+            ),
+          ],
         ),
         drawer: LateralMenu(
           onTapLogout: () => _LogOut(context),

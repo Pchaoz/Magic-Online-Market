@@ -41,12 +41,26 @@ class HomePageContent extends StatefulWidget {
 
 class _HomePageContentState extends State<HomePageContent> {
   int _current = 0;
+  List news = [];
+  final List<String> images = [];
 
-  final List<String> images = [
-    'https://media.wizards.com/2017/images/daily/41mztsnrdm.jpg',
-    'https://via.placeholder.com/600x300?text=Image+2',
-    'https://via.placeholder.com/600x300?text=Image+3',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchNews();
+  }
+
+  Future fetchNews() async {
+    final response = await http.get(Uri.parse('$API_URI_SERVER/noticies'));
+
+    print("LA RESPUESTA DEL SERVIDOR ES: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      setState(() {
+        news = json.decode(response.body);
+      });
+    }
+  }
 
   // ignore: non_constant_identifier_names
   void _LogOut() {
@@ -85,29 +99,30 @@ class _HomePageContentState extends State<HomePageContent> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: const Text('Inicio'),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-            );
-          },
-        ),
+        title: const Text('Magic Online Market'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              color: const Color.fromARGB(255, 11, 214, 153),
+              width: double
+                  .infinity, // Asegura que el contenedor ocupe todo el ancho
+              child: const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Inicio',
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
             CarouselSlider(
               items: images.asMap().entries.map((entry) {
                 int index = entry.key;
                 String item = entry.value;
                 return GestureDetector(
                   onTap: () {
-                    // Aquí puedes manejar el evento onTap.
-                    // Por ejemplo, puedes usar Navigator para redirigir a otra página.
                     print('Imagen tocada: $item, índice: $index');
                   },
                   child: Center(

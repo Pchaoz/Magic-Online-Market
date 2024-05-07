@@ -106,7 +106,18 @@ class NoticiesController extends Controller
 
         $noticies = DB::table('noticies')
         ->leftJoin('usuaris', 'noticies.idCreador', '=', 'usuaris.idUsuari')
-        ->select('usuaris.nick AS nick', 'noticies.dataHoraPublicacio AS created', 'noticies.titol AS titol', 'noticies.idNoticia AS idNoticia')
+        ->select('usuaris.nick AS nick', 'noticies.dataHoraPublicacio AS created','noticies.imatge as imatge', 'noticies.titol AS titol', 'noticies.idNoticia AS idNoticia')
+        ->get();
+
+        return response()->json($noticies);
+    }
+
+    public function getLastNews() {
+        $noticies = DB::table('noticies')
+        ->leftJoin('usuaris', 'noticies.idCreador', '=', 'usuaris.idUsuari')
+        ->select('usuaris.nick AS nick', 'noticies.dataHoraPublicacio AS created','noticies.imatge as imatge', 'noticies.titol AS titol', 'noticies.idNoticia AS idNoticia')
+        ->orderBy('created', 'asc')
+        ->limit(3)
         ->get();
 
         return response()->json($noticies);
