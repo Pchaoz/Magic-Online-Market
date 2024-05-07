@@ -34,7 +34,7 @@ class RolsController extends Controller
         $rol= new Rols();
         $rol->nom=$request->nom;
         $rol->save();
-
+        return redirect()->route('ListRols');
 
     }
     public function modRol($id,$nom){
@@ -51,6 +51,8 @@ class RolsController extends Controller
         $rol->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $rol->updated_by=Auth::id();
         $rol->save();
+        return redirect()->route('ListRols');
+
 
     }
 

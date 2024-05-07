@@ -54,35 +54,46 @@ const abrirModalMod = (nom,id) =>{
 
 const modificarRol = () => {
     formRol.post('editarRol');
-    cerrarModalMod();
+    finModificacio();
+
+}
+
+const finModificacio=()=>{
+    showModalModificacio.value=false;
     showModalModificacioConfirmacio.value=true;
     setTimeout(() => {
         showModalModificacioConfirmacio.value = false;
     }, 2000);
-    window.location.reload();
-
+    useForm.visit(window.location.pathname);
 }
 
-const cerrarModalMod = () => {
-    showModalModificacioConfirmacio.value=false;
+const cerrarModalMod=()=>{
     showModalModificacio.value=false;
 }
+
+
 
 const eliminarRol = async () => {
     try {
         const response = await axios.get(`/eliminarRol/${rolId.value}`);
         console.log(response.data);
-        cerrarModal();
-        showModalEliminacio.value = true;
-        setTimeout(() => {
-            showModalEliminacio.value = false;
-        }, 2000);
-        window.location.reload();
+        finEliminacio();
 
     } catch (error) {
         console.error(error);
     }
 }
+
+const finEliminacio=()=>{
+    showModal.value=false;
+    showModalEliminacio.value=true;
+    setTimeout(() => {
+        showModalEliminacio.value = false;
+        window.location.reload();
+    }, 2000);
+
+}
+
 
 
 const formRol= useForm({
@@ -101,8 +112,9 @@ const confirmacionCreacio=()=>{
     setTimeout(() => {
         showModalCreacioConfirmacio.value = false;
     }, 2000);
-    window.location.reload();
+    useForm.visit(window.location.pathname);
 }
+
 
 </script>
 
