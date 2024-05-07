@@ -44,7 +44,7 @@ const obtenirImatge = (event) => {
 
 const myfunction = () => {
     formCarta.post('crearCarta');
-    cerrarForm()
+    //cerrarForm()
 }
 
 const cerrarForm = () => {
