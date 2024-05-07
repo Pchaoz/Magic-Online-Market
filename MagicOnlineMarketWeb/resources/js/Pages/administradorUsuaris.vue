@@ -83,7 +83,7 @@ const modificarUser = () => {
 const finModificacio=()=>{
     showModalModificacio.value=false
     showModalModificacioConfirmacio.value=true;
-    location.reload();
+    window.location.reload();
 }
 
 

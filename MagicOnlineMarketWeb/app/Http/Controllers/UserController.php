@@ -49,6 +49,7 @@ class UserController extends Controller
         $usuari->updated_by = Auth::id();
         $usuari->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $usuari->save();
+        return redirect()->route('getUsersForm');
 
     }
 
