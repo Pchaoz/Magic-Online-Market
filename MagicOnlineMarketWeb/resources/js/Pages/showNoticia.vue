@@ -78,10 +78,11 @@ const modificarNoticia=(id)=> {
 }
 
 .news-image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 650px;
+    height: 350px;
     object-fit: contain;
 }
+
 
 .news-author {
     font-size: 0.8em;
