@@ -109,8 +109,6 @@ const confirmacionCreacio=()=>{
     }, 500);
 
 }
-
-
 </script>
 
 <template>

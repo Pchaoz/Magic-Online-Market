@@ -54,8 +54,9 @@ const abrirModalModArticle =(article)=> {
     }
 
     const recargaPaginaOferta = () => {
-
-        location.reload();
+        setTimeout(() => {
+            useForm.visit(window.location.pathname);
+        }, 500);
     }
 
 
@@ -89,7 +90,9 @@ const abrirModalModArticle =(article)=> {
 const recargaPaginaElim = () => {
         showModalEliminacio.value=false;
         showModalEliminacioConfirmacio=true;
-        location.reload();
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 500);
  }
 
 let selectedImage = ref(null);
@@ -177,6 +180,9 @@ const limpiarLocalStorage = () => {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
+            <h2>Llista de articles</h2>
+        </div>
+        <div class="d-flex justify-content-center m-3 ">
             <table class="table  table-striped  my-table w-50 ">
                 <thead>
                 <tr>
@@ -186,8 +192,9 @@ const limpiarLocalStorage = () => {
                     <th class="col-1">Quantitat</th>
                     <th class="col-1">Preu</th>
                     <th class="col-1"></th>
-                    <th class="col-1"></th>
-                    <th class="col-1"></th>
+                    <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" ></th>
+                    <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" ></th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -197,21 +204,24 @@ const limpiarLocalStorage = () => {
                         <img :src="/images/+'camara.png'" alt="Imagen Foto" width="25" height="25" style="filter: brightness(0) invert(1);" @click="openImageModal(article.imatge)">
                         </div>
                     </td>
-                    <td>{{article.nom}}</td>
+                    <td>
+                        <a :href="'/veureOfertes/' + article.idProducte">{{ article.nom }}</a>
+                    </td>
                     <td>{{article.nick}}</td>
                     <td>{{article.quantitat}}</td>
                     <td>{{article.preu}}</td>
                     <td>
                         <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="abrirModalQuantitat(article)">
                     </td>
-                    <td>
-                        <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
+                    <td  v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" >
+                        <button v-if="$page.props.auth.user.idUsuari==article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
                                 @click="abrirModalModArticle(article)">Modificar</button>
                     </td>
-                    <td>
-                        <button v-if="$page.props.auth.user.idUsuari===article.idVenedor||$page.props.auth.user.idRol==1 " class="btn btn-danger rounded-pill"
+                    <td  v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" >
+                        <button v-if="$page.props.auth.user.idUsuari==article.idVenedor||$page.props.auth.user.idRol==1 " class="btn btn-danger rounded-pill"
                                 @click="abrirModalEliminacio(article)">Eliminar</button>
                     </td>
+
                 </tr>
                 </tbody>
             </table>
@@ -340,4 +350,6 @@ const limpiarLocalStorage = () => {
 form {
     background-color:rgba(0,214,153,0.8) !important;
 }
+
+
 </style>

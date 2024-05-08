@@ -82,7 +82,10 @@ const confirmacio =()=>{
 
 <template>
     <AuthenticatedLayout>
-        <div class="d-flex justify-content-center pt-5 ">
+        <div class="d-flex justify-content-center m-3 ">
+            <h2>Formulari modificació Productes</h2>
+        </div>
+        <div class="d-flex justify-content-center  ">
             <div class="w-25 rounded"  style="background-color: rgba(255,255,255,0.2);padding: 10px; margin: 20px;">
                 <VForm v-slot="{ errors }" @submit="modProducte" class="w-100 rounded">
                     <div class="d-flex flex-column align-items-center m-4 ">

@@ -50,7 +50,7 @@ class ArticleController extends Controller
             ->leftJoin('usuaris', 'articles.idVenedor', '=', 'usuaris.idUsuari')
             ->leftJoin('productes', 'articles.idProducte', '=', 'productes.idProducte')
             ->select('usuaris.nick AS nick', 'articles.idVenedor AS idVenedor', 'articles.preuUnitari AS preu', 'articles.quantitatDisponible AS quantitat',
-                'articles.idArticle AS idArticle', 'productes.imatge as imatge', 'productes.nom as nom')
+                'articles.idArticle AS idArticle', 'productes.imatge as imatge', 'productes.nom as nom','articles.idProducte AS idProducte')
             ->where('articles.quantitatDisponible', '>', 0)
             ->orderBy('articles.preuUnitari', 'desc')
             ->get();

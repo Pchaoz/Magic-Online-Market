@@ -56,13 +56,13 @@ const cerrarModalOferta = () => {
 
 const ModOferta =()=> {
     formOferta.get('/modificarArticle');
-    cerrarModalOferta();
     recargaPaginaOferta();
 }
 
 const recargaPaginaOferta = () => {
-
-    location.reload();
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 
 
@@ -189,12 +189,13 @@ const limpiarLocalStorage = () => {
                 <table class="table  table-striped  my-table w-50 ">
                     <thead>
                     <tr>
-                        <th class="col-1">Venedor</th>
-                        <th class="col-1">Quantitat</th>
-                        <th class="col-1">Preu</th>
+                        <th class="col-2">Venedor</th>
+                        <th class="col-2">Quantitat</th>
+                        <th class="col-2">Preu</th>
                         <th class="col-1"></th>
-                        <th class="col-1"></th>
-                        <th class="col-1"></th>
+                        <th class="col-1" v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'" ></th>
+                        <th class="col-1" v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'" ></th>
+
                     </tr>
                     </thead>
                     <tbody>
@@ -205,14 +206,15 @@ const limpiarLocalStorage = () => {
                         <td>
                             <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="abrirModalQuantitat(article)">
                         </td>
-                        <td>
-                            <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol==1 "  class="btn btn-success rounded-pill"
+                        <td v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'">
+                            <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol=='1' "  class="btn btn-success rounded-pill"
                                     @click="abrirModalModArticle(article)">Modificar</button>
                         </td>
-                        <td>
-                            <button v-if="$page.props.auth.user.idUsuari===article.idVenedor||$page.props.auth.user.idRol==1 " class="btn btn-danger rounded-pill"
+                        <td v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'">
+                            <button v-if="$page.props.auth.user.idUsuari===article.idVenedor||$page.props.auth.user.idRol=='1' " class="btn btn-danger rounded-pill"
                                     @click="abrirModalEliminacio(article)">Eliminar</button>
                         </td>
+
 
                     </tr>
                     </tbody>
@@ -338,4 +340,6 @@ form {
     background-color:rgba(0,214,153,0.8) !important;
 
 }
+
+
 </style>

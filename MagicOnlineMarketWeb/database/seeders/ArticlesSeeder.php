@@ -18,7 +18,7 @@ class ArticlesSeeder extends Seeder
             'quantitatDisponible' => 2,
             'preuUnitari' => 20.5,
             'idProducte'  => '1',
-            'idVenedor'  => '2',
+            'idVenedor'  => '1',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -26,7 +26,7 @@ class ArticlesSeeder extends Seeder
             'quantitatDisponible' => 10,
             'preuUnitari' => 56.95,
             'idProducte'  => '6',
-            'idVenedor'  => '4',
+            'idVenedor'  => '5',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -34,7 +34,7 @@ class ArticlesSeeder extends Seeder
             'quantitatDisponible' => 36,
             'preuUnitari' => 22.56,
             'idProducte'  => '6',
-            'idVenedor'  => '3',
+            'idVenedor'  => '5',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

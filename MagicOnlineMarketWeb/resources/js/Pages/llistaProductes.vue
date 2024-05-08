@@ -23,6 +23,7 @@ defineProps({
 
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
+let showModalConfirmacioArticle= ref(false);
 let showModalImage = ref(false);
 let showModalOferta=ref(false);
 
@@ -93,13 +94,15 @@ const cerrarModalOferta = () => {
 
 const crearOferta =()=> {
     formOferta.get('/crearArticle');
-    cerrarModalOferta();
     recargaPaginaOferta();
 }
 
 const recargaPaginaOferta = () => {
-    showModalConfirmacio.value=true;
-    location.reload();
+    showModalConfirmacioArticle.value=true;
+    setTimeout(() => {
+        showModalConfirmacioArticle.value = false;
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 //maximizar imagen
 let selectedImage = ref(null);
@@ -118,6 +121,9 @@ const closeImageModal = () => {
 
 <template>
     <AuthenticatedLayout>
+        <div class="d-flex justify-content-center m-3 ">
+            <h2>Llista de productes</h2>
+        </div>
         <div class="d-flex justify-content-center m-3 " >
             <table class="table table-striped my-table w-75" >
                 <thead>
@@ -128,7 +134,7 @@ const closeImageModal = () => {
                     <th class="col-2">Categoria Producte</th>
                     <th class="col-2">Expansio Producte</th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
-                    <th class="col-1"v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
+                    <th class="col-1" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4 "></th>
 
                 </tr>
@@ -226,7 +232,7 @@ const closeImageModal = () => {
                             </div>
                             <div class="d-flex justify-content-center m-3">
                                 <button type="button" class="btn btn-success mr-5" @click="crearOferta">Crear Oferta</button>
-                                <button type="button" class="btn btn-danger ml-5" @click="cerrarModalCreacio">Cancelar</button>
+                                <button type="button" class="btn btn-danger ml-5" @click="cerrarModalOferta">Cancelar</button>
                             </div>
                         </div>
                     </form>
@@ -239,6 +245,16 @@ const closeImageModal = () => {
                 <img :src="'/images/' + selectedImage" width="500" height="600">
             </div>
         </Modal>
+
+        <Modal :show="showModalConfirmacioArticle" maxWidth="2xl"  >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Article creat!</p>
+                </div>
+            </div>
+        </Modal>
+
+
 
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
             <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="crearProducte">Crear Nou producte</b-button>
