@@ -80,14 +80,16 @@ const cerrarModalEliminacio = () => {
 
 const eliminarArticle =()=> {
     formOferta.get('/eliminarArticle');
-
     recargaPaginaElim();
 }
 
 const recargaPaginaElim = () => {
     showModalEliminacio.value=false;
     showModalEliminacioConfirmacio=true;
-    location.reload();
+    setTimeout(() => {
+        showModalEliminacioConfirmacio=false;
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 
 const cerrarModalQuantitat = () => {
