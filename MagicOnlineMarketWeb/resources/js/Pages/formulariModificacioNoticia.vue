@@ -24,7 +24,7 @@ const formNoticia = useForm({
     subtitol:props.noticia.subtitol,
     imatge:props.noticia.imatge,
     contingut:props.noticia.contingut,
-    imatgeMiniatura:'/images'+props.noticia.imatge,
+    imatgeMiniatura:'/images/'+props.noticia.imatge,
     idNoticia:props.noticia.idNoticia
 });
 
