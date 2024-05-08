@@ -53,7 +53,10 @@ const eliminarProducte =()=> {
 const recargaPaginaElim = () => {
     showModalEliminacio.value=false;
     showModalEliminacioConfirmacio=true;
-    location.reload();
+    setTimeout(() => {
+        showModalEliminacioConfirmacio.value = false;
+        useForm.visit(window.location.pathname);
+    }, 500);
 
 }
 
@@ -119,9 +122,9 @@ const closeImageModal = () => {
             <table class="table table-striped my-table w-75" >
                 <thead>
                 <tr>
+                    <th class="col-1"></th>
                     <th class="col-2">Nom Producte</th>
                     <th class="col-3">Descripcio Producte</th>
-                    <th class="col-2">Imatge Producte</th>
                     <th class="col-2">Categoria Producte</th>
                     <th class="col-2">Expansio Producte</th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
@@ -133,12 +136,14 @@ const closeImageModal = () => {
                 <tbody>
                 <tr v-for="producte in productes" :key="producte.id">
                     <td>
+                        <div class="d-flex justify-content-center m-3 ">
+                            <img :src="/images/+'camara.png'" alt="Imagen Foto" width="25" height="25" style="filter: brightness(0) invert(1);" @click="openImageModal(producte.imatge)">
+                        </div>
+                    </td>
+                    <td>
                         <a :href="'/veureOfertes/' + producte.idProducte">{{ producte.nom }}</a>
                     </td>
                     <td>{{producte.descripcio}}</td>
-                    <td>
-                        <img :src="'/images/' + producte.imatge" alt="Imatge del producte" width="300" height="350" @click="openImageModal(producte.imatge)">
-                    </td>
                     <td> {{producte.categoriaProducteNom}} </td>
                     <td> {{producte.expansioNom}}</td>
                     <td v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">

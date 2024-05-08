@@ -26,7 +26,7 @@ const props =defineProps({
 
 let showModal=ref(false);
 
-
+let imatgeUrl = ref('/images/' + props.producte.imatge)
 let producte=props.producte;
 
 const formProducte= useForm({
@@ -41,18 +41,24 @@ const formProducte= useForm({
 })
 
 
-const obtenirImatge= (e) => {
-    let file = e.target.files[0];
-    formProducte.imatge = file;
-    mostrarImatge(file);
-}
-
-const mostrarImatge = (file) => {
-    let reader = new FileReader()
-    reader.onload = (e) => {
-        formProducte.imatgeMiniatura= e.target.result
+const obtenirImatge = (event) => {
+    const file = event.target.files[0];
+    if (!file.type.match('image.*')) {
+        alert('Si us plau només imatges!');
+        event.target.value=null;
+        return;
     }
-    reader.readAsDataURL(file)
+    if (file.size > 1000000) {
+        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 1000KB.');
+        event.target.value=null;
+        return;
+    }
+    formProducte.imatge = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        imatgeUrl = e.target.result;
+    };
+    reader.readAsDataURL(file);
 }
 
 
@@ -63,7 +69,10 @@ const modProducte =()=>{
 
 const confirmacio =()=>{
     showModal.value=true;
-    location.reload();
+    setTimeout(() => {
+        showModal.value = false;
+        window.location.href = '/getAllProductes';
+    }, 500);
 
 }
 
@@ -148,7 +157,7 @@ const confirmacio =()=>{
                     </div>
                     <div class="d-flex flex-column align-items-center m-4">
                         <figure>
-                            <img width="200" height="200" :src="formProducte.imatgeMiniatura">
+                            <img width="200" height="200" :src="imatgeUrl">
                         </figure>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">

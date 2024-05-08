@@ -36,19 +36,26 @@ const formProducteInsert= useForm({
         imatgeMiniatura:''
     })
 
-const obtenirImatgeInsert= (e) => {
-    let file = e.target.files[0];
+const obtenirImatgeInsert = (event) => {
+    const file = event.target.files[0];
+    if (!file.type.match('image.*')) {
+        alert('Si us plau només imatges!');
+        event.target.value=null;
+        return;
+    }
+    if (file.size > 1000000) {
+        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 1000KB.');
+        event.target.value=null;
+        return;
+    }
     formProducteInsert.imatge = file;
-    mostrarImatgeInsert(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        formProducteInsert.imatgeMiniatura = e.target.result;
+    };
+    reader.readAsDataURL(file);
 }
 
-const mostrarImatgeInsert = (file) => {
-    let reader = new FileReader()
-    reader.onload = (e) => {
-        formProducteInsert.imatgeMiniatura= e.target.result
-    }
-    reader.readAsDataURL(file)
-}
 
 
 const insertProducte =()=>{
@@ -57,8 +64,20 @@ const insertProducte =()=>{
 }
 
 const confirmacio =()=>{
-    showModal.value=true;
-    location.reload();
+    showModal.value = true;
+    setTimeout(() => {
+        formProducteInsert.idProducte='';
+        formProducteInsert.nom='';
+        formProducteInsert.descripcio='';
+        formProducteInsert.imatge='';
+        formProducteInsert.idCategoriaProducte='';
+        formProducteInsert.idExpansio='';
+        formProducteInsert.idCarta='';
+        formProducteInsert.imatgeMiniatura='';
+        showModal.value = false;
+        document.getElementById('imatge').value = '';
+        useForm.visit(window.location.pathname);
+    }, 500);
 
 }
 
@@ -151,7 +170,7 @@ const confirmacio =()=>{
     </div>
 </VForm>
             </div>
-            <Modal :show="showModal" maxWidth="2xl"  >
+            <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarForm" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Producte Creat!</p>
