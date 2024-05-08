@@ -122,6 +122,10 @@ Route::get('/veureLinies/{id}',[\App\Http\Controllers\LiniesController::class, '
 Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, 'eliminarLinia'])->name('eliminarLinia');
 
 
+//funcions controller Expansions
+Route::get('/getAllExpansions', [\App\Http\Controllers\ExpansionsController::class,'ListExpansions'])->name('ListExpansions');
+
+
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
