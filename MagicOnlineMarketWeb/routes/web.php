@@ -30,7 +30,7 @@ Route::get('/getAllUsers', [\App\Http\Controllers\UserController::class,'getAllU
 require __DIR__.'/auth.php';
 Route::get('/getAllUsersForm', [\App\Http\Controllers\UserController::class,'getUsersForm'])->name('getUsersForm');
 require __DIR__.'/auth.php';
-Route::delete('/deleteUser/{id}', [\App\Http\Controllers\UserController::class,'deleteUser'])->name('deleteUser');
+Route::delete('/deleteUser', [\App\Http\Controllers\UserController::class,'deleteUser'])->name('deleteUser');
 Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'editarUsuari'])->name('editarUsuari');
 
 
@@ -45,7 +45,7 @@ Route::post('/crearCarta',[\App\Http\Controllers\CartesController::class, 'addCa
 Route::get('/formulariEditarCarta', [\App\Http\Controllers\CartesController::class,'FormEditCarta'])->name('FormEditCarta');
 Route::post('/editarCarta',[\App\Http\Controllers\CartesController::class, 'editarCarta'])->name('editarCarta');
 Route::get('/alterDescripcioCarta/{id}/{descripcio}', [\App\Http\Controllers\CartesController::class,'alterDescripcioCarta'])->name('alterDescripcioCarta');
-Route::delete('/deleteCarta/{id}', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
+Route::delete('/deleteCarta', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllCartes', [\App\Http\Controllers\CartesController::class,'APIListCartes'])->name('APIgetAllCartes');
 
@@ -57,7 +57,7 @@ Route::get('/getRol/{id}', [\App\Http\Controllers\RolsController::class,'getRol'
 Route::post('/crearRol',[\App\Http\Controllers\RolsController::class, 'addRol'])->name('addRol');
 Route::get('/modificarNomRol/{id}/{nom}',[\App\Http\Controllers\RolsController::class, 'modRol'])->name('modRol');
 Route::post('/editarRol',[\App\Http\Controllers\RolsController::class,'editarRol'])->name('editarRol');
-Route::get('/eliminarRol/{id}/',[\App\Http\Controllers\RolsController::class, 'deleteRol'])->name('deleteRol');
+Route::delete('/eliminarRol',[\App\Http\Controllers\RolsController::class, 'eliminarRol'])->name('eliminarRol');
 
 
 //-----------------------------------API----------------------------------------//

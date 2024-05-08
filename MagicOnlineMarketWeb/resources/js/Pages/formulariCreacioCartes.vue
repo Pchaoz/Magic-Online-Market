@@ -28,8 +28,8 @@ const obtenirImatge = (event) => {
         event.target.value=null;
         return;
     }
-    if (file.size > 500000) {
-        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 500KB.');
+    if (file.size > 1000000) {
+        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 1000KB.');
         event.target.value=null;
         return;
     }
@@ -51,14 +51,15 @@ const cerrarForm = () => {
     showModal.value = true;
     setTimeout(() => {
         showModal.value = false;
-    }, 2000);
-    formCarta.nom='';
-    formCarta.descripcio='';
-    formCarta.imatge='';
-    formCarta.imatgeMiniatura='';
-    formCarta.raresa='Comun';
-    document.getElementById('imatge').value = '';
-    useForm.visit(window.location.pathname);
+        formCarta.nom='';
+        formCarta.descripcio='';
+        formCarta.imatge='';
+        formCarta.imatgeMiniatura='';
+        formCarta.raresa='Comun';
+        document.getElementById('imatge').value = '';
+        useForm.visit(window.location.pathname);
+    }, 500);
+
 }
 
 const options = ref([

@@ -18,11 +18,11 @@ defineProps({
 });
 let showModal = ref(false);
 let showModalElim = ref(false);
-let cartaId =ref(null);
+
 
 const abrirModalConfirmacion = (id) => {
     showModal.value = true;
-    cartaId.value = id;
+    form.idCarta=id;
 }
 
 
@@ -32,29 +32,23 @@ const cerrarModal = () => {
     showModalImage.value =false;
 }
 
-const eliminarCarta = async () => {
-    try {
-        const response = await axios.delete(`/deleteCarta/${cartaId.value}`);
-        console.log(response.data);
+const eliminarCarta =  () => {
+    form.delete(`deleteCarta`);
         cerrarModal();
         showModalElim.value = true;
         setTimeout(() => {
             showModalElim.value = false;
-        }, 2000);
-        location.reload();
-
-    } catch (error) {
-        console.error(error);
-    }
+            useForm.visit(window.location.pathname);
+        }, 500);
 }
 
 const form = useForm({
-    idCartaModificada: null,
+    idCarta: null,
 
 });
 
 const abrirFormularioEdicion=(id)=>{
-    form.idCartaModificada=id;
+    form.idCarta=id;
     form.get(route('FormEditCarta'));
 
 }

@@ -56,8 +56,8 @@ class RolsController extends Controller
 
     }
 
-    public function deleteRol($id){
-        $rol= Rols::find($id);
+    public function eliminarRol(Request $request){
+        $rol= Rols::find($request->id);
         $rol->delete();
 
     }

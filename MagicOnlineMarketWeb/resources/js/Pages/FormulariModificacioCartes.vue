@@ -40,15 +40,15 @@ const obtenirImatge = (event) => {
         event.target.value=null;
         return;
     }
-    if (file.size > 500000) {
-        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 500KB.');
+    if (file.size > 1000000) {
+        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 1000KB.');
         event.target.value=null;
         return;
     }
     formCarta.imatge = file;
     const reader = new FileReader();
     reader.onload = (e) => {
-        formCarta.imatgeMiniatura = e.target.result;
+        imatgeUrl = e.target.result;
     };
     reader.readAsDataURL(file);
 }
@@ -58,7 +58,12 @@ const myfunction =   () => {
      completarModificacio();
 }
 const completarModificacio =   () => {
-    window.location.href = '/getAllCartes';
+    showModal.value = true;
+    setTimeout(() => {
+        showModal.value = false;
+        window.location.href = '/getAllCartes';
+    }, 500);
+
 }
 
 

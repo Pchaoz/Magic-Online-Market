@@ -21,7 +21,6 @@ let showModalCreacio=ref(false);
 let showModalCreacioConfirmacio=ref(false);
 let showModalModificacio=ref(false);
 let showModalModificacioConfirmacio=ref(false);
-let rolId =ref(null);
 
 const abrirModalCreacio = () =>{
     cerrarModal();
@@ -35,7 +34,7 @@ const cerrarModalCreacio = () =>{
 
 const abrirModalConfirmacion = (id) => {
     showModal.value = true;
-    rolId.value=id;
+    formRol.id=id;
 }
 
 
@@ -63,8 +62,9 @@ const finModificacio=()=>{
     showModalModificacioConfirmacio.value=true;
     setTimeout(() => {
         showModalModificacioConfirmacio.value = false;
-    }, 2000);
-    useForm.visit(window.location.pathname);
+        useForm.visit(window.location.pathname);
+    }, 500);
+
 }
 
 const cerrarModalMod=()=>{
@@ -73,15 +73,10 @@ const cerrarModalMod=()=>{
 
 
 
-const eliminarRol = async () => {
-    try {
-        const response = await axios.get(`/eliminarRol/${rolId.value}`);
-        console.log(response.data);
-        finEliminacio();
+const eliminarRol =  () => {
+    formRol.delete(`eliminarRol`);
+    finEliminacio();
 
-    } catch (error) {
-        console.error(error);
-    }
 }
 
 const finEliminacio=()=>{
@@ -89,12 +84,11 @@ const finEliminacio=()=>{
     showModalEliminacio.value=true;
     setTimeout(() => {
         showModalEliminacio.value = false;
-        window.location.reload();
-    }, 2000);
+        formRol.id="";
+        useForm.visit(window.location.pathname);
+    }, 500);
 
 }
-
-
 
 const formRol= useForm({
     nom: null,
@@ -111,8 +105,9 @@ const confirmacionCreacio=()=>{
     showModalCreacioConfirmacio.value=true;
     setTimeout(() => {
         showModalCreacioConfirmacio.value = false;
-    }, 2000);
-    useForm.visit(window.location.pathname);
+        useForm.visit(window.location.pathname);
+    }, 500);
+
 }
 
 

@@ -26,28 +26,38 @@ const formNoticia = useForm({
 
 let showModal = ref(false);
 
-const obtenirImatge = (e) => {
-    let file = e.target.files[0];
+const obtenirImatge = (event) => {
+    const file = event.target.files[0];
+    if (!file.type.match('image.*')) {
+        alert('Si us plau només imatges!');
+        event.target.value=null;
+        return;
+    }
+    if (file.size > 1000000) {
+        alert('La imatge té un tamany massa gran. El tamant màxim permés es de 1000KB.');
+        event.target.value=null;
+        return;
+    }
     formNoticia.imatge = file;
-    mostrarImatge(file);
-};
-
-const mostrarImatge = (file) => {
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = (e) => {
         formNoticia.imatgeMiniatura = e.target.result;
-    }
+    };
     reader.readAsDataURL(file);
 }
 
 const myfunction = () => {
-    formNoticia.post('/crearNoticia');
+    formNoticia.post('crearNoticia');
     cerrarForm()
 }
 
 const cerrarForm = () => {
     showModal.value = true;
-    location.reload();
+    setTimeout(() => {
+        showModal.value = false;
+        window.location.href = '/llistaNoticies';
+    }, 500);
+
 
 }
 

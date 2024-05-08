@@ -26,13 +26,13 @@ let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 let showModalModificacio = ref(false);
 let showModalModificacioConfirmacio = ref(false);
-let userId =ref(null);
+
 
 //funcio per eliminar usuari
 
 const abrirModalEliminacion = (id) => {
     showModalEliminacio.value = true;
-    userId.value=id;
+    formUsuari.idUsuari =id;
 }
 
 const cerrarModal = () => {
@@ -42,20 +42,17 @@ const cerrarModal = () => {
     showModalModificacioConfirmacio.value=false;
 }
 
-const eliminarUsuari = async () => {
-    try {
-        const response = await axios.delete(`/deleteUser/${userId.value}`);
-        console.log(response.data);
+const eliminarUsuari =  () => {
+
+    formUsuari.delete(`deleteUser`);
         cerrarModal();
         showModalEliminacioConfirmacio.value = true;
         setTimeout(() => {
             showModalEliminacioConfirmacio.value = false;
-        }, 2000);
-        useForm.visit(window.location.pathname);
+            formUsuari.idUsuari="";
+            useForm.visit(window.location.pathname);
+        }, 500);
 
-    } catch (error) {
-        console.error(error);
-    }
 }
 //funcio per eliminar modificar usuari
 
@@ -90,8 +87,9 @@ const finModificacio=()=>{
     showModalModificacioConfirmacio.value=true;
     setTimeout(() => {
         showModalModificacioConfirmacio.value = false;
-    }, 2000);
-    useForm.visit(window.location.pathname);
+        useForm.visit(window.location.pathname);
+    }, 500);
+
 }
 
 
@@ -141,9 +139,10 @@ const finModificacio=()=>{
                         <p>¿Estas segur de que vols eliminar aquest usuari/a?</p>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
-                        <button type="button" class="btn btn-danger mr-5" @click="cerrarModal">No</button>
-                        <button type="button" class="btn btn-primary ml-5"
+
+                        <button type="button" class="btn btn-success mr-5"
                                 @click="eliminarUsuari">Sí</button>
+                        <button type="button" class="btn btn-danger ml-5" @click="cerrarModal">No</button>
                     </div>
                 </div>
             </Modal>

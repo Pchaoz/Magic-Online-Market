@@ -29,8 +29,8 @@ class UserController extends Controller
     }
 
 
-    public function deleteUser($id){
-        $user= User::find($id);
+    public function deleteUser(Request $request){
+        $user= User::find($request->idUsuari);
         $user->delete();
         return redirect()->route('getUsersForm');
     }
@@ -50,7 +50,6 @@ class UserController extends Controller
         $usuari->updated_by = Auth::id();
         $usuari->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $usuari->save();
-        return redirect()->route('getUsersForm');
 
     }
 

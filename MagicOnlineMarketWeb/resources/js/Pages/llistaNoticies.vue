@@ -33,7 +33,11 @@ const eliminarNoticia =() => {
 const cerrarModal = () => {
     showModal.value = false;
     showModalEliminacio.value = true;
-    location.reload();
+
+    setTimeout(() => {
+        showModalEliminacio.value = false;
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 
 
@@ -47,13 +51,16 @@ const crearNoticia=()=> {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
+            <h2>Llistat de Noticies</h2>
+        </div>
+        <div class="d-flex justify-content-center m-3 ">
             <table class="table table-striped my-table w-50 ">
                 <thead>
                 <tr>
                     <th>Titol</th>
                     <th>Creador</th>
                     <th>Data</th>
-                    <th></th>
+                    <th v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,7 +70,7 @@ const crearNoticia=()=> {
                     </td>
                     <td>{{noticia.nick}}</td>
                     <td>{{noticia.created}}</td>
-                    <td>
+                    <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2">
                         <button  class="btn btn-danger rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "
                                  @click="abrirModalConfirmacion(noticia.idNoticia)">Eliminar</button>
                     </td>

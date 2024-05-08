@@ -50,7 +50,7 @@ class CartesController extends Controller
 
     public function FormEditCarta(Request $request){
 
-        $carta= Cartes::where('idCarta',$request->idCartaModificada)->first();
+        $carta= Cartes::where('idCarta',$request->idCarta)->first();
         return Inertia::render('FormulariModificacioCartes',['carta'=>$carta]);
     }
     public  function editarCarta(Request $request){
@@ -78,8 +78,8 @@ class CartesController extends Controller
         return "Carta modificada correctamente!";
     }
 
-    public function deleteCarta($id){
-        $carta= Cartes::find($id);
+    public function deleteCarta(Request $request){
+        $carta= Cartes::find($request->idCarta);
         $imagen =$carta->imatge;
         $rutaImagen = public_path('images/' . $imagen);
         if (file_exists($rutaImagen)) {
