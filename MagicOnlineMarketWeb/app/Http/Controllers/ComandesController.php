@@ -15,7 +15,6 @@ class ComandesController extends Controller
 {
     public function addComanda(Request $request)
     {
-        return response()->json($request);
         //primer creem la comanda
         $comanda = new Comandes();
         $comanda->idVenedor = $request->idVenedor;

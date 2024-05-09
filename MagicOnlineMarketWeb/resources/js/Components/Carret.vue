@@ -75,7 +75,8 @@ const confirmarCompra = (articles) => {
 
         formComanda.post('/crearComanda');
     });
-   
+    showModal.value=true;
+    limpiarLocalStorage();
 }
 
 
