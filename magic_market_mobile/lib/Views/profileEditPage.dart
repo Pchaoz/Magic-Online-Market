@@ -29,10 +29,11 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   }
 
   Future<List<dynamic>> fetchUserInfo() async {
-    final response = await http.get(Uri.parse("$API_URI_SERVER/api/getUser"),
+    final response = await http.get(Uri.parse("$API_URI_SERVER/getUser"),
         headers: <String, String>{'nickname': userName});
 
-    //print("STATUS CODE IS: ${response.statusCode}");
+    print("STATUS CODE IS: ${response.statusCode}");
+    print("ME DEVUELVE: " + response.body);
 
     if (response.statusCode == 200) {
       return json.decode(response.body);
