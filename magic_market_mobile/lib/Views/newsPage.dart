@@ -57,35 +57,20 @@ class __NewsPageState extends State<NewsPage> {
         children: [
           Container(
             color: const Color.fromARGB(255, 11, 214, 153),
-            width: double
-                .infinity, // Asegura que el contenedor ocupe todo el ancho
+            width: double.infinity,
             child: const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'Noticias',
-                style: TextStyle(fontSize: 24),
-                textAlign: TextAlign.center,
-              ),
-            ),
+                padding: EdgeInsets.all(16),
+                child: Text(
+                  'Noticias',
+                  style: TextStyle(fontSize: 24),
+                  textAlign: TextAlign.center,
+                )),
           ),
           Expanded(
-            child: ListView.separated(
+            child: ListView.builder(
               itemCount: news.length,
-              separatorBuilder: (context, index) =>
-                  const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Container(
-                    width: 50, // Define the width of the image
-                    height: 50, // Define the height of the image
-                    child: Image.network(
-                      URI_SERVER_IMAGES + news[index]['imatge'].toString(),
-                      fit: BoxFit
-                          .cover, // Use BoxFit.cover to maintain the aspect ratio of the image
-                    ),
-                  ),
-                  title: Text(news[index]['titol'].toString()),
-                  subtitle: Text("created by ${news[index]['nick']}"),
+                return InkWell(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -95,6 +80,48 @@ class __NewsPageState extends State<NewsPage> {
                       ),
                     );
                   },
+                  child: Container(
+                    margin: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 5,
+                          blurRadius: 7,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10.0),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                URI_SERVER_IMAGES +
+                                    news[index]['imatge'].toString(),
+                              ),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          news[index]['titol'].toString(),
+                          style: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 10),
+                        Text("created by ${news[index]['nick']}"),
+                      ],
+                    ),
+                  ),
                 );
               },
             ),

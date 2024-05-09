@@ -22,7 +22,7 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
     super.initState();
     _newsData = _fetchNewsData();
 
-    //Si, se que estoy haciendo un Foreach para un item lo siento
+    //Si, se que estoy haciendo un Foreach para un item lo siento (Es culpa del Raul)
     _newsData.then((list) {
       for (var item in list) {
         var contingut = item['contingut'];
@@ -77,7 +77,7 @@ class _NewsDetailsPageState extends State<NewsDetailsPage> {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center, // Cambia aquí
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(news[0]['titol'],
                       style: const TextStyle(

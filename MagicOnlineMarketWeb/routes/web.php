@@ -127,6 +127,6 @@ Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, '
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/logout', [AuthController::class, 'logout']);
-Route::post('/api/update', [AuthController::class, 'update']);
+Route::post('/api/updateUser',[AuthController::class, 'APIeditUser'])->name('APIeditUser');
 
 

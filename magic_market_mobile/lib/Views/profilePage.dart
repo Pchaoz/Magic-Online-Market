@@ -39,8 +39,7 @@ class ProfilePage extends StatelessWidget {
           children: [
             Container(
               color: const Color.fromARGB(255, 11, 214, 153),
-              width: double
-                  .infinity, // Asegura que el contenedor ocupe todo el ancho
+              width: double.infinity,
               child: const Padding(
                 padding: EdgeInsets.all(16),
                 child: Text(
@@ -82,6 +81,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   void _LogOut(context) {
     try {
       logOut();

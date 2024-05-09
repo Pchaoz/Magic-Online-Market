@@ -48,6 +48,7 @@ class _HomePageContentState extends State<HomePageContent> {
   @override
   void initState() {
     super.initState();
+    reloadPref();
     fetchNews();
   }
 

@@ -25,22 +25,76 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   @override
   void initState() {
     super.initState();
-    reloadPref();
-    userInfo = fetchUserInfo();
+    try {
+      userInfo = fetchUserInfo();
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  _updateUser() {
+    print("INTENTADO ACTUALIZAR EL USUARIO!");
+    updateUser();
+  }
+
+  Future<void> updateUser() async {
+    Map<String, dynamic> userInfoResolved = await userInfo;
+
+    try {
+      final response = await http.put(
+        Uri.parse('$API_URI_SERVER/updateUser'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'nick': _nick.isEmpty ? userInfoResolved['nick'] : _nick,
+          'name': _nombre.isEmpty ? userInfoResolved['name'] : _nombre,
+          'cognom': userInfoResolved['cognom'],
+          'email': userInfoResolved['email'],
+          '_passwordActual': _passwordActual,
+          'password': _password.isEmpty ? '' : _password,
+        }),
+      );
+      if (response.statusCode == 200) {
+        // Si el servidor devuelve una respuesta OK, parseamos el JSON.
+        print('Usuario actualizado con éxito. ');
+      } else {
+        // Si la respuesta no es OK, lanzamos un error.
+        throw Exception(json.decode(response.body)['message'].toString());
+      }
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(e.toString()),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Cerrar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Future<Map<String, dynamic>> fetchUserInfo() async {
-    print("USUARIO A CARGAR INFO: " + userName);
+    print("USUARIO A CARGAR INFO: $userName");
     final response =
         await http.get(Uri.parse("$API_URI_SERVER/getUser?nickname=$userName"));
 
     print("STATUS CODE IS: ${response.statusCode}");
-    print("ME DEVUELVE: " + response.body);
+    print("ME DEVUELVE: ${response.body}");
 
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load user data');
+      throw Exception(json.decode(response.body)['message']);
     }
   }
 
@@ -53,77 +107,117 @@ class _ProfileEditPage extends State<ProfileEditPage> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-          title: const Text('Magic Online Market'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
-        body: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              children: <Widget>[
-                FutureBuilder<Map<String, dynamic>>(
-                  future: userInfo,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<Map<String, dynamic>> snapshot) {
-                    if (snapshot.hasData) {
-                      return TextFormField(
-                        decoration: InputDecoration(
-                          labelText: 'Nick',
-                          hintText:
-                              'Introduce tu nombre de usuario (${snapshot.data?['nick']})',
-                        ),
-                        onSaved: (value) {
-                          _nick = value ?? '';
-                        },
-                      );
-                    } else if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    } else {
-                      return CircularProgressIndicator();
-                    }
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nom'),
-                  onSaved: (value) {
-                    _nombre = value ?? '';
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Contrasenya'),
-                  obscureText: true,
-                  onSaved: (value) {
-                    _password = value ?? '';
-                  },
-                ),
-                TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Contrasenya actual'),
-                  obscureText: true,
-                  onSaved: (value) {
-                    _passwordActual = value ?? '';
-                  },
-                ),
-                ElevatedButton(
-                  child: const Text('Guardar'),
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _formKey.currentState?.save();
-                      // Aquí puedes agregar tu lógica para guardar los datos
-                    }
-                  },
-                ),
-              ],
+          appBar: AppBar(
+            backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+            title: const Text('Magic Online Market'),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => Navigator.pop(context),
             ),
           ),
-        ),
-      ),
+          body: Column(
+            children: [
+              Container(
+                color: const Color.fromARGB(255, 11, 214, 153),
+                width: double
+                    .infinity, // Asegura que el contenedor ocupe todo el ancho
+                child: const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    'Modifica el teu perfil',
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: <Widget>[
+                      FutureBuilder<Map<String, dynamic>>(
+                        future: userInfo,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                          if (snapshot.hasData) {
+                            return TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Nick',
+                                hintText: snapshot.data?['nick'],
+                              ),
+                              onSaved: (value) {
+                                _nick = value ?? '';
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                      FutureBuilder<Map<String, dynamic>>(
+                        future: userInfo,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                          if (snapshot.hasData) {
+                            return TextFormField(
+                              decoration: InputDecoration(
+                                labelText: 'Nom',
+                                hintText: snapshot.data?['name'].toString(),
+                              ),
+                              onSaved: (value) {
+                                _nombre = value ?? '';
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                      TextFormField(
+                        decoration:
+                            const InputDecoration(labelText: 'Contrasenya'),
+                        obscureText: true,
+                        onSaved: (value) {
+                          _password = value ?? '';
+                        },
+                      ),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            labelText: 'Contrasenya actual'),
+                        obscureText: true,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Por favor, introduce tu contraseña actual';
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _passwordActual = value ?? '';
+                        },
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 16.0),
+                        child: ElevatedButton(
+                          child: const Text('Guardar'),
+                          onPressed: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              _formKey.currentState?.save();
+                              _updateUser();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          )),
     );
   }
 }
