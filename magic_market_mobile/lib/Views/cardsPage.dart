@@ -104,6 +104,16 @@ class _CardsPageState extends State<CardsPage> {
                   const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
               itemBuilder: (context, index) {
                 return ListTile(
+                  leading: Container(
+                    width: 50, // Define the width of the image
+                    height: 50, // Define the height of the image
+                    child: Image.network(
+                      URI_SERVER_IMAGES +
+                          filteredCards[index]['imatge'].toString(),
+                      fit: BoxFit
+                          .cover, // Use BoxFit.cover to maintain the aspect ratio of the image
+                    ),
+                  ),
                   title: Text(filteredCards[index]['nom']),
                   subtitle: Text(
                     filteredCards[index]['raresa'],
