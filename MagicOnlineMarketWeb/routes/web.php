@@ -49,7 +49,7 @@ Route::post('/editarCarta',[\App\Http\Controllers\CartesController::class, 'edit
 Route::get('/alterDescripcioCarta/{id}/{descripcio}', [\App\Http\Controllers\CartesController::class,'alterDescripcioCarta'])->name('alterDescripcioCarta');
 Route::delete('/deleteCarta', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
 //-----------------------------------API----------------------------------------//
-
+Route::get('/api/getAllCartes', [\App\Http\Controllers\CartesController::class,'APIListCartes'])->name('APIgetAllCartes');
 
 
 //funcions controller rols

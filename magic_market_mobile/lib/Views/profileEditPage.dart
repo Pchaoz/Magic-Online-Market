@@ -67,10 +67,26 @@ class _ProfileEditPage extends State<ProfileEditPage> {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: <Widget>[
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Nick'),
-                  onSaved: (value) {
-                    _nick = value ?? '';
+                FutureBuilder<Map<String, dynamic>>(
+                  future: userInfo,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                    if (snapshot.hasData) {
+                      return TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Nick',
+                          hintText:
+                              'Introduce tu nombre de usuario (${snapshot.data?['nick']})',
+                        ),
+                        onSaved: (value) {
+                          _nick = value ?? '';
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return CircularProgressIndicator();
+                    }
                   },
                 ),
                 TextFormField(
