@@ -14,7 +14,7 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPage extends State<ProfileEditPage> {
-  late Future<List<dynamic>> userInfo;
+  late Future<Map<String, dynamic>> userInfo;
 
   final _formKey = GlobalKey<FormState>();
   String _nick = '';
@@ -25,10 +25,12 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   @override
   void initState() {
     super.initState();
+    reloadPref();
     userInfo = fetchUserInfo();
   }
 
-  Future<List<dynamic>> fetchUserInfo() async {
+  Future<Map<String, dynamic>> fetchUserInfo() async {
+    print("USUARIO A CARGAR INFO: " + userName);
     final response = await http.get(Uri.parse("$API_URI_SERVER/getUser"),
         headers: <String, String>{'nickname': userName});
 
