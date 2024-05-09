@@ -14,7 +14,7 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPage extends State<ProfileEditPage> {
-  late Future<Map<String, dynamic>> userInfo;
+  late Future<List<dynamic>> userInfo;
 
   final _formKey = GlobalKey<FormState>();
   String _nick = '';
@@ -29,10 +29,10 @@ class _ProfileEditPage extends State<ProfileEditPage> {
     userInfo = fetchUserInfo();
   }
 
-  Future<Map<String, dynamic>> fetchUserInfo() async {
+  Future<List<dynamic>> fetchUserInfo() async {
     print("USUARIO A CARGAR INFO: " + userName);
-    final response = await http.get(Uri.parse("$API_URI_SERVER/getUser"),
-        headers: <String, String>{'nickname': userName});
+    final response =
+        await http.get(Uri.parse("$API_URI_SERVER/getUser?nickname=$userName"));
 
     print("STATUS CODE IS: ${response.statusCode}");
     print("ME DEVUELVE: " + response.body);
@@ -40,7 +40,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
     if (response.statusCode == 200) {
       return json.decode(response.body);
     } else {
-      throw Exception('Failed to load news data');
+      throw Exception('Failed to load user data');
     }
   }
 
