@@ -54,7 +54,8 @@ class UserController extends Controller
     }
 
     public function APIgetUser(Request $request) {
-
+        $user = DB::table('usuaris')->where('nick', $request->query('nickname'))->first();
+        return response()->json($user);
     }
 
 }
