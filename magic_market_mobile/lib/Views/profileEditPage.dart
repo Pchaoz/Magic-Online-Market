@@ -14,6 +14,8 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPage extends State<ProfileEditPage> {
+  late Future<List<dynamic>> userInfo;
+
   final _formKey = GlobalKey<FormState>();
   String _nick = '';
   String _nombre = '';
@@ -23,10 +25,12 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   @override
   void initState() {
     super.initState();
+    userInfo = fetchUserInfo();
   }
 
-  Future<List<dynamic>> updateUser() async {
-    final response = await http.get(Uri.parse("$API_URI_SERVER/"));
+  Future<List<dynamic>> fetchUserInfo() async {
+    final response = await http.get(Uri.parse("$API_URI_SERVER/api/getUser"),
+        headers: <String, String>{'nickname': userName});
 
     //print("STATUS CODE IS: ${response.statusCode}");
 
