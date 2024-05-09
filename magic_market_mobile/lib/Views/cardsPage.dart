@@ -81,7 +81,7 @@ class _CardsPageState extends State<CardsPage> {
             child: const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                'Cartas',
+                'Cartes',
                 style: TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
@@ -149,10 +149,10 @@ class _CardsPageState extends State<CardsPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to authenticate user'),
+            content: const Text('Error tancant sessio..'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

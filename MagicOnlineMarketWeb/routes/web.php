@@ -32,6 +32,8 @@ Route::get('/getAllUsersForm', [\App\Http\Controllers\UserController::class,'get
 require __DIR__.'/auth.php';
 Route::delete('/deleteUser/{id}', [\App\Http\Controllers\UserController::class,'deleteUser'])->name('deleteUser');
 Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'editarUsuari'])->name('editarUsuari');
+//-----------------------------------API----------------------------------------//
+Route::get('/api/getUser', [\App\Http\Controllers\UserController::class,'getAllUser'])->name('getAllUser');
 
 
 
@@ -47,7 +49,7 @@ Route::post('/editarCarta',[\App\Http\Controllers\CartesController::class, 'edit
 Route::get('/alterDescripcioCarta/{id}/{descripcio}', [\App\Http\Controllers\CartesController::class,'alterDescripcioCarta'])->name('alterDescripcioCarta');
 Route::delete('/deleteCarta/{id}', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
 //-----------------------------------API----------------------------------------//
-Route::get('/api/getAllCartes', [\App\Http\Controllers\CartesController::class,'APIListCartes'])->name('APIgetAllCartes');
+Route::get('/api/getUser', [\App\Http\Controllers\CartesController::class,'APIgetUser'])->name('APIgetUser');
 
 
 
@@ -122,9 +124,10 @@ Route::get('/veureLinies/{id}',[\App\Http\Controllers\LiniesController::class, '
 Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, 'eliminarLinia'])->name('eliminarLinia');
 
 
-//----------------------------------- API LOGIN ----------------------------------------//
+//----------------------------------- API USER ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/logout', [AuthController::class, 'logout']);
+Route::post('/api/update', [AuthController::class, 'update']);
 
 

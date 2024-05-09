@@ -7,6 +7,7 @@ import 'package:magic_market_mobile/Util/lateralMenu.dart';
 import 'package:magic_market_mobile/Views/loginPage.dart';
 
 import '../Util/globals.dart';
+import 'newsDetailsPage.dart';
 
 void main() {
   runApp(HomePage());
@@ -28,7 +29,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Inicio',
+      title: 'Inici',
       home: HomePageContent(),
     );
   }
@@ -51,13 +52,17 @@ class _HomePageContentState extends State<HomePageContent> {
   }
 
   Future fetchNews() async {
-    final response = await http.get(Uri.parse('$API_URI_SERVER/noticies'));
+    final response = await http.get(Uri.parse('$API_URI_SERVER/lastNoticies'));
 
     print("LA RESPUESTA DEL SERVIDOR ES: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
         news = json.decode(response.body);
+        for (var item in news) {
+          images.add(URI_SERVER_IMAGES + item['imatge']);
+        }
+        print(images);
       });
     }
   }
@@ -66,7 +71,6 @@ class _HomePageContentState extends State<HomePageContent> {
   void _LogOut() {
     try {
       logOut();
-      clearPrefs();
 
       Navigator.pushReplacement(
         context,
@@ -79,7 +83,7 @@ class _HomePageContentState extends State<HomePageContent> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to authenticate user'),
+            content: const Text('Error tancant sessio..'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Close'),
@@ -111,7 +115,7 @@ class _HomePageContentState extends State<HomePageContent> {
               child: const Padding(
                 padding: EdgeInsets.all(16),
                 child: Text(
-                  'Inicio',
+                  'Inici',
                   style: TextStyle(fontSize: 24),
                   textAlign: TextAlign.center,
                 ),
@@ -124,6 +128,13 @@ class _HomePageContentState extends State<HomePageContent> {
                 return GestureDetector(
                   onTap: () {
                     print('Imagen tocada: $item, índice: $index');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            NewsDetailsPage(info: news[index]),
+                      ),
+                    );
                   },
                   child: Center(
                     child: Image.network(
@@ -171,7 +182,7 @@ class _HomePageContentState extends State<HomePageContent> {
                     label: FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(
-                    'Producto',
+                    'Producte',
                     style: TextStyle(fontStyle: FontStyle.italic),
                   ),
                 )),
