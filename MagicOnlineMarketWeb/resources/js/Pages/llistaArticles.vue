@@ -32,7 +32,7 @@ const articleAfegit= useForm({
     idVenedor:"",
     nomArticle:"",
     preuArticle:0,
-    quantitatDisponible:0,
+    quantitatAfegida:0,
 })
 
 
@@ -111,11 +111,13 @@ const closeImageModal = () => {
 
 const agregarCarrito = () => {
     //si compramos mas de lo que hay disponible no hacemos nada
-    if(articleAfegit.quantitatDisponible<quantitatComprada.value){
+    if(articleAfegit.quantitatAfegida<quantitatComprada.value){
         showModalQuantitatIncorrecta.value=true;
         cerrarModalQuantitat();
         return;
     }
+    articleAfegit.quantitatAfegida=quantitatComprada.value;
+    articleAfegit.post('/agregarArticleComanda');
 
     const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
     let ArticleExistent=null;
@@ -128,11 +130,6 @@ const agregarCarrito = () => {
         }
     });
 
-    if(totalQty + parseInt(quantitatComprada.value) > articleAfegit.quantitatDisponible){
-        showModalQuantitatIncorrecta.value=true;
-        cerrarModalQuantitat();
-        return;
-    }
 
     if(ArticleExistent===null){
         articlesCarrito.push({
@@ -148,16 +145,18 @@ const agregarCarrito = () => {
     }
 
 
-   localStorage.setItem('articlesCarrito', JSON.stringify(articlesCarrito));
+    localStorage.setItem('articlesCarrito', JSON.stringify(articlesCarrito));
     cerrarModalQuantitat();
-    location.reload();
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 const abrirModalQuantitat = (article) => {
 
 
     articleAfegit.idArticle=article.idArticle;
     articleAfegit.idVenedor=article.idVenedor;
-    articleAfegit.quantitatDisponible=article.quantitat;
+    articleAfegit.quantitatAfegida=article.quantitat;
     articleAfegit.nomArticle=article.nom;
     articleAfegit.preuArticle=article.preu;
     showModalQuantitat.value=true;

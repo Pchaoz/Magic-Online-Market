@@ -59,4 +59,60 @@ class ComandesController extends Controller
 
     }
 
+
+    public function agregarArticleComanda(Request $request)
+    {
+        //primer hem de comprobar si l'usuari te una comanda en estat en compra del mateix venedor
+        $comanda = Comandes::where('idVenedor', $request->idVenedor)
+            ->where('idComprador', Auth::id())
+            ->where('EstatComanda', "En compra")
+            ->first();
+        if ($comanda) {
+           //si existeix actualizem comanda amb noves dades
+            $comanda->preuTotal+=($request->quantitatAfegida*$request->preuArticle);
+            $comanda->updated_at=Carbon::now()->format('Y-m-d H:i:s');
+            $comanda->updated_by=Auth::id();
+            $comanda->save();
+        } else {
+            // Crea una nueva comanda
+            $comanda = new Comandes();
+            $comanda->idVenedor = $request->idVenedor;
+            $comanda->preuTotal=($request->quantitatAfegida*$request->preuArticle);
+            $comanda->idComprador = Auth::id();
+            $comanda->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+            $comanda->EstatComanda = "En compra";
+            $comanda->save();
+        }
+        // ara afegim quantitat a una nova linia pero hem de saber si creem una nova linia
+        // o nomes afegim la quantitat
+        $linia = Linies::where('idComanda', $comanda->idComanda)
+            ->where('idArticle', $request->idArticle)
+            ->first();
+        if ($linia) {
+            $linia->quantitat += $request->quantitatAfegida;
+            $linia->updated_by = Auth::id();
+            $linia->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+            $linia->save();
+        }else{
+            $linia = new Linies();
+            $linia->idComanda = $comanda->idComanda;
+            $linia->quantitat = $request->quantitatAfegida;
+            $linia->idArticle = $request->idArticle;
+            $linia->created_by = Auth::id();
+            $linia->updated_by = Auth::id();
+            $linia->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+            $linia->save();
+        }
+
+        //hem d'actualizar la quantitat d'article
+        $article = Articles::find($request->idArticle);
+        $article->quantitatDisponible-= $request->quantitatAfegida;
+        $article->updated_by = Auth::id();
+        $article->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $article->save();
+
+    }
+
+
+
 }

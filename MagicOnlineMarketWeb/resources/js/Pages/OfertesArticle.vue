@@ -105,7 +105,7 @@ const cerrarModalQuantitat = () => {
 
 const agregarCarrito = () => {
     //si compramos mas de lo que hay disponible no hacemos nada
-    if(articleAfegit.quantitatDisponible<quantitatComprada.value){
+    if(articleAfegit.quantitatAfegida<quantitatComprada.value){
         showModalQuantitatIncorrecta.value=true;
         cerrarModalQuantitat();
         return;
@@ -122,7 +122,7 @@ const agregarCarrito = () => {
         }
     });
 
-    if(totalQty + parseInt(quantitatComprada.value) > articleAfegit.quantitatDisponible){
+    if(totalQty + parseInt(quantitatComprada.value) > articleAfegit.quantitatAfegida){
         showModalQuantitatIncorrecta.value=true;
         cerrarModalQuantitat();
         return;
@@ -151,7 +151,7 @@ const abrirModalQuantitat = (article) => {
 
     articleAfegit.idArticle=article.idArticle;
     articleAfegit.idVenedor=article.idVenedor;
-    articleAfegit.quantitatDisponible=article.quantitat;
+    articleAfegit.quantitatAfegida=article.quantitat;
     articleAfegit.nomArticle=article.nom;
     articleAfegit.preuArticle=article.preu;
     showModalQuantitat.value=true;
