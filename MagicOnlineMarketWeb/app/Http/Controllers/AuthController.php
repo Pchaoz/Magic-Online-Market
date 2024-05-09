@@ -68,7 +68,7 @@ class AuthController extends Controller
         }
 
         // Comprobar si la contraseña actual es la actual
-        if (!Hash::check($request->_passwordActual, $user->password)) {
+        if (!Hash::check($request->passwordActual, $user->password)) {
             return response()->json(['message' => 'La contraseña actual no es correcta'], 400);
         }
 
@@ -88,10 +88,13 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->cognom = $request->cognom;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
+
+        if (!$request->password == null) {
+            $user->password = Hash::make($request->password);
+        }
 
         $user->save();
 
         return response()->json(['message' => 'Usuario actualizado con éxito'], 200);
-    } 
+    }
 }

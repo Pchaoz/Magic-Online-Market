@@ -40,6 +40,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   Future<void> updateUser() async {
     Map<String, dynamic> userInfoResolved = await userInfo;
 
+    print("LA PUTISIMA CONTRASEÑA ES: $_passwordActual");
+
     try {
       final response = await http.put(
         Uri.parse('$API_URI_SERVER/updateUser'),
@@ -47,11 +49,12 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          'idUsuari': userInfoResolved['idUsuari'].toString(),
           'nick': _nick.isEmpty ? userInfoResolved['nick'] : _nick,
           'name': _nombre.isEmpty ? userInfoResolved['name'] : _nombre,
           'cognom': userInfoResolved['cognom'],
           'email': userInfoResolved['email'],
-          '_passwordActual': _passwordActual,
+          'passwordActual': _passwordActual,
           'password': _password.isEmpty ? '' : _password,
         }),
       );
