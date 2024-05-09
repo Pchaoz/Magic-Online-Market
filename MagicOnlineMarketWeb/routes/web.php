@@ -139,4 +139,4 @@ Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProd
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/logout', [AuthController::class, 'logout']);
-Route::post('/api/updateUser',[AuthController::class, 'APIeditUser'])->name('APIeditUser');
+Route::put('/api/updateUser',[AuthController::class, 'APIeditUser'])->name('APIeditUser');

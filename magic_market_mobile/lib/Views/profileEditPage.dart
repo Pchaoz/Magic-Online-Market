@@ -55,6 +55,9 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           'password': _password.isEmpty ? '' : _password,
         }),
       );
+
+      print("LA RESPUESTA DEL SERVIDOR ES: ${response.statusCode}");
+
       if (response.statusCode == 200) {
         // Si el servidor devuelve una respuesta OK, parseamos el JSON.
         print('Usuario actualizado con éxito. ');
