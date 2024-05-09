@@ -34,7 +34,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
 
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
-    setAuth(true, data['user']['nick']);
+    setAuth(true, data['user']['nick'], data['user']['idRol']);
     return {'success': true};
   } else {
     // El usuario no se ha podido autentificar
@@ -83,10 +83,10 @@ class _LoginPageState extends State<LoginPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to authenticate user'),
+            content: const Text('Error iniciando session'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inicio de sesion'),
+        title: const Text('Inici de sessio'),
       ),
       body: SingleChildScrollView(
         // Añade esto
@@ -122,24 +122,24 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Correo'),
+                decoration: const InputDecoration(labelText: 'Email'),
               ),
               const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Contraseña'),
+                decoration: const InputDecoration(labelText: 'Contrasenya'),
                 obscureText: true,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _login,
-                child: const Text('Iniciar sesion'),
+                child: const Text('Iniciar sessio'),
               ),
               const SizedBox(height: 10),
               GestureDetector(
                 onTap: _goToSignUpPage,
                 child: const Text(
-                  'No tienes cuenta? Registrate aqui.',
+                  'No tens compte? Crea un compte aqui.',
                   style: TextStyle(
                     color: Color.fromARGB(255, 11, 214, 153),
                     decoration: TextDecoration.underline,

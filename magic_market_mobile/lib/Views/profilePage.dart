@@ -65,7 +65,7 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Center(child: Text('Barajas')),
+                    title: const Center(child: Text('Baralles')),
                     onTap: () {
                       // Navega a la página de Barajas
                     },

@@ -1,18 +1,46 @@
 import 'package:flutter/material.dart';
-import 'package:magic_market_mobile/Util/LateralMenu.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 import '../Util/globals.dart';
-import 'loginPage.dart';
 
 void main() {
   runApp(ProfileEditPage());
 }
 
-class ProfileEditPage extends StatelessWidget {
+class ProfileEditPage extends StatefulWidget {
+  @override
+  _ProfileEditPage createState() => _ProfileEditPage();
+}
+
+class _ProfileEditPage extends State<ProfileEditPage> {
+  final _formKey = GlobalKey<FormState>();
+  String _nick = '';
+  String _nombre = '';
+  String _password = '';
+  String _passwordActual = '';
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<List<dynamic>> updateUser() async {
+    final response = await http.get(Uri.parse("$API_URI_SERVER/"));
+
+    //print("STATUS CODE IS: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      return json.decode(response.body);
+    } else {
+      throw Exception('Failed to load news data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Profile',
+      title: 'Editar Perfil',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -21,45 +49,58 @@ class ProfileEditPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: const Color.fromARGB(255, 11, 214, 153),
           title: const Text('Magic Online Market'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => Navigator.pop(context),
+          ),
         ),
-        body: const Center(
-          child: Text('Hello World!'),
-        ),
-        drawer: LateralMenu(
-          onTapLogout: () => _LogOut(context),
+        body: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Nick'),
+                  onSaved: (value) {
+                    _nick = value ?? '';
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Nom'),
+                  onSaved: (value) {
+                    _nombre = value ?? '';
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Contrasenya'),
+                  obscureText: true,
+                  onSaved: (value) {
+                    _password = value ?? '';
+                  },
+                ),
+                TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Contrasenya actual'),
+                  obscureText: true,
+                  onSaved: (value) {
+                    _passwordActual = value ?? '';
+                  },
+                ),
+                ElevatedButton(
+                  child: const Text('Guardar'),
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      _formKey.currentState?.save();
+                      // Aquí puedes agregar tu lógica para guardar los datos
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
-  }
-
-  void _LogOut(context) {
-    try {
-      logOut();
-      clearPrefs();
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
-    } catch (e) {
-      print("ERROR.. $e");
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Failed to authenticate user'),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Close'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 }

@@ -58,4 +58,8 @@ class AuthController extends Controller
         return response()->json(['message' => 'User logged out']);
     }
 
+    public function editUser(Request $request) {
+        
+    }
+
 }

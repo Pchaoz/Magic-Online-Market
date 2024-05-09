@@ -50,12 +50,12 @@ class CardDetailPage extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {}, // TODO funcionalidad ver ofertas
-              child: const Text('Ver ofertas'),
+              child: const Text('Veure ofertes'),
             ),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {}, // TODO funcionalidad añadir a un mazo
-              child: const Text('Añadir a mazo'),
+              child: const Text('Afegir a baralla'),
             ),
           ],
         ),

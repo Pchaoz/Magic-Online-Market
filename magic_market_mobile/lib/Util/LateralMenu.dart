@@ -44,7 +44,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.home,
                 color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Incio'),
+            title: const Text('Inici'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -66,7 +66,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.newspaper,
                 color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Noticias'),
+            title: const Text('Noticies'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -77,7 +77,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.info,
                 color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Productos'),
+            title: const Text('Productes'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -88,7 +88,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.article_rounded,
                 color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Cartas'),
+            title: const Text('Cartes'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -99,7 +99,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.shopping_cart,
                 color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Cesta compra'),
+            title: const Text('Cistell de compra'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
@@ -110,7 +110,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.logout,
                 color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Logout'),
+            title: const Text('Tancar sessio'),
             onTap: widget.onTapLogout,
           ),
         ],

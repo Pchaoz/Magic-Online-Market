@@ -12,14 +12,16 @@ String URI_SERVER_IMAGES = 'http://162.19.74.238:8080/images';
 bool isAuthenticated = false;
 String userName = "";
 
-void setAuth(bool auth, String username) async {
+void setAuth(bool auth, String username, int role) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   isAuthenticated = auth;
   userName = username;
+  role = role;
 
   prefs.setBool("Auth", auth);
   prefs.setString("userName", username);
+  prefs.setInt("role", role);
 }
 
 void clearPrefs() async {
@@ -27,6 +29,7 @@ void clearPrefs() async {
 
   prefs.remove("Auth");
   prefs.remove("userName");
+  prefs.remove("role");
 }
 
 void reloadPref() async {
@@ -47,16 +50,13 @@ Future<Map<String, dynamic>> logOut() async {
   print("GET USERS STATUS CODE: ${response.statusCode}");
 
   var responseData = response.body;
-  // Decodificar la respuesta JSON a un Map
   var data = jsonDecode(responseData);
-  // Printear el resultado
   print(data.toString());
 
   if (response.statusCode == 200) {
-    //Usuario ha cerrado la session correctamente
+    clearPrefs();
     return {'success': true};
   } else {
-    // El usuario no se ha podido desconectar
     throw Exception('Failed to logout');
   }
 }

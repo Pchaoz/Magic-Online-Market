@@ -39,13 +39,11 @@ Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
 
   if (response.statusCode == 200) {
     // Usuario registrado correctamente
-    setAuth(true, data["user"]["nick"]);
+    setAuth(true, data['user']['nick'], data['user']['idRol']);
     return {'success': true};
+  } else if (response.statusCode == 500) {
+    throw Exception('Correo ya registrado..');
   } else {
-    // Error al registrar el usuario
-    if (data["email"] == "[The email field must be a valid email address.]") {
-      throw Exception('Correo ya registrado..');
-    }
     throw Exception('Failed to register user');
   }
 }
