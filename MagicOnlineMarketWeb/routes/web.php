@@ -124,9 +124,15 @@ Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, '
 
 
 //----------------------------------- API USER ----------------------------------------//
+//funcions controller Expansions
+Route::get('/getAllExpansions', [\App\Http\Controllers\ExpansionsController::class,'ListExpansions'])->name('ListExpansions');
+Route::post('/crearExpansio',[\App\Http\Controllers\ExpansionsController::class, 'crearExpansio'])->name('crearExpansio');
+Route::post('/editarExpansio',[\App\Http\Controllers\ExpansionsController::class,'editarExpansio'])->name('editarExpansio');
+Route::delete('/eliminarExpansio',[\App\Http\Controllers\ExpansionsController::class, 'eliminarExpansio'])->name('eliminarExpansio');
+
+
+//----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
 Route::post('/api/register', [AuthController::class, 'register']);
 Route::post('/api/logout', [AuthController::class, 'logout']);
 Route::post('/api/update', [AuthController::class, 'update']);
-
-
