@@ -109,9 +109,16 @@ Route::get('/api/lastNoticies/',[\App\Http\Controllers\NoticiesController::class
 
 //funcions controller Comandes
 Route::get('/listComandes',[\App\Http\Controllers\ComandesController::class, 'listComandes'])->name('listComandes');
+Route::get('/listComandesCompres',[\App\Http\Controllers\ComandesController::class, 'listComandesCompres'])->name('listComandesCompres');
+Route::get('/listComandesVendes',[\App\Http\Controllers\ComandesController::class, 'listComandesVendes'])->name('listComandesVendes');
+Route::get('/listComandesCompraUser',[\App\Http\Controllers\ComandesController::class, 'listComandesCompraUser'])->name('listComandesCompraUser');
 Route::post('/crearComanda',[\App\Http\Controllers\ComandesController::class, 'addComanda'])->name('addComanda');
 Route::post('/agregarArticleComanda',[\App\Http\Controllers\ComandesController::class, 'agregarArticleComanda'])->name('agregarArticleComanda');
+Route::delete('/buidarCompra',[\App\Http\Controllers\ComandesController::class, 'buidarCompra'])->name('buidarCompra');
 Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::class, 'eliminarComanda'])->name('eliminarComanda');
+Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class, 'confirmarCompra'])->name('confirmarCompra');
+
+
 
 
 //funcions controller Linies

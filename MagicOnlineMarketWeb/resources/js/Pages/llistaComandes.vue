@@ -25,21 +25,17 @@ const abrirModalEliminacio = (id) =>{
 
 
 }
-const cerrarModalEliminacio = () => {
-    showModalEliminacio.value=false;
-    showModalEliminacioConfirmacio.value=false;
-}
 
 const eliminarLinia =()=> {
     formComanda.delete('/eliminarComanda');
-    recargaPaginaElim();
+    showModalEliminacio.value = false;
+    showModalEliminacioConfirmacio.value = true;
+    setTimeout(() => {
+        showModalEliminacioConfirmacio.value = false;
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 
-const recargaPaginaElim = () => {
-    showModalEliminacio.value=false;
-    showModalEliminacioConfirmacio=true;
-    location.reload();
-}
 
 </script>
 
@@ -54,8 +50,8 @@ const recargaPaginaElim = () => {
                     <th class="col-1">Comprador</th>
                     <th class="col-1">Total</th>
                     <th class="col-1">Estat</th>
-                    <th class="col-1"></th>
-                    <th class="col-1"></th>
+                    <th class="col-1" v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2"></th>
+                    <th class="col-1" v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2"></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -67,11 +63,11 @@ const recargaPaginaElim = () => {
                     <td>{{comanda.nickComprador}}</td>
                     <td>{{comanda.total}}</td>
                     <td>{{comanda.estat}}</td>
-                    <td>
+                    <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2">
                         <button class="btn btn-success rounded-pill"
                                 @click=" ">Administrar</button>
                     </td>
-                    <td>
+                    <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2">
                         <button class="btn btn-danger rounded-pill"
                                 @click="abrirModalEliminacio(comanda.idComanda)">Eliminar</button>
                     </td>

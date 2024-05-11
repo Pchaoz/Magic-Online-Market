@@ -6,7 +6,7 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 import 'bootstrap/dist/js/bootstrap.bundle';
-import Carret from "@/Components/Carret.vue";
+import Carret from "@/Pages/Carret.vue";
 
 const showingNavigationDropdown = ref(false);
 
@@ -52,7 +52,9 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
-                                                <DropdownLink v-if="$page.props.auth.user.idRol==1" :href="route('listComandes')"> Totes les Comandes </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2" :href="route('listComandes')"> Totes les Comandes </DropdownLink>
+                                                <DropdownLink  :href="route('listComandesCompres')">Les meves Compres </DropdownLink>
+                                                <DropdownLink v-if="$page.props.auth.user.idRol==4||$page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==1" :href="route('listComandesVendes')">Les meves Vendes </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>

@@ -47,7 +47,9 @@ const eliminarLinia =()=> {
 const recargaPaginaElim = () => {
     showModalEliminacio.value=false;
     showModalEliminacioConfirmacio=true;
-    location.reload();
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 
 </script>
@@ -92,6 +94,7 @@ const recargaPaginaElim = () => {
                     <th class="col-1">Nom Producte</th>
                     <th class="col-1">Quantitat Comprada</th>
                     <th class="col-1">Preu Unitari</th>
+                    <th class="col-1">Subtotal</th>
                     <th class="col-1"></th>
                 </tr>
                 </thead>
@@ -100,6 +103,7 @@ const recargaPaginaElim = () => {
                     <td>{{linia.nomProducte}}</td>
                     <td>{{linia.quantitat}}</td>
                     <td>{{linia.preuUnitari}}</td>
+                    <td>{{(linia.preuUnitari*linia.quantitat).toFixed(2)}}</td>
                     <td>
                         <button class="btn btn-danger rounded-pill"
                                 @click="abrirModalEliminacio(linia)">Eliminar</button>

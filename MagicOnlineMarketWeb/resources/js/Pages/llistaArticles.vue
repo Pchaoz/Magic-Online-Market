@@ -111,48 +111,23 @@ const closeImageModal = () => {
 
 const agregarCarrito = () => {
     //si compramos mas de lo que hay disponible no hacemos nada
-    if(articleAfegit.quantitatAfegida<quantitatComprada.value){
+    if(articleAfegit.quantitatAfegida<quantitatComprada.value||quantitatComprada.value===0 ){
         showModalQuantitatIncorrecta.value=true;
         cerrarModalQuantitat();
+        setTimeout(() => {
+            showModalQuantitatIncorrecta.value=false;
+
+        }, 500);
         return;
     }
     articleAfegit.quantitatAfegida=quantitatComprada.value;
     articleAfegit.post('/agregarArticleComanda');
-
-    const  articlesCarrito= JSON.parse(localStorage.getItem("articlesCarrito"))|| [];
-    let ArticleExistent=null;
-    let totalQty = 0;
-
-    articlesCarrito.forEach((el) => {
-        if (parseInt(el.idArticleComprat) === parseInt(articleAfegit.idArticle)) {
-            ArticleExistent = el;
-            totalQty += parseInt(el.qtyComprada);
-        }
-    });
-
-
-    if(ArticleExistent===null){
-        articlesCarrito.push({
-            idArticleComprat:  articleAfegit.idArticle,
-            qtyComprada: quantitatComprada.value,
-            idVenedorArticles: articleAfegit.idVenedor,
-            nomArticleComprat: articleAfegit.nomArticle,
-            preuArticleComprat: articleAfegit.preuArticle,
-
-        })
-    }else{
-        ArticleExistent.qtyComprada+=quantitatComprada.value;
-    }
-
-
-    localStorage.setItem('articlesCarrito', JSON.stringify(articlesCarrito));
     cerrarModalQuantitat();
     setTimeout(() => {
         useForm.visit(window.location.pathname);
     }, 500);
 }
 const abrirModalQuantitat = (article) => {
-
 
     articleAfegit.idArticle=article.idArticle;
     articleAfegit.idVenedor=article.idVenedor;
@@ -165,14 +140,6 @@ const abrirModalQuantitat = (article) => {
 const cerrarModalQuantitatIncorrecta = () => {
     showModalQuantitatIncorrecta.value=false;
 }
-
-
-const limpiarLocalStorage = () => {
-    localStorage.clear();
-    location.reload();
-}
-
-
 
 </script>
 
@@ -225,9 +192,6 @@ const limpiarLocalStorage = () => {
                 </tbody>
             </table>
 
-        </div>
-        <div class="d-flex justify-content-center m-3 ">
-            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="limpiarLocalStorage">Buidar Carret</b-button>
         </div>
         <Modal :show="showModalOferta" maxWidth="2xl" closeable @close="cerrarModalOferta">
             <div class="modal-content w-100">
