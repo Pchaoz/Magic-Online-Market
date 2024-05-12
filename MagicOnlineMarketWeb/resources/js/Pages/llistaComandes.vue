@@ -37,6 +37,12 @@ const eliminarLinia =()=> {
 }
 
 
+const cerrarModalEliminacio =()=> {
+    showModalEliminacio.value = false;
+    showModalEliminacioConfirmacio.value = false;
+}
+
+
 </script>
 
 <template>

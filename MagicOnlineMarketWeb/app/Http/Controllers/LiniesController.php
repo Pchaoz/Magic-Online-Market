@@ -49,6 +49,7 @@ class LiniesController extends Controller
             $comanda->save();
         }else{
             $comanda->delete();
+            return Inertia::render('Dashboard');
         }
 
     }

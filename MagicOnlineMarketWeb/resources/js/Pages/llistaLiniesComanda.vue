@@ -46,9 +46,9 @@ const eliminarLinia =()=> {
 
 const recargaPaginaElim = () => {
     showModalEliminacio.value=false;
-    showModalEliminacioConfirmacio=true;
+    showModalEliminacioConfirmacio.value=true;
     setTimeout(() => {
-        showModalEliminacioConfirmacio=false;
+        showModalEliminacioConfirmacio.value=false;
         useForm.visit(window.location.pathname);
     }, 500);
 }
