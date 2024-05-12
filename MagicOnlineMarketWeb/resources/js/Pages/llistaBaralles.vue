@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import {useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 import Modal from "@/Components/Modal.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 
 defineProps({
     baralles: {
@@ -14,9 +15,12 @@ defineProps({
 });
 let showModal = ref(false);
 let showModalEliminacio = ref(false);
+let showModalCreacio = ref(false);
+let showModalCreacioConfirmacio=ref(false);
 
 const form = useForm({
     idBaralla: null,
+    nom:"",
 
 });
 
@@ -46,6 +50,36 @@ const cerrarModal = () => {
         useForm.visit(window.location.pathname);
     }, 500);
 }
+
+//creacio de baralles
+const cerrarModalCreacio = () =>{
+    showModalCreacio.value=false;
+    showModalCreacioConfirmacio.value=false;
+}
+
+
+const abrirModalCreacio = () =>{
+    form.nom="";
+    showModalCreacio.value=true;
+}
+const crearBaralla=()=> {
+
+    form.post('/crearBaralla');
+    confirmacionCreacio();
+}
+
+
+const confirmacionCreacio=()=>{
+    showModalCreacio.value=false;
+    showModalCreacioConfirmacio.value=true;
+    setTimeout(() => {
+        showModalCreacioConfirmacio.value = false;
+        useForm.visit(window.location.pathname);
+    }, 500);
+
+}
+
+crearBaralla
 
 </script>
 
@@ -104,9 +138,39 @@ const cerrarModal = () => {
                 </div>
             </div>
         </Modal>
+        <Modal :show="showModalCreacio" maxWidth="2xl" closeable @close="cerrarModalCreacio" >
+            <div class="modal-content w-100">
 
+                <div class="d-flex justify-content-center m-3 ">
+                    <InputLabel for="nom" value="Nom Baralla" class="m-2"  style="font-size: 16px;"/>
+                    <input
+                        id="nom"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.nom"
+                        required
+                        autofocus
+                        style="color: black;">
+
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-success ml-5"
+                            @click="crearBaralla">Crear</button>
+                    <button type="button" class="btn btn-danger ml-5"
+                            @click="cerrarModalCreacio">Cancelar</button>
+                </div>
+            </div>
+        </Modal>
+
+        <Modal :show="showModalCreacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalCreacio" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Barralla Creada</p>
+                </div>
+            </div>
+        </Modal>
         <div class="d-flex justify-content-center m-3 ">
-            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="crearBaralla">Crear Baralla</b-button>
+            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="abrirModalCreacio">Crear Baralla</b-button>
         </div>
     </AuthenticatedLayout>
 </template>

@@ -150,6 +150,8 @@ Route::post('/agregarCartaBaralla', [\App\Http\Controllers\BarallesController::c
 Route::delete('/deleteCartaBaralla', [\App\Http\Controllers\BarallesController::class,'deleteCartaBaralla'])->name('deleteCartaBaralla');
 Route::post('/modCartaBaralla', [\App\Http\Controllers\BarallesController::class,'modCartaBaralla'])->name('modCartaBaralla');
 Route::delete('/deleteBaralla', [\App\Http\Controllers\BarallesController::class,'deleteBaralla'])->name('deleteBaralla');
+Route::post('/crearBaralla', [\App\Http\Controllers\BarallesController::class,'crearBaralla'])->name('crearBaralla');
+
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

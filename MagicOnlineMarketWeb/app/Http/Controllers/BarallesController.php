@@ -97,6 +97,18 @@ class BarallesController extends Controller
             ->first();
         $cartaBaralla->delete();
     }
+
+    public function crearBaralla (Request $request)
+    {
+        $baralla = new Baralles();
+        $baralla->nom=$request->nom;
+        $baralla->idCreador=Auth::id();
+        $baralla->created_by=Auth::id();
+        $baralla->updated_by=Auth::id();
+        $baralla->save();
+    }
+
+
     public function deleteBaralla (Request $request)
     {
         $baralla = Baralles::where('idBaralla',$request->idBaralla)
