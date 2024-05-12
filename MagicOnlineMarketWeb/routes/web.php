@@ -142,6 +142,10 @@ Route::delete('/eliminarCategProductes',[\App\Http\Controllers\CategoriaProducte
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProducteController::class,'APICategoriaProductes'])->name('APICategoriaProductes');
 
+//funcions controller Baralles
+Route::get('/getAllBaralles', [\App\Http\Controllers\BarallesController::class,'ListBaralles'])->name('ListBaralles');
+Route::get('/veureBaralla/{id}', [\App\Http\Controllers\BarallesController::class,'seeBaralla'])->name('seeBaralla');
+
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);

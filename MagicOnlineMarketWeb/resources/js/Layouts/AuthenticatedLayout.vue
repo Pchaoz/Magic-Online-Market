@@ -14,7 +14,7 @@ const showingNavigationDropdown = ref(false);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100" style="background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.7)), url('/images/fondoPagina.jpg'); background-size: cover; background-position: center center; position: relative;">            <nav class="border-b border-gray-100">
+        <div class="min-h-screen bg-gray-100" style="background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.7)), url('/images/fondoPagina.jpg'); background-size: cover; background-position: center center;  position: relative;">            <nav class="border-b border-gray-100">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="flex justify-between h-16">
                         <div class="flex">
@@ -152,7 +152,7 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
-                                                <DropdownLink> Veure Baralles </DropdownLink>
+                                                <DropdownLink :href="route('ListBaralles')"> Veure Baralles </DropdownLink>
                                                 <DropdownLink> Crear Baralla</DropdownLink>
                                                 <DropdownLink> Les meves Baralles</DropdownLink>
                                                 <DropdownLink :href="route('getAllCartes')"> Veure cartes</DropdownLink>
