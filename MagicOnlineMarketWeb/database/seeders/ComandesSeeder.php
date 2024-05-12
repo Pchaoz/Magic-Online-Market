@@ -15,7 +15,7 @@ class ComandesSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         DB::table('comandes')->insert([
             'isEnviament' => true,
-            'EstatComanda' => 'enviada',
+            'EstatComanda' => 'Enviada',
             'idEnviament' => '1',
             'idComprador' => '3',
             'preuTotal'=> 200,
@@ -24,7 +24,7 @@ class ComandesSeeder extends Seeder
         ]);
         DB::table('comandes')->insert([
             'isEnviament' => false,
-            'EstatComanda' => 'pendent recollida',
+            'EstatComanda' => 'Pendent recollida',
             'idComprador' => '2',
             'preuTotal'=> 20.25,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -32,7 +32,7 @@ class ComandesSeeder extends Seeder
         ]);
         DB::table('comandes')->insert([
             'isEnviament' => true,
-            'EstatComanda' => 'pagada',
+            'EstatComanda' => 'Pagada',
             'idEnviament' => '2',
             'idComprador' => '4',
             'preuTotal'=> 1.75,
@@ -41,7 +41,7 @@ class ComandesSeeder extends Seeder
         ]);
         DB::table('comandes')->insert([
             'isEnviament' => true,
-            'EstatComanda' => 'anulada',
+            'EstatComanda' => 'Anulada',
             'idEnviament' => '3',
             'idComprador' => '1',
             'preuTotal'=> 15.69,
