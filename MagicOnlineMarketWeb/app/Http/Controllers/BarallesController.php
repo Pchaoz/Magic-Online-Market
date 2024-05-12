@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BarallaCartes;
+use App\Models\Baralles;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,20 @@ class BarallesController extends Controller
         return Inertia::render('llistaBaralles',['baralles'=>$baralles]);
 
     }
+
+
+    public function ListBarallesMeves()
+    {
+        $baralles = DB::table('baralles')
+            ->leftJoin('usuaris as creador', 'baralles.idCreador', '=', 'creador.idUsuari')
+            ->where('baralles.idCreador','=',Auth::id())
+            ->select('creador.nick AS nickCreador', 'baralles.nom AS nomBaralla', 'baralles.idBaralla as idBaralla', 'creador.idUsuari as idUsuari','baralles.isPublic as isPublic')
+            ->get();
+
+        return Inertia::render('llistaBaralles',['baralles'=>$baralles]);
+
+    }
+
 
     public function seeBaralla ($id)
     {
@@ -82,5 +97,18 @@ class BarallesController extends Controller
             ->first();
         $cartaBaralla->delete();
     }
+    public function deleteBaralla (Request $request)
+    {
+        $baralla = Baralles::where('idBaralla',$request->idBaralla)
+            ->first();
+        $cartesBaralla = BarallaCartes::where('idBaralla',$request->idBaralla)
+            ->get();
+        foreach ( $cartesBaralla as $cartaBaralla) {
+            $cartaBaralla->delete();
+        }
+        $baralla->delete();
+    }
+
+
 
 }
