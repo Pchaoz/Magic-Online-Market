@@ -48,6 +48,7 @@ const recargaPaginaElim = () => {
     showModalEliminacio.value=false;
     showModalEliminacioConfirmacio=true;
     setTimeout(() => {
+        showModalEliminacioConfirmacio=false;
         useForm.visit(window.location.pathname);
     }, 500);
 }
