@@ -145,6 +145,10 @@ Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProd
 //funcions controller Baralles
 Route::get('/getAllBaralles', [\App\Http\Controllers\BarallesController::class,'ListBaralles'])->name('ListBaralles');
 Route::get('/veureBaralla/{id}', [\App\Http\Controllers\BarallesController::class,'seeBaralla'])->name('seeBaralla');
+Route::post('/agregarCartaBaralla', [\App\Http\Controllers\BarallesController::class,'agregarCartaBaralla'])->name('agregarCartaBaralla');
+Route::delete('/deleteCartaBaralla', [\App\Http\Controllers\BarallesController::class,'deleteCartaBaralla'])->name('deleteCartaBaralla');
+Route::post('/modCartaBaralla', [\App\Http\Controllers\BarallesController::class,'modCartaBaralla'])->name('modCartaBaralla');
+
 
 
 //----------------------------------- API LOGIN ----------------------------------------//
