@@ -44,7 +44,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
 
     try {
       final response = await http.put(
-        Uri.parse('$API_URI_CASA/updateUser'),
+        Uri.parse('$API_URI_SERVER/updateUser'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
