@@ -48,6 +48,12 @@ void reloadPref() async {
       "PREFERENCES RELOAD! -> ROLE ID: $roleID USERNAME: $userName ISAUTH? $isAuthenticated");
 }
 
+void setUsername(String username) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  userName = username;
+  await prefs.setString("userName", username);
+}
+
 Future<Map<String, dynamic>> logOut() async {
   final response = await http.post(
     Uri.parse('$API_URI_SERVER/logout'),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../Util/globals.dart';
+import 'profilePage.dart';
 
 void main() {
   runApp(ProfileEditPage());
@@ -61,8 +63,27 @@ class _ProfileEditPage extends State<ProfileEditPage> {
       print("LA RESPUESTA DEL SERVIDOR ES: ${response.statusCode}");
 
       if (response.statusCode == 200) {
-        // Si el servidor devuelve una respuesta OK, parseamos el JSON.
-        print('Usuario actualizado con éxito. ');
+        setUsername(_nick);
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Exit'),
+              content: const Text('Usuari actualizat correctament.'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Tancar'),
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
+        );
       } else {
         // Si la respuesta no es OK, lanzamos un error.
         throw Exception(json.decode(response.body)['message'].toString());
@@ -76,7 +97,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
             content: Text(e.toString()),
             actions: <Widget>[
               TextButton(
-                child: const Text('Cerrar'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
