@@ -142,6 +142,17 @@ Route::delete('/eliminarCategProductes',[\App\Http\Controllers\CategoriaProducte
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllCategoriaProductes', [\App\Http\Controllers\CategoriaProducteController::class,'APICategoriaProductes'])->name('APICategoriaProductes');
 
+//funcions controller Baralles
+Route::get('/getAllBaralles', [\App\Http\Controllers\BarallesController::class,'ListBaralles'])->name('ListBaralles');
+Route::get('/ListBarallesMeves', [\App\Http\Controllers\BarallesController::class,'ListBarallesMeves'])->name('ListBarallesMeves');
+Route::get('/veureBaralla/{id}', [\App\Http\Controllers\BarallesController::class,'seeBaralla'])->name('seeBaralla');
+Route::post('/agregarCartaBaralla', [\App\Http\Controllers\BarallesController::class,'agregarCartaBaralla'])->name('agregarCartaBaralla');
+Route::delete('/deleteCartaBaralla', [\App\Http\Controllers\BarallesController::class,'deleteCartaBaralla'])->name('deleteCartaBaralla');
+Route::post('/modCartaBaralla', [\App\Http\Controllers\BarallesController::class,'modCartaBaralla'])->name('modCartaBaralla');
+Route::delete('/deleteBaralla', [\App\Http\Controllers\BarallesController::class,'deleteBaralla'])->name('deleteBaralla');
+Route::post('/crearBaralla', [\App\Http\Controllers\BarallesController::class,'crearBaralla'])->name('crearBaralla');
+
+
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);

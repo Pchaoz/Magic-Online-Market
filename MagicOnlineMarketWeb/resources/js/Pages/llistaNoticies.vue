@@ -39,6 +39,10 @@ const cerrarModal = () => {
         useForm.visit(window.location.pathname);
     }, 500);
 }
+const cerrarModalCancelar = () =>{
+    showModal.value = false;
+}
+
 
 
 //crearNoticia
@@ -79,7 +83,7 @@ const crearNoticia=()=> {
             </table>
 
 
-            <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModal" >
+            <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarModalCancelar" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3 ">
                         <p>¿Estas segur de que vols eliminar aquesta Noticia?</p>
@@ -87,7 +91,7 @@ const crearNoticia=()=> {
                     <div class="d-flex justify-content-center m-3 ">
                         <button type="button" class="btn btn-success mr-5"
                                 @click="eliminarNoticia">Sí</button>
-                        <button type="button" class="btn btn-danger ml-5" @click="cerrarModal">No</button>
+                        <button type="button" class="btn btn-danger ml-5" @click="cerrarModalCancelar">No</button>
 
                     </div>
                 </div>

@@ -48,6 +48,9 @@ const cerrarModalEliminacio =()=> {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
+            <h2>Llistat de Comandes</h2>
+        </div>
+        <div class="d-flex justify-content-center m-3 ">
             <table class="table  table-striped  my-table w-50 ">
                 <thead>
                 <tr>
