@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('tipus_torneigs', function (Blueprint $table) {
+        Schema::create('tipus_torneig', function (Blueprint $table) {
             $table->bigIncrements("idTipusTorneig");
             $table->string('descripcio',1000);
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tipus_torneigs');
+        Schema::dropIfExists('tipus_torneig');
     }
 };

@@ -153,6 +153,10 @@ Route::delete('/deleteBaralla', [\App\Http\Controllers\BarallesController::class
 Route::post('/crearBaralla', [\App\Http\Controllers\BarallesController::class,'crearBaralla'])->name('crearBaralla');
 Route::post('/editarBaralla', [\App\Http\Controllers\BarallesController::class,'editarBaralla'])->name('editarBaralla');
 
+//funcions controller Tornejos
+Route::get('/getAllTornejos', [\App\Http\Controllers\TornejosController::class,'ListTornejos'])->name('ListTornejos');
+
+
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);

@@ -15,8 +15,9 @@ return new class extends Migration
             $table->integer("minParticipants")->default(2);
             $table->integer("maxParticipants")->nullable();
             $table->integer("numeroRondes")->default(1);
+            $table->enum("estat",["En creació","En inscripció","Jugant","Acabat","Anulat"])->default("En creació");
             $table->foreignId('idOrganitzador')->constrained('usuaris')->references('idUsuari');
-            $table->foreignId('idTipusTorneig')->constrained('tipus_torneigs')->references('idTipusTorneig');
+            $table->foreignId('idTipusTorneig')->constrained('tipus_torneig')->references('idTipusTorneig');
             $table->timestamp("diaHoraInici");
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
