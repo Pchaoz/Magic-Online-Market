@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Models\Articles;
 use App\Models\Comandes;
 use App\Models\Linies;
 use Illuminate\Http\Request;
@@ -35,15 +36,21 @@ class LiniesController extends Controller
     public function eliminarLinia (Request $request)
     {
         $linia = Linies::where('idLinia', $request->idLinia)->first();
+        $article = Articles::where('idArticle', $linia->idArticle)->first();
+        $article->quantitatDisponible+=$linia->quantitat;
+        $article->save();
         $totalLinia = ($request->quantitatLinia*$request->preuLinia);
         $linia->delete();
 
         $comanda = Comandes::where('idComanda', $request->idComanda)->first();
         $comanda->preuTotal-=$totalLinia;
-        if( 0>$comanda->preuTotal){
-            $comanda->preuTotal=0;
+        $linies = Linies::where('idComanda', $comanda->idComanda) ->first();
+        if($linies){
+            $comanda->save();
+        }else{
+            $comanda->delete();
+            return Inertia::render('Dashboard');
         }
-        $comanda->save();
 
     }
 }
