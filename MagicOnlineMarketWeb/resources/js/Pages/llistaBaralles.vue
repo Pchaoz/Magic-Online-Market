@@ -17,6 +17,9 @@ let showModal = ref(false);
 let showModalEliminacio = ref(false);
 let showModalCreacio = ref(false);
 let showModalCreacioConfirmacio=ref(false);
+let showModalModificacio = ref(false);
+let showModalModificacioConfirmacio=ref(false);
+
 
 const form = useForm({
     idBaralla: null,
@@ -79,7 +82,34 @@ const confirmacionCreacio=()=>{
 
 }
 
-crearBaralla
+//modificacio
+
+const abrirModalMod = (baralla) =>{
+    form.nom=baralla.nomBaralla;
+    form.idBaralla=baralla.idBaralla;
+    showModalModificacio.value=true;
+
+}
+
+const cerrarModalMod=()=>{
+    showModalModificacio.value=false;
+}
+const modificarBaralla = () => {
+    form.post('/editarBaralla');
+    finModificacio();
+
+}
+
+const finModificacio=()=>{
+    showModalModificacio.value=false;
+    showModalModificacioConfirmacio.value=true;
+    setTimeout(() => {
+        showModalModificacioConfirmacio.value = false;
+        useForm.visit(window.location.pathname);
+    }, 500);
+
+}
+
 
 </script>
 
@@ -107,7 +137,7 @@ crearBaralla
                     <td v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari || baralla.isPublic===1">{{baralla.nickCreador}}</td>
                     <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idUsuari===baralla.idUsuari">
                         <button  class="btn btn-success rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "
-                                 @click="abrirModalConfirmacionModificacio(baralla)">Modificar</button>
+                                 @click="abrirModalMod(baralla)">Modificar</button>
                     </td>
                     <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idUsuari===baralla.idUsuari">
                     <button  class="btn btn-danger rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "
@@ -169,6 +199,39 @@ crearBaralla
                 </div>
             </div>
         </Modal>
+        <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
+            <div class="modal-content w-100">
+
+                <div class="d-flex justify-content-center m-3 ">
+                    <InputLabel for="nom" value="Nom nou del rol" class="m-2"  style="font-size: 16px;"/>
+                    <input
+                        id="nom"
+                        type="text"
+                        class="mt-1 block w-full"
+                        v-model="form.nom"
+                        required
+                        autofocus
+                        style="color: black;">
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-success ml-5"
+                            @click="modificarBaralla">Modificar</button>
+                    <button type="button" class="btn btn-danger ml-5"
+                            @click="cerrarModalMod">Cancelar</button>
+
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Baralla Modificada</p>
+                </div>
+            </div>
+        </Modal>
+
+
+
         <div class="d-flex justify-content-center m-3 ">
             <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="abrirModalCreacio">Crear Baralla</b-button>
         </div>

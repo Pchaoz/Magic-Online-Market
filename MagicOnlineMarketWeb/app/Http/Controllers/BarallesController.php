@@ -107,7 +107,14 @@ class BarallesController extends Controller
         $baralla->updated_by=Auth::id();
         $baralla->save();
     }
-
+    public function editarBaralla (Request $request)
+    {
+        $baralla = Baralles::where('idBaralla',$request->idBaralla)
+            ->first();
+        $baralla->nom=$request->nom;
+        $baralla->updated_by=Auth::id();
+        $baralla->save();
+    }
 
     public function deleteBaralla (Request $request)
     {
