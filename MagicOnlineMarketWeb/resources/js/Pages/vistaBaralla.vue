@@ -106,7 +106,7 @@ const modCarta =()=>{
             <h2>Baralla {{baralla.nomBaralla}}</h2>
         </div>
         <div class="d-flex justify-content-center m-3 ">
-            <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="AfegirCarta">Afegir Carta</b-button>
+            <b-button class="btn btn-success rounded-pill"  style="width: 200px;"  v-if= "$page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idCreador" @click="AfegirCarta">Afegir Carta</b-button>
         </div>
         <div class="d-flex justify-content-center m-3 ">
 
@@ -116,8 +116,8 @@ const modCarta =()=>{
                         <div class="card-header text-right">
                             <small class="text-muted" style="font-size: 2em;">X{{cartaBaralla.quantitat}}</small>
                         </div>
-
-                        <img :src="'/images/' + cartaBaralla.imatgeCarta" class="card-img-top" alt="..." @click="ModificarCarta(cartaBaralla)">
+                        <img :src="'/images/' + cartaBaralla.imatgeCarta" class="card-img-top" alt="..."
+                             @click="($page.props.auth.user.idRol==1 || $page.props.auth.user.idUsuari===baralla.idCreador) ? ModificarCarta(cartaBaralla) : null">
                         <div class="card-body">
                             <h5 class="card-title text-center">{{cartaBaralla.nomCarta}}</h5>
                         </div>

@@ -135,14 +135,14 @@ const finModificacio=()=>{
                         <a :href="'/veureBaralla/' + baralla.idBaralla"> {{baralla.nomBaralla}}</a>
                     </td>
                     <td v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari || baralla.isPublic===1">{{baralla.nickCreador}}</td>
-                    <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idUsuari===baralla.idUsuari">
-                        <button  class="btn btn-success rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "
+                    <td v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari || baralla.isPublic===1">
+                        <button  class="btn btn-success rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari"
                                  @click="abrirModalMod(baralla)">Modificar</button>
                     </td>
-                    <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idUsuari===baralla.idUsuari">
-                    <button  class="btn btn-danger rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "
+                    <td v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari || baralla.isPublic===1">
+                    <button  class="btn btn-danger rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari"
                              @click="abrirModalConfirmacionEliminacio(baralla.idBaralla)">Eliminar</button>
-                </td>
+                    </td>
                 </tr>
                 </tbody>
             </table>
