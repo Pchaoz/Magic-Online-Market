@@ -44,7 +44,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
 
     try {
       final response = await http.put(
-        Uri.parse('$API_URI_SERVER/updateUser'),
+        Uri.parse('$API_URI_CASA/updateUser'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -85,21 +85,6 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           );
         },
       );
-    }
-  }
-
-  Future<Map<String, dynamic>> fetchUserInfo() async {
-    print("USUARIO A CARGAR INFO: $userName");
-    final response =
-        await http.get(Uri.parse("$API_URI_SERVER/getUser?nickname=$userName"));
-
-    print("STATUS CODE IS: ${response.statusCode}");
-    print("ME DEVUELVE: ${response.body}");
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception(json.decode(response.body)['message']);
     }
   }
 

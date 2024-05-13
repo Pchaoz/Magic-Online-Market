@@ -48,6 +48,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
             'name' => $request->firstName,
             'cognom' => $request->lastName,
+            'idRol' => 3,
         ]);
         Auth::login($user);
 

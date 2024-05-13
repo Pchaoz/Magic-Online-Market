@@ -39,7 +39,7 @@ Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
 
   if (response.statusCode == 200) {
     // Usuario registrado correctamente
-    setAuth(true, data['user']['nick'], data['user']['idRol']);
+    setAuth(true, data['user']['nick']);
     return {'success': true};
   } else if (response.statusCode == 500) {
     throw Exception('Correo ya registrado..');
