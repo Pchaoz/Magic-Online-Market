@@ -36,10 +36,40 @@ class _NewAddPageState extends State<NewAddPage> {
 
     if (response.statusCode == 200) {
       print('Artículo creado exitosamente');
-    } else {}
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Exit!'),
+          content: const Text('Article creat amb exit.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cerrar el diálogo
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text('Error al crear el article: ${response.statusCode}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Cerrar el diálogo
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 
-//'Error al crear el article: ${response.statusCode}'
   @override
   Widget build(BuildContext context) {
     return Scaffold(
