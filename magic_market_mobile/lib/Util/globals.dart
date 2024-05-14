@@ -13,18 +13,21 @@ String URI_SERVER_IMAGES = 'http://162.19.74.238:8080/images';
 bool isAuthenticated = false;
 String userName = "";
 int roleID = 0;
+int userID = 0;
 
-void setAuth(bool auth, String username) async {
+void setAuth(bool auth, String username, int id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   isAuthenticated = auth;
   userName = username;
+  userID = id;
 
   var userinfo = await fetchUserInfo();
 
   await prefs.setInt("role", userinfo['idRol']);
   await prefs.setBool("Auth", auth);
   await prefs.setString("userName", username);
+  await prefs.setInt("userID", userID);
 
   print(roleID.toString());
 }
@@ -35,6 +38,7 @@ void clearPrefs() async {
   prefs.remove("Auth");
   prefs.remove("userName");
   prefs.remove("role");
+  prefs.remove("userID");
 }
 
 void reloadPref() async {
@@ -45,7 +49,7 @@ void reloadPref() async {
   roleID = prefs.getInt('role')!;
 
   print(
-      "PREFERENCES RELOAD! -> ROLE ID: $roleID USERNAME: $userName ISAUTH? $isAuthenticated");
+      "PREFERENCES RELOAD! -> ROLE ID: $roleID USERNAME: $userName ISAUTH? $isAuthenticated USER ID? $userID");
 }
 
 void setUsername(String username) async {

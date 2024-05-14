@@ -87,4 +87,18 @@ class ArticleController extends Controller
 
         return response()->json($articles);
     }
+    public function APIuploadArticle(Request $request)
+    {
+        $article = new Articles();
+        $article->idProducte = $request->idProducte;
+        $article->quantitatDisponible = $request->quantitatDisponible;
+        $article->preuUnitari = $request->preuUnitari;
+        $article->updated_by = $request->idUser;
+        $article->created_by = $request->idUser;
+        $article->idVenedor = $request->idUser;
+        $article->save();
+
+        return response()->json(['message' => 'Artículo creado exitosamente'], 200);
+    }
+    
 }
