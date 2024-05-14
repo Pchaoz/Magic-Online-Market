@@ -34,7 +34,7 @@ Future<Map<String, dynamic>> loginUser(String email, String password) async {
 
   if (response.statusCode == 200) {
     //Usuari logeado correctamente, falta manejar el token de inicio de session
-    setAuth(true, data['user']['nick']);
+    setAuth(true, data['user']['nick'], data['user']['idUsuari']);
     return {'success': true};
   } else {
     // El usuario no se ha podido autentificar

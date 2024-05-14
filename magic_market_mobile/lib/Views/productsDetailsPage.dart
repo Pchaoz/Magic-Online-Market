@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/Views/newAdd.dart';
 import 'dart:convert';
 
 import '../Util/globals.dart';
@@ -15,6 +16,7 @@ class ProductDetailPage extends StatefulWidget {
 }
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
+  var ButtonAdd;
   List offerList = [];
 
   Future getOffers() async {
@@ -23,7 +25,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     final response = await http.get(
         Uri.parse("$API_URI_SERVER/ofertes/${widget.product['idProducte']}"));
 
-    print("STATUS CODE IS: " + response.statusCode.toString());
+    print("STATUS CODE IS: ${response.statusCode}");
     if (response.statusCode == 200) {
       setState(() {
         offerList = json.decode(response.body);
@@ -35,6 +37,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   void initState() {
     super.initState();
     getOffers();
+    loadRolePreferences();
+  }
+
+  void loadRolePreferences() {
+    if (roleID == 1 || roleID == 2 || roleID == 4 || roleID == 5) {
+      print("SOY ADMIN O TIENDA");
+      ButtonAdd = FloatingActionButton(
+        onPressed: () {
+          //REDIRECT FORM OFERTA
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => NewAddPage(
+                      product: widget.product,
+                    )),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        child: const Icon(Icons.add),
+      );
+    } else {
+      ButtonAdd = null;
+    }
   }
 
   @override
@@ -99,13 +124,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               )
             ]),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //TODO esto te redirige a un formulario para crear un producto nuevo
-        },
-        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: ButtonAdd,
     );
   }
 }
