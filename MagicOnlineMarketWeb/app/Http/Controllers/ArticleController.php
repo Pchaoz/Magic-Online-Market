@@ -87,6 +87,8 @@ class ArticleController extends Controller
 
         return response()->json($articles);
     }
+
+
     public function APIuploadArticle(Request $request)
     {
         return response()->json($request, 200);

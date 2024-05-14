@@ -79,7 +79,7 @@ Route::post('/crearProducte',[\App\Http\Controllers\ProductesController::class, 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::class,'APIListProductes'])->name('APIListProductes');
 Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::class,'APILastProductes'])->name('APILastProductes');
-Route::post('/api/APIuploadArticle', [\App\Http\Controllers\ProductesController::class,'APIuploadArticle'])->name('APIuploadArticle');
+
 
 
 //funcions controller Articles
@@ -91,6 +91,7 @@ Route::get('/eliminarArticle',[\App\Http\Controllers\ArticleController::class, '
 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/ofertes/{id}',[\App\Http\Controllers\ArticleController::class, 'APIgetArticleById'])->name('APIgetArticleById');
+Route::post('/api/APIuploadArticle', [\App\Http\Controllers\ArticleController::class,'APIuploadArticle']);
 
 //funcions controller Noticies
 Route::get('/llistaNoticies',[\App\Http\Controllers\NoticiesController::class, 'listNoticies'])->name('listNoticies');
