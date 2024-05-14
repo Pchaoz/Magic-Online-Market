@@ -91,7 +91,7 @@ class ArticleController extends Controller
 
     public function APIuploadArticle(Request $request)
     {
-        return response()->json($request, 200);
+        //return response()->json($request, 200);
 
         $article = new Articles();
         $article->idProducte = $request->idProducte;
