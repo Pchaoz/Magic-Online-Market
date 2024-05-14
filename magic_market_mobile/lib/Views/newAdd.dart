@@ -34,8 +34,9 @@ class _NewAddPageState extends State<NewAddPage> {
       body: jsonEncode(articleInfo),
     );
 
+    print(jsonDecode(response.body));
+
     if (response.statusCode == 200) {
-      print(jsonDecode(response.body));
       print('Artículo creado exitosamente');
     } else {
       print('Error al crear el artículo: ${response.statusCode}');
