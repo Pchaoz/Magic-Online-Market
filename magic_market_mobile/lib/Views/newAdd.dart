@@ -27,7 +27,7 @@ class _NewAddPageState extends State<NewAddPage> {
     articleInfo['idUser'] = userID;
 
     final response = await http.post(
-      Uri.parse("$API_URI_CASA/uploadArticle"),
+      Uri.parse("$API_URI_SERVER/uploadArticle"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(articleInfo),
     );
