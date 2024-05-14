@@ -29,7 +29,7 @@ class _NewAddPageState extends State<NewAddPage> {
     print("INTENTANDO CREAR: $articleInfo");
 
     final response = await http.post(
-      Uri.parse("$API_URI_SERVER/APIuploadArticle"),
+      Uri.parse("$API_URI_LOCAL/APIuploadArticle"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(articleInfo),
     );
@@ -41,6 +41,7 @@ class _NewAddPageState extends State<NewAddPage> {
     if (response.statusCode == 200) {
       print('Artículo creado exitosamente');
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Exit!'),
@@ -57,6 +58,7 @@ class _NewAddPageState extends State<NewAddPage> {
       );
     } else {
       showDialog(
+        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Error'),

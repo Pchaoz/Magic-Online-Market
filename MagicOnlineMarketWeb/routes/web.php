@@ -92,6 +92,7 @@ Route::get('/eliminarArticle',[\App\Http\Controllers\ArticleController::class, '
 //-----------------------------------API----------------------------------------//
 Route::get('/api/ofertes/{id}',[\App\Http\Controllers\ArticleController::class, 'APIgetArticleById'])->name('APIgetArticleById');
 Route::post('/api/APIuploadArticle', [\App\Http\Controllers\ArticleController::class,'APIuploadArticle']);
+Route::get('/api/recentOfertes',[\App\Http\Controllers\ArticleController::class, 'APIgetLastOfertes'])->name('APIgetLastOfertes');
 
 //funcions controller Noticies
 Route::get('/llistaNoticies',[\App\Http\Controllers\NoticiesController::class, 'listNoticies'])->name('listNoticies');

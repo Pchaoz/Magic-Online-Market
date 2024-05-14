@@ -70,7 +70,14 @@ class ProfilePage extends StatelessWidget {
                     onTap: () {
                       // Navega a la página de Barajas
                     },
-                  )
+                  ),
+                  if (roleID == 1 || roleID == 2 || roleID == 4 || roleID == 5)
+                    ListTile(
+                      title: const Center(child: Text('Les meves ofertes')),
+                      onTap: () {
+                        // Navega a la página de Barajas
+                      },
+                    )
                 ]).toList(),
               ),
             ),

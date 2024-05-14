@@ -23,7 +23,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     print("Buscando las ofertas del producto: ${widget.product['idProducte']}");
 
     final response = await http.get(
-        Uri.parse("$API_URI_SERVER/ofertes/${widget.product['idProducte']}"));
+        Uri.parse("$API_URI_LOCAL/ofertes/${widget.product['idProducte']}"));
 
     print("STATUS CODE IS: ${response.statusCode}");
     if (response.statusCode == 200) {

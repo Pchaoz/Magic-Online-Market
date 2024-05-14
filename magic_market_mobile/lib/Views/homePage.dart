@@ -44,12 +44,58 @@ class _HomePageContentState extends State<HomePageContent> {
   int _current = 0;
   List news = [];
   final List<String> images = [];
+  List<dynamic> lastOfertes = [];
 
   @override
   void initState() {
     super.initState();
     reloadPref();
     fetchNews();
+    fetchLastArticles();
+  }
+
+  Future fetchLastArticles() async {
+    final response = await http.get(Uri.parse('$API_URI_SERVER/recentOfertes'));
+
+    print("LA RESPUESTA DEL SERVIDOR ES: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      setState(() {
+        lastOfertes = json.decode(response.body)[0];
+      });
+
+      /*
+      print('lastOfertes es de tipo: ${lastOfertes.runtimeType}');
+      for (var i = 0; i < lastOfertes.length; i++) {
+        print('lastOfertes[$i] es de tipo: ${lastOfertes[i].runtimeType}');
+        print('lastOfertes[$i]: ${lastOfertes[i]}');
+      }
+      */
+
+      print("CARGADAS OFERTAS CORRECTAMENTE");
+      print(lastOfertes.toString());
+    } else {
+      print("error: ${response.body}");
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(
+                'Error a la hora de carregar els articles recents.. ' +
+                    jsonDecode(response.body)),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Future fetchNews() async {
@@ -175,84 +221,27 @@ class _HomePageContentState extends State<HomePageContent> {
                 );
               }).toList(),
             ),
-            DataTable(
-              headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => const Color.fromARGB(125, 11, 214, 153)),
-              columns: const <DataColumn>[
-                DataColumn(
-                    label: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'Producte',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                )),
-                DataColumn(
-                    label: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'Usuario',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                )),
-                DataColumn(
-                    label: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'Precio',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                )),
-                DataColumn(
-                    label: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    'Mas',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                )),
-              ],
-              rows: List<DataRow>.generate(
-                10,
-                (index) => DataRow(
-                  color: MaterialStateProperty.resolveWith<Color>(
-                      (Set<MaterialState> states) {
-                    if (index % 2 == 0) {
-                      return Colors.white;
-                    }
-                    return const Color.fromARGB(101, 207, 207, 207);
-                  }),
-                  cells: <DataCell>[
-                    DataCell(
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text('Producto ${index + 1}'),
-                      ),
-                    ),
-                    DataCell(
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text('Usuario ${index + 1}'),
-                      ),
-                    ),
-                    DataCell(
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text('Precio ${index + 1}'),
-                      ),
-                    ),
-                    DataCell(
-                      IconButton(
-                        icon: const Icon(Icons.remove_red_eye),
-                        color: const Color.fromARGB(255, 11, 214, 153),
-                        onPressed: () {
-                          // Implementar la acción de ver detalles
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+            const Text(
+              'Articles recents',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: lastOfertes.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Image.network(
+                      URI_SERVER_IMAGES + "/" + lastOfertes[index]['imatge']),
+                  title: Text(
+                      'Vendedor: ${lastOfertes[index]['nick']}, Article: ${lastOfertes[index]['nom']}'),
+                  subtitle: Text(
+                      'Preu: ${lastOfertes[index]['preu']}, Cantidad: ${lastOfertes[index]['quantitat']}'),
+                  onTap: () => {
+                    //MOVE TO THE OFFER
+                  },
+                );
+              },
             ),
           ],
         ),

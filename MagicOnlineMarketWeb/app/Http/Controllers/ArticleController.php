@@ -103,6 +103,20 @@ class ArticleController extends Controller
         $article->save();
 
         return response()->json(['message' => 'Artículo creado exitosamente'], 200);
-    } 
-    
+    }
+
+    public function APIgetLastOfertes()
+    {
+        $articles = DB::table('articles')
+            ->leftJoin('usuaris', 'articles.idVenedor', '=', 'usuaris.idUsuari')
+            ->leftJoin('productes', 'articles.idProducte', '=', 'productes.idProducte')
+            ->select('usuaris.nick AS nick', 'articles.idVenedor AS idVenedor', 'articles.preuUnitari AS preu', 'articles.quantitatDisponible AS quantitat',
+                'articles.idArticle AS idArticle', 'productes.imatge as imatge', 'productes.nom as nom','articles.idProducte AS idProducte','articles.updated_at')
+            ->where('articles.quantitatDisponible', '>', 0)
+            ->orderBy('articles.updated_at', 'desc')
+            ->limit(5)
+            ->get();
+
+        return response()->json([$articles], 200);
+    }
 }
