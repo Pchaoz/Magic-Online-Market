@@ -95,8 +95,8 @@ class ArticleController extends Controller
 
         $article = new Articles();
         $article->idProducte = $request->idProducte;
-        $article->quantitatDisponible = doubleval($request->quantitatDisponible);
-        $article->preuUnitari = $request->preuUnitari;
+        $article->quantitatDisponible = preuUnitari;
+        $article->preuUnitari = $request->quantitatDisponible;
         $article->updated_by = $request->idUser;
         $article->created_by = $request->idUser;
         $article->idVenedor = $request->idUser;
