@@ -26,6 +26,8 @@ class _NewAddPageState extends State<NewAddPage> {
     articleInfo['idProducte'] = widget.product['idProducte'];
     articleInfo['idUser'] = userID;
 
+    print("INTENTANDO CREAR: $articleInfo");
+
     final response = await http.post(
       Uri.parse("$API_URI_SERVER/uploadArticle"),
       headers: {'Content-Type': 'application/json'},
@@ -105,8 +107,9 @@ class _NewAddPageState extends State<NewAddPage> {
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        articleInfo['Preu per unitat'] = priceController.text;
-                        articleInfo['Quantitat'] = amountController.text;
+                        articleInfo['quantitatDisponible'] =
+                            priceController.text;
+                        articleInfo['preuUnitari'] = amountController.text;
                         uploadArticle();
                       }
                     },
