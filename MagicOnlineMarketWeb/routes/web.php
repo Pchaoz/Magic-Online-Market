@@ -79,7 +79,7 @@ Route::post('/crearProducte',[\App\Http\Controllers\ProductesController::class, 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::class,'APIListProductes'])->name('APIListProductes');
 Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::class,'APILastProductes'])->name('APILastProductes');
-Route::post('/api/uploadArticle', [\App\Http\Controllers\ProductesController::class,'APIuploadArticle'])->name('APIuploadArticle');
+Route::post('/api/uploadArticle', [\App\Http\Controllers\ProductesController::class,'APIuploadArticle']);
 
 
 //funcions controller Articles
