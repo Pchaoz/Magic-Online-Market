@@ -152,7 +152,7 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
-                                                <DropdownLink :href="route('ListBaralles')"> Veure Baralles </DropdownLink>
+                                                <DropdownLink :href="route('ListBaralles')">Baralles públiques </DropdownLink>
                                                 <DropdownLink :href="route('ListBarallesMeves')">Les meves Baralles</DropdownLink>
                                                 <DropdownLink :href="route('getAllCartes')"> Veure cartes</DropdownLink>
                                             </template>

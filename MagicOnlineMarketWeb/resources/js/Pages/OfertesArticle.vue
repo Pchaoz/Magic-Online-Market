@@ -160,7 +160,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                     <tr>
                         <th class="col-2">Venedor</th>
                         <th class="col-2">Quantitat</th>
-                        <th class="col-2">Preu</th>
+                        <th class="col-2">Preu Unitari</th>
                         <th class="col-1"></th>
                         <th class="col-1" v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'" ></th>
                         <th class="col-1" v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'" ></th>

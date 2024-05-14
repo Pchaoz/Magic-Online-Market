@@ -156,7 +156,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                     <th class="col-2">Nom Article</th>
                     <th class="col-1">Venedor</th>
                     <th class="col-1">Quantitat</th>
-                    <th class="col-1">Preu</th>
+                    <th class="col-1">Preu Unitari</th>
                     <th class="col-1"></th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" ></th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" ></th>
