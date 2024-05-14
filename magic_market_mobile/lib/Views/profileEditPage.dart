@@ -153,9 +153,10 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                             AsyncSnapshot<Map<String, dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
+                              initialValue: snapshot.data?[
+                                  'nick'], // Aquí se establece el valor inicial
                               decoration: InputDecoration(
                                 labelText: 'Nick',
-                                hintText: snapshot.data?['nick'],
                               ),
                               onSaved: (value) {
                                 _nick = value ?? '';
@@ -174,9 +175,10 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                             AsyncSnapshot<Map<String, dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
+                              initialValue: snapshot.data?['name']
+                                  .toString(), // Aquí se establece el valor inicial
                               decoration: InputDecoration(
                                 labelText: 'Nom',
-                                hintText: snapshot.data?['name'].toString(),
                               ),
                               onSaved: (value) {
                                 _nombre = value ?? '';
