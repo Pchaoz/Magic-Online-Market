@@ -78,12 +78,12 @@ const confirmarCambios = () => {
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="titol" value="Titol:" />
                         <VField id="titol" name="titol" type="text" v-model="formNoticia.titol" rules="required" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="titol" style="color: red; font-weight: bold; />
+                        <ErrorMessage name="titol" style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="subtitol" value="Subtitol:" />
                         <VField id="subtitol" name="subtitol" type="text" v-model="formNoticia.subtitol" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="subtitol" style="color: red; font-weight: bold;/>
+                        <ErrorMessage name="subtitol" style="color: red; font-weight: bold;"/>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="contingut" value="Contingut:" />
