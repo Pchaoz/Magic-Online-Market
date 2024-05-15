@@ -106,6 +106,7 @@ Route::get('/veureNoticia/{id}',[\App\Http\Controllers\NoticiesController::class
 Route::get('/formModNoticia',[\App\Http\Controllers\NoticiesController::class, 'formModNoticia'])->name('formModNoticia');
 Route::post('/modNoticia',[\App\Http\Controllers\NoticiesController::class, 'modNoticia'])->name('modNoticia');
 
+
 //-----------------------------------API----------------------------------------//
 Route::get('/api/noticies/{id}',[\App\Http\Controllers\NoticiesController::class, 'getNoticiaByIdAPI'])->name('getNoticiaByIdAPI');
 Route::get('/api/noticies/',[\App\Http\Controllers\NoticiesController::class, 'getNoticiesAPI'])->name('getNoticiesAPI');
@@ -123,15 +124,10 @@ Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::clas
 Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class, 'confirmarCompra'])->name('confirmarCompra');
 
 
-
-
 //funcions controller Linies
 Route::get('/veureLinies/{id}',[\App\Http\Controllers\LiniesController::class, 'veureLiniesComanda'])->name('veureLiniesComanda');
 Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, 'eliminarLinia'])->name('eliminarLinia');
 Route::delete('/eliminarLiniaCarret',[\App\Http\Controllers\LiniesController::class, 'eliminarLiniaCarret'])->name('eliminarLiniaCarret');
-
-
-
 
 //----------------------------------- API USER ----------------------------------------//
 //funcions controller Expansions

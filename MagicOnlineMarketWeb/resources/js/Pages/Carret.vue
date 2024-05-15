@@ -12,6 +12,7 @@ let showModalconfirmarCompra = ref(false)
 let showModalBuidarCarret = ref(false)
 let showModalEliminacio  = ref(false)
 let showModalEliminacioConfirmacio = ref(false)
+
 const auxform= useForm({
     idLinia:"",
     quantitatLinia:0,
