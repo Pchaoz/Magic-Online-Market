@@ -10,6 +10,7 @@ defineProps({
     comandes:{
         type: Array(String),
     },
+    titol:String,
 });
 
 let showModalEliminacio = ref(false);
@@ -48,7 +49,7 @@ const cerrarModalEliminacio =()=> {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
-            <h2>Llistat de Comandes</h2>
+            <h2>{{titol}}</h2>
         </div>
         <div class="d-flex justify-content-center m-3 ">
             <table class="table  table-striped  my-table w-50 ">

@@ -25,8 +25,7 @@ let showModalOferta=ref(false);
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 let showModalQuantitat = ref(false);
-let showModalQuantitatIncorrecta = ref(false);
-let quantitatComprada= ref(0);
+
 
 
 const formOferta= useForm({
@@ -40,7 +39,8 @@ const articleAfegit= useForm({
     idVenedor:"",
     nomArticle:"",
     preuArticle:0,
-    quantitatAfegida:0,
+    quantitatProducte:0,
+    quantitatComprada:0,
 })
 
 const abrirModalModArticle =(article)=>{
@@ -99,22 +99,13 @@ const cerrarModalQuantitat = () => {
     articleAfegit.idVenedor="";
     articleAfegit.nomArticle="";
     articleAfegit.preuArticle=0;
-    quantitatComprada.value=0;
+    articleAfegit.quantitatComprada=0;
+
 }
 
 //agregar al carrito
 const agregarCarrito = () => {
-    //si compramos mas de lo que hay disponible no hacemos nada
-    if(articleAfegit.quantitatAfegida<quantitatComprada.value||quantitatComprada.value===0){
-        showModalQuantitatIncorrecta.value=true;
-        cerrarModalQuantitat();
-        setTimeout(() => {
-            showModalQuantitatIncorrecta.value=false;
 
-        }, 500);
-        return;
-    }
-    articleAfegit.quantitatAfegida=quantitatComprada.value;
     articleAfegit.post('/agregarArticleComanda');
     cerrarModalQuantitat();
     setTimeout(() => {
@@ -124,15 +115,12 @@ const agregarCarrito = () => {
 const abrirModalQuantitat = (article) => {
     articleAfegit.idArticle=article.idArticle;
     articleAfegit.idVenedor=article.idVenedor;
-    articleAfegit.quantitatAfegida=article.quantitat;
+    articleAfegit.quantitatProducte=article.quantitat;
     articleAfegit.nomArticle=article.nom;
     articleAfegit.preuArticle=article.preu;
     showModalQuantitat.value=true;
 }
 
-const cerrarModalQuantitatIncorrecta = () => {
-    showModalQuantitatIncorrecta.value=false;
-}
 
 </script>
 
@@ -160,7 +148,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                     <tr>
                         <th class="col-2">Venedor</th>
                         <th class="col-2">Quantitat</th>
-                        <th class="col-2">Preu</th>
+                        <th class="col-2">Preu Unitari</th>
                         <th class="col-1"></th>
                         <th class="col-1" v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'" ></th>
                         <th class="col-1" v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'" ></th>
@@ -203,7 +191,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                                         type="number"
                                         class="mt-1 block w-full"
                                         v-model="formOferta.quantitatDisponible"
-                                        min="1"
+                                        :min="1"
                                         step="1"
                                         required
                                         style="color: black; width: 100px;"
@@ -218,7 +206,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                                         type="number"
                                         class="mt-1 block w-full"
                                         v-model="formOferta.preuUnitari"
-                                        min="0"
+                                        :min="0.01"
                                         required
                                         step="0.01"
                                         style="color: black; width: 100px;"
@@ -268,8 +256,9 @@ const cerrarModalQuantitatIncorrecta = () => {
                         type="number"
                         placeholder="qty"
                         class="mt-1 block w-full"
-                        v-model="quantitatComprada"
-                        min="1"
+                        v-model="articleAfegit.quantitatComprada"
+                        :min="1"
+                        :max="articleAfegit.quantitatProducte"
                         step="1"
                         required
                         style="color: black; width: 100px;"

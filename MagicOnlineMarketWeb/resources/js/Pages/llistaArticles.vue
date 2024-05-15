@@ -32,7 +32,8 @@ const articleAfegit= useForm({
     idVenedor:"",
     nomArticle:"",
     preuArticle:0,
-    quantitatAfegida:0,
+    quantitatProducte:0,
+    quantitatComprada:0,
 })
 
 
@@ -78,7 +79,7 @@ const abrirModalModArticle =(article)=> {
     articleAfegit.idVenedor="";
     articleAfegit.nomArticle="";
     articleAfegit.preuArticle=0;
-    quantitatComprada.value=0;
+    articleAfegit.quantitatComprada=0;
     }
 
     const eliminarArticle =()=> {
@@ -110,17 +111,7 @@ const closeImageModal = () => {
 //agregar al carrito
 
 const agregarCarrito = () => {
-    //si compramos mas de lo que hay disponible no hacemos nada
-    if(articleAfegit.quantitatAfegida<quantitatComprada.value||quantitatComprada.value===0 ){
-        showModalQuantitatIncorrecta.value=true;
-        cerrarModalQuantitat();
-        setTimeout(() => {
-            showModalQuantitatIncorrecta.value=false;
-
-        }, 500);
-        return;
-    }
-    articleAfegit.quantitatAfegida=quantitatComprada.value;
+    articleAfegit.quantitatProducte=quantitatComprada.value;
     articleAfegit.post('/agregarArticleComanda');
     cerrarModalQuantitat();
     setTimeout(() => {
@@ -128,18 +119,16 @@ const agregarCarrito = () => {
     }, 500);
 }
 const abrirModalQuantitat = (article) => {
-
     articleAfegit.idArticle=article.idArticle;
     articleAfegit.idVenedor=article.idVenedor;
-    articleAfegit.quantitatAfegida=article.quantitat;
+    articleAfegit.quantitatProducte=article.quantitat;
     articleAfegit.nomArticle=article.nom;
     articleAfegit.preuArticle=article.preu;
+    articleAfegit.quantitatComprada=1;
     showModalQuantitat.value=true;
 }
 
-const cerrarModalQuantitatIncorrecta = () => {
-    showModalQuantitatIncorrecta.value=false;
-}
+
 
 </script>
 
@@ -156,7 +145,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                     <th class="col-2">Nom Article</th>
                     <th class="col-1">Venedor</th>
                     <th class="col-1">Quantitat</th>
-                    <th class="col-1">Preu</th>
+                    <th class="col-1">Preu Unitari</th>
                     <th class="col-1"></th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" ></th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4" ></th>
@@ -206,7 +195,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                                         type="number"
                                         class="mt-1 block w-full"
                                         v-model="formOferta.quantitatDisponible"
-                                        min="1"
+                                        :min="1"
                                         step="1"
                                         required
                                         style="color: black; width: 100px;"
@@ -221,7 +210,7 @@ const cerrarModalQuantitatIncorrecta = () => {
                                         type="number"
                                         class="mt-1 block w-full"
                                         v-model="formOferta.preuUnitari"
-                                        min="0"
+                                        :min="0.01"
                                         required
                                         step="0.01"
                                         style="color: black; width: 100px;"
@@ -277,8 +266,9 @@ const cerrarModalQuantitatIncorrecta = () => {
                         type="number"
                         placeholder="qty"
                         class="mt-1 block w-full"
-                        v-model="quantitatComprada"
-                        min="1"
+                        v-model="articleAfegit.quantitatComprada"
+                        :min="1"
+                        :max="articleAfegit.quantitatProducte"
                         step="1"
                         required
                         style="color: black; width: 100px;"
@@ -289,14 +279,6 @@ const cerrarModalQuantitatIncorrecta = () => {
                             @click="agregarCarrito">Aceptar</button>
                     <button type="button" class="btn btn-danger ml-5" @click="cerrarModalQuantitat">Cancelar</button>
 
-                </div>
-            </div>
-        </Modal>
-        <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
-            <div class="modal-content w-100">
-
-                <div class="d-flex justify-content-center m-3 ">
-                    <p>Quantitat incorrecta</p>
                 </div>
             </div>
         </Modal>

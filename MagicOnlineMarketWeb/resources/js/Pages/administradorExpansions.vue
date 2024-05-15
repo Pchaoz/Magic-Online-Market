@@ -183,12 +183,12 @@ const confirmacionCreacio=()=>{
                             <div class="d-flex flex-column align-items-center m-4 p-1">
                                 <InputLabel for="nom" value="Nom:" />
                                 <VField id="nom" name="nom" type="text" v-model="formExpansio.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
-                                <ErrorMessage name="nom" />
+                                <ErrorMessage name="nom" style="color: red; font-weight: bold;"/>
                             </div>
                             <div class="d-flex flex-column align-items-center m-4 p-1">
                                 <InputLabel for="data" value="Data Sortida:" />
                                 <VField id="data" name="data" type="date" v-model="formExpansio.dataSortida" rules="required" class="mt-1 block w-full" style="color: black;" />
-                                <ErrorMessage name="data" />
+                                <ErrorMessage name="data" style="color: red; font-weight: bold;"/>
                             </div>
                             <div class="d-flex justify-content-center m-3 ">
                                 <button class="btn btn-success mr-5" :class="{ 'opacity-25': formExpansio.processing }" :disabled="Object.keys(errors).length > 0">Crear</button>

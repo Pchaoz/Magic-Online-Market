@@ -208,7 +208,7 @@ const closeImageModal = () => {
                                     type="number"
                                     class="mt-1 block w-full"
                                     v-model="formOferta.quantitatDisponible"
-                                    min="1"
+                                    :min="1"
                                     step="1"
                                     required
                                     style="color: black; width: 100px;"
@@ -223,7 +223,7 @@ const closeImageModal = () => {
                                     type="number"
                                     class="mt-1 block w-full"
                                     v-model="formOferta.preuUnitari"
-                                    min="0"
+                                    :min="0.01"
                                     required
                                     step="0.01"
                                     style="color: black; width: 100px;"

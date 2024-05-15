@@ -18,7 +18,8 @@ class LiniesController extends Controller
         $comanda = DB::table('comandes')
         ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
         ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
-        ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total', 'comandes.estatComanda AS estat')
+        ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total',
+            'comandes.estatComanda AS estat','comprador.idRol as idComprador')
         ->where('comandes.idComanda', '=', $id)
         ->first();
         $linies = DB::table('linies')
@@ -49,8 +50,32 @@ class LiniesController extends Controller
             $comanda->save();
         }else{
             $comanda->delete();
-            return Inertia::render('Dashboard');
+            return redirect()->route('listComandesCompres');
         }
 
     }
+
+    public function eliminarLiniaCarret (Request $request)
+    {
+        $linia = Linies::where('idLinia', $request->idLinia)->first();
+        $article = Articles::where('idArticle', $linia->idArticle)->first();
+        $article->quantitatDisponible+=$linia->quantitat;
+        $article->save();
+        $totalLinia = ($request->quantitatLinia*$request->preuLinia);
+        $linia->delete();
+
+        $comanda = Comandes::where('idComanda', $request->idComanda)->first();
+        $comanda->preuTotal-=$totalLinia;
+        $linies = Linies::where('idComanda', $comanda->idComanda) ->first();
+        if($linies){
+            $comanda->save();
+        }else{
+            $comanda->delete();
+            return redirect()->route('ListArticles');
+        }
+
+    }
+
+
+
 }

@@ -96,7 +96,7 @@ const recargaPaginaElim = () => {
                     <th class="col-1">Quantitat Comprada</th>
                     <th class="col-1">Preu Unitari</th>
                     <th class="col-1">Subtotal</th>
-                    <th class="col-1"></th>
+                    <th class="col-1" v-if="$page.props.auth.user.idUsuari==comanda.idComprador||$page.props.auth.user.idRol==1 "></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -105,7 +105,7 @@ const recargaPaginaElim = () => {
                     <td>{{linia.quantitat}}</td>
                     <td>{{linia.preuUnitari}}</td>
                     <td>{{(linia.preuUnitari*linia.quantitat).toFixed(2)}}</td>
-                    <td>
+                    <td v-if="$page.props.auth.user.idUsuari==comanda.idComprador||$page.props.auth.user.idRol==1 ">
                         <button class="btn btn-danger rounded-pill"
                                 @click="abrirModalEliminacio(linia)">Eliminar</button>
                     </td>
