@@ -46,8 +46,8 @@ class ComandesController extends Controller
         ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total', 'comandes.estatComanda AS estat',
         'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda')
             ->get();
-
-        return Inertia::render('llistaComandes', ['comandes' => $comandes]);
+        $titol="Totes les comandes";
+        return Inertia::render('llistaComandes', ['comandes' => $comandes,'titol'=>$titol]);
 
     }
 
@@ -60,8 +60,8 @@ class ComandesController extends Controller
                 'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda')
             ->where('idComprador', Auth::id())
             ->get();
-
-        return Inertia::render('llistaComandes', ['comandes' => $comandes]);
+        $titol="Les meves Compres";
+        return Inertia::render('llistaComandes', ['comandes' => $comandes, 'titol'=>$titol]);
 
     }
     public function listComandesVendes ()
@@ -73,8 +73,8 @@ class ComandesController extends Controller
                 'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda')
             ->where('idVenedor', Auth::id())
             ->get();
-
-        return Inertia::render('llistaComandes', ['comandes' => $comandes]);
+        $titol="Les meves Vendes";
+        return Inertia::render('llistaComandes', ['comandes' => $comandes, 'titol'=>$titol]);
 
     }
 
@@ -87,9 +87,11 @@ class ComandesController extends Controller
             ->where('idComprador', Auth::id())
             ->where('EstatComanda', "En compra")
             ->first();
+
+
         if ($comanda) {
            //si existeix actualizem comanda amb noves dades
-            $comanda->preuTotal+=($request->quantitatAfegida*$request->preuArticle);
+            $comanda->preuTotal+=($request->quantitatComprada*$request->preuArticle);
             $comanda->updated_at=Carbon::now()->format('Y-m-d H:i:s');
             $comanda->updated_by=Auth::id();
             $comanda->save();
@@ -97,7 +99,7 @@ class ComandesController extends Controller
             // Crea una nueva comanda
             $comanda = new Comandes();
             $comanda->idVenedor = $request->idVenedor;
-            $comanda->preuTotal=($request->quantitatAfegida*$request->preuArticle);
+            $comanda->preuTotal=($request->quantitatComprada*$request->preuArticle);
             $comanda->idComprador = Auth::id();
             $comanda->updated_at = Carbon::now()->format('Y-m-d H:i:s');
             $comanda->EstatComanda = "En compra";
@@ -109,14 +111,14 @@ class ComandesController extends Controller
             ->where('idArticle', $request->idArticle)
             ->first();
         if ($linia) {
-            $linia->quantitat += $request->quantitatAfegida;
+            $linia->quantitat += $request->quantitatComprada;
             $linia->updated_by = Auth::id();
             $linia->updated_at = Carbon::now()->format('Y-m-d H:i:s');
             $linia->save();
         }else{
             $linia = new Linies();
             $linia->idComanda = $comanda->idComanda;
-            $linia->quantitat = $request->quantitatAfegida;
+            $linia->quantitat = $request->quantitatComprada;
             $linia->idArticle = $request->idArticle;
             $linia->created_by = Auth::id();
             $linia->updated_by = Auth::id();
@@ -126,7 +128,7 @@ class ComandesController extends Controller
 
         //hem d'actualizar la quantitat d'article
         $article = Articles::find($request->idArticle);
-        $article->quantitatDisponible-= $request->quantitatAfegida;
+        $article->quantitatDisponible-= $request->quantitatComprada;
         $article->updated_by = Auth::id();
         $article->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $article->save();
@@ -179,6 +181,8 @@ class ComandesController extends Controller
                 $linia->delete();
             }
             $comanda->delete();
+            return redirect()->route('ListArticles');
+
         }
     }
 

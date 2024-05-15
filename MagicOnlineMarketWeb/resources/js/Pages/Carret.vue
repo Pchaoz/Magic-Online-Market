@@ -50,7 +50,6 @@ function confirmarCompra () {
        showModalBuidarCarret.value = true;
      setTimeout(() => {
          cerrarModals();
-         useForm.visit(window.location.pathname);
      }, 500);
 }
 
@@ -64,7 +63,7 @@ const abrirModalEliminacio = (linia) =>{
 }
 
 const eliminarLinia =()=> {
-    auxform.delete('/eliminarLinia');
+    auxform.delete('/eliminarLiniaCarret');
     recargaPaginaElim();
 }
 

@@ -98,7 +98,7 @@ const confirmacio =()=>{
                             rules="required"
                             class="mt-1 block w-full"
                             style="color: black;"/>
-                        <ErrorMessage name="nom" />
+                        <ErrorMessage name="nom" style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="descripcio" value="Descripcio:" />
@@ -111,7 +111,7 @@ const confirmacio =()=>{
                             class="mt-1 block w-full"
                             style="color: black;"
                         />
-                        <ErrorMessage name="descripcio" />
+                        <ErrorMessage name="descripcio" style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:"/>
@@ -119,6 +119,7 @@ const confirmacio =()=>{
                         <VField
                             id="imatge"
                             name="imatge"
+                            accept="image/png, image/jpg"
                             type="file"
                             class="mt-1 block w-full"
                             @change="obtenirImatge"

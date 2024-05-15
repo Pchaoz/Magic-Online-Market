@@ -126,6 +126,9 @@ Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class,
 //funcions controller Linies
 Route::get('/veureLinies/{id}',[\App\Http\Controllers\LiniesController::class, 'veureLiniesComanda'])->name('veureLiniesComanda');
 Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, 'eliminarLinia'])->name('eliminarLinia');
+Route::delete('/eliminarLiniaCarret',[\App\Http\Controllers\LiniesController::class, 'eliminarLiniaCarret'])->name('eliminarLiniaCarret');
+
+
 
 
 //----------------------------------- API USER ----------------------------------------//
