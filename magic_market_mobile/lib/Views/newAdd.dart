@@ -29,14 +29,10 @@ class _NewAddPageState extends State<NewAddPage> {
     print("INTENTANDO CREAR: $articleInfo");
 
     final response = await http.post(
-      Uri.parse("$API_URI_SERVER/uploadArticle"),
+      Uri.parse("$API_URI_LOCAL/uploadArticle"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(articleInfo),
     );
-
-    var responseData = response.body;
-    var data = jsonDecode(responseData);
-    print(data.toString());
 
     if (response.statusCode == 200) {
       print('Artículo creado exitosamente');

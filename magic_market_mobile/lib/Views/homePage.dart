@@ -63,7 +63,6 @@ class _HomePageContentState extends State<HomePageContent> {
       setState(() {
         lastOfertes = json.decode(response.body)[0];
       });
-
       /*
       print('lastOfertes es de tipo: ${lastOfertes.runtimeType}');
       for (var i = 0; i < lastOfertes.length; i++) {
@@ -71,11 +70,10 @@ class _HomePageContentState extends State<HomePageContent> {
         print('lastOfertes[$i]: ${lastOfertes[i]}');
       }
       */
-
-      print("CARGADAS OFERTAS CORRECTAMENTE");
-      print(lastOfertes.toString());
+      //print("CARGADAS OFERTAS CORRECTAMENTE");
+      //print(lastOfertes.toString());
     } else {
-      print("error: ${response.body}");
+      // print("error: ${response.body}");
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -109,7 +107,7 @@ class _HomePageContentState extends State<HomePageContent> {
         for (var item in news) {
           images.add(URI_SERVER_IMAGES + item['imatge']);
         }
-        print(images);
+        //print(images);
       });
     }
   }

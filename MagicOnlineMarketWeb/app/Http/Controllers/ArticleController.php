@@ -96,7 +96,7 @@ class ArticleController extends Controller
                 'articles.idArticle AS idArticle')
             ->where('articles.idUsuari', '=', $id)
             ->get();
-            
+
         return response()->json($articles);
     }
 
@@ -104,6 +104,12 @@ class ArticleController extends Controller
     {
         //return response()->json($request, 200);
 
+        //SI FALLA LA ID DE USUARIO AVISAR PORQUE ESTO ME ESTA VOLVIENDO LOCO
+
+        if ($request->idUser == 0) {
+            return response()->json(['message' => "No s'ha carregat la informació del usuari correctament.."], 400);
+        }
+        
         $article = new Articles();
         $article->idProducte = $request->idProducte;
         $article->quantitatDisponible = $request->preuUnitari;
