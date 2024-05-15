@@ -29,7 +29,7 @@ class _NewAddPageState extends State<NewAddPage> {
     print("INTENTANDO CREAR: $articleInfo");
 
     final response = await http.post(
-      Uri.parse("$API_URI_SERVER/APIuploadArticle"),
+      Uri.parse("$API_URI_SERVER/uploadArticle"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(articleInfo),
     );

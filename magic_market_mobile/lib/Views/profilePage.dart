@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/LateralMenu.dart';
+import 'package:magic_market_mobile/Views/articlesUser.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../Util/globals.dart';
@@ -68,14 +69,20 @@ class ProfilePage extends StatelessWidget {
                   ListTile(
                     title: const Center(child: Text('Baralles')),
                     onTap: () {
-                      // Navega a la página de Barajas
+                      // Navegar a la pagina de Barajas
                     },
                   ),
                   if (roleID == 1 || roleID == 2 || roleID == 4 || roleID == 5)
                     ListTile(
                       title: const Center(child: Text('Les meves ofertes')),
                       onTap: () {
-                        // Navega a la página de Barajas
+                        // Navegar a la pagina de "mis ofertas"
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArticlesUser(),
+                          ),
+                        );
                       },
                     )
                 ]).toList(),

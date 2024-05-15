@@ -130,8 +130,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
             children: [
               Container(
                 color: const Color.fromARGB(255, 11, 214, 153),
-                width: double
-                    .infinity, // Asegura que el contenedor ocupe todo el ancho
+                width: double.infinity,
                 child: const Padding(
                   padding: EdgeInsets.all(16),
                   child: Text(

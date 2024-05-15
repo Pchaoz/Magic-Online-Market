@@ -88,6 +88,17 @@ class ArticleController extends Controller
         return response()->json($articles);
     }
 
+    public function  APIGetUserArticlesByID($id)
+    {
+        $articles = DB::table('articles')
+            ->leftJoin('usuaris', 'articles.idVenedor', '=', 'usuaris.idUsuari')
+            ->select('usuaris.nick AS nick', 'articles.idVenedor AS idVenedor', 'articles.preuUnitari AS preu', 'articles.quantitatDisponible AS quantitat',
+                'articles.idArticle AS idArticle')
+            ->where('articles.idUsuari', '=', $id)
+            ->get();
+            
+        return response()->json($articles);
+    }
 
     public function APIuploadArticle(Request $request)
     {
