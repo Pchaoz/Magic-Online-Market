@@ -2,6 +2,21 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Head } from '@inertiajs/vue3';
+import axios from "axios";
+import {ref} from "vue";
+
+let noticies = ref([])
+async function obtenerNoticiasRecientes() {
+    try {
+        const response = await axios.get('/api/lastNoticies');
+        noticies.value = response.data;
+
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+obtenerNoticiasRecientes();
 </script>
 
 <template>
@@ -14,9 +29,9 @@ import { Head } from '@inertiajs/vue3';
             </div>
             <div class="flex justify-center items-center">
             <Carousel v-bind="settings" :breakpoints="breakpoints" class="w-50">
-                <Slide v-for="(slide, index) in slides" :key="index">
+                <Slide v-for="(noticia, index) in noticies" :key="index">
                     <div class="carousel__item">
-                        <a :href="getUrlForSlide(index)"> <img :src="getImageForSlide(index)" alt="Slide {{ index + 1 }}" /></a>
+                        <a :href="veureNoticia/+{idNoticia}"> <img :src="'/images/'+noticia.imatge" alt="Slide {{ index + 1 }}" /></a>
                     </div>
                 </Slide>
 
@@ -43,33 +58,5 @@ export default {
         Pagination,
         Navigation,
     },
-    data() {
-        return {
-            slides: [
-                // Add your image URLs here
-                '/images/noticies/karlov.jpg',
-                '/images/noticies/thunder.jpg',
-                '/images/noticies/moderhorizons.jpg',
-                // ... more images ...
-            ],
-            urls: [
-                // Add your image URLs here
-                '/veureNoticia/1',
-                '/veureNoticia/2',
-                '/veureNoticia/3',
-                // ... more URLs ...
-            ]
-        };
-    },
-    methods: {
-        getImageForSlide(index) {
-            // Return the image URL for the given slide index
-            return this.slides[index];
-        },
-        getUrlForSlide(index) {
-            // Return the image URL for the given slide index
-            return this.urls[index];
-        },
-    }
 }
 </script>
