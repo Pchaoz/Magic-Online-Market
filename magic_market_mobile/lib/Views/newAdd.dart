@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/globals.dart';
 
 import 'homePage.dart';
+import 'productsPage.dart';
 
 class NewAddPage extends StatefulWidget {
   final dynamic product;
@@ -29,7 +30,7 @@ class _NewAddPageState extends State<NewAddPage> {
     print("INTENTANDO CREAR: $articleInfo");
 
     final response = await http.post(
-      Uri.parse("$API_URI_LOCAL/uploadArticle"),
+      Uri.parse("$API_URI_SERVER/uploadArticle"),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(articleInfo),
     );
@@ -45,7 +46,10 @@ class _NewAddPageState extends State<NewAddPage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Cerrar el diálogo
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductsPage()),
+                );
               },
               child: const Text('Aceptar'),
             ),
@@ -54,15 +58,22 @@ class _NewAddPageState extends State<NewAddPage> {
       );
     } else {
       showDialog(
-        // ignore: use_build_context_synchronously
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Error'),
-          content: Text('Error al crear el article: ${response.statusCode}'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Center(
+                  child: Text(
+                      'Error al crear el article: ${response.statusCode}')),
+              Center(child: Text('${jsonDecode(response.body)['message']}')),
+            ],
+          ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context); // Cerrar el diálogo
+                Navigator.pop(context);
               },
               child: const Text('Aceptar'),
             ),
@@ -93,8 +104,7 @@ class _NewAddPageState extends State<NewAddPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
-          // Agrega un Form aquí
-          key: _formKey, // Asigna la clave global al Form
+          key: _formKey,
           child: Column(
             children: <Widget>[
               TextFormField(

@@ -125,6 +125,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             ]),
       ),
       floatingActionButton: ButtonAdd,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

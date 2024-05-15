@@ -152,9 +152,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                             AsyncSnapshot<Map<String, dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
-                              initialValue: snapshot.data?[
-                                  'nick'], // Aquí se establece el valor inicial
-                              decoration: InputDecoration(
+                              initialValue: snapshot.data?['nick'],
+                              decoration: const InputDecoration(
                                 labelText: 'Nick',
                               ),
                               onSaved: (value) {
@@ -174,9 +173,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                             AsyncSnapshot<Map<String, dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
-                              initialValue: snapshot.data?['name']
-                                  .toString(), // Aquí se establece el valor inicial
-                              decoration: InputDecoration(
+                              initialValue: snapshot.data?['name'].toString(),
+                              decoration: const InputDecoration(
                                 labelText: 'Nom',
                               ),
                               onSaved: (value) {
@@ -204,7 +202,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, introduce tu contraseña actual';
+                            return 'Per favor, introdueix la teva contrasenya actual';
                           }
                           return null;
                         },

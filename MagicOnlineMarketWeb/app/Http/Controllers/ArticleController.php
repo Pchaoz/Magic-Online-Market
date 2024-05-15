@@ -90,14 +90,29 @@ class ArticleController extends Controller
 
     public function  APIGetUserArticlesByID($id)
     {
+
         $articles = DB::table('articles')
             ->leftJoin('usuaris', 'articles.idVenedor', '=', 'usuaris.idUsuari')
+            ->leftJoin('productes', 'articles.idProducte', '=', 'productes.idProducte')
             ->select('usuaris.nick AS nick', 'articles.idVenedor AS idVenedor', 'articles.preuUnitari AS preu', 'articles.quantitatDisponible AS quantitat',
-                'articles.idArticle AS idArticle')
-            ->where('articles.idUsuari', '=', $id)
+                'articles.idArticle AS idArticle','productes.nom as nom', 'productes.idProducte AS idProducte')
+            ->where('articles.idVenedor', '=', $id)
+            ->where('articles.quantitatDisponible', '>', 0)
+            ->orderBy('productes.idProducte')
             ->get();
 
-        return response()->json($articles);
+        $producte = DB::table('productes')
+            ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')
+            ->leftJoin('expansions', 'productes.idExpansio', '=', 'expansions.idExpansio')
+            ->select('productes.nom AS nom', 'productes.imatge AS imatge', 'categoria_productes.nom AS categoriaProducteNom',
+                'expansions.nom AS expansioNom', 'productes.idProducte AS idProducte')
+            ->whereIn('productes.idProducte', $articles->pluck('idArticle')->toArray())
+            ->orderBy('productes.idProducte')
+            ->get();
+
+
+
+        return response()->json(['producte' => $producte, 'articles' => $articles]);
     }
 
     public function APIuploadArticle(Request $request)
@@ -109,7 +124,7 @@ class ArticleController extends Controller
         if ($request->idUser == 0) {
             return response()->json(['message' => "No s'ha carregat la informació del usuari correctament.."], 400);
         }
-        
+
         $article = new Articles();
         $article->idProducte = $request->idProducte;
         $article->quantitatDisponible = $request->preuUnitari;

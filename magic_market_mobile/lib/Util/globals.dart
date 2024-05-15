@@ -47,6 +47,7 @@ void reloadPref() async {
   isAuthenticated = prefs.getBool('Auth')!;
   userName = prefs.getString('userName')!;
   roleID = prefs.getInt('role')!;
+  userID = prefs.getInt('userID')!;
 
   print(
       "PREFERENCES RELOAD! -> ROLE ID: $roleID USERNAME: $userName ISAUTH? $isAuthenticated USER ID? $userID");
