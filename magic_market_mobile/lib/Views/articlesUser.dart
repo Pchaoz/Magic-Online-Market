@@ -60,6 +60,8 @@ class _ArticlesUser extends State<ArticlesUser> {
 
   @override
   Widget build(BuildContext context) {
+    myArticles = serverResponse['articles'] ?? [];
+    products = serverResponse['producte'] ?? [];
     return MaterialApp(
       title: 'Magic Online Market',
       home: Scaffold(
@@ -87,12 +89,23 @@ class _ArticlesUser extends State<ArticlesUser> {
             ),
             Expanded(
               child: ListView.separated(
-                itemCount: serverResponse.length,
+                itemCount: myArticles.length,
                 separatorBuilder: (context, index) =>
                     const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
                 itemBuilder: (context, index) {
+                  var article = myArticles[index];
+                  var product = products.firstWhere(
+                      (p) => p['idProducte'] == article['idProducte'],
+                      orElse: () => null);
                   return ListTile(
-                    title: Text(serverResponse[index]['nick']),
+                    leading: product != null
+                        ? Image.network(
+                            URI_SERVER_IMAGES + "/" + product['imatge'])
+                        : null,
+                    title: Text(product != null
+                        ? product['nom']
+                        : 'Producto no encontrado'),
+                    subtitle: Text('${article['preu']}€'),
                   );
                 },
               ),
