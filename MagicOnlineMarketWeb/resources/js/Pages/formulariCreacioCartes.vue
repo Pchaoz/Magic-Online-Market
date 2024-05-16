@@ -88,8 +88,8 @@ const options = ref([
             <h2>Formulari creació Cartes</h2>
         </div>
         <div class="d-flex justify-content-center ">
-            <div class="w-25 rounded"  style="background-color: rgba(255,255,255,0.2);padding: 20px; margin: 20px;">
-                <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
+            <div class="w-25 rounded "  style="background-color: rgba(255,255,255,0.2);padding: 20px; margin: 20px;">
+                <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded pt-1">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />
                         <VField id="nom" name="nom" type="text" v-model="formCarta.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
@@ -119,7 +119,7 @@ const options = ref([
                         <img width="200" height="200" :src="formCarta.imatgeMiniatura">
                     </figure>
                     </div>
-                    <div class="d-flex flex-column align-items-center m-4 p-1">
+                    <div class="d-flex flex-column align-items-center m-4 p-1 pb-4">
                         <button class="btn btn-success" :class="{ 'opacity-25': formCarta.processing }" :disabled="Object.keys(errors).length > 0">
                             Afegir
                         </button>

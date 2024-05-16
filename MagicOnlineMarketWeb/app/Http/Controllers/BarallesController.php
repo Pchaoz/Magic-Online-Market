@@ -45,14 +45,20 @@ class BarallesController extends Controller
             ->where('baralla_cartes.idBaralla','=',$id)
             ->get();
         $baralla = DB::table('baralles')
-            ->select('baralles.nom AS nomBaralla','baralles.idBaralla as idBaralla',"baralles.idCreador as idCreador")
+            ->select('baralles.nom AS nomBaralla','baralles.idBaralla as idBaralla',"baralles.idCreador as idCreador", "baralles.isPublic as isPublic")
             ->where('baralles.idBaralla','=',$id)
             ->first();
         $cartes = DB::table('cartes')
             ->select('cartes.nom as nom','cartes.idCarta as idCarta','cartes.imatge as imatge')
             ->get();
 
-        return Inertia::render('vistaBaralla',['cartesBaralla'=>$CartesBaralla,'baralla' =>$baralla,'cartes'=>$cartes]);
+        if(($baralla->isPublic==0 &&(Auth::user()->idRol=='1'||Auth::id()==$baralla->idCreador))||$baralla->isPublic==1){
+            return Inertia::render('vistaBaralla',['cartesBaralla'=>$CartesBaralla,'baralla' =>$baralla,'cartes'=>$cartes]);
+        }else{
+            return redirect()->route('ListBaralles');
+        }
+
+
 
 
     }
