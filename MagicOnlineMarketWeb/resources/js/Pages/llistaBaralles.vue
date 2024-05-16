@@ -7,6 +7,11 @@ import {useForm} from "@inertiajs/vue3";
 import {ref} from "vue";
 import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-validate';
+import { required } from '@vee-validate/rules';
+
+defineRule('required', required);
+
 
 defineProps({
     baralles: {
@@ -24,6 +29,7 @@ let showModalModificacioConfirmacio=ref(false);
 const form = useForm({
     idBaralla: null,
     nom:"",
+    public:true,
 
 });
 
@@ -64,6 +70,7 @@ const cerrarModalCreacio = () =>{
 const abrirModalCreacio = () =>{
     form.nom="";
     showModalCreacio.value=true;
+    form.public=true;
 }
 const crearBaralla=()=> {
 
@@ -87,6 +94,7 @@ const confirmacionCreacio=()=>{
 const abrirModalMod = (baralla) =>{
     form.nom=baralla.nomBaralla;
     form.idBaralla=baralla.idBaralla;
+    form.public = Boolean(Number(baralla.isPublic));
     showModalModificacio.value=true;
 
 }
@@ -170,25 +178,30 @@ const finModificacio=()=>{
         </Modal>
         <Modal :show="showModalCreacio" maxWidth="2xl" closeable @close="cerrarModalCreacio" >
             <div class="modal-content w-100">
-
+                <VForm v-slot="{ errors }"  class="w-100 rounded pt-1">
                 <div class="d-flex justify-content-center m-3 ">
                     <InputLabel for="nom" value="Nom Baralla" class="m-2"  style="font-size: 16px;"/>
-                    <input
-                        id="nom"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.nom"
-                        required
-                        autofocus
-                        style="color: black;">
+                    <VField id="nom" name="nom" type="text" v-model="form.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                    <ErrorMessage name="nom"  style="color: red; font-weight: bold;" />
 
                 </div>
                 <div class="d-flex justify-content-center m-3 ">
+                    <InputLabel for="publica" value="Baralla Pública" class="m-2"  style="font-size: 16px;"/>
+                    <input
+                        id="publica"
+                        type="checkbox"
+                        v-model="form.public"
+                        style="color: black;">
+                </div>
+
+                <div class="d-flex justify-content-center m-3 ">
                     <button type="button" class="btn btn-success ml-5"
-                            @click="crearBaralla">Crear</button>
+                            @click="crearBaralla"
+                            :class="{ 'opacity-25': form.processing }" :disabled="Object.keys(errors).length > 0">Crear</button>
                     <button type="button" class="btn btn-danger ml-5"
                             @click="cerrarModalCreacio">Cancelar</button>
                 </div>
+                </VForm>
             </div>
         </Modal>
 
@@ -201,25 +214,31 @@ const finModificacio=()=>{
         </Modal>
         <Modal :show="showModalModificacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
             <div class="modal-content w-100">
+                <VForm v-slot="{ errors }"  class="w-100 rounded pt-1">
+                    <div class="d-flex justify-content-center m-3 ">
+                        <InputLabel for="nom" value="Nom Baralla" class="m-2"  style="font-size: 16px;"/>
+                        <VField id="nom" name="nom" type="text" v-model="form.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <ErrorMessage name="nom"  style="color: red; font-weight: bold;" />
 
+                    </div>
                 <div class="d-flex justify-content-center m-3 ">
-                    <InputLabel for="nom" value="Nom nou del rol" class="m-2"  style="font-size: 16px;"/>
+                    <InputLabel for="publica" value="Baralla Pública" class="m-2"  style="font-size: 16px;"/>
                     <input
-                        id="nom"
-                        type="text"
-                        class="mt-1 block w-full"
-                        v-model="form.nom"
-                        required
-                        autofocus
+                        id="publica"
+                        type="checkbox"
+                        v-model="form.public"
                         style="color: black;">
                 </div>
+
                 <div class="d-flex justify-content-center m-3 ">
                     <button type="button" class="btn btn-success ml-5"
-                            @click="modificarBaralla">Modificar</button>
+                            @click="modificarBaralla"
+                            :class="{ 'opacity-25': form.processing }" :disabled="Object.keys(errors).length > 0">Modificar</button>
                     <button type="button" class="btn btn-danger ml-5"
                             @click="cerrarModalMod">Cancelar</button>
 
                 </div>
+                </VForm>
             </div>
         </Modal>
         <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalMod" >
