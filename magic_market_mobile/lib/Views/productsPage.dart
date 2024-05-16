@@ -114,7 +114,7 @@ class _ProductsPageState extends State<ProductsPage> {
             content: const Text('Failed to authenticate user'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

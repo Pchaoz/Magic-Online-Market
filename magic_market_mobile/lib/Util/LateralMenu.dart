@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Views/cardsPage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
+import 'package:magic_market_mobile/Views/loginPage.dart';
 import 'package:magic_market_mobile/Views/newsPage.dart';
 import 'package:magic_market_mobile/Views/productsPage.dart';
 import 'package:magic_market_mobile/Views/profilePage.dart';
@@ -20,7 +21,8 @@ class _LateralMenuState extends State<LateralMenu> {
   @override
   void initState() {
     super.initState();
-    reloadPref();
+    reloadPref(context);
+    loadLateralMenu(context);
   }
 
   @override
@@ -33,13 +35,7 @@ class _LateralMenuState extends State<LateralMenu> {
             decoration: const BoxDecoration(
               color: Color.fromARGB(255, 11, 214, 153),
             ),
-            child: Text(
-              'Bienvenido $userName',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
-            ),
+            child: welcomeMessage,
           ),
           ListTile(
             leading: const Icon(Icons.home,
@@ -52,17 +48,7 @@ class _LateralMenuState extends State<LateralMenu> {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.account_circle,
-                color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Perfil'),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-          ),
+          profileListTitle,
           ListTile(
             leading: const Icon(Icons.newspaper,
                 color: Color.fromARGB(255, 11, 214, 153)),
@@ -96,23 +82,8 @@ class _LateralMenuState extends State<LateralMenu> {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.shopping_cart,
-                color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Cistell de compra'),
-            onTap: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => CardsPage()),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.logout,
-                color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Tancar sessio'),
-            onTap: widget.onTapLogout,
-          ),
+          shoppingCartListTitle,
+          logOutListTitle,
         ],
       ),
     );

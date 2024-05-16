@@ -91,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
               content: Text(e.toString()),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Close'),
+                  child: const Text('Tancar'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },

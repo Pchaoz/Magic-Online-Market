@@ -21,15 +21,16 @@ class _ArticlesUser extends State<ArticlesUser> {
   @override
   void initState() {
     super.initState();
-
+    print("INITSTATE ARTICLES");
     fetchUserArticles();
   }
 
   Future fetchUserArticles() async {
     final response =
-        await http.get(Uri.parse('$API_URI_LOCAL/ofertesUsuari/$userID'));
+        await http.get(Uri.parse('$API_URI_SERVER/ofertesUsuari/$userID'));
 
     print("STATUSCODE: ${response.statusCode}");
+    print("CARGANDO OFERTAS DE EL USUARIO: " + userID.toString());
 
     if (response.statusCode == 200) {
       setState(() {
@@ -46,7 +47,7 @@ class _ArticlesUser extends State<ArticlesUser> {
             content: const Text('Error carregant els articles..'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -98,15 +99,15 @@ class _ArticlesUser extends State<ArticlesUser> {
                       (p) => p['idProducte'] == article['idProducte'],
                       orElse: () => null);
                   return ListTile(
-                    leading: product != null
-                        ? Image.network(
-                            URI_SERVER_IMAGES + "/" + product['imatge'])
-                        : null,
-                    title: Text(product != null
-                        ? product['nom']
-                        : 'Producto no encontrado'),
-                    subtitle: Text('${article['preu']}€'),
-                  );
+                      leading: product != null
+                          ? Image.network(
+                              URI_SERVER_IMAGES + "/" + product['imatge'])
+                          : null,
+                      title: Text(product != null
+                          ? product['nom']
+                          : 'Producto no encontrado'),
+                      subtitle: Text("Quantitat: ${article['quantitat']}"),
+                      trailing: Text('${article['preu']}€'));
                 },
               ),
             )

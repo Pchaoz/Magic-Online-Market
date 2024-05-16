@@ -117,7 +117,7 @@ class ProfilePage extends StatelessWidget {
             content: const Text('Failed to authenticate user'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

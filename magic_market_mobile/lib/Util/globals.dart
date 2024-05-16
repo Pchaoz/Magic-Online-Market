@@ -1,6 +1,12 @@
+import 'package:magic_market_mobile/Views/homePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+
+import '../Views/cardsPage.dart';
+import '../Views/loginPage.dart';
+import '../Views/profilePage.dart';
 
 //IP SERVIDOR -> 162.19.74.238:8080
 //IP LOCAL PRUEBAS -> 10.1.85.13:8000
@@ -10,6 +16,13 @@ String API_URI_LOCAL = 'http://10.1.85.13:8000/api';
 String API_URI_SERVER = 'http://162.19.74.238:8080/api';
 String URI_SERVER_IMAGES = 'http://162.19.74.238:8080/images';
 
+//LATERAL MENU THINGS
+var logOutListTitle;
+var profileListTitle;
+var shoppingCartListTitle;
+var welcomeMessage;
+
+//AUTH THINGS
 bool isAuthenticated = false;
 String userName = "";
 int roleID = 0;
@@ -22,13 +35,21 @@ void setAuth(bool auth, String username, int id) async {
   userName = username;
   userID = id;
 
-  var userinfo = await fetchUserInfo();
+  if (userName.isNotEmpty) {
+    var userinfo = await fetchUserInfo();
+    await prefs.setInt("role", userinfo['idRol']);
+    await prefs.setBool("Auth", auth);
+    await prefs.setString("userName", username);
+    await prefs.setInt("userID", userID);
+  } else {
+    await prefs.setInt("role", 0);
+    await prefs.setBool("Auth", auth);
+    await prefs.setString("userName", '');
+    await prefs.setInt("userID", userID);
+  }
 
-  await prefs.setInt("role", userinfo['idRol']);
-  await prefs.setBool("Auth", auth);
-  await prefs.setString("userName", username);
-  await prefs.setInt("userID", userID);
-
+  print(
+      "PREFERENCES SET! -> ROLE ID: $roleID USERNAME: $userName ISAUTH? $isAuthenticated USER ID? $userID");
   print(roleID.toString());
 }
 
@@ -41,13 +62,15 @@ void clearPrefs() async {
   prefs.remove("userID");
 }
 
-void reloadPref() async {
+void reloadPref(context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
   isAuthenticated = prefs.getBool('Auth')!;
   userName = prefs.getString('userName')!;
   roleID = prefs.getInt('role')!;
   userID = prefs.getInt('userID')!;
+
+  loadLateralMenu(context);
 
   print(
       "PREFERENCES RELOAD! -> ROLE ID: $roleID USERNAME: $userName ISAUTH? $isAuthenticated USER ID? $userID");
@@ -93,5 +116,68 @@ Future<Map<String, dynamic>> fetchUserInfo() async {
     return json.decode(response.body);
   } else {
     throw Exception(json.decode(response.body)['message']);
+  }
+}
+
+void loadLateralMenu(context) {
+  if (roleID == 0) {
+    print("CARGANDO MENU LATERAL ANONIMO");
+    welcomeMessage = const Text('');
+    logOutListTitle = const SizedBox.shrink();
+    shoppingCartListTitle = const SizedBox.shrink();
+    profileListTitle = ListTile(
+      leading: const Icon(Icons.account_circle,
+          color: Color.fromARGB(255, 11, 214, 153)),
+      title: const Text('Iniciar sessio'),
+      onTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      },
+    );
+  } else {
+    print("CARGANDO MENU LATERAL USUARIO");
+    welcomeMessage = Text(
+      'Bienvenido $userName',
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 24,
+      ),
+    );
+    logOutListTitle = ListTile(
+        leading:
+            const Icon(Icons.logout, color: Color.fromARGB(255, 11, 214, 153)),
+        title: const Text('Tancar sessio'),
+        onTap: () {
+          logOut();
+          setAuth(false, '', 0);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        });
+    profileListTitle = ListTile(
+      leading: const Icon(Icons.account_circle,
+          color: Color.fromARGB(255, 11, 214, 153)),
+      title: const Text('Perfil'),
+      onTap: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
+      },
+    );
+    shoppingCartListTitle = ListTile(
+      leading: const Icon(Icons.shopping_cart,
+          color: Color.fromARGB(255, 11, 214, 153)),
+      title: const Text('Cistell de compra'),
+      onTap: () {
+        Navigator.pushReplacement(
+          context as BuildContext,
+          MaterialPageRoute(builder: (context) => CardsPage()),
+        );
+      },
+    );
   }
 }

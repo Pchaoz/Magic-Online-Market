@@ -49,7 +49,7 @@ class _HomePageContentState extends State<HomePageContent> {
   @override
   void initState() {
     super.initState();
-    reloadPref();
+    reloadPref(context);
     fetchNews();
     fetchLastArticles();
   }
@@ -63,15 +63,6 @@ class _HomePageContentState extends State<HomePageContent> {
       setState(() {
         lastOfertes = json.decode(response.body)[0];
       });
-      /*
-      print('lastOfertes es de tipo: ${lastOfertes.runtimeType}');
-      for (var i = 0; i < lastOfertes.length; i++) {
-        print('lastOfertes[$i] es de tipo: ${lastOfertes[i].runtimeType}');
-        print('lastOfertes[$i]: ${lastOfertes[i]}');
-      }
-      */
-      //print("CARGADAS OFERTAS CORRECTAMENTE");
-      //print(lastOfertes.toString());
     } else {
       // print("error: ${response.body}");
       showDialog(
@@ -84,7 +75,7 @@ class _HomePageContentState extends State<HomePageContent> {
                     jsonDecode(response.body)),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -131,7 +122,7 @@ class _HomePageContentState extends State<HomePageContent> {
             content: const Text('Error tancant sessio..'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -237,6 +228,29 @@ class _HomePageContentState extends State<HomePageContent> {
                       'Preu: ${lastOfertes[index]['preu']}, Cantidad: ${lastOfertes[index]['quantitat']}'),
                   onTap: () => {
                     //MOVE TO THE OFFER
+                    if (roleID == 0)
+                      {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Error'),
+                              content:
+                                  Text('Has de inciar sessio per comprar.. '),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('Tancar'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      }
+                    else
+                      {print("Not implemented JET")}
                   },
                 );
               },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/Views/loginPage.dart';
 import 'package:magic_market_mobile/Views/newAdd.dart';
 import 'dart:convert';
 
@@ -103,7 +104,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   ),
                 ),
               ),
-              Text('Ofertas', style: Theme.of(context).textTheme.titleLarge),
+              Text('Articles', style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 10),
               Expanded(
                 child: ListView.separated(
@@ -117,7 +118,37 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             Text(offerList[index]['quantitat'].toString()),
                         trailing: Text("${offerList[index]['preu']}€"),
                         onTap: () {
-                          //TODO hacer el tema de la compra y todo el rollo
+                          if (roleID == 0) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Error'),
+                                  content: const Text(
+                                      "Has d'inciar sessio per a comprar.. "),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      child: const Text('Iniciar sessio'),
+                                      onPressed: () {
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()),
+                                        );
+                                      },
+                                    ),
+                                    TextButton(
+                                      child: const Text('Tancar'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
                         });
                   },
                 ),

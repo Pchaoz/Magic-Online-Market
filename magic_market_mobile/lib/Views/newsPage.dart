@@ -151,7 +151,7 @@ class __NewsPageState extends State<NewsPage> {
             content: const Text('Failed to authenticate user'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
