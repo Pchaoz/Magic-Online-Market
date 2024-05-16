@@ -128,6 +128,13 @@ class BarallesController extends Controller
         $baralla->delete();
     }
 
-
+    public function getAllBaralles()
+    {
+        $baralles = DB::table('baralles')
+            ->leftJoin('usuaris as creador', 'baralles.idCreador', '=', 'creador.idUsuari')
+            ->select('creador.nick AS nickCreador', 'baralles.nom AS nomBaralla', 'baralles.idBaralla as idBaralla', 'creador.idUsuari as idUsuari','baralles.isPublic as isPublic')
+            ->get();
+        return response()->json($baralles);
+    }
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:magic_market_mobile/Views/barallesPage.dart';
 import 'package:magic_market_mobile/Views/cardsPage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
 import 'package:magic_market_mobile/Views/loginPage.dart';
@@ -68,6 +69,17 @@ class _LateralMenuState extends State<LateralMenu> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => ProductsPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.all_inbox_rounded,
+                color: Color.fromARGB(255, 11, 214, 153)),
+            title: const Text('Totes les baralles'),
+            onTap: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => BarallesPage()),
               );
             },
           ),

@@ -155,6 +155,8 @@ Route::post('/modCartaBaralla', [\App\Http\Controllers\BarallesController::class
 Route::delete('/deleteBaralla', [\App\Http\Controllers\BarallesController::class,'deleteBaralla'])->name('deleteBaralla');
 Route::post('/crearBaralla', [\App\Http\Controllers\BarallesController::class,'crearBaralla'])->name('crearBaralla');
 Route::post('/editarBaralla', [\App\Http\Controllers\BarallesController::class,'editarBaralla'])->name('editarBaralla');
+//-----------------------------------API----------------------------------------//
+Route::get('/api/getAllBaralles', [\App\Http\Controllers\BarallesController::class,'getAllBaralles'])->name('getAllBaralles');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

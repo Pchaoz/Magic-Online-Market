@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/LateralMenu.dart';
 import 'package:magic_market_mobile/Views/articlesUser.dart';
+import 'package:magic_market_mobile/Views/barallesUserPage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../Util/globals.dart';
@@ -69,7 +70,12 @@ class ProfilePage extends StatelessWidget {
                   ListTile(
                     title: const Center(child: Text('Baralles')),
                     onTap: () {
-                      // Navegar a la pagina de Barajas
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BarallesUser(),
+                        ),
+                      );
                     },
                   ),
                   if (roleID == 1 || roleID == 2 || roleID == 4 || roleID == 5)
