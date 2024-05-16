@@ -7,6 +7,7 @@ use App\Models\Articles;
 use App\Models\Comandes;
 use App\Models\Linies;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -15,11 +16,12 @@ class LiniesController extends Controller
 
     public function veureLiniesComanda ($id)
     {
+
         $comanda = DB::table('comandes')
         ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
         ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
         ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total',
-            'comandes.estatComanda AS estat','comprador.idRol as idComprador')
+            'comandes.estatComanda AS estat','comprador.idRol as idComprador','comandes.idVenedor as idVendor')
         ->where('comandes.idComanda', '=', $id)
         ->first();
         $linies = DB::table('linies')
@@ -28,9 +30,11 @@ class LiniesController extends Controller
         ->select('productes.nom AS nomProducte', 'linies.quantitat AS quantitat','articles.preuUnitari','linies.idLinia AS idLinia','linies.idComanda AS idComanda'  )
         ->where('linies.idComanda', '=', $id)
         ->get();
-
-        return Inertia::render('llistaLiniesComanda', ['comanda' => $comanda, 'linies' =>$linies]);
-
+        if(Auth::user()->idRol==1||Auth::user()->idUsuari==$comanda->idComprador ||Auth::user()->idUsuari==$comanda->idVendor){
+            return Inertia::render('llistaLiniesComanda', ['comanda' => $comanda, 'linies' =>$linies]);
+        }else{
+            return redirect()->route('listComandesCompres');
+        }
     }
 
 
