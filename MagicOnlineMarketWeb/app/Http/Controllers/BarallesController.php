@@ -146,7 +146,7 @@ class BarallesController extends Controller
     public function getBarallesByID($id) {
         $baralles = DB::table('baralles')
         ->leftJoin('usuaris as creador', 'baralles.idCreador', '=', 'creador.idUsuari')
-        ->where('baralles.idCreador','=',Auth::id())
+        ->where('baralles.idCreador','=', $id)
         ->select('creador.nick AS nickCreador', 'baralles.nom AS nomBaralla', 'baralles.idBaralla as idBaralla', 'creador.idUsuari as idUsuari','baralles.isPublic as isPublic')
         ->get();
 

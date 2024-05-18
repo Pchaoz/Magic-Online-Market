@@ -30,6 +30,7 @@ class _BarallesUser extends State<BarallesUser> {
       setState(() {
         baralles = json.decode(response.body);
       });
+      print(baralles.toString());
     } else {
       showDialog(
         // ignore: use_build_context_synchronously

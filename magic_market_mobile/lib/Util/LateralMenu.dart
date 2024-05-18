@@ -75,7 +75,7 @@ class _LateralMenuState extends State<LateralMenu> {
           ListTile(
             leading: const Icon(Icons.all_inbox_rounded,
                 color: Color.fromARGB(255, 11, 214, 153)),
-            title: const Text('Totes les baralles'),
+            title: const Text('Baralles publiques'),
             onTap: () {
               Navigator.pushReplacement(
                 context,
