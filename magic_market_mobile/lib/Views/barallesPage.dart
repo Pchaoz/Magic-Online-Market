@@ -19,6 +19,7 @@ class _BarallesPage extends State<BarallesPage> {
   //FUNCIONES
   @override
   void initState() {
+    print("INITSTATE BARALLES");
     super.initState();
     fetchMyDecks();
   }

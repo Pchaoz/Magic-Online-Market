@@ -10,6 +10,9 @@ class BarallesUser extends StatefulWidget {
 }
 
 class _BarallesUser extends State<BarallesUser> {
+  //VARIABLES
+  List<dynamic> baralles = [];
+
   //FUNCIONES
   @override
   void initState() {
@@ -19,7 +22,35 @@ class _BarallesUser extends State<BarallesUser> {
 
   fetchMyDecks() async {
     final response =
-        await http.get(Uri.parse('$API_URI_SERVER/ofertesUsuari/$userID'));
+        await http.get(Uri.parse('$API_URI_SERVER/getBarallaByUser/$userID'));
+
+    print("STATUSCODE BARALLES USER: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      setState(() {
+        baralles = json.decode(response.body);
+      });
+    } else {
+      showDialog(
+        // ignore: use_build_context_synchronously
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(
+                "Error carregant les baralles.. Codig d'error: $response.statusCode"),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override

@@ -143,4 +143,14 @@ class BarallesController extends Controller
         return response()->json($baralles);
     }
 
+    public function getBarallesByID($id) {
+        $baralles = DB::table('baralles')
+        ->leftJoin('usuaris as creador', 'baralles.idCreador', '=', 'creador.idUsuari')
+        ->where('baralles.idCreador','=',Auth::id())
+        ->select('creador.nick AS nickCreador', 'baralles.nom AS nomBaralla', 'baralles.idBaralla as idBaralla', 'creador.idUsuari as idUsuari','baralles.isPublic as isPublic')
+        ->get();
+
+        return response()->json($baralles);
+    }
+
 }
