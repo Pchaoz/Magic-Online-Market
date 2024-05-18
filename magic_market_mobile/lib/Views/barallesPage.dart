@@ -24,7 +24,8 @@ class _BarallesPage extends State<BarallesPage> {
   }
 
   fetchMyDecks() async {
-    final response = await http.get(Uri.parse('$API_URI_LOCAL/getAllBaralles'));
+    final response =
+        await http.get(Uri.parse('$API_URI_SERVER/getAllBaralles'));
 
     print("STATUSCODE: ${response.statusCode}");
 
