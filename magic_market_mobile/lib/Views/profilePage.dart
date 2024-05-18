@@ -68,7 +68,7 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Center(child: Text('Baralles')),
+                    title: const Center(child: Text('Les meves baralles')),
                     onTap: () {
                       Navigator.push(
                         context,

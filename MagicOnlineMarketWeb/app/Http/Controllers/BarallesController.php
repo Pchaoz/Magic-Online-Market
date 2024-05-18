@@ -143,7 +143,7 @@ class BarallesController extends Controller
         return response()->json($baralles);
     }
 
-    public function getBarallesByID($id) {
+    public function getBarallesByUserID($id) {
         $baralles = DB::table('baralles')
         ->leftJoin('usuaris as creador', 'baralles.idCreador', '=', 'creador.idUsuari')
         ->where('baralles.idCreador','=', $id)
@@ -151,6 +151,37 @@ class BarallesController extends Controller
         ->get();
 
         return response()->json($baralles);
+    }
+
+    public function createBatalla (Request $request) {
+
+        $baralla = new Baralles();
+        $baralla->nom=$request->nom;
+        $baralla->idCreador= $request->id;
+        $baralla->created_by=$request->id;
+        $baralla->updated_by=$request->id;
+        $baralla->save();
+
+        return response()->json(['message' => 'Usuario actualizado con éxito'], 200);
+    }
+
+    public function seeBarallaByID ($id) {
+        
+        $CartesBaralla = DB::table('baralla_cartes')
+            ->leftJoin('cartes', 'cartes.idCarta', '=', 'baralla_cartes.idCarta')
+            ->select('baralla_cartes.quantitat AS quantitat', 'cartes.nom AS nomCarta', 'cartes.imatge as imatgeCarta','cartes.idCarta as idCarta')
+            ->where('baralla_cartes.idBaralla','=',$id)
+            ->get();
+        $baralla = DB::table('baralles')
+            ->select('baralles.nom AS nomBaralla','baralles.idBaralla as idBaralla',"baralles.idCreador as idCreador", "baralles.isPublic as isPublic")
+            ->where('baralles.idBaralla','=',$id)
+            ->first();
+        $cartes = DB::table('cartes')
+            ->select('cartes.nom as nom','cartes.idCarta as idCarta','cartes.imatge as imatge')
+            ->get();
+
+        return response()->json(['cartesBaralla' => $CartesBaralla, 'baralla' => $baralla, 'cartes' => $cartes], 200);
+
     }
 
 }

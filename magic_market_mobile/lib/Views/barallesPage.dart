@@ -110,7 +110,7 @@ class _BarallesPage extends State<BarallesPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                            BarallaDetailsPage(baralla: baralla[index]),
+                            BarallaDetailsPage(barallaID: baralla['idBaralla']),
                       ),
                     );
                   },

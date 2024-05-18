@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Util/globals.dart';
+import '../Util/LateralMenu.dart';
 import '../Util/globals.dart';
+import 'ballaDetailsPage.dart';
+import 'homePage.dart';
+import 'newBarallaPage.dart';
 
 class BarallesUser extends StatefulWidget {
   @override
@@ -56,24 +60,76 @@ class _BarallesUser extends State<BarallesUser> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Magic Online Market",
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-          title: const Text('Magic Online Market'),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        title: const Text('Magic Online Market'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+              );
+            },
           ),
-        ),
-        body: Column(
-          children: <Widget>[
-            Container(
-                //TODO - pues eso que lo tengo que hacer
-                )
-          ],
-        ),
+        ],
+      ),
+      body: Column(
+        children: <Widget>[
+          Container(
+            color: const Color.fromARGB(255, 11, 214, 153),
+            width: double.infinity,
+            child: const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                'Totes les baralles',
+                style: TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount:
+                  baralles.where((baralla) => baralla['isPublic'] == 1).length,
+              itemBuilder: (context, index) {
+                var baralla = baralles
+                    .where((baralla) => baralla['isPublic'] == 1)
+                    .toList()[index];
+                return ListTile(
+                  title: Text(baralla['nomBaralla']),
+                  subtitle: Text("Creado por: " + baralla['nickCreador']),
+                  onTap: () {
+                    // VER INFORMACIÓN DE LA BARAJA EN DETALLE
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            BarallaDetailsPage(barallaID: baralla['idBaralla']),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          )
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //REDIRECT FORM OFERTA
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => NewBarallaPage()),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        child: const Icon(Icons.add),
+      ),
+      drawer: LateralMenu(
+        onTapLogout: () => logOut,
       ),
     );
   }
