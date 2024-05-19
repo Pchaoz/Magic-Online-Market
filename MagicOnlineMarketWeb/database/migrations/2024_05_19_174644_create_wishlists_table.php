@@ -6,16 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    protected $fillable = ["idBaralla","nom","isPublic"];
-
+    protected $fillable = ["idWishlist","nom"];
     public function up(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('baralles', function (Blueprint $table) {
-            $table->bigIncrements("idBaralla");
+        Schema::create('wishlists', function (Blueprint $table) {
+            $table->bigIncrements("idWishlist");
             $table->string("nom",40);
-            $table->boolean("isPublic")->default(false);
-            $table->foreignId('idCreador')->constrained('usuaris')->references('idUsuari');
+            $table->foreignId('idPropietari')->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->timestamps();
@@ -23,11 +21,9 @@ return new class extends Migration
         Schema::enableForeignKeyConstraints();
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
-        Schema::dropIfExists('baralles');
+        Schema::dropIfExists('wishlists');
     }
 };

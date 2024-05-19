@@ -357,6 +357,28 @@ class User extends Authenticatable
 
     }
 
+    public function crearWhislist()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
+    public function actualitzarWhislist()
+    {
+        return $this->hasMany(Wishlist::class);
+
+    }
+
+    public function crearWhislistArticles()
+    {
+        return $this->hasMany(WishlistArticle::class);
+    }
+
+    public function actualitzarWhislistArticles()
+    {
+        return $this->hasMany(WishlistArticle::class);
+
+    }
+
 
 
 

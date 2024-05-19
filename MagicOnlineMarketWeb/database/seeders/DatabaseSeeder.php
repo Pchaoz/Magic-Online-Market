@@ -41,8 +41,8 @@ class DatabaseSeeder extends Seeder
         $this->call([ParticipacionsSeeder::class]);
         $this->call([PremisSeeder::class]);
         $this->call([NoticiesSeeder::class]);
-
-
+        $this->call([WishlistSeeder::class]);
+        $this->call([WishlistArticlesSeeder::class]);
 
 
     }
