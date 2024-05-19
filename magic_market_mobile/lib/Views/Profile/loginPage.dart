@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/Views/registerPage.dart';
 
-import '../Util/globals.dart';
-import 'homePage.dart';
+import '../../Util/globals.dart';
+import '../homePage.dart';
+import 'registerPage.dart';
 
 void main() {
   runApp(LoginApp());

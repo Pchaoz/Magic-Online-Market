@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Views/homePage.dart';
 
-import '../Util/globals.dart';
+import '../../Util/globals.dart';
 import 'profilePage.dart';
 
 void main() {

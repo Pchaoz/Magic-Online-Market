@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:magic_market_mobile/Views/barallesPage.dart';
-import 'package:magic_market_mobile/Views/cardsPage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
-import 'package:magic_market_mobile/Views/loginPage.dart';
-import 'package:magic_market_mobile/Views/newsPage.dart';
-import 'package:magic_market_mobile/Views/productsPage.dart';
-import 'package:magic_market_mobile/Views/profilePage.dart';
-
+import 'package:magic_market_mobile/Views/News/newsPage.dart';
 import '../Util/globals.dart';
+import '../Views/Baralles/barallesPage.dart';
+import '../Views/Cards/cardsPage.dart';
+import '../Views/Products/productsPage.dart';
 
 class LateralMenu extends StatefulWidget {
   final VoidCallback onTapLogout;

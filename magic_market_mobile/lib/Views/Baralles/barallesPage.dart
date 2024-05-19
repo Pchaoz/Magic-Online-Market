@@ -2,33 +2,33 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Util/globals.dart';
-import '../Util/LateralMenu.dart';
-import '../Util/globals.dart';
-import 'ballaDetailsPage.dart';
-import 'homePage.dart';
-import 'newBarallaPage.dart';
+import 'package:magic_market_mobile/Views/Baralles/ballaDetailsPage.dart';
+import '../../Util/globals.dart';
+import '../../Util/lateralMenu.dart';
+import '../homePage.dart';
 
-class BarallesUser extends StatefulWidget {
+class BarallesPage extends StatefulWidget {
   @override
-  _BarallesUser createState() => _BarallesUser();
+  _BarallesPage createState() => _BarallesPage();
 }
 
-class _BarallesUser extends State<BarallesUser> {
+class _BarallesPage extends State<BarallesPage> {
   //VARIABLES
   List<dynamic> baralles = [];
 
   //FUNCIONES
   @override
   void initState() {
+    print("INITSTATE BARALLES");
     super.initState();
     fetchMyDecks();
   }
 
   fetchMyDecks() async {
     final response =
-        await http.get(Uri.parse('$API_URI_SERVER/getBarallaByUser/$userID'));
+        await http.get(Uri.parse('$API_URI_SERVER/getAllBaralles'));
 
-    print("STATUSCODE BARALLES USER: ${response.statusCode}");
+    print("STATUSCODE: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
@@ -36,6 +36,7 @@ class _BarallesUser extends State<BarallesUser> {
       });
       print(baralles.toString());
     } else {
+      final statusCode = response.statusCode.toString();
       showDialog(
         // ignore: use_build_context_synchronously
         context: context,
@@ -43,7 +44,7 @@ class _BarallesUser extends State<BarallesUser> {
           return AlertDialog(
             title: const Text('Error'),
             content: Text(
-                "Error carregant les baralles.. Codig d'error: $response.statusCode"),
+                "Error carregant les baralles.. Codig d'error: $statusCode"),
             actions: <Widget>[
               TextButton(
                 child: const Text('Tancar'),
@@ -91,15 +92,20 @@ class _BarallesUser extends State<BarallesUser> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: baralles.length,
+            child: ListView.separated(
+              separatorBuilder: (context, index) =>
+                  const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
+              itemCount:
+                  baralles.where((baralla) => baralla['isPublic'] == 1).length,
               itemBuilder: (context, index) {
-                var baralla = baralles[index];
+                var baralla = baralles
+                    .where((baralla) => baralla['isPublic'] == 1)
+                    .toList()[index];
                 return ListTile(
                   title: Text(baralla['nomBaralla']),
-                  subtitle: Text("Creado por: " + baralla['nickCreador']),
+                  subtitle: Text("Creat per: " + baralla['nickCreador']),
                   onTap: () {
-                    // VER INFORMACIÓN DE LA BARAJA EN DETALLE
+                    //VER INFORMACION BARAJA EN DETALLE
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -113,17 +119,6 @@ class _BarallesUser extends State<BarallesUser> {
             ),
           )
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //REDIRECT FORM OFERTA
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => NewBarallaPage()),
-          );
-        },
-        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        child: const Icon(Icons.add),
       ),
       drawer: LateralMenu(
         onTapLogout: () => logOut,

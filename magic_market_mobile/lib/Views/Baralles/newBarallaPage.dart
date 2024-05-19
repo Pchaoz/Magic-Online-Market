@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'homePage.dart';
+import '../homePage.dart';
 
 class NewBarallaPage extends StatefulWidget {
   @override

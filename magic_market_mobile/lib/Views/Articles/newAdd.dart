@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/globals.dart';
 
-import 'homePage.dart';
-import 'productsPage.dart';
+import '../Products/productsPage.dart';
+import '../homePage.dart';
 
 class NewAddPage extends StatefulWidget {
   final dynamic product;

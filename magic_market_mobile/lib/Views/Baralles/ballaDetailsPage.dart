@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/Views/newsDetailsPage.dart';
+import 'package:magic_market_mobile/Views/News/newsDetailsPage.dart';
 import 'dart:convert';
 
-import '../Util/globals.dart';
-import 'homePage.dart';
+import '../../Util/globals.dart';
+import '../Cards/addCartBarallaPage.dart';
+import '../homePage.dart';
 
 class BarallaDetailsPage extends StatefulWidget {
   final int barallaID;
@@ -19,6 +20,7 @@ class BarallaDetailsPage extends StatefulWidget {
 class __BarallaDetailsPage extends State<BarallaDetailsPage> {
   //VARIABLES
   Map<String, dynamic> requestInfo = {};
+  var barallaName = "";
 
   //FUNCTIONS
   @override
@@ -28,16 +30,19 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
   }
 
   void fetchDeck() async {
+    print("PILLANDO INFO DE LA BARALLA -> ${widget.barallaID}");
     final response = await http
-        .get(Uri.parse("$API_URI_SERVER/getBarallaByID/$widget.barallaID"));
+        .get(Uri.parse("$API_URI_SERVER/getBarallaByID/${widget.barallaID}"));
 
     print("EL STATUSCODE DE BARALLA DETAILS ES: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
         requestInfo = json.decode(response.body);
+        barallaName = requestInfo['baralla']['nomBaralla'];
       });
       print(requestInfo);
+      //print(requestInfo['baralla']['nomBaralla']);
     }
   }
 
@@ -63,11 +68,11 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
         Container(
           color: const Color.fromARGB(255, 11, 214, 153),
           width: double.infinity,
-          child: const Padding(
-            padding: EdgeInsets.all(16),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
             child: Text(
-              'Totes les baralles',
-              style: TextStyle(fontSize: 24),
+              "Cartes de " + barallaName,
+              style: const TextStyle(fontSize: 24),
               textAlign: TextAlign.center,
             ),
           ),
@@ -90,11 +95,20 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
                     );
                   },
                 )
-              : const Center(
-                  child:
-                      CircularProgressIndicator()), // muestra un indicador de carga si 'cartesBaralla' es null
+              : const Center(child: CircularProgressIndicator()),
         )
       ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //REDIRECT FORM OFERTA
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => AddCardBarallaPage()),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/LateralMenu.dart';
-import 'package:magic_market_mobile/Views/articlesUser.dart';
-import 'package:magic_market_mobile/Views/barallesUserPage.dart';
+import 'package:magic_market_mobile/Views/Articles/articlesUser.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
 
-import '../Util/globals.dart';
+import '../../Util/globals.dart';
+import '../Baralles/barallesUserPage.dart';
 import 'loginPage.dart';
 import 'profileEditPage.dart';
 
