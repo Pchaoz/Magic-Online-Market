@@ -87,6 +87,8 @@ const showingNavigationDropdown = ref(false);
                                             <template #content>
                                                 <DropdownLink :href="route('ListProductes')"> Tots els Productes </DropdownLink>
                                                 <DropdownLink :href="route('ListArticles')"> Tots els Articles </DropdownLink>
+                                                <DropdownLink :href="route('ListWhishlistsMeves')" > Les meves WishList </DropdownLink>
+                                                <DropdownLink :href="route('ListWhishlists')" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2" > WishList Usuaris </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
