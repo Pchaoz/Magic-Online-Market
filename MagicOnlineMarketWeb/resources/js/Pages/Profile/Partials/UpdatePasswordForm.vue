@@ -1,10 +1,11 @@
 <script setup>
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import 'bootstrap/dist/css/bootstrap.css';
+
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -34,18 +35,20 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">Update Password</h2>
+    <div class="d-flex justify-content-center  ">
+        <div class="w-50  " >
+            <section class="rounded">
+        <header class="p-4">
+            <h2 class="text-lg font-medium text-gray-900 ">Actualitzar contrassenya</h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Ensure your account is using a long, random password to stay secure.
+                Assegureu-vos que el vostre compte utilitzi una contrasenya llarga i aleatòria per mantenir la seguretat.
             </p>
         </header>
 
-        <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="current_password" value="Current Password" />
+        <form @submit.prevent="updatePassword">
+            <div class="d-flex flex-column align-items-center m-4">
+                <InputLabel for="current_password" value="Contrassenya Actual" />
 
                 <TextInput
                     id="current_password"
@@ -59,8 +62,8 @@ const updatePassword = () => {
                 <InputError :message="form.errors.current_password" class="mt-2" />
             </div>
 
-            <div>
-                <InputLabel for="password" value="New Password" />
+            <div class="d-flex flex-column align-items-center m-4 pt-3 ">
+                <InputLabel for="password" value="Contrassenya Nova" />
 
                 <TextInput
                     id="password"
@@ -74,8 +77,8 @@ const updatePassword = () => {
                 <InputError :message="form.errors.password" class="mt-2" />
             </div>
 
-            <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+            <div class="d-flex flex-column align-items-center m-4 pt-3 ">
+                <InputLabel for="password_confirmation" value="Confirmar Contrassenya" />
 
                 <TextInput
                     id="password_confirmation"
@@ -88,8 +91,8 @@ const updatePassword = () => {
                 <InputError :message="form.errors.password_confirmation" class="mt-2" />
             </div>
 
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+            <div class="d-flex flex-column align-items-center m-4 p-3">
+                <button class="btn btn-success"  :disabled="form.processing">Guardar</button>
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -97,9 +100,20 @@ const updatePassword = () => {
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
+                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Guardat.</p>
                 </Transition>
             </div>
         </form>
     </section>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+form.rounded, section.rounded  {
+    background-color:rgba(0,214,153,0.8) !important;
+    border-radius: 1rem !important;
+
+}
+
+</style>

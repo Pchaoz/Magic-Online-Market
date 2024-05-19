@@ -7,6 +7,7 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);
@@ -38,30 +39,32 @@ const closeModal = () => {
 </script>
 
 <template>
-    <section class="space-y-6">
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">Delete Account</h2>
+    <div class="d-flex justify-content-center  ">
+        <div class="w-50  " >
+            <section class="rounded">
+        <header class="p-4">
+            <h2 class="text-lg font-medium text-gray-900">Borrar Compte</h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting
-                your account, please download any data or information that you wish to retain.
+                Un cop suprimit el vostre compte, tots els seus recursos i dades se suprimiran permanentment. Abans d'esborrar
+                al vostre compte, baixeu qualsevol dada o informació que vulgueu conservar.
             </p>
         </header>
-
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
-
+                <div class="d-flex flex-column align-items-center m-4 p-3">
+        <button class="btn btn-danger" @click="confirmUserDeletion">Delete Account</button>
+                </div>
         <Modal :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
-                    Are you sure you want to delete your account?
+                    Esteu segur que voleu suprimir el vostre compte?
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600">
-                    Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                    enter your password to confirm you would like to permanently delete your account.
+                    Un cop suprimit el vostre compte, tots els seus recursos i dades es suprimiran permanentment. Abans d'esborrar el vostre compte, baixeu qualsevol dada o informació que vulgueu conservar.
+
                 </p>
 
-                <div class="mt-6">
+                <div class="d-flex flex-column align-items-center m-4 pt-3">
                     <InputLabel for="password" value="Password" class="sr-only" />
 
                     <TextInput
@@ -77,19 +80,29 @@ const closeModal = () => {
                     <InputError :message="form.errors.password" class="mt-2" />
                 </div>
 
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-success mr-5" @click="closeModal"> Cancel </button>
 
-                    <DangerButton
-                        class="ms-3"
+                    <button type="button" class="btn btn-danger ml-5"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         @click="deleteUser"
                     >
                         Delete Account
-                    </DangerButton>
+                    </button>
                 </div>
             </div>
         </Modal>
     </section>
+        </div>
+    </div>
 </template>
+
+<style scoped>
+form.rounded, section.rounded  {
+    background-color:rgba(0,214,153,0.8) !important;
+    border-radius: 1rem !important;
+
+}
+
+</style>

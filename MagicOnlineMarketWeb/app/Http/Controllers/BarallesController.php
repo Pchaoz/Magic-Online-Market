@@ -87,7 +87,6 @@ class BarallesController extends Controller
         $cartaBaralla = BarallaCartes::where('idCarta',$request->idCarta)
             ->where('idBaralla',$request->idBaralla)
             ->first();
-
         $cartaBaralla->quantitat=$request->quantitat;
         $cartaBaralla->updated_by=Auth::id();
         $cartaBaralla->updated_at=Carbon::now()->format('Y-m-d H:i:s');
@@ -107,6 +106,7 @@ class BarallesController extends Controller
     public function crearBaralla (Request $request)
     {
         $baralla = new Baralles();
+        $baralla->isPublic=$request->public;
         $baralla->nom=$request->nom;
         $baralla->idCreador=Auth::id();
         $baralla->created_by=Auth::id();
@@ -118,6 +118,7 @@ class BarallesController extends Controller
         $baralla = Baralles::where('idBaralla',$request->idBaralla)
             ->first();
         $baralla->nom=$request->nom;
+        $baralla->isPublic=$request->public;
         $baralla->updated_by=Auth::id();
         $baralla->save();
     }
