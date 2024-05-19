@@ -92,12 +92,9 @@ class _BarallesUser extends State<BarallesUser> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount:
-                  baralles.where((baralla) => baralla['isPublic'] == 1).length,
+              itemCount: baralles.length,
               itemBuilder: (context, index) {
-                var baralla = baralles
-                    .where((baralla) => baralla['isPublic'] == 1)
-                    .toList()[index];
+                var baralla = baralles[index];
                 return ListTile(
                   title: Text(baralla['nomBaralla']),
                   subtitle: Text("Creado por: " + baralla['nickCreador']),

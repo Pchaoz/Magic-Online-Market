@@ -18,6 +18,7 @@ class BarallaDetailsPage extends StatefulWidget {
 
 class __BarallaDetailsPage extends State<BarallaDetailsPage> {
   //VARIABLES
+  Map<String, dynamic> requestInfo = {};
 
   //FUNCTIONS
   @override
@@ -29,6 +30,15 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
   void fetchDeck() async {
     final response = await http
         .get(Uri.parse("$API_URI_SERVER/getBarallaByID/$widget.barallaID"));
+
+    print("EL STATUSCODE DE BARALLA DETAILS ES: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      setState(() {
+        requestInfo = json.decode(response.body);
+      });
+      print(requestInfo);
+    }
   }
 
   @override
@@ -49,6 +59,42 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
           ),
         ],
       ),
+      body: Column(children: <Widget>[
+        Container(
+          color: const Color.fromARGB(255, 11, 214, 153),
+          width: double.infinity,
+          child: const Padding(
+            padding: EdgeInsets.all(16),
+            child: Text(
+              'Totes les baralles',
+              style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        ),
+        Expanded(
+          child: requestInfo['cartesBaralla'] != null
+              ? ListView.builder(
+                  itemCount: requestInfo['cartesBaralla'].length,
+                  itemBuilder: (context, index) {
+                    var carta = requestInfo['cartesBaralla'][index];
+                    var cartaInfo = requestInfo['cartes']
+                        .firstWhere((c) => c['idCarta'] == carta['idCarta']);
+                    return Card(
+                      child: ListTile(
+                        leading: Image.network(
+                            "$URI_SERVER_IMAGES/" + cartaInfo['imatge']),
+                        title: Text(cartaInfo['nom']),
+                        subtitle: Text('Cantidad: ${carta['quantitat']}'),
+                      ),
+                    );
+                  },
+                )
+              : const Center(
+                  child:
+                      CircularProgressIndicator()), // muestra un indicador de carga si 'cartesBaralla' es null
+        )
+      ]),
     );
   }
 }

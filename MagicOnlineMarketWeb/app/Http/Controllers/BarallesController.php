@@ -168,17 +168,17 @@ class BarallesController extends Controller
     public function seeBarallaByID ($id) {
         
         $CartesBaralla = DB::table('baralla_cartes')
-            ->leftJoin('cartes', 'cartes.idCarta', '=', 'baralla_cartes.idCarta')
-            ->select('baralla_cartes.quantitat AS quantitat', 'cartes.nom AS nomCarta', 'cartes.imatge as imatgeCarta','cartes.idCarta as idCarta')
-            ->where('baralla_cartes.idBaralla','=',$id)
-            ->get();
+        ->leftJoin('cartes', 'cartes.idCarta', '=', 'baralla_cartes.idCarta')
+        ->select('baralla_cartes.quantitat AS quantitat', 'cartes.nom AS nomCarta', 'cartes.imatge as imatgeCarta','cartes.idCarta as idCarta')
+        ->where('baralla_cartes.idBaralla','=',$id)
+        ->get();
         $baralla = DB::table('baralles')
-            ->select('baralles.nom AS nomBaralla','baralles.idBaralla as idBaralla',"baralles.idCreador as idCreador", "baralles.isPublic as isPublic")
-            ->where('baralles.idBaralla','=',$id)
-            ->first();
+        ->select('baralles.nom AS nomBaralla','baralles.idBaralla as idBaralla',"baralles.idCreador as idCreador", "baralles.isPublic as isPublic")
+        ->where('baralles.idBaralla','=',$id)
+        ->first();
         $cartes = DB::table('cartes')
-            ->select('cartes.nom as nom','cartes.idCarta as idCarta','cartes.imatge as imatge')
-            ->get();
+        ->select('cartes.nom as nom','cartes.idCarta as idCarta','cartes.imatge as imatge')
+        ->get();
 
         return response()->json(['cartesBaralla' => $CartesBaralla, 'baralla' => $baralla, 'cartes' => $cartes], 200);
 
