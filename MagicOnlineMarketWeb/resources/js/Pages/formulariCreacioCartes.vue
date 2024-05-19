@@ -93,7 +93,7 @@ const options = ref([
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />
                         <VField id="nom" name="nom" type="text" v-model="formCarta.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="nom"  style="color: red; font-weight: bold;" />
+                        <ErrorMessage name="nom"  style="color: red; font-weight: bold;" :message="formCarta.errors.nom"/>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="descripcio" value="Descripcio:" />
