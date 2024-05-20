@@ -15,9 +15,6 @@ defineProps({
     },
 });
 
-const user = usePage().props.auth.user;
-
-
 const form = useForm({
     nick: user.nick,
     name: user.name,
@@ -25,7 +22,15 @@ const form = useForm({
 });
 
 const myfunction =   () => {
-    form.post('editarUsuariMeu');
+    form.post('profile.update');
+    recarga();
+}
+
+const recarga =   () => {
+    setTimeout(() => {
+        location.reload();
+    }, 500);
+
 }
 
 </script>

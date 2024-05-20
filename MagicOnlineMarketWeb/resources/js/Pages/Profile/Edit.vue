@@ -22,10 +22,7 @@ defineProps({
         <div class="d-flex justify-content-center m-3 ">
             <h2>Perfil Usuari</h2>
         </div>
-        <UpdateProfileInformationForm
-            :must-verify-email="mustVerifyEmail"
-            :status="status"
-        />
+        <UpdateProfileInformationForm/>
         <UpdatePasswordForm/>
         <DeleteUserForm  />
     </AuthenticatedLayout>
