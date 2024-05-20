@@ -103,7 +103,10 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
           //REDIRECT FORM OFERTA
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => AddCardBarallaPage()),
+            MaterialPageRoute(
+                builder: (context) => AddCardBarallaPage(
+                      barallaID: widget.barallaID,
+                    )),
           );
         },
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),

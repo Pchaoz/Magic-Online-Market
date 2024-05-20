@@ -8,6 +8,11 @@ import '../Baralles/barallesUserPage.dart';
 import '../homePage.dart';
 
 class AddCardBarallaPage extends StatefulWidget {
+  final int barallaID;
+
+  const AddCardBarallaPage({Key? key, required this.barallaID})
+      : super(key: key);
+
   @override
   _AddCardBarallaPage createState() => _AddCardBarallaPage();
 }
@@ -33,7 +38,6 @@ class _AddCardBarallaPage extends State<AddCardBarallaPage> {
   final _formKey = GlobalKey<FormState>();
   Carta? cartaSeleccionada;
   int? idCartaSeleccionada;
-  var idBaralla = 0;
   var quantitat = 0;
 
   @override
@@ -58,14 +62,14 @@ class _AddCardBarallaPage extends State<AddCardBarallaPage> {
 
   uploadCards() async {
     final response = await http.put(
-      Uri.parse('$API_URI_SERVER/updateUser'),
+      Uri.parse('$API_URI_SERVER/addCartBaralla'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
         'idUsuari': userID,
         'idCarta': idCartaSeleccionada,
-        'idBaralla': idBaralla,
+        'idBaralla': widget.barallaID,
       }),
     );
     print("STATUSCODE UPLOADCARDS: ${response.statusCode}");
