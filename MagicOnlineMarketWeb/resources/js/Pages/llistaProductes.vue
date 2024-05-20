@@ -147,7 +147,7 @@ const closeImageModal = () => {
                         </div>
                     </td>
                     <td>
-                        <a :href="'/veureOfertes/' + producte.idProducte">{{ producte.nom }}</a>
+                        <a :href="'/veureArticlesProducte/' + producte.idProducte">{{ producte.nom }}</a>
                     </td>
                     <td>{{producte.descripcio}}</td>
                     <td> {{producte.categoriaProducteNom}} </td>

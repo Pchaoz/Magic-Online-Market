@@ -84,7 +84,7 @@ Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::
 //funcions controller Articles
 Route::get('/crearArticle',[\App\Http\Controllers\ArticleController::class, 'crearArticle'])->name('crearArticle');
 Route::get('/getAllArticles', [\App\Http\Controllers\ArticleController::class,'ListArticles'])->name('ListArticles');
-Route::get('/veureOfertes/{id}',[\App\Http\Controllers\ArticleController::class, 'mostrarOfertesArticle'])->name('mostrarOfertesArticle');
+Route::get('/veureArticlesProducte/{id}',[\App\Http\Controllers\ArticleController::class, 'veureArticlesProducte'])->name('veureArticlesProducte');
 Route::get('/modificarArticle',[\App\Http\Controllers\ArticleController::class, 'modificarArticle'])->name('modificarArticle');
 Route::get('/eliminarArticle',[\App\Http\Controllers\ArticleController::class, 'eliminarArticle'])->name('eliminarArticle');
 
@@ -166,6 +166,7 @@ Route::post('/crearWishlist', [\App\Http\Controllers\WishlistControler::class,'c
 Route::delete('/eliminarWishlist', [\App\Http\Controllers\WishlistControler::class,'eliminarWishlist'])->name('eliminarWishlist');
 Route::post('/modWishlist', [\App\Http\Controllers\WishlistControler::class,'modWishlist'])->name('modWishlist');
 Route::get('/veureWishlist/{id}', [\App\Http\Controllers\WishlistControler::class,'veureWishlist'])->name('veureWishlist');
+Route::delete('/eliminarProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'eliminarProducteWishlist'])->name('eliminarProducteWishlist');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

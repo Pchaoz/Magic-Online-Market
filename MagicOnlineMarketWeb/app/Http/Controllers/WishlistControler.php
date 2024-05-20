@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Wishlist;
+use App\Models\WishlistProducte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -59,11 +60,25 @@ class WishlistControler extends Controller
     {
         $wishlist = Wishlist::find($id);
         if(Auth::user()->idRol==2||Auth::user()->idRol==1||Auth::user()->idUser==$wishlist->idPropietari){
-            return Inertia::render('vistaWishlist',['wishlist'=>$wishlist]);
+            $whishlistProductes = DB::table('whishlist_producte')
+                ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
+                ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
+                ->select('productes.imatge AS imatgeProducte', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist',
+               'whishlist_producte.idWishlistProducte as idwp','whishlist_producte.idProducte as idProducte'  )
+                ->where('whishlist_producte.idWishlist','=',$wishlist->idWishlist)
+                ->get();
+
+            return Inertia::render('vistaWishlist',['whishlistProductes'=>$whishlistProductes]);
         }else{
             return redirect()->route('ListWhishlistsMeves');
         }
     }
+    public function eliminarProducteWishlist(Request $request)
+    {
+        $wishlistProducte = WishlistProducte::find($request->idWishlistProducte);
+        $wishlistProducte->delete();
+    }
+
 
 
 
