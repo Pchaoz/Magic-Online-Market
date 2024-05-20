@@ -59,7 +59,7 @@ class WishlistControler extends Controller
     public function veureWishlist($id)
     {
         $wishlist = Wishlist::find($id);
-        if(Auth::user()->idRol==2||Auth::user()->idRol==1||Auth::user()->idUser==$wishlist->idPropietari){
+        if(Auth::user()->idRol==2||Auth::user()->idRol==1||Auth::user()->idUsuari==$wishlist->idPropietari){
             $whishlistProductes = DB::table('whishlist_producte')
                 ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
                 ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
