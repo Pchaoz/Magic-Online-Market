@@ -161,7 +161,11 @@ Route::get('/api/getBarallaByID/{id}', [\App\Http\Controllers\BarallesController
 
 //funcions controller Wishlist
 Route::get('/ListWhishlistsMeves', [\App\Http\Controllers\WishlistControler::class,'ListWhishlistsMeves'])->name('ListWhishlistsMeves');
-Route::get('/ListWhishlists', [\App\Http\Controllers\WishlistControler::class,'ListWhishlists'])->name('ListWhishlists');
+Route::get('/ListWhishlists', [\App\Http\Controllers\WishlistControler::class,'ListWhishlists'])->name('ListWhishlists')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/crearWishlist', [\App\Http\Controllers\WishlistControler::class,'crearWishlist'])->name('crearWishlist');
+Route::delete('/eliminarWishlist', [\App\Http\Controllers\WishlistControler::class,'eliminarWishlist'])->name('eliminarWishlist');
+Route::post('/modWishlist', [\App\Http\Controllers\WishlistControler::class,'modWishlist'])->name('modWishlist');
+Route::get('/veureWishlist/{id}', [\App\Http\Controllers\WishlistControler::class,'veureWishlist'])->name('veureWishlist');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//
