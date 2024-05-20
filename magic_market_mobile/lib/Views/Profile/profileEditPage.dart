@@ -85,7 +85,6 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           },
         );
       } else {
-        // Si la respuesta no es OK, lanzamos un error.
         throw Exception(json.decode(response.body)['message'].toString());
       }
     } catch (e) {

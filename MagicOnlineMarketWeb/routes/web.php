@@ -159,6 +159,7 @@ Route::get('/api/getAllBaralles', [\App\Http\Controllers\BarallesController::cla
 Route::get('/api/getBarallaByUser/{id}', [\App\Http\Controllers\BarallesController::class,'getBarallesByUserID'])->name('getBarallesByUserID');
 Route::get('/api/getBarallaByID/{id}', [\App\Http\Controllers\BarallesController::class,'seeBarallaByID'])->name('seeBarallaByID');
 Route::post('/api/createBaralla', [\App\Http\Controllers\BarallesController::class,'createBatallaAPI'])->name('createBatallaAPI');
+Route::put('/api/createBaralla', [\App\Http\Controllers\BarallesController::class,'addCardAPI'])->name('addCardAPI');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

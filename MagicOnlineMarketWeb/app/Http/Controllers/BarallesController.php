@@ -169,6 +169,26 @@ class BarallesController extends Controller
         return response()->json(['message' => 'Usuario actualizado con éxito'], 200);
     }
 
+    public function addCardAPI (Request $request) {
+
+        $cartaBaralla = BarallaCartes::where('idCarta',$request->idCarta)
+        ->where('idBaralla',$request->idBaralla)
+        ->first();
+        if ($cartaBaralla) {
+            $cartaBaralla->quantitat+=$request->quantitat;
+            $cartaBaralla->updated_by=$request->idUser;
+            $cartaBaralla->save();
+        }else{
+            $cartaBaralla = new BarallaCartes();
+            $cartaBaralla->quantitat=$request->quantitat;
+            $cartaBaralla->idCarta=$request->idCarta;
+            $cartaBaralla->idBaralla=$request->idBaralla;
+            $cartaBaralla->created_by=$request->idUser;
+            $cartaBaralla->updated_by=$request->idUser;
+            $cartaBaralla->save();
+        }
+    }
+
     public function seeBarallaByID ($id) {
         
         $CartesBaralla = DB::table('baralla_cartes')
