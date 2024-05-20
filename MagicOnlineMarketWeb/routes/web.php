@@ -160,6 +160,7 @@ Route::get('/api/getBarallaByUser/{id}', [\App\Http\Controllers\BarallesControll
 Route::get('/api/getBarallaByID/{id}', [\App\Http\Controllers\BarallesController::class,'seeBarallaByID'])->name('seeBarallaByID');
 Route::post('/api/createBaralla', [\App\Http\Controllers\BarallesController::class,'createBatallaAPI'])->name('createBatallaAPI');
 Route::put('/api/addCartaBaralla', [\App\Http\Controllers\BarallesController::class,'addCardAPI'])->name('addCardAPI');
+Route::put('/api/updateCartaBaralla', [\App\Http\Controllers\BarallesController::class,'updateCartaBarallaAPI'])->name('updateCartaBarallaAPI');
 
 
 //----------------------------------- API LOGIN ----------------------------------------//

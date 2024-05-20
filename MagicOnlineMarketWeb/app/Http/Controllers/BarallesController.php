@@ -156,7 +156,7 @@ class BarallesController extends Controller
 
     public function createBatallaAPI (Request $request) {
 
-        //return response()->json(['message' => $request], 200); //FOR TESTING 
+        //return response()->json(['message' => $request], 200); //FOR TESTING
 
         $baralla = new Baralles();
         $baralla->nom=$request->deckName;
@@ -189,8 +189,19 @@ class BarallesController extends Controller
         }
     }
 
+    public function updateCartaBarallaAPI(Request $request)
+    {
+        $cartaBaralla = BarallaCartes::where('idCarta',$request->idCarta)
+            ->where('idBaralla',$request->idBaralla)
+            ->first();
+        $cartaBaralla->quantitat=$request->quantitat;
+        $cartaBaralla->updated_by=$request->userID;
+        $cartaBaralla->updated_at=Carbon::now()->format('Y-m-d H:i:s');
+        $cartaBaralla->save();
+    }
+
     public function seeBarallaByID ($id) {
-        
+
         $CartesBaralla = DB::table('baralla_cartes')
         ->leftJoin('cartes', 'cartes.idCarta', '=', 'baralla_cartes.idCarta')
         ->select('baralla_cartes.quantitat AS quantitat', 'cartes.nom AS nomCarta', 'cartes.imatge as imatgeCarta','cartes.idCarta as idCarta')

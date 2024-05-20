@@ -20,13 +20,15 @@ class AddCardBarallaPage extends StatefulWidget {
 class Carta {
   final int idCarta;
   final String nom;
+  final String imatge;
 
-  Carta({required this.idCarta, required this.nom});
+  Carta({required this.idCarta, required this.nom, required this.imatge});
 
   factory Carta.fromJson(Map<String, dynamic> json) {
     return Carta(
       idCarta: json['idCarta'],
       nom: json['nom'],
+      imatge: json['imatge'],
     );
   }
 }
@@ -149,13 +151,13 @@ class _AddCardBarallaPage extends State<AddCardBarallaPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: 'Cantidad'),
+                  decoration: const InputDecoration(labelText: 'Quantitat'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'El campo no puede estar vacío';
+                      return 'El camp no pot estar buit';
                     }
                     if (int.tryParse(value) == null) {
-                      return 'Por favor, introduce un número entero';
+                      return 'Siusplau introdueix un numero sencer';
                     }
                     return null;
                   },
@@ -182,6 +184,18 @@ class _AddCardBarallaPage extends State<AddCardBarallaPage> {
                   });
                 },
               ),
+              if (cartaSeleccionada != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: SizedBox(
+                    height: 400,
+                    width: 400,
+                    child: Image.network(
+                      "$URI_SERVER_IMAGES/${cartaSeleccionada!.imatge}",
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:magic_market_mobile/Views/Cards/modifyCartaBaralla.dart';
 import 'package:magic_market_mobile/Views/News/newsDetailsPage.dart';
 import 'dart:convert';
 
@@ -21,12 +22,33 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
   //VARIABLES
   Map<String, dynamic> requestInfo = {};
   var barallaName = "";
+  var addCard;
+  var baralla;
 
   //FUNCTIONS
   @override
   void initState() {
     super.initState();
     fetchDeck();
+  }
+
+  loadRolePreferences() {
+    if (userID == requestInfo['baralla']['idCreador']) {
+      addCard = FloatingActionButton(
+        onPressed: () {
+          //REDIRECT FORM OFERTA
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddCardBarallaPage(
+                      barallaID: widget.barallaID,
+                    )),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        child: const Icon(Icons.add),
+      );
+    }
   }
 
   void fetchDeck() async {
@@ -40,78 +62,77 @@ class __BarallaDetailsPage extends State<BarallaDetailsPage> {
       setState(() {
         requestInfo = json.decode(response.body);
         barallaName = requestInfo['baralla']['nomBaralla'];
+        baralla = requestInfo['baralla'];
       });
+
       print(requestInfo);
       //print(requestInfo['baralla']['nomBaralla']);
     }
+    loadRolePreferences();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        title: const Text('Magic Online Market'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Column(children: <Widget>[
-        Container(
-          color: const Color.fromARGB(255, 11, 214, 153),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Text(
-              "Cartes de " + barallaName,
-              style: const TextStyle(fontSize: 24),
-              textAlign: TextAlign.center,
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+          title: const Text('Magic Online Market'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+            ),
+          ],
+        ),
+        body: Column(children: <Widget>[
+          Container(
+            color: const Color.fromARGB(255, 11, 214, 153),
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                "Cartes de $barallaName",
+                style: const TextStyle(fontSize: 24),
+                textAlign: TextAlign.center,
+              ),
             ),
           ),
-        ),
-        Expanded(
-          child: requestInfo['cartesBaralla'] != null
-              ? ListView.builder(
-                  itemCount: requestInfo['cartesBaralla'].length,
-                  itemBuilder: (context, index) {
-                    var carta = requestInfo['cartesBaralla'][index];
-                    var cartaInfo = requestInfo['cartes']
-                        .firstWhere((c) => c['idCarta'] == carta['idCarta']);
-                    return Card(
-                      child: ListTile(
+          Expanded(
+            child: requestInfo['cartesBaralla'] != null
+                ? ListView.separated(
+                    separatorBuilder: (context, index) =>
+                        const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
+                    itemCount: requestInfo['cartesBaralla'].length,
+                    itemBuilder: (context, index) {
+                      var carta = requestInfo['cartesBaralla'][index];
+                      var cartaInfo = requestInfo['cartes']
+                          .firstWhere((c) => c['idCarta'] == carta['idCarta']);
+                      return ListTile(
                         leading: Image.network(
                             "$URI_SERVER_IMAGES/" + cartaInfo['imatge']),
                         title: Text(cartaInfo['nom']),
                         subtitle: Text('Cantidad: ${carta['quantitat']}'),
-                      ),
-                    );
-                  },
-                )
-              : const Center(child: CircularProgressIndicator()),
-        )
-      ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          //REDIRECT FORM OFERTA
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddCardBarallaPage(
-                      barallaID: widget.barallaID,
-                    )),
-          );
-        },
-        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
-        child: const Icon(Icons.add),
-      ),
-    );
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ModifyCartaBarallaPage(
+                                    cardInfo: [cartaInfo],
+                                    quantity: carta['quantitat'],
+                                    idBaralla: widget.barallaID)),
+                          );
+                        },
+                      );
+                    },
+                  )
+                : const Center(child: CircularProgressIndicator()),
+          )
+        ]),
+        floatingActionButton: addCard);
   }
 }

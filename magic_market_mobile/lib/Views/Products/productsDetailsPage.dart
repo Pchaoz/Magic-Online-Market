@@ -148,6 +148,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                 );
                               },
                             );
+                          } else {
+                            if (userID != offerList[index]['idVenedor']) {
+                              //TEMA DE LA COMPRA
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Error'),
+                                    content: const Text(
+                                        'No pots comprar la carta que has ofertat.. carta.. '),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: const Text('Tancar'),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
                           }
                         });
                   },
