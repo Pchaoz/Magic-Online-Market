@@ -28,7 +28,10 @@ const myfunction =   () => {
 
 const recarga =   () => {
     setTimeout(() => {
-        location.reload();
+        form.nick= user.nick;
+        form.name= user.name;
+        form.cognom= user.cognom;
+
     }, 500);
 
 }
