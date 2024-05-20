@@ -26,15 +26,8 @@ const form = useForm({
 
 const myfunction =   () => {
     form.post('profile.update');
-    recarga();
-
 }
-const recarga =   () => {
-    setTimeout(() => {
-        location.reload();
-    }, 500);
 
-}
 </script>
 
 <template>
@@ -52,8 +45,6 @@ const recarga =   () => {
                     class="mt-1 block w-full"
                     v-model="form.nick"
                     required
-                    autofocus
-                    autocomplete="nick"
                 />
 
                 <InputError class="mt-2" :message="form.errors.nick" />
@@ -68,8 +59,6 @@ const recarga =   () => {
                     class="mt-1 block w-full"
                     v-model="form.name"
                     required
-                    autofocus
-                    autocomplete="name"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -84,8 +73,6 @@ const recarga =   () => {
                     class="mt-1 block w-full"
                     v-model="form.cognom"
                     required
-                    autofocus
-                    autocomplete="cognom"
                 />
 
                 <InputError class="mt-2" :message="form.errors.cognom" />
