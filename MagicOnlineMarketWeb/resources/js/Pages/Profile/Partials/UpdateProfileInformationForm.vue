@@ -31,8 +31,8 @@ const myfunction =   () => {
 }
 const recarga =   () => {
     setTimeout(() => {
-        useForm.visit(window.location.pathname);
-    }, 2000);
+        location.reload();
+    }, 500);
 
 }
 </script>
