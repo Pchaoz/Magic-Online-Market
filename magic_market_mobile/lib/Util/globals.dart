@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-import '../Views/cardsPage.dart';
-import '../Views/loginPage.dart';
-import '../Views/profilePage.dart';
+import '../Views/Cards/cardsPage.dart';
+import '../Views/Profile/loginPage.dart';
+import '../Views/Profile/profilePage.dart';
 
 //IP SERVIDOR -> 162.19.74.238:8080
 //IP LOCAL PRUEBAS -> 10.1.85.13:8000

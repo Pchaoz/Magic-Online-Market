@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../Util/LateralMenu.dart';
-import '../Util/globals.dart';
-import 'homePage.dart';
-import 'loginPage.dart';
+import '../../Util/globals.dart';
+import '../../Util/lateralMenu.dart';
+import '../Profile/loginPage.dart';
+import '../homePage.dart';
 import 'productsDetailsPage.dart';
 
 class ProductsPage extends StatefulWidget {

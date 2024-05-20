@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/Views/loginPage.dart';
-import 'package:magic_market_mobile/Views/newAdd.dart';
+import 'package:magic_market_mobile/Views/Articles/newAdd.dart';
 import 'dart:convert';
 
-import '../Util/globals.dart';
-import 'homePage.dart';
+import '../../Util/globals.dart';
+import '../Profile/loginPage.dart';
+import '../homePage.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final dynamic product;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Util/globals.dart';
-import '../Util/globals.dart';
+import '../../Util/globals.dart';
 
 void main() {
   runApp(ArticlesUser());

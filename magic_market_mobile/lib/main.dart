@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Util/globals.dart';
 import 'Views/homePage.dart';
-import 'Views/loginPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

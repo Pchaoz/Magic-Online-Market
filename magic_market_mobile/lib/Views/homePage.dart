@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:magic_market_mobile/Classes/product.dart';
 import 'package:magic_market_mobile/Util/lateralMenu.dart';
-import 'package:magic_market_mobile/Views/loginPage.dart';
 
 import '../Util/globals.dart';
-import 'newsDetailsPage.dart';
+import 'News/newsDetailsPage.dart';
+import 'Profile/loginPage.dart';
 
 void main() {
   runApp(HomePage());
