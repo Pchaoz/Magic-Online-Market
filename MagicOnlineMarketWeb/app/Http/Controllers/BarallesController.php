@@ -154,7 +154,7 @@ class BarallesController extends Controller
         return response()->json($baralles);
     }
 
-    public function createBatalla (Request $request) {
+    public function createBatallaAPI (Request $request) {
 
         $baralla = new Baralles();
         $baralla->nom=$request->deckName;

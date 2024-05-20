@@ -22,7 +22,7 @@ class _NewBarallaPage extends State<NewBarallaPage> {
   void createBaralla() async {
     print("SENDED THINGS CHECK FOR NEW DECKS: $deckName, $userID, $isPublic");
 
-    final response = await http.post(Uri.parse('$API_URI_SERVER/updateUser'),
+    final response = await http.post(Uri.parse('$API_URI_SERVER/createBaralla'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
