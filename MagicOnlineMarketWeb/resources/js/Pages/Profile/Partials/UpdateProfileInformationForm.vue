@@ -33,7 +33,7 @@ const myfunction =   () => {
 const confirmarCambios = () => {
     showModal.value = true;
     setTimeout(() => {
-
+        useForm.visit(window.location.pathname);
     }, 500);
 
 }
