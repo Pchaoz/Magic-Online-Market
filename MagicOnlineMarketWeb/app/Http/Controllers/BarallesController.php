@@ -157,10 +157,11 @@ class BarallesController extends Controller
     public function createBatalla (Request $request) {
 
         $baralla = new Baralles();
-        $baralla->nom=$request->nom;
-        $baralla->idCreador= $request->id;
-        $baralla->created_by=$request->id;
-        $baralla->updated_by=$request->id;
+        $baralla->nom=$request->deckName;
+        $baralla->idCreador= $request->idUser;
+        $baralla->created_by=$request->idUser;
+        $baralla->updated_by=$request->idUser;
+        $baralla->isPublic=$request->isPublic;
         $baralla->save();
 
         return response()->json(['message' => 'Usuario actualizado con éxito'], 200);
