@@ -159,6 +159,8 @@ Route::post('/editarBaralla', [\App\Http\Controllers\BarallesController::class,'
 Route::get('/api/getAllBaralles', [\App\Http\Controllers\BarallesController::class,'getAllBaralles'])->name('getAllBaralles');
 Route::get('/api/getBarallaByUser/{id}', [\App\Http\Controllers\BarallesController::class,'getBarallesByUserID'])->name('getBarallesByUserID');
 Route::get('/api/getBarallaByID/{id}', [\App\Http\Controllers\BarallesController::class,'seeBarallaByID'])->name('seeBarallaByID');
+Route::post('/api/createBaralla', [\App\Http\Controllers\BarallesController::class,'createBatalla'])->name('createBatalla');
+
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
