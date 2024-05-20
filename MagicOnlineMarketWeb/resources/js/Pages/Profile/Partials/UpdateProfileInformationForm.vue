@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const user = usePage().props.auth.user;
+
 defineProps({
     mustVerifyEmail: {
         type: Boolean,
@@ -15,6 +15,9 @@ defineProps({
     },
 });
 
+const user = usePage().props.auth.user;
+
+
 const form = useForm({
     nick: user.nick,
     name: user.name,
@@ -23,17 +26,6 @@ const form = useForm({
 
 const myfunction =   () => {
     form.post('profile.update');
-    recarga();
-}
-
-const recarga =   () => {
-    setTimeout(() => {
-        form.nick= user.nick;
-        form.name= user.name;
-        form.cognom= user.cognom;
-
-    }, 500);
-
 }
 
 </script>
@@ -43,7 +35,7 @@ const recarga =   () => {
         <div class="d-flex justify-content-center ">
             <div class="w-50 " >
 
-        <form class="rounded"  @submit="myfunction" >
+        <form class="rounded"   >
             <div class="d-flex flex-column align-items-center m-4 pt-3 ">
                 <InputLabel for="nick" value="Nick" />
 
@@ -88,7 +80,7 @@ const recarga =   () => {
 
 
             <div class="d-flex flex-column align-items-center m-4 p-3">
-                <button class="btn btn-success" >Guardar</button>
+                <button class="btn btn-success" @click="myfunction">Guardar</button>
             </div>
         </form>
             </div>
