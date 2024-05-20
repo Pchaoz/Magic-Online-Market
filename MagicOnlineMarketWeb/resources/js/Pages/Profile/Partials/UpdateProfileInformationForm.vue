@@ -4,8 +4,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import 'bootstrap/dist/css/bootstrap.css';
-import {ref} from "vue";
-import Modal from "@/Components/Modal.vue";
+
 
 defineProps({
     mustVerifyEmail: {
@@ -17,7 +16,7 @@ defineProps({
 });
 
 const user = usePage().props.auth.user;
-let showModal = ref(false);
+
 
 const form = useForm({
     nick: user.nick,
@@ -31,10 +30,10 @@ const myfunction =   () => {
 }
 
 const confirmarCambios = () => {
-    showModal.value = true;
+
     setTimeout(() => {
         useForm.visit(window.location.pathname);
-    }, 1000);
+    }, 500);
 
 }
 
@@ -107,16 +106,6 @@ const cerrarForm = () => {
         </form>
             </div>
         </div>
-    <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarForm">
-        <div class="modal-content w-100">
-            <button class="p-2" @click="cerrarForm" style="border: none; background: none;">
-                <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 15px; height: 15px;" />
-            </button>
-            <div class="d-flex justify-content-center m-3 ">
-                <p>Usuari Modificat!</p>
-            </div>
-        </div>
-    </Modal>
 </template>
 
 <style scoped>
