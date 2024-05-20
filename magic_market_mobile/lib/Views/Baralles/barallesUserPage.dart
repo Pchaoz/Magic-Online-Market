@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Util/globals.dart';
 import '../../Util/LateralMenu.dart';
 import '../../Util/globals.dart';
-import 'ballaDetailsPage.dart';
+import 'barallaDetailsPage.dart';
 import '../homePage.dart';
+import 'barallaEditPage.dart';
 import 'newBarallaPage.dart';
 
 class BarallesUser extends StatefulWidget {
@@ -103,8 +104,17 @@ class _BarallesUser extends State<BarallesUser> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
+                          builder: (context) => BarallaDetailsPage(
+                                barallaID: baralla['idBaralla'],
+                              )),
+                    );
+                  },
+                  onLongPress: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
                         builder: (context) =>
-                            BarallaDetailsPage(barallaID: baralla['idBaralla']),
+                            BarallaEditPage(barallaInfo: baralla),
                       ),
                     );
                   },

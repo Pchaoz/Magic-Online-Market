@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Views/Articles/newAdd.dart';
-import 'package:magic_market_mobile/Views/Baralles/ballaDetailsPage.dart';
+import 'package:magic_market_mobile/Views/Baralles/barallaDetailsPage.dart';
 import 'dart:convert';
 
 import '../../Util/globals.dart';
@@ -121,17 +121,14 @@ class _ModifyCartaBarallaPage extends State<ModifyCartaBarallaPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Exit'),
-            content: const Text('Carta actualitzada correctament'),
+            content: const Text('Carta eliminada correctament'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => BarallaDetailsPage(
-                              barallaID: widget.idBaralla,
-                            )),
+                    MaterialPageRoute(builder: (context) => BarallesUser()),
                   );
                 },
               ),
@@ -146,7 +143,7 @@ class _ModifyCartaBarallaPage extends State<ModifyCartaBarallaPage> {
           return AlertDialog(
             title: const Text('Error'),
             content: Text(
-                'Error agregant la carta. Codig de error ${response.statusCode}'),
+                'Error eliminant la carta. Codig de error ${response.statusCode}'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Tancar'),
