@@ -88,22 +88,13 @@ class WishlistControler extends Controller
 
         if ($existingProduct) {
 
-            return response()->json(['message' => 'Producte ja afegit en la Wishlist'], 409);
-        }else{
-            $wishlistProducte =  new WishlistProducte();
+        } else {
+            $wishlistProducte = new WishlistProducte();
             $wishlistProducte->idProducte = $request->idProducte;
             $wishlistProducte->idWishlist = $request->idWishlist;
             $wishlistProducte->save();
 
-            return response()->json(['message' => 'Producte afegit a la Wishlist'], 200);
         }
-
-
     }
-
-
-
-
-
 
 }

@@ -31,7 +31,7 @@ let showModalImage = ref(false);
 let showModalOferta=ref(false);
 let showModalWishlist = ref(false);
 let showModalWishlistResult = ref(false);
-let respuestaUser="";
+
 const formProducte= useForm({
     idProducte:null,
 })
@@ -138,20 +138,19 @@ const abrirModalAgregarWishlist = (idProducte, nomProducte) => {
 }
 const closeWishlist = () => {
     showModalWishlist.value = false;
+    showModalWishlistResult.value = false;
     formWishlist.idWishlist="";
 }
-
-const afegirProducteWishlist= async () => {
-    try {
-        const response = await formWishlist.post("afegirProducteWishlist");
-        recargaWishlist(response)
-    } catch (error) {
-        console.error(`Error: ${error}`);
-    }
+const closeAvisoWishlist = () => {
+    showModalAvisoWishlist.value = true;
 }
 
-const recargaWishlist = (r) => {
-    respuestaUser=r;
+const afegirProducteWishlist=  () => {
+    formWishlist.post("afegirProducteWishlist");
+    recargaWishlist()
+}
+
+const recargaWishlist = () => {
     showModalWishlist.value=false;
     showModalWishlistResult.value=true;
     setTimeout(() => {
@@ -333,14 +332,14 @@ const recargaWishlist = (r) => {
         </Modal>
         <Modal :show="showModalWishlistResult" maxWidth="2xl" closeable @close="closeWishlist" >
             <div class="modal-content w-100">
+                <button class="p-2" @click="closeWishlist" style="border: none; background: none;">
+                    <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                </button>
                 <div class="d-flex justify-content-center m-3 ">
-                    <p>{{ respuestaUser }}</p>
+                    <p>Wishlist Actualitzada amb el producte!</p>
                 </div>
             </div>
         </Modal>
-
-
-
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
             <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="crearProducte">Crear Nou producte</b-button>
         </div>
