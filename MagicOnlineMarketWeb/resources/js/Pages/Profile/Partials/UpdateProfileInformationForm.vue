@@ -5,7 +5,7 @@ import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import 'bootstrap/dist/css/bootstrap.css';
 
-
+const user = usePage().props.auth.user;
 defineProps({
     mustVerifyEmail: {
         type: Boolean,
