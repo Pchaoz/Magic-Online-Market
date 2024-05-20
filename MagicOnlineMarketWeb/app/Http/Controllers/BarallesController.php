@@ -156,6 +156,8 @@ class BarallesController extends Controller
 
     public function createBatallaAPI (Request $request) {
 
+        return response()->json(['message' => $request], 200); //FOR TESTING 
+
         $baralla = new Baralles();
         $baralla->nom=$request->deckName;
         $baralla->idCreador= $request->idUser;
