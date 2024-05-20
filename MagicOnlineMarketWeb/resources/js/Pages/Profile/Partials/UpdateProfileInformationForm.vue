@@ -35,7 +35,7 @@ const myfunction =   () => {
         <div class="d-flex justify-content-center ">
             <div class="w-50 " >
 
-        <form class="rounded"   >
+        <form class="rounded"  @submit="myfunction" >
             <div class="d-flex flex-column align-items-center m-4 pt-3 ">
                 <InputLabel for="nick" value="Nick" />
 
@@ -80,7 +80,7 @@ const myfunction =   () => {
 
 
             <div class="d-flex flex-column align-items-center m-4 p-3">
-                <button class="btn btn-success" @click="myfunction">Guardar</button>
+                <button class="btn btn-success" >Guardar</button>
             </div>
         </form>
             </div>
