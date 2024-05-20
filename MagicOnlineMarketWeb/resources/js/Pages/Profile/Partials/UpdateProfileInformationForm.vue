@@ -26,6 +26,7 @@ const form = useForm({
 
 const myfunction =   () => {
     form.post('profile.update');
+    return false;
 }
 
 </script>
@@ -35,7 +36,7 @@ const myfunction =   () => {
         <div class="d-flex justify-content-center ">
             <div class="w-50 " >
 
-        <form class="rounded"  @submit="myfunction" >
+        <form class="rounded"  @click="myfunction" >
             <div class="d-flex flex-column align-items-center m-4 pt-3 ">
                 <InputLabel for="nick" value="Nick" />
 
