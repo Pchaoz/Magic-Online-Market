@@ -26,13 +26,15 @@ class _NewBarallaPage extends State<NewBarallaPage> {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
+        body: jsonEncode(<String, dynamic>{
           'deckName': deckName,
-          'idUser': userID.toString(),
-          'isPublic': isPublic.toString()
+          'idUser': userID,
+          'isPublic': isPublic ? 0 : 1
         }));
 
     print("STATUSCODE NEW DECK: ${response.statusCode}");
+
+    print(jsonDecode(response.body).toString());
 
     if (response.statusCode == 200) {
       showDialog(
