@@ -68,7 +68,7 @@ class WishlistControler extends Controller
                 ->where('whishlist_producte.idWishlist','=',$wishlist->idWishlist)
                 ->get();
 
-            return Inertia::render('vistaWishlist',['whishlistProductes'=>$whishlistProductes]);
+            return Inertia::render('vistaWishlist',['whishlistProductes'=>$whishlistProductes,'wishlist'=> $wishlist]);
         }else{
             return redirect()->route('ListWhishlistsMeves');
         }
@@ -78,7 +78,28 @@ class WishlistControler extends Controller
         $wishlistProducte = WishlistProducte::find($request->idWishlistProducte);
         $wishlistProducte->delete();
     }
+    public function afegirProducteWishlist(Request $request)
+    {
+        $wishlist = Wishlist::find($request->idWishlist);
 
+        $existingProduct = WishlistProducte::where('idProducte', $request->idProducte)
+            ->where('idWishlist', $request->idWishlist)
+            ->first();
+
+        if ($existingProduct) {
+
+            return response()->json(['message' => 'Producte ja afegit en la Wishlist'], 409);
+        }else{
+            $wishlistProducte =  new WishlistProducte();
+            $wishlistProducte->idProducte = $request->idProducte;
+            $wishlistProducte->idWishlist = $request->idWishlist;
+            $wishlistProducte->save();
+
+            return response()->json(['message' => 'Producte afegit a la Wishlist'], 200);
+        }
+
+
+    }
 
 
 

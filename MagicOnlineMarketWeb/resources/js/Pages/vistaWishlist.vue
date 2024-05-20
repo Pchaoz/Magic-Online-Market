@@ -11,6 +11,7 @@ defineProps({
     whishlistProductes:{
         type: Array(String),
     },
+    wishlist:Object,
 });
 
 let showModalEliminacio = ref(false);
@@ -63,7 +64,7 @@ const recargaPaginaElim = () => {
 <template>
     <AuthenticatedLayout>
         <div class="d-flex justify-content-center m-3 ">
-            <h2>Llista de articles</h2>
+            <h2>Wishlist: {{wishlist.nom}}</h2>
         </div>
         <div class="d-flex justify-content-center m-3 ">
             <table class="table  table-striped  my-table w-50 ">
