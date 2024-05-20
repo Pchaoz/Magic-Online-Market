@@ -26,21 +26,8 @@ const form = useForm({
 
 const myfunction =   () => {
     form.post('profile.update');
-    confirmarCambios();
-}
-
-const confirmarCambios = () => {
-
-    setTimeout(() => {
-        useForm.visit(window.location.pathname);
-    }, 500);
 
 }
-
-const cerrarForm = () => {
-    showModal.value = false;
-}
-
 
 
 </script>

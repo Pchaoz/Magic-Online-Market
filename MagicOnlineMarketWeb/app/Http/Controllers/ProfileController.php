@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,17 +24,17 @@ class ProfileController extends Controller
     }
 
 
-    public function update(Request $request): void
+    public function update(Request $request): RedirectResponse
     {
         $user = $request->user();
-        $user->nick= $request->nick;
-        $user->name= $request->name;
-        $user->cognom= $request->cognom;
+        $user->nick = $request->nick;
+        $user->name = $request->name;
+        $user->cognom = $request->cognom;
         $user->save();
-
+        return Redirect::route('profile.edit');
     }
 
-    /**
+        /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
