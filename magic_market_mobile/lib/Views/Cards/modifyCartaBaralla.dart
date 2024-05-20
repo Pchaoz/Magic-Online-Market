@@ -40,12 +40,12 @@ class _ModifyCartaBarallaPage extends State<ModifyCartaBarallaPage> {
 
   modifyCardFromBaralla() async {
     final response = await http.put(
-      Uri.parse('$API_URI_SERVER/addCartaBaralla'),
+      Uri.parse('$API_URI_SERVER/updateCartaBaralla'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'idUser': userID,
+        'userID': userID,
         'idCarta': idCarta,
         'idBaralla': widget.idBaralla,
         'quantitat': widget.quantity
@@ -78,10 +78,91 @@ class _ModifyCartaBarallaPage extends State<ModifyCartaBarallaPage> {
           );
         },
       );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(
+                'Error agregant la carta. Codig de error ${response.statusCode}'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => BarallesUser()),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
-  deleteCardFromBaralla() async {}
+  deleteCardFromBaralla() async {
+    final response = await http.delete(
+      Uri.parse('$API_URI_SERVER/deleteCartaBatalla'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, dynamic>{'idCarta': idCarta, 'idBaralla': widget.idBaralla}),
+    );
+
+    print("ELIMINAR CARTA FROM BARALLA STATUSCODE: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Exit'),
+            content: const Text('Carta actualitzada correctament'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BarallaDetailsPage(
+                              barallaID: widget.idBaralla,
+                            )),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(
+                'Error agregant la carta. Codig de error ${response.statusCode}'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => BarallesUser()),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

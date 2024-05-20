@@ -200,6 +200,14 @@ class BarallesController extends Controller
         $cartaBaralla->save();
     }
 
+    public function  deleteCartaBarallaAPI (Request $request)
+    {
+        $cartaBaralla = BarallaCartes::where('idCarta',$request->idCarta)
+            ->where('idBaralla',$request->idBaralla)
+            ->first();
+        $cartaBaralla->delete();
+    }
+
     public function seeBarallaByID ($id) {
 
         $CartesBaralla = DB::table('baralla_cartes')

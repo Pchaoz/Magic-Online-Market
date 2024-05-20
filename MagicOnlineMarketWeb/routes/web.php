@@ -161,7 +161,7 @@ Route::get('/api/getBarallaByID/{id}', [\App\Http\Controllers\BarallesController
 Route::post('/api/createBaralla', [\App\Http\Controllers\BarallesController::class,'createBatallaAPI'])->name('createBatallaAPI');
 Route::put('/api/addCartaBaralla', [\App\Http\Controllers\BarallesController::class,'addCardAPI'])->name('addCardAPI');
 Route::put('/api/updateCartaBaralla', [\App\Http\Controllers\BarallesController::class,'updateCartaBarallaAPI'])->name('updateCartaBarallaAPI');
-
+Route::delete('/api/deleteCartaBatalla', [\App\Http\Controllers\BarallesController::class,'deleteCartaBarallaAPI'])->name('deleteCartaBarallaAPI');
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
