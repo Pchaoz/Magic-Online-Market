@@ -64,11 +64,24 @@ void clearPrefs() async {
 
 void reloadPref(context) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  var userinfo;
 
   isAuthenticated = prefs.getBool('Auth')!;
-  userName = prefs.getString('userName')!;
-  roleID = prefs.getInt('role')!;
   userID = prefs.getInt('userID')!;
+
+  if (userID > 0) {
+    userinfo = await fetchUserInfo();
+    var userFirst = userinfo.first;
+
+    userName = userFirst['nick'];
+    roleID = userFirst['idRol'];
+
+    await prefs.setInt("role", roleID);
+    await prefs.setString("userName", userName);
+  } else {
+    userName = prefs.getString('userName')!;
+    roleID = prefs.getInt('role')!;
+  }
 
   loadLateralMenu(context);
 
@@ -106,8 +119,7 @@ Future<Map<String, dynamic>> logOut() async {
 
 Future<List<dynamic>> fetchUserInfo() async {
   print("USUARIO A CARGAR INFO: $userName");
-  final response =
-      await http.get(Uri.parse("$API_URI_SERVER/getUser?nickname=$userName"));
+  final response = await http.get(Uri.parse("$API_URI_SERVER/getUser/$userID"));
 
   print("STATUS CODE IS: ${response.statusCode}");
   print("ME DEVUELVE: ${response.body}");
