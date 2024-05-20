@@ -16,7 +16,7 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPage extends State<ProfileEditPage> {
-  late Future<Map<String, dynamic>> userInfo;
+  late Future<List<dynamic>> userInfo;
 
   final _formKey = GlobalKey<FormState>();
   String _nick = '';
@@ -40,7 +40,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   }
 
   Future<void> updateUser() async {
-    Map<String, dynamic> userInfoResolved = await userInfo;
+    List<dynamic> userInfoResolved = await userInfo;
+    Map<String, dynamic> firstUser = userInfoResolved.first;
 
     print("LA PUTISIMA CONTRASEÑA ES: $_passwordActual");
 
@@ -51,11 +52,11 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'idUsuari': userInfoResolved['idUsuari'].toString(),
-          'nick': _nick.isEmpty ? userInfoResolved['nick'] : _nick,
-          'name': _nombre.isEmpty ? userInfoResolved['name'] : _nombre,
-          'cognom': userInfoResolved['cognom'],
-          'email': userInfoResolved['email'],
+          'idUsuari': firstUser['idUsuari'].toString(),
+          'nick': _nick.isEmpty ? firstUser['nick'] : _nick,
+          'name': _nombre.isEmpty ? firstUser['name'] : _nombre,
+          'cognom': firstUser['cognom'],
+          'email': firstUser['email'],
           'passwordActual': _passwordActual,
           'password': _password.isEmpty ? '' : _password,
         }),
@@ -145,13 +146,13 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: <Widget>[
-                      FutureBuilder<Map<String, dynamic>>(
+                      FutureBuilder<List<dynamic>>(
                         future: userInfo,
                         builder: (BuildContext context,
-                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            AsyncSnapshot<List<dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
-                              initialValue: snapshot.data?['nick'],
+                              initialValue: snapshot.data?.first['nick'],
                               decoration: const InputDecoration(
                                 labelText: 'Nick',
                               ),
@@ -166,13 +167,14 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                           }
                         },
                       ),
-                      FutureBuilder<Map<String, dynamic>>(
+                      FutureBuilder<List<dynamic>>(
                         future: userInfo,
                         builder: (BuildContext context,
-                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            AsyncSnapshot<List<dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
-                              initialValue: snapshot.data?['name'].toString(),
+                              initialValue:
+                                  snapshot.data?.first['name'].toString(),
                               decoration: const InputDecoration(
                                 labelText: 'Nom',
                               ),

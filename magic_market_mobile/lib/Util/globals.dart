@@ -37,7 +37,7 @@ void setAuth(bool auth, String username, int id) async {
 
   if (userName.isNotEmpty) {
     var userinfo = await fetchUserInfo();
-    await prefs.setInt("role", userinfo['idRol']);
+    await prefs.setInt("role", userinfo.first['idRol']);
     await prefs.setBool("Auth", auth);
     await prefs.setString("userName", username);
     await prefs.setInt("userID", userID);
@@ -104,7 +104,7 @@ Future<Map<String, dynamic>> logOut() async {
   }
 }
 
-Future<Map<String, dynamic>> fetchUserInfo() async {
+Future<List<dynamic>> fetchUserInfo() async {
   print("USUARIO A CARGAR INFO: $userName");
   final response =
       await http.get(Uri.parse("$API_URI_SERVER/getUser?nickname=$userName"));
