@@ -24,9 +24,12 @@ const form = useForm({
     cognom: user.cognom,
 });
 
-const myfunction =   () => {
+const myfunction =   (e) => {
+    e.preventDefault();
     form.post('profile.update');
-    return false;
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 500);
 }
 
 </script>
@@ -36,7 +39,7 @@ const myfunction =   () => {
         <div class="d-flex justify-content-center ">
             <div class="w-50 " >
 
-        <form class="rounded"  @click="myfunction" >
+        <form class="rounded"  @submit="myfunction" >
             <div class="d-flex flex-column align-items-center m-4 pt-3 ">
                 <InputLabel for="nick" value="Nick" />
 
