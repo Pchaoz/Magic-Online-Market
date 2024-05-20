@@ -26,6 +26,9 @@ const form = useForm({
 
 const myfunction =   () => {
     form.post('profile.update');
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 2000);
 
 }
 
