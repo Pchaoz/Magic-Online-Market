@@ -24,13 +24,16 @@ class ProfileController extends Controller
     }
 
 
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $user = $request->user();
         $user->nick = $request->nick;
         $user->name = $request->name;
         $user->cognom = $request->cognom;
         $user->save();
+        sleep(5);
+
+        return Redirect::route('profile.edit');
     }
 
         /**
