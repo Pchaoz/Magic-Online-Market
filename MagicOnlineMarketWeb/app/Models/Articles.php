@@ -16,10 +16,6 @@ class Articles extends Model
         return $this->hasMany(Linies::class);
     }
 
-    public function whishlistArticle(){
-        return $this->belongsToMany(Baralles::class, 'whishlist_article', 'idArticle','idWishlist')->using(WishlistArticle::class)->withTimestamps();
-    }
-
     public function creador(){
         return $this->BelongsTo(User::class, 'idUser', 'updated_by');
     }

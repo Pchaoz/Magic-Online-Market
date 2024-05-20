@@ -13,8 +13,8 @@ class Wishlist extends Model
     protected $fillable = ["idWishlist","nom"];
 
 
-    public function wishlistarticle(){
-        return $this->belongsToMany(Cartes::class, 'wishlist_articles', 'idWishlist','idArticles')->using(WishlistArticle::class)->withTimestamps();
+    public function wishlistproducte(){
+        return $this->belongsToMany(Cartes::class, 'whishlist_producte', 'idWishlist','idProducte')->using(WishlistProducte::class)->withTimestamps();
     }
 
     public function propietariWishlist(){

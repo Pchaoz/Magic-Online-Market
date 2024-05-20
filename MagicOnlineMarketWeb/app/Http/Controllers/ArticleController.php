@@ -23,7 +23,7 @@ class ArticleController extends Controller
         $article->save();
     }
 
-    public function mostrarOfertesArticle($id)
+    public function veureArticlesProducte($id)
     {
         $producte = DB::table('productes')
             ->leftJoin('categoria_productes', 'productes.idCategoriaProducte', '=', 'categoria_productes.idCategoriaProductes')

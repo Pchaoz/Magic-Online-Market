@@ -19,6 +19,9 @@ defineProps({
     categoriesProducte:{
         type: Array(String),
     },
+    wishlists:{
+        type: Array(String),
+    },
 });
 
 let showModalEliminacio = ref(false);
@@ -26,6 +29,8 @@ let showModalEliminacioConfirmacio = ref(false);
 let showModalConfirmacioArticle= ref(false);
 let showModalImage = ref(false);
 let showModalOferta=ref(false);
+let showModalWishlist = ref(false);
+let showModalWishlistResult = ref(false);
 
 const formProducte= useForm({
     idProducte:null,
@@ -80,6 +85,14 @@ const formOferta= useForm({
     quantitatDisponible: 0,
     preuUnitari:0,
 })
+
+const formWishlist= useForm({
+    idProducte:null,
+    nomProducte:"",
+    idWishlist:null,
+
+})
+
 const abrirModalCreacioArticle =(id,nom)=>{
     showModalOferta.value=true;
     formOferta.idProducte=id;
@@ -117,6 +130,37 @@ const closeImageModal = () => {
     showModalImage.value = false;
 }
 
+//funcions per agregar productes a la wishlist
+const abrirModalAgregarWishlist = (idProducte, nomProducte) => {
+    formWishlist.idProducte=idProducte;
+    formWishlist.nomProducte=nomProducte;
+    showModalWishlist.value=true;
+}
+const closeWishlist = () => {
+    showModalWishlist.value = false;
+    showModalWishlistResult.value = false;
+    formWishlist.idWishlist="";
+}
+const closeAvisoWishlist = () => {
+    showModalAvisoWishlist.value = true;
+}
+
+const afegirProducteWishlist=  () => {
+    formWishlist.post("afegirProducteWishlist");
+    recargaWishlist()
+}
+
+const recargaWishlist = () => {
+    showModalWishlist.value=false;
+    showModalWishlistResult.value=true;
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 500);
+}
+
+
+
+
 </script>
 
 <template>
@@ -136,6 +180,7 @@ const closeImageModal = () => {
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 "></th>
                     <th class="col-1" v-if="$page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==5 ||$page.props.auth.user.idRol==4 "></th>
+                    <th class="col-1" ></th>
 
                 </tr>
                 </thead>
@@ -147,7 +192,7 @@ const closeImageModal = () => {
                         </div>
                     </td>
                     <td>
-                        <a :href="'/veureOfertes/' + producte.idProducte">{{ producte.nom }}</a>
+                        <a :href="'/veureArticlesProducte/' + producte.idProducte">{{ producte.nom }}</a>
                     </td>
                     <td>{{producte.descripcio}}</td>
                     <td> {{producte.categoriaProducteNom}} </td>
@@ -166,6 +211,10 @@ const closeImageModal = () => {
                         <b-button  class="btn btn-success rounded-pill"
                                    @click="abrirModalCreacioArticle(producte.idProducte,producte.nom)">Vendre</b-button>
 
+                    </td>
+                    <td >
+                        <b-button  class="btn btn-success rounded-pill"
+                                   @click="abrirModalAgregarWishlist(producte.idProducte,producte.nom)">Agregar Wishlist</b-button>
                     </td>
                 </tr>
 
@@ -253,9 +302,44 @@ const closeImageModal = () => {
                 </div>
             </div>
         </Modal>
-
-
-
+        <Modal :show="showModalWishlist" maxWidth="2xl" @close="closeWishlist" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-center m-3">
+                    <form class="w-100 rounded">
+                        <div class="m-2 text-center font-weight-bold">
+                            <div class="m-2 text-center font-weight-bold">
+                                <div class="p-4">
+                                    Producte seleccionat: {{ formWishlist.nomProducte }}
+                                </div>
+                                <InputLabel for="wishlistNom" value="Afegir a Wishlist: " class="m-2" style="font-size: 16px;" />
+                                <div class="d-flex justify-content-center">
+                                    <select id="idCarta" v-model="formWishlist.idWishlist" style="color: black;">
+                                        <option v-for="wishlist in wishlists" v-bind:key="wishlist.idWishlist" v-bind:value="wishlist.idWishlist">
+                                            {{ wishlist.nom }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center m-3 ">
+                <button class="btn btn-success col-2" @click="afegirProducteWishlist">Guardar</button>
+                <div class="col-1"></div>
+                <button class="btn btn-danger col-2 " @click="closeWishlist">Cancelar</button>
+            </div>
+        </Modal>
+        <Modal :show="showModalWishlistResult" maxWidth="2xl" closeable @close="closeWishlist" >
+            <div class="modal-content w-100">
+                <button class="p-2" @click="closeWishlist" style="border: none; background: none;">
+                    <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                </button>
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Wishlist Actualitzada amb el producte!</p>
+                </div>
+            </div>
+        </Modal>
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
             <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="crearProducte">Crear Nou producte</b-button>
         </div>

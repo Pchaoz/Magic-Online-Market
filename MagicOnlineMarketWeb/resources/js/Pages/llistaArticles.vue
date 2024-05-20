@@ -160,7 +160,7 @@ const abrirModalQuantitat = (article) => {
                         </div>
                     </td>
                     <td>
-                        <a :href="'/veureOfertes/' + article.idProducte">{{ article.nom }}</a>
+                        <a :href="'/veureArticlesProducte/' + article.idProducte">{{ article.nom }}</a>
                     </td>
                     <td>{{article.nick}}</td>
                     <td>{{article.quantitat}}</td>
