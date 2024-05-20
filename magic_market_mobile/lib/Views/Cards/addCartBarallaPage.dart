@@ -62,14 +62,15 @@ class _AddCardBarallaPage extends State<AddCardBarallaPage> {
 
   uploadCards() async {
     final response = await http.put(
-      Uri.parse('$API_URI_SERVER/addCartBaralla'),
+      Uri.parse('$API_URI_SERVER/addCartaBaralla'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'idUsuari': userID,
+        'idUser': userID,
         'idCarta': idCartaSeleccionada,
         'idBaralla': widget.barallaID,
+        'quantitat': quantitat
       }),
     );
     print("STATUSCODE UPLOADCARDS: ${response.statusCode}");
