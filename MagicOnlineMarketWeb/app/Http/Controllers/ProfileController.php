@@ -29,8 +29,7 @@ class ProfileController extends Controller
         $user->name = $request->name;
         $user->cognom = $request->cognom;
         $user->save();
-        sleep(1);
-        return Redirect::route('profile.edit');
+        return Redirect::route('dashboard');
 
 
     }

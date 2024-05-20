@@ -25,7 +25,7 @@ const form = useForm({
 });
 
 const myfunction =   () => {
-    form.post('profile.update');
+    form.post('editarUsuariMeu');
 }
 
 </script>

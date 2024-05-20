@@ -31,6 +31,7 @@ Route::get('/getAllUsersForm', [\App\Http\Controllers\UserController::class,'get
 require __DIR__.'/auth.php';
 Route::delete('/deleteUser', [\App\Http\Controllers\UserController::class,'deleteUser'])->name('deleteUser');
 Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'editarUsuari'])->name('editarUsuari');
+Route::post('/editarUsuariMeu', [\App\Http\Controllers\UserController::class, 'editarUsuariMeu'])->name('editarUsuariMeu');
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getUser/{id}', [\App\Http\Controllers\UserController::class,'APIgetUser'])->name('APIgetUser');
 
