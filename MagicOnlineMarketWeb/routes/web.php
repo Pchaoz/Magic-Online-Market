@@ -32,7 +32,7 @@ require __DIR__.'/auth.php';
 Route::delete('/deleteUser', [\App\Http\Controllers\UserController::class,'deleteUser'])->name('deleteUser');
 Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'editarUsuari'])->name('editarUsuari');
 //-----------------------------------API----------------------------------------//
-Route::get('/api/getUser', [\App\Http\Controllers\UserController::class,'APIgetUser'])->name('APIgetUser');
+Route::get('/api/getUser/{id}', [\App\Http\Controllers\UserController::class,'APIgetUser'])->name('APIgetUser');
 
 
 

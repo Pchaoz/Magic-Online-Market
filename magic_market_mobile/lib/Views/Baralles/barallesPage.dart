@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Util/globals.dart';
-import 'package:magic_market_mobile/Views/Baralles/ballaDetailsPage.dart';
+import 'package:magic_market_mobile/Views/Baralles/barallaDetailsPage.dart';
 import '../../Util/globals.dart';
 import '../../Util/lateralMenu.dart';
 import '../homePage.dart';

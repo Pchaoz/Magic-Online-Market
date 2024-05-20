@@ -106,8 +106,7 @@ Future<Map<String, dynamic>> logOut() async {
 
 Future<Map<String, dynamic>> fetchUserInfo() async {
   print("USUARIO A CARGAR INFO: $userName");
-  final response =
-      await http.get(Uri.parse("$API_URI_SERVER/getUser?nickname=$userName"));
+  final response = await http.get(Uri.parse("$API_URI_SERVER/getUser/$userID"));
 
   print("STATUS CODE IS: ${response.statusCode}");
   print("ME DEVUELVE: ${response.body}");
