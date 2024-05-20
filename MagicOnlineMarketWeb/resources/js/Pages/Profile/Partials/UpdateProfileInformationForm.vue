@@ -26,11 +26,15 @@ const form = useForm({
 
 const myfunction =   () => {
     form.post('profile.update');
-
+    recarga();
 
 }
+const recarga =   () => {
+    setTimeout(() => {
+        useForm.visit(window.location.pathname);
+    }, 2000);
 
-
+}
 </script>
 
 <template>
