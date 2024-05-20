@@ -99,7 +99,7 @@ Route::get('/llistaNoticies',[\App\Http\Controllers\NoticiesController::class, '
 Route::get('/eliminarNoticia/',[\App\Http\Controllers\NoticiesController::class, 'deleteNoticia'])->name('deleteNoticia');
 Route::get('/formCrearNoticia',function (){
     return Inertia::render('formulariCreacioNoticia');
-})->name('formCrearNoticia');
+})->name('formCrearNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/crearNoticia',[\App\Http\Controllers\NoticiesController::class, 'addNoticia'])->name('addNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::get('/veureNoticia/{id}',[\App\Http\Controllers\NoticiesController::class, 'seeNoticia'])->name('seeNoticia');
 Route::get('/formModNoticia',[\App\Http\Controllers\NoticiesController::class, 'formModNoticia'])->name('formModNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
