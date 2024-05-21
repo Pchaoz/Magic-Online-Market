@@ -99,7 +99,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: NetworkImage(
-                        '$URI_SERVER_IMAGES/${widget.product['imatge']}'),
+                      widget.product['imatge'] != null
+                          ? URI_SERVER_IMAGES + "/" + widget.product['imatge']
+                          : "$URI_SERVER_IMAGES/default.png",
+                    ),
                     fit: BoxFit.scaleDown,
                   ),
                 ),

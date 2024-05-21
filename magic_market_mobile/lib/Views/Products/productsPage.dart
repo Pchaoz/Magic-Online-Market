@@ -69,12 +69,17 @@ class _ProductsPageState extends State<ProductsPage> {
                   const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: products[index]['imatge'] != null
-                      ? Image.network(
-                          URI_SERVER_IMAGES + "/" + products[index]['imatge'])
-                      : Image.network(
-                          'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.eclosio.ong%2Fes%2Fhomepage%2Fdefault-2%2F&psig=AOvVaw30M9_loyeeAyIr4wniDVQi&ust=1716395932480000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCMC13rKXn4YDFQAAAAAdAAAAABAE'),
-                  title: Text(products[index]['nom']),
+                  leading: Container(
+                    width: 50.0,
+                    height: 50.0,
+                    child: Image.network(
+                      products[index]['imatge'] != null
+                          ? URI_SERVER_IMAGES + "/" + products[index]['imatge']
+                          : "$URI_SERVER_IMAGES/default.png",
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  title: Text(products[index]['nom'] ?? ""),
                   subtitle:
                       Text(products[index]['idCategoriaProducte'].toString()),
                   onTap: () {

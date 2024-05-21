@@ -98,6 +98,8 @@ class _EditArticlePage extends State<EditArticlePage> {
 
     print("resultado borrar article:  ${response.statusCode}");
 
+    print(json.decode(response.body).toString());
+
     if (response.statusCode == 200) {
       showDialog(
         context: context,
