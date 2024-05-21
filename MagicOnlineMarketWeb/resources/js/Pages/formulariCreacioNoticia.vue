@@ -72,12 +72,12 @@ const cerrarForm = () => {
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="titol" value="Titol:" />
                         <VField id="titol" name="titol" type="text" v-model="formNoticia.titol" rules="required" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="titol" />
+                        <ErrorMessage name="titol" style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="subtitol" value="Subtitol:" />
                         <VField id="subtitol" name="subtitol" type="text" v-model="formNoticia.subtitol" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="subtitol" />
+                        <ErrorMessage name="subtitol" style="color: red; font-weight: bold;"/>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="contingut" value="Contingut:" />
@@ -86,9 +86,9 @@ const cerrarForm = () => {
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:" />
                         <div class="d-flex flex-column align-items-center ">
-                            <VField id="imatge" name="imatge" type="file" class="mt-1 block w-full" rules="required" style="color: black" @change="obtenirImatge" />
+                            <VField id="imatge" name="imatge" type="file" accept="image/png, image/jpg" class="mt-1 block w-full" rules="required" style="color: black" @change="obtenirImatge" />
                         </div>
-                        <ErrorMessage name="imatge" />
+                        <ErrorMessage name="imatge" style="color: red; font-weight: bold;"/>
                     </div>
 
                     <div class="d-flex flex-column align-items-center m-4 p-1">

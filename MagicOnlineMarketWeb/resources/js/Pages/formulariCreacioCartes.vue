@@ -88,24 +88,24 @@ const options = ref([
             <h2>Formulari creació Cartes</h2>
         </div>
         <div class="d-flex justify-content-center ">
-            <div class="w-25 rounded"  style="background-color: rgba(255,255,255,0.2);padding: 20px; margin: 20px;">
-                <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
+            <div class="w-25 rounded "  style="background-color: rgba(255,255,255,0.2);padding: 20px; margin: 20px;">
+                <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded pt-1">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />
                         <VField id="nom" name="nom" type="text" v-model="formCarta.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="nom" />
+                        <ErrorMessage name="nom"  style="color: red; font-weight: bold;" :message="formCarta.errors.nom"/>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="descripcio" value="Descripcio:" />
                         <VField id="descripcio" name="descripcio" type="text" v-model="formCarta.descripcio" rules="required" class="mt-1 block w-full" style="color: black;" />
-                        <ErrorMessage name="descripcio" />
+                        <ErrorMessage name="descripcio"  style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:" />
                         <div class="d-flex flex-column align-items-center ">
-                        <VField id="imatge" name="imatge" type="file" class="mt-1 block w-full" rules="required" style="color: black" @change="obtenirImatge" />
+                        <VField id="imatge" name="imatge" type="file" accept="image/png, image/jpg" class="mt-1 block w-full" rules="required" style="color: black" @change="obtenirImatge" />
                         </div>
-                        <ErrorMessage name="imatge" />
+                        <ErrorMessage name="imatge"  style="color: red; font-weight: bold;"  />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <select id="raresa" required v-model="formCarta.raresa" style="color: black;">
@@ -119,7 +119,7 @@ const options = ref([
                         <img width="200" height="200" :src="formCarta.imatgeMiniatura">
                     </figure>
                     </div>
-                    <div class="d-flex flex-column align-items-center m-4 p-1">
+                    <div class="d-flex flex-column align-items-center m-4 p-1 pb-4">
                         <button class="btn btn-success" :class="{ 'opacity-25': formCarta.processing }" :disabled="Object.keys(errors).length > 0">
                             Afegir
                         </button>
@@ -142,6 +142,7 @@ form {
     background-color:rgba(0,214,153,0.8) !important;
 
 }
+ErrorMessage{}
 
 
 

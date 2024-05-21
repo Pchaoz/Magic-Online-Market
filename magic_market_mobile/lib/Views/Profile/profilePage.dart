@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/LateralMenu.dart';
+import 'package:magic_market_mobile/Views/Articles/articlesUser.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
 
-import '../Util/globals.dart';
+import '../../Util/globals.dart';
+import '../Baralles/barallesUserPage.dart';
 import 'loginPage.dart';
 import 'profileEditPage.dart';
 
@@ -66,11 +68,29 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Center(child: Text('Baralles')),
+                    title: const Center(child: Text('Les meves baralles')),
                     onTap: () {
-                      // Navega a la página de Barajas
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BarallesUser(),
+                        ),
+                      );
                     },
-                  )
+                  ),
+                  if (roleID == 1 || roleID == 2 || roleID == 4 || roleID == 5)
+                    ListTile(
+                      title: const Center(child: Text('Les meves ofertes')),
+                      onTap: () {
+                        // Navegar a la pagina de "mis ofertas"
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArticlesUser(),
+                          ),
+                        );
+                      },
+                    )
                 ]).toList(),
               ),
             ),
@@ -103,7 +123,7 @@ class ProfilePage extends StatelessWidget {
             content: const Text('Failed to authenticate user'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

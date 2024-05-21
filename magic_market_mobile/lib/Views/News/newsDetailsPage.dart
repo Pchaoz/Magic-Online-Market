@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../Util/globals.dart';
-import 'homePage.dart';
+import '../../Util/globals.dart';
+import '../homePage.dart';
 
 class NewsDetailsPage extends StatefulWidget {
   final Map<String, dynamic> info;

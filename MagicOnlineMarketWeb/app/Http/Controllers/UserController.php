@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -52,9 +53,23 @@ class UserController extends Controller
         $usuari->save();
 
     }
+    public function editarUsuariMeu(Request $request){
+        $usuari= User::find(Auth::id()->idUsuari);
+        $usuari->nick=$request->nick;
+        $usuari->cognom=$request->cognom;
+        $usuari->name=$request->nom;
+        $usuari->save();
+        return Redirect::route('dashboard');
 
-    public function APIgetUser(Request $request) {
-        $user = DB::table('usuaris')->where('nick', $request->query('nickname'))->first();
+    }
+
+
+
+
+    public function APIgetUser($id) {
+        $user = DB::table('usuaris')
+            ->where('idUsuari','=', $id )
+            ->get();
         return response()->json($user);
     }
 

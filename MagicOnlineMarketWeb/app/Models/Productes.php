@@ -20,6 +20,10 @@ class Productes extends Model
         return $this->belongsToMany(Tornejos::class, 'premis', 'idProducte','idPremi')->using(Premis::class)->withTimestamps();
     }
 
+    public function whishlistProducte(){
+        return $this->belongsToMany(Baralles::class, 'whishlist_producte', 'idProducte','idWishlist')->using(WishlistProducte::class)->withTimestamps();
+    }
+
     public function cartes(){
         return $this->hasOne(Cartes::class);
     }

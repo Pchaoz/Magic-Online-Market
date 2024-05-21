@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'Util/globals.dart';
 import 'Views/homePage.dart';
-import 'Views/loginPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              return (snapshot.data ?? false) ? HomePage() : LoginPage();
+              return HomePage();
             }
           }
         },
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
     if (prefs.containsKey("Auth")) {
       return prefs.getBool("Auth") ?? false;
     }
-    prefs.setBool("Auth", false);
+    setAuth(false, '', 0);
     return prefs.getBool("Auth") ?? false;
   }
 }

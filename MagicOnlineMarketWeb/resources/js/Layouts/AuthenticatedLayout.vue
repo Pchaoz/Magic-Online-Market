@@ -87,6 +87,8 @@ const showingNavigationDropdown = ref(false);
                                             <template #content>
                                                 <DropdownLink :href="route('ListProductes')"> Tots els Productes </DropdownLink>
                                                 <DropdownLink :href="route('ListArticles')"> Tots els Articles </DropdownLink>
+                                                <DropdownLink :href="route('ListWhishlistsMeves')" > Les meves WishList </DropdownLink>
+                                                <DropdownLink :href="route('ListWhishlists')" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2" > WishList Usuaris </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
@@ -152,8 +154,8 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
-                                                <DropdownLink :href="route('ListBaralles')"> Veure Baralles </DropdownLink>
                                                 <DropdownLink :href="route('ListBarallesMeves')">Les meves Baralles</DropdownLink>
+                                                <DropdownLink :href="route('ListBaralles')">Baralles públiques </DropdownLink>
                                                 <DropdownLink :href="route('getAllCartes')"> Veure cartes</DropdownLink>
                                             </template>
                                         </Dropdown>
@@ -241,9 +243,9 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                        <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
+                                            Desconectar
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -293,7 +295,7 @@ const showingNavigationDropdown = ref(false);
                 >
                     <div class="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
+                            Principal
                         </ResponsiveNavLink>
                     </div>
 
@@ -307,9 +309,9 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.edit')"> Perfil </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
+                                Desconectar
                             </ResponsiveNavLink>
                         </div>
                     </div>

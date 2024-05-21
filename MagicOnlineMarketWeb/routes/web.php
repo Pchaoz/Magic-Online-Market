@@ -19,21 +19,20 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile.update', [\App\Http\Controllers\ProfileController::class, 'profileUpdate'])->name('profile.update');
+Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 
 //funcions per usuaris/es
-Route::get('/getAllUsers', [\App\Http\Controllers\UserController::class,'getAllUser'])->name('getAllUser');
+Route::get('/getAllUsers', [\App\Http\Controllers\UserController::class,'getAllUser'])->name('getAllUser')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
 require __DIR__.'/auth.php';
-Route::get('/getAllUsersForm', [\App\Http\Controllers\UserController::class,'getUsersForm'])->name('getUsersForm');
+Route::get('/getAllUsersForm', [\App\Http\Controllers\UserController::class,'getUsersForm'])->name('getUsersForm')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
 require __DIR__.'/auth.php';
 Route::delete('/deleteUser', [\App\Http\Controllers\UserController::class,'deleteUser'])->name('deleteUser');
 Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'editarUsuari'])->name('editarUsuari');
 //-----------------------------------API----------------------------------------//
-Route::get('/api/getUser', [\App\Http\Controllers\UserController::class,'APIgetUser'])->name('APIgetUser');
+Route::get('/api/getUser/{id}', [\App\Http\Controllers\UserController::class,'APIgetUser'])->name('APIgetUser');
 
 
 
@@ -42,23 +41,23 @@ Route::get('/getAllCartes', [\App\Http\Controllers\CartesController::class,'List
 Route::get('/getAllCartesByRaresa/{raresa}', [\App\Http\Controllers\CartesController::class,'getAllCartesByRaresa'])->name('getAllCartesByRaresa');
 Route::get('/formulariCrearCartes',function (){
     return Inertia::render('formulariCreacioCartes');
-})->name('formulariCartes');
-Route::post('/crearCarta',[\App\Http\Controllers\CartesController::class, 'addCarta'])->name('addCarta');
-Route::get('/formulariEditarCarta', [\App\Http\Controllers\CartesController::class,'FormEditCarta'])->name('FormEditCarta');
+})->name('formulariCartes')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/crearCarta',[\App\Http\Controllers\CartesController::class, 'addCarta'])->name('addCarta')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::get('/formulariEditarCarta', [\App\Http\Controllers\CartesController::class,'FormEditCarta'])->name('FormEditCarta')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/editarCarta',[\App\Http\Controllers\CartesController::class, 'editarCarta'])->name('editarCarta');
-Route::get('/alterDescripcioCarta/{id}/{descripcio}', [\App\Http\Controllers\CartesController::class,'alterDescripcioCarta'])->name('alterDescripcioCarta');
+Route::get('/alterDescripcioCarta/{id}/{descripcio}', [\App\Http\Controllers\CartesController::class,'alterDescripcioCarta'])->name('alterDescripcioCarta')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::delete('/deleteCarta', [\App\Http\Controllers\CartesController::class,'deleteCarta'])->name('deleteCarta');
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllCartes', [\App\Http\Controllers\CartesController::class,'APIListCartes'])->name('APIgetAllCartes');
 
 
 //funcions controller rols
-Route::get('/getAllRols', [\App\Http\Controllers\RolsController::class,'ListRols'])->name('ListRols');
-Route::get('/getRol/{id}', [\App\Http\Controllers\RolsController::class,'getRol'])->name('getRol');
-Route::post('/crearRol',[\App\Http\Controllers\RolsController::class, 'addRol'])->name('addRol');
-Route::get('/modificarNomRol/{id}/{nom}',[\App\Http\Controllers\RolsController::class, 'modRol'])->name('modRol');
-Route::post('/editarRol',[\App\Http\Controllers\RolsController::class,'editarRol'])->name('editarRol');
-Route::delete('/eliminarRol',[\App\Http\Controllers\RolsController::class, 'eliminarRol'])->name('eliminarRol');
+Route::get('/getAllRols', [\App\Http\Controllers\RolsController::class,'ListRols'])->name('ListRols')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
+Route::get('/getRol/{id}', [\App\Http\Controllers\RolsController::class,'getRol'])->name('getRol')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
+Route::post('/crearRol',[\App\Http\Controllers\RolsController::class, 'addRol'])->name('addRol')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
+Route::get('/modificarNomRol/{id}/{nom}',[\App\Http\Controllers\RolsController::class, 'modRol'])->name('modRol')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
+Route::post('/editarRol',[\App\Http\Controllers\RolsController::class,'editarRol'])->name('editarRol')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
+Route::delete('/eliminarRol',[\App\Http\Controllers\RolsController::class, 'eliminarRol'])->name('eliminarRol')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
 
 
 //-----------------------------------API----------------------------------------//
@@ -68,12 +67,12 @@ Route::get('/api/getAllRols', [\App\Http\Controllers\RolsController::class,'APIL
 //funcions controller productes
 Route::get('/getAllProductes', [\App\Http\Controllers\ProductesController::class,'ListProductes'])->name('ListProductes');
 Route::get('/getProducte/{id}', [\App\Http\Controllers\ProductesController::class,'getProducte'])->name('getProducte');
-Route::get('/crearProducte/{nom}/{descripcio}/{idcategoria}',[\App\Http\Controllers\ProductesController::class, 'addProducte'])->name('addProducte');
-Route::get('/modificarDescripcioProducte/{id}/{nom}',[\App\Http\Controllers\ProductesController::class, 'modProducte'])->name('modProducte');
+Route::get('/crearProducte/{nom}/{descripcio}/{idcategoria}',[\App\Http\Controllers\ProductesController::class, 'addProducte'])->name('addProducte')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::get('/modificarDescripcioProducte/{id}/{nom}',[\App\Http\Controllers\ProductesController::class, 'modProducte'])->name('modProducte')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::get('/eliminarProducte',[\App\Http\Controllers\ProductesController::class, 'eliminarProducte'])->name('eliminarProducte');
 Route::get('/formModificarProducte',[\App\Http\Controllers\ProductesController::class, 'formModificarProducte'])->name('formModificarProducte');
 Route::post('/modificarProducte',[\App\Http\Controllers\ProductesController::class, 'modificarProducte'])->name('modificarProducte');
-Route::get('/formCrearProducte',[\App\Http\Controllers\ProductesController::class, 'formCrearProducte'])->name('formCrearProducte');
+Route::get('/formCrearProducte',[\App\Http\Controllers\ProductesController::class, 'formCrearProducte'])->name('formCrearProducte')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/crearProducte',[\App\Http\Controllers\ProductesController::class, 'crearProducte'])->name('crearProducte');
 
 //-----------------------------------API----------------------------------------//
@@ -81,26 +80,31 @@ Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::c
 Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::class,'APILastProductes'])->name('APILastProductes');
 
 
+
 //funcions controller Articles
 Route::get('/crearArticle',[\App\Http\Controllers\ArticleController::class, 'crearArticle'])->name('crearArticle');
 Route::get('/getAllArticles', [\App\Http\Controllers\ArticleController::class,'ListArticles'])->name('ListArticles');
-Route::get('/veureOfertes/{id}',[\App\Http\Controllers\ArticleController::class, 'mostrarOfertesArticle'])->name('mostrarOfertesArticle');
+Route::get('/veureArticlesProducte/{id}',[\App\Http\Controllers\ArticleController::class, 'veureArticlesProducte'])->name('veureArticlesProducte');
 Route::get('/modificarArticle',[\App\Http\Controllers\ArticleController::class, 'modificarArticle'])->name('modificarArticle');
 Route::get('/eliminarArticle',[\App\Http\Controllers\ArticleController::class, 'eliminarArticle'])->name('eliminarArticle');
 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/ofertes/{id}',[\App\Http\Controllers\ArticleController::class, 'APIgetArticleById'])->name('APIgetArticleById');
+Route::post('/api/uploadArticle', [\App\Http\Controllers\ArticleController::class,'APIuploadArticle']);
+Route::get('/api/recentOfertes',[\App\Http\Controllers\ArticleController::class, 'APIgetLastOfertes'])->name('APIgetLastOfertes');
+Route::get('/api/ofertesUsuari/{id}', [\App\Http\Controllers\ArticleController::class, 'APIGetUserArticlesByID'])->name('APIGetUserArticlesByID');
 
 //funcions controller Noticies
 Route::get('/llistaNoticies',[\App\Http\Controllers\NoticiesController::class, 'listNoticies'])->name('listNoticies');
 Route::get('/eliminarNoticia/',[\App\Http\Controllers\NoticiesController::class, 'deleteNoticia'])->name('deleteNoticia');
 Route::get('/formCrearNoticia',function (){
     return Inertia::render('formulariCreacioNoticia');
-})->name('formCrearNoticia');
-Route::post('/crearNoticia',[\App\Http\Controllers\NoticiesController::class, 'addNoticia'])->name('addNoticia');
+})->name('formCrearNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/crearNoticia',[\App\Http\Controllers\NoticiesController::class, 'addNoticia'])->name('addNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::get('/veureNoticia/{id}',[\App\Http\Controllers\NoticiesController::class, 'seeNoticia'])->name('seeNoticia');
-Route::get('/formModNoticia',[\App\Http\Controllers\NoticiesController::class, 'formModNoticia'])->name('formModNoticia');
+Route::get('/formModNoticia',[\App\Http\Controllers\NoticiesController::class, 'formModNoticia'])->name('formModNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/modNoticia',[\App\Http\Controllers\NoticiesController::class, 'modNoticia'])->name('modNoticia');
+
 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/noticies/{id}',[\App\Http\Controllers\NoticiesController::class, 'getNoticiaByIdAPI'])->name('getNoticiaByIdAPI');
@@ -108,9 +112,9 @@ Route::get('/api/noticies/',[\App\Http\Controllers\NoticiesController::class, 'g
 Route::get('/api/lastNoticies/',[\App\Http\Controllers\NoticiesController::class, 'getLastNews'])->name('getLastNews');
 
 //funcions controller Comandes
-Route::get('/listComandes',[\App\Http\Controllers\ComandesController::class, 'listComandes'])->name('listComandes');
+Route::get('/listComandes',[\App\Http\Controllers\ComandesController::class, 'listComandes'])->name('listComandes')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::get('/listComandesCompres',[\App\Http\Controllers\ComandesController::class, 'listComandesCompres'])->name('listComandesCompres');
-Route::get('/listComandesVendes',[\App\Http\Controllers\ComandesController::class, 'listComandesVendes'])->name('listComandesVendes');
+Route::get('/listComandesVendes',[\App\Http\Controllers\ComandesController::class, 'listComandesVendes'])->name('listComandesVendes')->middleware(\App\Http\Middleware\checkVendorIdRol::class);
 Route::get('/listComandesCompraUser',[\App\Http\Controllers\ComandesController::class, 'listComandesCompraUser'])->name('listComandesCompraUser');
 Route::post('/crearComanda',[\App\Http\Controllers\ComandesController::class, 'addComanda'])->name('addComanda');
 Route::post('/agregarArticleComanda',[\App\Http\Controllers\ComandesController::class, 'agregarArticleComanda'])->name('agregarArticleComanda');
@@ -119,22 +123,20 @@ Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::clas
 Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class, 'confirmarCompra'])->name('confirmarCompra');
 
 
-
-
 //funcions controller Linies
 Route::get('/veureLinies/{id}',[\App\Http\Controllers\LiniesController::class, 'veureLiniesComanda'])->name('veureLiniesComanda');
 Route::delete('/eliminarLinia',[\App\Http\Controllers\LiniesController::class, 'eliminarLinia'])->name('eliminarLinia');
-
+Route::delete('/eliminarLiniaCarret',[\App\Http\Controllers\LiniesController::class, 'eliminarLiniaCarret'])->name('eliminarLiniaCarret');
 
 //----------------------------------- API USER ----------------------------------------//
 //funcions controller Expansions
-Route::get('/getAllExpansions', [\App\Http\Controllers\ExpansionsController::class,'ListExpansions'])->name('ListExpansions');
+Route::get('/getAllExpansions', [\App\Http\Controllers\ExpansionsController::class,'ListExpansions'])->name('ListExpansions')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/crearExpansio',[\App\Http\Controllers\ExpansionsController::class, 'crearExpansio'])->name('crearExpansio');
 Route::post('/editarExpansio',[\App\Http\Controllers\ExpansionsController::class,'editarExpansio'])->name('editarExpansio');
 Route::delete('/eliminarExpansio',[\App\Http\Controllers\ExpansionsController::class, 'eliminarExpansio'])->name('eliminarExpansio');
 
 //funcions controller Categoria Productes
-Route::get('/getAllCategProductes', [\App\Http\Controllers\CategoriaProducteController::class,'ListCategProductes'])->name('ListCategProductes');
+Route::get('/getAllCategProductes', [\App\Http\Controllers\CategoriaProducteController::class,'ListCategProductes'])->name('ListCategProductes')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/crearCategProductes',[\App\Http\Controllers\CategoriaProducteController::class, 'crearCategProductes'])->name('crearCategProductes');
 Route::post('/editarCategProductes',[\App\Http\Controllers\CategoriaProducteController::class,'editarCategProductes'])->name('editarCategProductes');
 Route::delete('/eliminarCategProductes',[\App\Http\Controllers\CategoriaProducteController::class, 'eliminarCategProductes'])->name('eliminarCategProductes');
@@ -152,6 +154,26 @@ Route::post('/modCartaBaralla', [\App\Http\Controllers\BarallesController::class
 Route::delete('/deleteBaralla', [\App\Http\Controllers\BarallesController::class,'deleteBaralla'])->name('deleteBaralla');
 Route::post('/crearBaralla', [\App\Http\Controllers\BarallesController::class,'crearBaralla'])->name('crearBaralla');
 Route::post('/editarBaralla', [\App\Http\Controllers\BarallesController::class,'editarBaralla'])->name('editarBaralla');
+//-----------------------------------API----------------------------------------//
+Route::get('/api/getAllBaralles', [\App\Http\Controllers\BarallesController::class,'getAllBaralles'])->name('getAllBaralles');
+Route::get('/api/getBarallaByUser/{id}', [\App\Http\Controllers\BarallesController::class,'getBarallesByUserID'])->name('getBarallesByUserID');
+Route::get('/api/getBarallaByID/{id}', [\App\Http\Controllers\BarallesController::class,'seeBarallaByID'])->name('seeBarallaByID');
+Route::post('/api/createBaralla', [\App\Http\Controllers\BarallesController::class,'createBatallaAPI'])->name('createBatallaAPI');
+Route::put('/api/addCartaBaralla', [\App\Http\Controllers\BarallesController::class,'addCardAPI'])->name('addCardAPI');
+Route::put('/api/updateCartaBaralla', [\App\Http\Controllers\BarallesController::class,'updateCartaBarallaAPI'])->name('updateCartaBarallaAPI');
+Route::delete('/api/deleteCartaBatalla', [\App\Http\Controllers\BarallesController::class,'deleteCartaBarallaAPI'])->name('deleteCartaBarallaAPI');
+Route::put('/api/updateBaralla', [\App\Http\Controllers\BarallesController::class,'editarBarallaAPI'])->name('editarBarallaAPI');
+Route::delete('/api/deleteBaralla', [\App\Http\Controllers\BarallesController::class,'deleteBarallaAPI'])->name('deleteBarallaAPI');
+
+//funcions controller Wishlist
+Route::get('/ListWhishlistsMeves', [\App\Http\Controllers\WishlistControler::class,'ListWhishlistsMeves'])->name('ListWhishlistsMeves');
+Route::get('/ListWhishlists', [\App\Http\Controllers\WishlistControler::class,'ListWhishlists'])->name('ListWhishlists')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/crearWishlist', [\App\Http\Controllers\WishlistControler::class,'crearWishlist'])->name('crearWishlist');
+Route::delete('/eliminarWishlist', [\App\Http\Controllers\WishlistControler::class,'eliminarWishlist'])->name('eliminarWishlist');
+Route::post('/modWishlist', [\App\Http\Controllers\WishlistControler::class,'modWishlist'])->name('modWishlist');
+Route::get('/veureWishlist/{id}', [\App\Http\Controllers\WishlistControler::class,'veureWishlist'])->name('veureWishlist');
+Route::delete('/eliminarProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'eliminarProducteWishlist'])->name('eliminarProducteWishlist');
+Route::post('/afegirProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'afegirProducteWishlist'])->name('afegirProducteWishlist');
 
 //funcions controller Tornejos
 Route::get('/getAllTornejos', [\App\Http\Controllers\TornejosController::class,'ListTornejos'])->name('ListTornejos');

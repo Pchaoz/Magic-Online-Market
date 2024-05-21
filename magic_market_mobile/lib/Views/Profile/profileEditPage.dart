@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Views/homePage.dart';
 
-import '../Util/globals.dart';
+import '../../Util/globals.dart';
 import 'profilePage.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class ProfileEditPage extends StatefulWidget {
 }
 
 class _ProfileEditPage extends State<ProfileEditPage> {
-  late Future<Map<String, dynamic>> userInfo;
+  late Future<List<dynamic>> userInfo;
 
   final _formKey = GlobalKey<FormState>();
   String _nick = '';
@@ -40,7 +40,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   }
 
   Future<void> updateUser() async {
-    Map<String, dynamic> userInfoResolved = await userInfo;
+    List<dynamic> userInfoResolved = await userInfo;
+    Map<String, dynamic> firstUser = userInfoResolved.first;
 
     print("LA PUTISIMA CONTRASEÑA ES: $_passwordActual");
 
@@ -51,11 +52,11 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'idUsuari': userInfoResolved['idUsuari'].toString(),
-          'nick': _nick.isEmpty ? userInfoResolved['nick'] : _nick,
-          'name': _nombre.isEmpty ? userInfoResolved['name'] : _nombre,
-          'cognom': userInfoResolved['cognom'],
-          'email': userInfoResolved['email'],
+          'idUsuari': firstUser['idUsuari'].toString(),
+          'nick': _nick.isEmpty ? firstUser['nick'] : _nick,
+          'name': _nombre.isEmpty ? firstUser['name'] : _nombre,
+          'cognom': firstUser['cognom'],
+          'email': firstUser['email'],
           'passwordActual': _passwordActual,
           'password': _password.isEmpty ? '' : _password,
         }),
@@ -85,7 +86,6 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           },
         );
       } else {
-        // Si la respuesta no es OK, lanzamos un error.
         throw Exception(json.decode(response.body)['message'].toString());
       }
     } catch (e) {
@@ -130,8 +130,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
             children: [
               Container(
                 color: const Color.fromARGB(255, 11, 214, 153),
-                width: double
-                    .infinity, // Asegura que el contenedor ocupe todo el ancho
+                width: double.infinity,
                 child: const Padding(
                   padding: EdgeInsets.all(16),
                   child: Text(
@@ -147,15 +146,15 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     children: <Widget>[
-                      FutureBuilder<Map<String, dynamic>>(
+                      FutureBuilder<List<dynamic>>(
                         future: userInfo,
                         builder: (BuildContext context,
-                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            AsyncSnapshot<List<dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
-                              decoration: InputDecoration(
+                              initialValue: snapshot.data?.first['nick'],
+                              decoration: const InputDecoration(
                                 labelText: 'Nick',
-                                hintText: snapshot.data?['nick'],
                               ),
                               onSaved: (value) {
                                 _nick = value ?? '';
@@ -168,15 +167,16 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                           }
                         },
                       ),
-                      FutureBuilder<Map<String, dynamic>>(
+                      FutureBuilder<List<dynamic>>(
                         future: userInfo,
                         builder: (BuildContext context,
-                            AsyncSnapshot<Map<String, dynamic>> snapshot) {
+                            AsyncSnapshot<List<dynamic>> snapshot) {
                           if (snapshot.hasData) {
                             return TextFormField(
-                              decoration: InputDecoration(
+                              initialValue:
+                                  snapshot.data?.first['name'].toString(),
+                              decoration: const InputDecoration(
                                 labelText: 'Nom',
-                                hintText: snapshot.data?['name'].toString(),
                               ),
                               onSaved: (value) {
                                 _nombre = value ?? '';
@@ -203,7 +203,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Por favor, introduce tu contraseña actual';
+                            return 'Per favor, introdueix la teva contrasenya actual';
                           }
                           return null;
                         },

@@ -12,6 +12,7 @@ let showModalconfirmarCompra = ref(false)
 let showModalBuidarCarret = ref(false)
 let showModalEliminacio  = ref(false)
 let showModalEliminacioConfirmacio = ref(false)
+
 const auxform= useForm({
     idLinia:"",
     quantitatLinia:0,
@@ -50,7 +51,6 @@ function confirmarCompra () {
        showModalBuidarCarret.value = true;
      setTimeout(() => {
          cerrarModals();
-         useForm.visit(window.location.pathname);
      }, 500);
 }
 
@@ -64,7 +64,7 @@ const abrirModalEliminacio = (linia) =>{
 }
 
 const eliminarLinia =()=> {
-    auxform.delete('/eliminarLinia');
+    auxform.delete('/eliminarLiniaCarret');
     recargaPaginaElim();
 }
 

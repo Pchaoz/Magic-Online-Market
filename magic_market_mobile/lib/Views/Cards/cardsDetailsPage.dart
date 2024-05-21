@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Util/globals.dart';
-import 'homePage.dart';
+import '../../Util/globals.dart';
+import '../homePage.dart';
 
 class CardDetailPage extends StatelessWidget {
   final Map card;

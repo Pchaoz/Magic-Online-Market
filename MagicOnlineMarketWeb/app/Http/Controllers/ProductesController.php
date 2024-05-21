@@ -27,7 +27,10 @@ class ProductesController extends Controller
         $cartes = DB::table('cartes')
             ->select('cartes.nom as nom','cartes.idCarta as idCarta')
             ->get();
-        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes]);
+        $wishlists = Db::table('wishlists')
+            ->where('idPropietari','=',Auth::id())
+            ->get();
+        return Inertia::render('llistaProductes', ['productes' => $productes,'categoriesProducte' =>$categoriesProducte,'expansions' =>$expansions, 'cartes'=>$cartes,'wishlists'=>$wishlists]);
     }
 
     public function formModificarProducte(Request $request){

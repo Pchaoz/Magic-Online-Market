@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/Views/newsDetailsPage.dart';
+import 'package:magic_market_mobile/Views/News/newsDetailsPage.dart';
 import 'dart:convert';
 
-import '../Util/LateralMenu.dart';
-import '../Util/globals.dart';
-import 'homePage.dart';
-import 'loginPage.dart';
+import '../../Util/LateralMenu.dart';
+import '../../Util/globals.dart';
+import '../Profile/loginPage.dart';
+import '../homePage.dart';
 
 class NewsPage extends StatefulWidget {
   @override
@@ -151,7 +151,7 @@ class __NewsPageState extends State<NewsPage> {
             content: const Text('Failed to authenticate user'),
             actions: <Widget>[
               TextButton(
-                child: const Text('Close'),
+                child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

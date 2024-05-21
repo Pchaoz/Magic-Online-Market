@@ -152,7 +152,7 @@ const modCarta =()=>{
                             type="number"
                             class="mt-1 block w-full"
                             v-model="formCartaInsert.quantitat"
-                            min="1"
+                            :min="1"
                             step="1"
                             required
                             style="color: black; width: 100px;"
@@ -187,7 +187,7 @@ const modCarta =()=>{
                                         type="number"
                                         class="mt-1 block w-full"
                                         v-model="formCartaMod.quantitat"
-                                        min="1"
+                                        :min="1"
                                         step="1"
                                         required
                                         style="color: black; width: 100px;"

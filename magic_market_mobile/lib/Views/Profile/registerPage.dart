@@ -39,7 +39,7 @@ Future<Map<String, dynamic>> registerUser(String firstName, String lastName,
 
   if (response.statusCode == 200) {
     // Usuario registrado correctamente
-    setAuth(true, data['user']['nick']);
+    setAuth(true, data['user']['nick'], data['user']['idUsuari']);
     return {'success': true};
   } else if (response.statusCode == 500) {
     throw Exception('Correo ya registrado..');
@@ -91,7 +91,7 @@ class _RegisterPageState extends State<RegisterPage> {
               content: Text(e.toString()),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Close'),
+                  child: const Text('Tancar'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
