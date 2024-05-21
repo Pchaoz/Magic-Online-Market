@@ -165,11 +165,14 @@ class ArticleController extends Controller
     }
 
     public function deleteArticleAPI(Request $request) {
-
-        $article =  DB::table('articles')->where('idArticle', '=', '7')->get();
-        return response()->json([$article], 200);
-        $article->delete();
-        return response()->json(['message' => 'Artículo eliminado exitosamente'], 200);
+        
+        $article = DB::table('articles')->where('idArticle', '=', $request->idArticle)->first();
+        if ($article) {
+            DB::table('articles')->where('idArticle', '=', $request->idArticle)->delete();
+            return response()->json(['message' => 'Artículo eliminado exitosamente'], 200);
+        } else {
+            return response()->json(['message' => 'Artículo no encontrado'], 404);
+        }
     }
 
 }
