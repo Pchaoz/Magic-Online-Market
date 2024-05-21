@@ -162,6 +162,7 @@ Route::post('/api/createBaralla', [\App\Http\Controllers\BarallesController::cla
 Route::put('/api/addCartaBaralla', [\App\Http\Controllers\BarallesController::class,'addCardAPI'])->name('addCardAPI');
 Route::put('/api/updateCartaBaralla', [\App\Http\Controllers\BarallesController::class,'updateCartaBarallaAPI'])->name('updateCartaBarallaAPI');
 Route::delete('/api/deleteCartaBatalla', [\App\Http\Controllers\BarallesController::class,'deleteCartaBarallaAPI'])->name('deleteCartaBarallaAPI');
+Route::put('/api/updateBaralla', [\App\Http\Controllers\BarallesController::class,'editarBarallaAPI'])->name('editarBarallaAPI');
 
 //funcions controller Wishlist
 Route::get('/ListWhishlistsMeves', [\App\Http\Controllers\WishlistControler::class,'ListWhishlistsMeves'])->name('ListWhishlistsMeves');

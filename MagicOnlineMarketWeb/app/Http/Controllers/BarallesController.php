@@ -227,4 +227,16 @@ class BarallesController extends Controller
 
     }
 
+    public function editarBarallaAPI(Request $request) {
+        $baralla = Baralles::where('idBaralla',$request->idBaralla)
+        ->first();
+        $baralla->nom=$request->nom;
+        $baralla->isPublic=$request->public;
+        $baralla->updated_by=$request->idUser;
+        $baralla->save();
+
+        return response()->json(['message' => 'Baralla actualizada amb exit'], 200);
+    }
+    
+
 }
