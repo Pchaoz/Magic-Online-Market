@@ -35,6 +35,7 @@ let imatgeMiniaturaMod=reactive(null);
 let imatgeMiniatura=reactive(null);
 let showModalAfegirCarta = ref(false);
 let showModalModificar = ref(false);
+let showModalQuantitatIncorrecta = ref(false);
 
 const AfegirCarta =()=>{
     formCartaInsert.idProducte="";
@@ -68,11 +69,16 @@ const actualizarImagen = (event) => {
 };
 
 const afegirCartaBaralla =()=>{
-    formCartaInsert.post('/agregarCartaBaralla');
-    setTimeout(() => {
+    if(formCartaInsert.quantitat<=0){
         cerrarModalAfegirCarta();
-        useForm.visit(window.location.pathname);
-    }, 500);
+        abrirModalQuantitatIncorrecta();
+    }else{
+        formCartaInsert.post('/agregarCartaBaralla');
+        setTimeout(() => {
+            cerrarModalAfegirCarta();
+            useForm.visit(window.location.pathname);
+        }, 500);
+    }
 }
 //modificar o eliminar carta
 const ModificarCarta =(carta)=>{
@@ -90,11 +96,25 @@ const eliminarCartaBaralla =()=>{
 }
 
 const modCarta =()=>{
-    formCartaMod.post('/modCartaBaralla');
-    setTimeout(() => {
+    if(formCartaMod.quantitat<=0){
         cerrarModalModCarta();
-        useForm.visit(window.location.pathname);
-    }, 500);
+        abrirModalQuantitatIncorrecta();
+    }else{
+        formCartaMod.post('/modCartaBaralla');
+        setTimeout(() => {
+            cerrarModalModCarta();
+            useForm.visit(window.location.pathname);
+        }, 500);
+    }
+}
+
+const cerrarModalQuantitatIncorrecta=()=>{
+    showModalQuantitatIncorrecta.value =false;
+}
+
+const abrirModalQuantitatIncorrecta = () => {
+    showModalQuantitatIncorrecta.value =true;
+
 }
 
 
@@ -212,6 +232,17 @@ const modCarta =()=>{
                 <button class="btn btn-danger col-2 " @click="eliminarCartaBaralla">Eliminar Carta</button>
             </div>
 
+        </Modal>
+        <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalQuantitatIncorrecta" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Quantitat Incorrecta!</p>
+                    <div></div>
+                </div>
+            </div>
         </Modal>
 
     </AuthenticatedLayout>

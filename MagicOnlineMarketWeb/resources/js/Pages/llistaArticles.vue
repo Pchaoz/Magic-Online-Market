@@ -48,10 +48,16 @@ const abrirModalModArticle =(article)=> {
         showModalOferta.value=false;
     }
 
-    const ModOferta =()=> {
-        formOferta.get('/modificarArticle');
-        cerrarModalOferta();
-        recargaPaginaOferta();
+    const ModArticle =()=> {
+        if(formOferta.quantitatDisponible<=0|| formOferta.preuUnitari<=0){
+            cerrarModalOferta()
+            abrirModalQuantitatIncorrecta();
+        }else{
+            formOferta.get('/modificarArticle');
+            cerrarModalOferta();
+            recargaPaginaOferta();
+        }
+
     }
 
     const recargaPaginaOferta = () => {
@@ -111,12 +117,17 @@ const closeImageModal = () => {
 //agregar al carrito
 
 const agregarCarrito = () => {
-    articleAfegit.quantitatProducte=quantitatComprada.value;
-    articleAfegit.post('/agregarArticleComanda');
-    cerrarModalQuantitat();
-    setTimeout(() => {
-        useForm.visit(window.location.pathname);
-    }, 500);
+    if(articleAfegit.quantitatComprada <= 0 || articleAfegit.quantitatProducte < articleAfegit.quantitatComprada ){
+        showModalQuantitat.value=false;
+        abrirModalQuantitatIncorrecta();
+    }else{
+        articleAfegit.post('/agregarArticleComanda');
+        cerrarModalQuantitat();
+        setTimeout(() => {
+            useForm.visit(window.location.pathname);
+        }, 500);
+    }
+
 }
 const abrirModalQuantitat = (article) => {
     articleAfegit.idArticle=article.idArticle;
@@ -129,7 +140,14 @@ const abrirModalQuantitat = (article) => {
 }
 
 
+const cerrarModalQuantitatIncorrecta=()=>{
+    showModalQuantitatIncorrecta.value =false;
+}
 
+const abrirModalQuantitatIncorrecta = () => {
+    showModalQuantitatIncorrecta.value =true;
+
+}
 </script>
 
 <template>
@@ -218,7 +236,7 @@ const abrirModalQuantitat = (article) => {
                                 </div  >
                             </div>
                             <div class="d-flex justify-content-center m-3 p-3">
-                                <button type="button" class="btn btn-success mr-5" @click="ModOferta">Modificar Oferta</button>
+                                <button type="button" class="btn btn-success mr-5" @click="ModArticle">Modificar Oferta</button>
                                 <button type="button" class="btn btn-danger ml-5" @click="cerrarModalOferta">Cancelar</button>
                             </div>
                         </div>
@@ -279,6 +297,18 @@ const abrirModalQuantitat = (article) => {
                             @click="agregarCarrito">Aceptar</button>
                     <button type="button" class="btn btn-danger ml-5" @click="cerrarModalQuantitat">Cancelar</button>
 
+                </div>
+            </div>
+        </Modal>
+
+        <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalQuantitatIncorrecta" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Quantitat Incorrecta!</p>
+                    <div></div>
                 </div>
             </div>
         </Modal>

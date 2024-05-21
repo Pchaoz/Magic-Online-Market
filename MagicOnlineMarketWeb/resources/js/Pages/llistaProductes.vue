@@ -41,6 +41,7 @@ let showModalOferta=ref(false);
 let showModalWishlist = ref(false);
 let showModalWishlistResult = ref(false);
 let showModalSenseWishlist =ref(false);
+let showModalQuantitatIncorrecta = ref(false);
 
 const formProducte= useForm({
     idProducte:null,
@@ -116,8 +117,14 @@ const cerrarModalOferta = () => {
 }
 
 const crearOferta =()=> {
-    formOferta.get('/crearArticle');
-    recargaPaginaOferta();
+    if(formOferta.quantitatDisponible<=0||formOferta.preuUnitari<=0){
+        cerrarModalOferta();
+        abrirModalQuantitatIncorrecta();
+    }else{
+        formOferta.get('/crearArticle');
+        recargaPaginaOferta();
+    }
+
 }
 
 const recargaPaginaOferta = () => {
@@ -151,11 +158,7 @@ const abrirModalAgregarWishlist = (idProducte, nomProducte) => {
         formWishlist.idWishlist= firstObjectInArray.idWishlist;
         showModalWishlist.value=true;
     }
-
-
 }
-
-
 const closeWishlist = () => {
     showModalWishlist.value = false;
     showModalWishlistResult.value = false;
@@ -186,6 +189,13 @@ onMounted(() => {
     }, 500);
 });
 
+const cerrarModalQuantitatIncorrecta=()=>{
+    showModalQuantitatIncorrecta.value =false;
+}
+
+const abrirModalQuantitatIncorrecta = () => {
+    showModalQuantitatIncorrecta.value =true;
+}
 
 </script>
 
@@ -306,7 +316,7 @@ onMounted(() => {
                             </div  >
                             </div>
                             <div class="d-flex justify-content-center m-3">
-                                <button type="button" class="btn btn-success mr-5" @click="crearOferta">Crear Oferta</button>
+                                <button type="button" class="btn btn-success mr-5" @click="crearOferta">Crear Article</button>
                                 <button type="button" class="btn btn-danger ml-5" @click="cerrarModalOferta">Cancelar</button>
                             </div>
                         </div>
@@ -373,6 +383,17 @@ onMounted(() => {
                 </button>
                 <div class="d-flex justify-content-center m-3 ">
                     <p>Primer has de crear una Wishlist!</p>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalQuantitatIncorrecta" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Quantitat Incorrecta!</p>
+                    <div></div>
                 </div>
             </div>
         </Modal>
