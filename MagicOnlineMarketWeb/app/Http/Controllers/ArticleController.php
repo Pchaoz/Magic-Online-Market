@@ -168,6 +168,7 @@ class ArticleController extends Controller
 
         $article= Articles::where('idArticle',$id)->first();
         $article->delete();
+        return response()->json(['message' => 'Artículo eliminado    exitosamente'], 200);
     }
 
 }
