@@ -3,10 +3,10 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import Modal from "@/Components/Modal.vue";
-import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { ref, reactive, onMounted } from 'vue';
 
 
 defineProps({
@@ -135,6 +135,7 @@ const abrirModalAgregarWishlist = (idProducte, nomProducte) => {
     formWishlist.idProducte=idProducte;
     formWishlist.nomProducte=nomProducte;
     showModalWishlist.value=true;
+    formWishlist.idWishlist= wishlists[0].idWishlist;
 }
 const closeWishlist = () => {
     showModalWishlist.value = false;
@@ -143,6 +144,7 @@ const closeWishlist = () => {
 }
 const closeAvisoWishlist = () => {
     showModalAvisoWishlist.value = true;
+
 }
 
 const afegirProducteWishlist=  () => {
@@ -158,7 +160,14 @@ const recargaWishlist = () => {
     }, 500);
 }
 
+const wishlists = ref([]);
 
+
+onMounted(() => {
+    setTimeout(() => {
+        visit(window.location.pathname);
+    }, 500);
+});
 
 
 </script>

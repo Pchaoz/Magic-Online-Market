@@ -40,7 +40,7 @@ class NoticiesController extends Controller
         if($request->hasFile('imatge')){
             $imageName = time().'.'.$request->imatge->extension();
             $request->imatge->move(public_path('images/noticies'), $imageName);
-            $noticia->imatge = 'noticies/' . $imageName;
+            $noticia->imatge = '/noticies/' . $imageName;
         }
         $noticia->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $noticia->idCreador =Auth::id();
