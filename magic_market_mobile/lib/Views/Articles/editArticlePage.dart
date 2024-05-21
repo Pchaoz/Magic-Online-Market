@@ -93,12 +93,13 @@ class _EditArticlePage extends State<EditArticlePage> {
   void deleteArticle() async {
     print("INTENTANT ELIMINAR EL ARTICLE AMB ID: $idArticle");
 
-    final response = await http
-        .delete(Uri.parse('$API_URI_SERVER/deleteArticle/$idArticle'));
+    final response = await http.delete(
+        Uri.parse('$API_URI_SERVER/deleteArticle'),
+        body: jsonEncode(<String, dynamic>{'idArticle': idArticle}));
 
     print("resultado borrar article:  ${response.statusCode}");
 
-    print(json.decode(response.body).toString());
+    print((response.body).toString());
 
     if (response.statusCode == 200) {
       showDialog(
