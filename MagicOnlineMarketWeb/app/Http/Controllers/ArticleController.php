@@ -166,7 +166,7 @@ class ArticleController extends Controller
 
     public function deleteArticleAPI(Request $request) {
 
-        $article = Articles::where('idArticle', $request->idArticle);
+        $article =  DB::table('articles')->where('idArticle', '=', $request->idArticle)->get();
         return response()->json([$article], 200);
         $article->delete();
         return response()->json(['message' => 'Artículo eliminado exitosamente'], 200);
