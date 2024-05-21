@@ -85,13 +85,14 @@ class _BarallaEditPage extends State<BarallaEditPage> {
 
   void deleteBaralla() async {
     int idBaralla = widget.barallaInfo['idBaralla'];
-    final response = await http.post(Uri.parse('$API_URI_SERVER/createBaralla'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'idBaralla': idBaralla,
-        }));
+    final response =
+        await http.delete(Uri.parse('$API_URI_SERVER/deleteBaralla'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+              'idBaralla': idBaralla,
+            }));
 
     if (response.statusCode == 200) {
       showDialog(
