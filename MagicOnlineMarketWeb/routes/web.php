@@ -91,8 +91,10 @@ Route::get('/eliminarArticle',[\App\Http\Controllers\ArticleController::class, '
 //-----------------------------------API----------------------------------------//
 Route::get('/api/ofertes/{id}',[\App\Http\Controllers\ArticleController::class, 'APIgetArticleById'])->name('APIgetArticleById');
 Route::post('/api/uploadArticle', [\App\Http\Controllers\ArticleController::class,'APIuploadArticle']);
+Route::put('/api/updateArticle', [\App\Http\Controllers\ArticleController::class,'updateArticleAPI']);
 Route::get('/api/recentOfertes',[\App\Http\Controllers\ArticleController::class, 'APIgetLastOfertes'])->name('APIgetLastOfertes');
 Route::get('/api/ofertesUsuari/{id}', [\App\Http\Controllers\ArticleController::class, 'APIGetUserArticlesByID'])->name('APIGetUserArticlesByID');
+Route::delete('/api/deleteArticle/{id}', [\App\Http\Controllers\ArticleController::class,'deleteArticleAPI']);
 
 //funcions controller Noticies
 Route::get('/llistaNoticies',[\App\Http\Controllers\NoticiesController::class, 'listNoticies'])->name('listNoticies');
