@@ -97,6 +97,7 @@ class _EditArticlePage extends State<EditArticlePage> {
         .delete(Uri.parse('$API_URI_SERVER/deleteArticle/$idArticle'));
 
     print("resultado borrar article:  ${response.statusCode}");
+    print(json.decode(response.body));
 
     if (response.statusCode == 200) {
       showDialog(
