@@ -69,8 +69,13 @@ class _ProductsPageState extends State<ProductsPage> {
                   const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
               itemBuilder: (context, index) {
                 return ListTile(
-                  leading: Image.network(
-                      URI_SERVER_IMAGES + "/" + products[index]['imatge']),
+                  leading: 
+                  if (products[index]['imatge'] == null) {
+                    Image.network();
+                  }else {
+                    Image.network(
+                      URI_SERVER_IMAGES + "/" + products[index]['imatge'])
+                  },
                   title: Text(products[index]['nom']),
                   subtitle:
                       Text(products[index]['idCategoriaProducte'].toString()),
