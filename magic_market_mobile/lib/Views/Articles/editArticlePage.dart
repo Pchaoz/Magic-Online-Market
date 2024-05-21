@@ -17,7 +17,7 @@ class EditArticlePage extends StatefulWidget {
 }
 
 class _EditArticlePage extends State<EditArticlePage> {
-  var idArticle = 0;
+  var idArticle;
   var quantitat = 0;
   var preu = 0.0;
 
@@ -94,8 +94,7 @@ class _EditArticlePage extends State<EditArticlePage> {
     print("INTENTANT ELIMINAR EL ARTICLE AMB ID: $idArticle");
 
     final response = await http.delete(
-        Uri.parse('$API_URI_SERVER/deleteArticle'),
-        body: jsonEncode(<String, dynamic>{'idArticle': idArticle}));
+        Uri.parse('$API_URI_SERVER/deleteArticle?idArticle=$idArticle'));
 
     print("resultado borrar article:  ${response.statusCode}");
 
