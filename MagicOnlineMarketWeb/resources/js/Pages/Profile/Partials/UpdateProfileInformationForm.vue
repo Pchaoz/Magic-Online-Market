@@ -4,15 +4,19 @@ import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import 'bootstrap/dist/css/bootstrap.css';
+import {onMounted, ref} from "vue";
 
 
-defineProps({
+const props = defineProps({
     mustVerifyEmail: {
         type: Boolean,
     },
     status: {
         type: String,
     },
+    nicks:{
+        type: Array(String),
+    }
 });
 
 const user = usePage().props.auth.user;
@@ -26,11 +30,23 @@ const form = useForm({
 
 const myfunction =   (e) => {
     e.preventDefault();
+    if (targetArray.includes(form.nick)) {
+        alert('Este nick ya existe. Por favor, elige otro.');
+        return;
+    }
     form.post('profile.update');
     setTimeout(() => {
         useForm.visit(window.location.pathname);
     }, 500);
 }
+
+onMounted(() => {
+    setTimeout(() => {
+        visit(window.location.pathname);
+    }, 500);
+});
+let obj = ref(props.nicks);
+let targetArray = obj._value.map(user => user.nick);
 
 </script>
 
