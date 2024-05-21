@@ -175,6 +175,10 @@ Route::get('/veureWishlist/{id}', [\App\Http\Controllers\WishlistControler::clas
 Route::delete('/eliminarProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'eliminarProducteWishlist'])->name('eliminarProducteWishlist');
 Route::post('/afegirProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'afegirProducteWishlist'])->name('afegirProducteWishlist');
 
+//funcions tipus enviaments
+Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments');
+
+
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);

@@ -206,7 +206,7 @@ const showingNavigationDropdown = ref(false);
                                                 <DropdownLink  :href="route('ListExpansions')"> Administrar Expansions </DropdownLink>
                                                 <DropdownLink  :href="route('ListCategProductes')"> Administrar Categories de Productes </DropdownLink>
                                                 <DropdownLink  :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
-
+                                                <DropdownLink  :href="route('ListTipusEnviaments')"> Administrar Tipus Enviaments </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
