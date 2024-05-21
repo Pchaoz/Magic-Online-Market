@@ -109,7 +109,8 @@ class _NewBarallaPage extends State<NewBarallaPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
-                  decoration: InputDecoration(labelText: 'Nom de la baralla'),
+                  decoration:
+                      const InputDecoration(labelText: 'Nom de la baralla'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'El campo no puede estar vacío';
@@ -124,7 +125,7 @@ class _NewBarallaPage extends State<NewBarallaPage> {
                 ),
               ),
               CheckboxListTile(
-                title: Text('¿Es public?'),
+                title: const Text('¿Es public?'),
                 value: isPublic,
                 onChanged: (bool? value) {
                   setState(() {
