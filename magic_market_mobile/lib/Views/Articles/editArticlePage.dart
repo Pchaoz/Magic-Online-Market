@@ -27,7 +27,7 @@ class _EditArticlePage extends State<EditArticlePage> {
     print(widget.article.toString());
     idArticle = widget.article['idArticle'];
     quantitat = widget.article['quantitat'];
-    preu = widget.article['preu'];
+    preu = double.parse(widget.article['preu'].toString());
   }
 
   void updateArticle() async {
@@ -89,11 +89,20 @@ class _EditArticlePage extends State<EditArticlePage> {
   }
 
   void deleteArticle() async {
+<<<<<<< Updated upstream
     final response = await http.delete(
         Uri.parse('$API_URI_SERVER/deleteArticle/$idArticle'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         });
+=======
+    print("INTENTANT ELIMINAR EL ARTICLE AMB ID: $idArticle");
+
+    final response = await http
+        .delete(Uri.parse('$API_URI_SERVER/deleteArticle/$idArticle'));
+
+    print("resultado borrar article:  ${response.statusCode}");
+>>>>>>> Stashed changes
 
     if (response.statusCode == 200) {
       showDialog(
