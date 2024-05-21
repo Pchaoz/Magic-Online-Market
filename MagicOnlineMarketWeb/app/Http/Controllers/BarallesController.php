@@ -238,5 +238,15 @@ class BarallesController extends Controller
         return response()->json(['message' => 'Baralla actualizada amb exit'], 200);
     }
     
+    public function deleteBarallaAPI (Request $request) {
+        $baralla = Baralles::where('idBaralla',$request->idBaralla)
+            ->first();
+        $cartesBaralla = BarallaCartes::where('idBaralla',$request->idBaralla)
+            ->get();
+        foreach ( $cartesBaralla as $cartaBaralla) {
+            $cartaBaralla->delete();
+        }
+        $baralla->delete();
+    }
 
 }
