@@ -27,7 +27,7 @@ class _EditArticlePage extends State<EditArticlePage> {
     print(widget.article.toString());
     idArticle = widget.article['idArticle'];
     quantitat = widget.article['quantitat'];
-    preu = widget.article['preu'];
+    preu = double.parse(widget.article['preu'].toString());
   }
 
   void updateArticle() async {
@@ -97,7 +97,6 @@ class _EditArticlePage extends State<EditArticlePage> {
         .delete(Uri.parse('$API_URI_SERVER/deleteArticle/$idArticle'));
 
     print("resultado borrar article:  ${response.statusCode}");
-    print(json.decode(response.body));
 
     if (response.statusCode == 200) {
       showDialog(

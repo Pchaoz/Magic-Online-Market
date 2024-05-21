@@ -76,8 +76,7 @@ class _CardsPageState extends State<CardsPage> {
         children: <Widget>[
           Container(
             color: const Color.fromARGB(255, 11, 214, 153),
-            width: double
-                .infinity, // Asegura que el contenedor ocupe todo el ancho
+            width: double.infinity,
             child: const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
@@ -87,14 +86,18 @@ class _CardsPageState extends State<CardsPage> {
               ),
             ),
           ),
-          TextField(
-            onChanged: (value) {
-              setState(() {
-                filter = value;
-              });
-            },
-            decoration: const InputDecoration(
-              labelText: "Buscar carta",
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  filter = value;
+                });
+              },
+              decoration: const InputDecoration(
+                labelText: "Buscar carta",
+              ),
             ),
           ),
           Expanded(
@@ -109,7 +112,7 @@ class _CardsPageState extends State<CardsPage> {
                     height: 50,
                     child: Image.network(
                       "$URI_SERVER_IMAGES/${filteredCards[index]['imatge']}",
-                      fit: BoxFit.cover,
+                      fit: BoxFit.scaleDown,
                     ),
                   ),
                   title: Text(filteredCards[index]['nom']),
