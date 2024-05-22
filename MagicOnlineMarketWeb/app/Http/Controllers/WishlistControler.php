@@ -99,6 +99,11 @@ class WishlistControler extends Controller
 
     public function getWishlistsByUserID($id) {
         $wishlist = Wishlist::find($id);
+
+        if (!$wishlist) {
+            return response()->json(['wishlist' => "EL USUARI NO TE WISHLISTS"], 400);
+        }
+
         $whishlistProductes = DB::table('whishlist_producte')
             ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
             ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')

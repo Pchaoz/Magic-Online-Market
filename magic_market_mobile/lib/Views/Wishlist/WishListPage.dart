@@ -16,7 +16,7 @@ class WishListsPage extends StatefulWidget {
 }
 
 class _WishListPage extends State<WishListsPage> {
-  List<dynamic> wishLists = [];
+  Map<String, dynamic> wishLists = {};
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _WishListPage extends State<WishListsPage> {
           return AlertDialog(
             title: const Text('Error'),
             content: Text(
-                "Error carregant les wishlists.. Codig d'error: $response.statusCode"),
+                "Error carregant les wishlists.. Codig d'error: ${response.statusCode}"),
             actions: <Widget>[
               TextButton(
                 child: const Text('Tancar'),
