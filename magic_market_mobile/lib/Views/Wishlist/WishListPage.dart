@@ -6,6 +6,7 @@ import '../../Util/LateralMenu.dart';
 import '../../Util/globals.dart';
 import '../homePage.dart';
 import 'newWishListPage.dart';
+import 'wishListDetails.dart';
 
 void main() {
   runApp(WishListsPage());
@@ -93,8 +94,30 @@ class _WishListPage extends State<WishListsPage> {
                 ),
               )),
           Expanded(
-            child: ListView.builder(
-                itemCount: wishLists.length, itemBuilder: (context, index) {}),
+            child: wishLists == {} || wishLists['wishlists'] == null
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.builder(
+                    itemCount: wishLists['wishlists'].length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title:
+                            Text(wishLists['wishlists'][index]['nomWishlist']),
+                        subtitle: Text("Creat per: " +
+                            wishLists['wishlists'][index]['nickPropietari']),
+                        onTap: () => {
+                          //MOSTRAR DETALLES WISHLIST
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => WishListDetails(
+                                      wishlistID: wishLists['wishlists'][index]
+                                          ['idWishlist'],
+                                    )),
+                          )
+                        },
+                      );
+                    },
+                  ),
           )
         ],
       ),

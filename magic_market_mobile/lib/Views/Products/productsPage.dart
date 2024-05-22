@@ -63,37 +63,41 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ),
           Expanded(
-            child: ListView.separated(
-              itemCount: products.length,
-              separatorBuilder: (context, index) =>
-                  const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Container(
-                    width: 50.0,
-                    height: 50.0,
-                    child: Image.network(
-                      products[index]['imatge'] != null
-                          ? URI_SERVER_IMAGES + "/" + products[index]['imatge']
-                          : "$URI_SERVER_IMAGES/default.png",
-                      fit: BoxFit.cover,
-                    ),
+            child: products == []
+                ? const Center(child: CircularProgressIndicator())
+                : ListView.separated(
+                    itemCount: products.length,
+                    separatorBuilder: (context, index) =>
+                        const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: Image.network(
+                            products[index]['imatge'] != null
+                                ? URI_SERVER_IMAGES +
+                                    "/" +
+                                    products[index]['imatge']
+                                : "$URI_SERVER_IMAGES/default.png",
+                            fit: BoxFit.scaleDown,
+                          ),
+                        ),
+                        title: Text(products[index]['nom'] ?? ""),
+                        subtitle: Text(
+                            products[index]['idCategoriaProducte'].toString()),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ProductDetailPage(product: products[index]),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
-                  title: Text(products[index]['nom'] ?? ""),
-                  subtitle:
-                      Text(products[index]['idCategoriaProducte'].toString()),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProductDetailPage(product: products[index]),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
           ),
         ],
       ),

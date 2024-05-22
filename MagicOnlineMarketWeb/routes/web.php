@@ -179,6 +179,7 @@ Route::post('/afegirProducteWishlist', [\App\Http\Controllers\WishlistControler:
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getWishlistUser/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishlistsByUserID'])->name('getWishlistsByUserID');
 Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::class,'createNewWishList'])->name('createNewWishList');
+Route::get('/api/getWishListByWishListID/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishListByWishListID'])->name('getWishListByWishListID');
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);

@@ -108,6 +108,22 @@ class WishlistControler extends Controller
         return response()->json(['wishlists' => $wishlists], 200);
     }
 
+    public function getWishListByWishListID($id) {
+
+        $wishlist = Wishlist::find($id);
+        $whishlistProductes = DB::table('whishlist_producte')
+            ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
+            ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
+            ->select('productes.imatge AS imatgeProducte', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist',
+                'whishlist_producte.idWishlistProducte as idwp','whishlist_producte.idProducte as idProducte'  )
+            ->where('whishlist_producte.idWishlist','=',$wishlist->idWishlist)
+            ->get();
+
+        return response()->json(['wishlist' => $wishlist, 'whishlistProductes' =>  $whishlistProductes], 200);
+
+    }
+
+
     public function createNewWishList(Request $request)
     {
         $wishlist = new Wishlist();
