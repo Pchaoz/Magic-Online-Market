@@ -117,6 +117,7 @@ class WishlistControler extends Controller
 
     public function createNewWishList(Request $request)
     {
+        return response()->json(['message' => $request], 200);
         $wishlist = new Wishlist();
         $wishlist->nom =$request->name;
         $wishlist->idPropietari = $request->idUser();

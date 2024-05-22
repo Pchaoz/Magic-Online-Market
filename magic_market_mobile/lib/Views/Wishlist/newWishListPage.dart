@@ -27,14 +27,17 @@ class _NewWishListPage extends State<NewWishListPage> {
   }
 
   void createNewWishList() async {
-    final response = await http.post(Uri.parse('$API_URI_SERVER/createBaralla'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, dynamic>{
-          'name': wishlistName,
-          'idUser': userID,
-        }));
+    print("NEW WISHLIST THINGS -> name: $wishlistName userID: $userID");
+
+    final response =
+        await http.post(Uri.parse('$API_URI_SERVER/createNewWishList'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+              'name': wishlistName,
+              'idUser': userID,
+            }));
 
     print("STATUSCODE NEW WISHLIST: ${response.statusCode}");
 
