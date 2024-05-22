@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string("titol",100);
             $table->string("subtitol",150)->nullable();
             $table->string("imatge")->nullable();
-            $table->string("contingut")->nullable();
+            $table->string("contingut",2500)->nullable();
             $table->timestamp("dataHoraPublicacio")->default(now());
             $table->foreignId('idCreador')->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

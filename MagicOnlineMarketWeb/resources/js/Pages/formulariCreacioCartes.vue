@@ -20,6 +20,7 @@ const formCarta = useForm({
 });
 
 let showModal = ref(false);
+let showModalImatgeIncorrecta = ref(false);
 
 const obtenirImatge = (event) => {
     const file = event.target.files[0];
@@ -43,6 +44,10 @@ const obtenirImatge = (event) => {
 
 
 const myfunction  =  () => {
+    if(formCarta.imatge==null||formCarta.imatge=="") {
+        abrirModalImatgeIncorrecta();
+        return;
+    }
     formCarta.post('crearCarta');
     cerrarForm()
 }
@@ -80,6 +85,14 @@ const options = ref([
         value:"Mitica"
     }
 ]);
+
+const cerrarModalImatgeIncorrecta=()=>{
+    showModalImatgeIncorrecta.value =false;
+}
+
+const abrirModalImatgeIncorrecta = () => {
+    showModalImatgeIncorrecta.value =true;
+}
 </script>
 
 <template>
@@ -97,7 +110,7 @@ const options = ref([
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="descripcio" value="Descripcio:" />
-                        <VField id="descripcio" name="descripcio" type="text" v-model="formCarta.descripcio" rules="required" maxlength="2000" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="descripcio" name="descripcio" type="text" v-model="formCarta.descripcio" rules="required" maxlength="500" class="mt-1 block w-full" style="color: black;" />
                         <ErrorMessage name="descripcio"  style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
@@ -130,6 +143,18 @@ const options = ref([
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Carta Creada!</p>
+                    </div>
+                </div>
+            </Modal>
+
+            <Modal :show="showModalImatgeIncorrecta" maxWidth="2xl" closeable @close="cerrarModalImatgeIncorrecta" >
+                <div class="modal-content w-100">
+                    <div class="d-flex justify-content-between m-3 align-items-start">
+                        <button @click="cerrarModalImatgeIncorrecta" style="border: none; background: none;">
+                            <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                        </button>
+                        <p>Atributs de la imatge Incorrectes!</p>
+                        <div></div>
                     </div>
                 </div>
             </Modal>
