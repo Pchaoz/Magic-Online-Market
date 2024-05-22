@@ -82,6 +82,7 @@ const cerrarModalNickIncorrecte=()=>{
                             type="text"
                             class="mt-1 block w-full"
                             v-model="form.nick"
+                            maxlength="15"
                             required
                         />
 
@@ -96,6 +97,7 @@ const cerrarModalNickIncorrecte=()=>{
                             type="text"
                             class="mt-1 block w-full"
                             v-model="form.name"
+                            maxlength="20"
                             required
                         />
 
@@ -110,6 +112,7 @@ const cerrarModalNickIncorrecte=()=>{
                             type="text"
                             class="mt-1 block w-full"
                             v-model="form.cognom"
+                            maxlength="20"
                             required
                         />
 

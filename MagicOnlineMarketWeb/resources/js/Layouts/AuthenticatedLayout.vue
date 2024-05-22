@@ -27,7 +27,7 @@ const showingNavigationDropdown = ref(false);
 
                             <div class="space-x-3 sm:-my-px sm:ms-10 sm:flex">
                                 <div class="hidden sm:flex sm:items-center sm:ms-6">
-                                    <div class="ms-3 relative">
+                                    <div class="ms-2 relative">
                                         <Dropdown align="left" width="48">
                                             <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -60,7 +60,7 @@ const showingNavigationDropdown = ref(false);
                                     </div>
                                 </div>
                                 <div class="hidden sm:flex sm:items-center sm:ms-6">
-                                    <div class="ms-3 relative">
+                                    <div class="ms-2 relative">
                                         <Dropdown align="left" width="48">
                                             <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -94,7 +94,7 @@ const showingNavigationDropdown = ref(false);
                                     </div>
                                 </div>
                                 <div class="hidden sm:flex sm:items-center sm:ms-6">
-                                    <div class="ms-3 relative">
+                                    <div class="ms-2 relative">
                                         <Dropdown align="left" width="48">
                                             <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -129,7 +129,7 @@ const showingNavigationDropdown = ref(false);
                                     </div>
                                 </div>
                                 <div class="hidden sm:flex sm:items-center sm:ms-6">
-                                    <div class="ms-3 relative">
+                                    <div class="ms-2 relative">
                                         <Dropdown align="left" width="48">
                                             <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -176,7 +176,7 @@ const showingNavigationDropdown = ref(false);
 
 
                                 <div class="hidden sm:flex sm:items-center sm:ms-6"  v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
-                                    <div class="ms-3 relative">
+                                    <div class="ms-2 relative">
                                         <Dropdown align="left" width="48">
                                             <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -214,9 +214,9 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <div class="hidden sm:flex sm:items-center sm:ms-6 ">
 
-                            <div class="ms-3 relative">
+                            <div class="ms-6 relative">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -252,7 +252,7 @@ const showingNavigationDropdown = ref(false);
                             </div>
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <div class="hidden sm:flex sm:items-center sm:ms-2">
                             <Carret>
                             </Carret>
                         </div>

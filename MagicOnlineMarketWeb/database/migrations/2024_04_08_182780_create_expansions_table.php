@@ -11,7 +11,7 @@ return new class extends Migration
     {
         Schema::create('expansions', function (Blueprint $table) {
             $table->bigIncrements("idExpansio");
-            $table->string("nom",30);
+            $table->string("nom",50);
             $table->timestamp("dataSortida");
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');

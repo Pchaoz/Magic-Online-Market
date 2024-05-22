@@ -92,12 +92,12 @@ const options = ref([
                 <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded pt-1">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="nom" value="Nom:" />
-                        <VField id="nom" name="nom" type="text" v-model="formCarta.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="nom" name="nom" type="text" v-model="formCarta.nom" rules="required" maxlength="50" class="mt-1 block w-full" style="color: black;" />
                         <ErrorMessage name="nom"  style="color: red; font-weight: bold;" :message="formCarta.errors.nom"/>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="descripcio" value="Descripcio:" />
-                        <VField id="descripcio" name="descripcio" type="text" v-model="formCarta.descripcio" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="descripcio" name="descripcio" type="text" v-model="formCarta.descripcio" rules="required" maxlength="2000" class="mt-1 block w-full" style="color: black;" />
                         <ErrorMessage name="descripcio"  style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">

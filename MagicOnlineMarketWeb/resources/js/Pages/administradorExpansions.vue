@@ -182,7 +182,7 @@ const confirmacionCreacio=()=>{
                         <VForm v-slot="{ errors }" @submit="crearExpansio" class="w-100 rounded">
                             <div class="d-flex flex-column align-items-center m-4 p-1">
                                 <InputLabel for="nom" value="Nom:" />
-                                <VField id="nom" name="nom" type="text" v-model="formExpansio.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                                <VField id="nom" name="nom" type="text" v-model="formExpansio.nom" maxlength="50" rules="required" class="mt-1 block w-full" style="color: black;" />
                                 <ErrorMessage name="nom" style="color: red; font-weight: bold;"/>
                             </div>
                             <div class="d-flex flex-column align-items-center m-4 p-1">
@@ -206,7 +206,7 @@ const confirmacionCreacio=()=>{
                         <VForm v-slot="{ errors }" @submit="modificarExpansio" class="w-100 rounded">
                             <div class="d-flex flex-column align-items-center m-4 p-1">
                                 <InputLabel for="nom" value="Nom:" />
-                                <VField id="nom" name="nom" type="text" v-model="formExpansio.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                                <VField id="nom" name="nom" type="text" v-model="formExpansio.nom" maxlength="50" rules="required" class="mt-1 block w-full" style="color: black;" />
                                 <ErrorMessage name="nom" />
                             </div>
                             <div class="d-flex flex-column align-items-center m-4 p-1">
