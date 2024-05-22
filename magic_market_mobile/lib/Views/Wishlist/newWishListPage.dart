@@ -43,6 +43,8 @@ class _NewWishListPage extends State<NewWishListPage> {
 
     if (response.statusCode == 200) {
       //MENSAJE CONGRATS SE HA CREAO 🤞
+
+      print(json.decode(response.body)["message"]);
       showDialog(
         context: context,
         builder: (BuildContext context) {
