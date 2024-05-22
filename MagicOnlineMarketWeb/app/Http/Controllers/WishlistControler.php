@@ -101,7 +101,7 @@ class WishlistControler extends Controller
         $wishlist = Wishlist::find($id);
 
         if (!$wishlist) {
-            return response()->json(['wishlist' => "EL USUARI NO TE WISHLISTS"], 400);
+            return response()->json(['message' => "EL USUARI NO TE WISHLISTS"], 400);
         }
 
         $whishlistProductes = DB::table('whishlist_producte')

@@ -35,6 +35,8 @@ class _WishListPage extends State<WishListsPage> {
         wishLists = json.decode(response.body);
       });
       print(wishLists.toString());
+    } else if (response.statusCode == 400) {
+      print(json.decode(response.body)["message"]);
     } else {
       showDialog(
         // ignore: use_build_context_synchronously
