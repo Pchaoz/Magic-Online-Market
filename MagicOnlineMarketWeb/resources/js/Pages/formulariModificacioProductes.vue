@@ -97,6 +97,7 @@ const confirmacio =()=>{
                             v-model="formProducte.nom"
                             rules="required"
                             class="mt-1 block w-full"
+                            maxlength="50"
                             style="color: black;"/>
                         <ErrorMessage name="nom" style="color: red; font-weight: bold;" />
                     </div>
@@ -109,6 +110,7 @@ const confirmacio =()=>{
                             v-model="formProducte.descripcio"
                             rules="required"
                             class="mt-1 block w-full"
+                            maxlength="500"
                             style="color: black;"
                         />
                         <ErrorMessage name="descripcio" style="color: red; font-weight: bold;" />

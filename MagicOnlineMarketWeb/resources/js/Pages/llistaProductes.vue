@@ -3,26 +3,35 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import Modal from "@/Components/Modal.vue";
-import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
+import { ref, reactive, onMounted } from 'vue';
 
 
-defineProps({
+const props = defineProps({
     productes: {
-        type: Array(String),
+        type: Array,
+        default: () => ([]),
     },
     expansions:{
-        type: Array(String),
+        type: Array,
+        default: () => ([]),
     },
     categoriesProducte:{
-        type: Array(String),
+        type: Array,
+        default: () => ([]),
     },
     wishlists:{
-        type: Array(String),
+        type: Array,
+        default: () => ([]),
     },
 });
+
+let obj = ref(props.wishlists);
+let targetArray = obj._value;
+let firstObjectInArray = targetArray[0];
+
 
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
@@ -31,6 +40,8 @@ let showModalImage = ref(false);
 let showModalOferta=ref(false);
 let showModalWishlist = ref(false);
 let showModalWishlistResult = ref(false);
+let showModalSenseWishlist =ref(false);
+let showModalQuantitatIncorrecta = ref(false);
 
 const formProducte= useForm({
     idProducte:null,
@@ -106,8 +117,14 @@ const cerrarModalOferta = () => {
 }
 
 const crearOferta =()=> {
-    formOferta.get('/crearArticle');
-    recargaPaginaOferta();
+    if(formOferta.quantitatDisponible<=0||formOferta.preuUnitari<=0){
+        cerrarModalOferta();
+        abrirModalQuantitatIncorrecta();
+    }else{
+        formOferta.get('/crearArticle');
+        recargaPaginaOferta();
+    }
+
 }
 
 const recargaPaginaOferta = () => {
@@ -131,18 +148,26 @@ const closeImageModal = () => {
 }
 
 //funcions per agregar productes a la wishlist
+
 const abrirModalAgregarWishlist = (idProducte, nomProducte) => {
-    formWishlist.idProducte=idProducte;
-    formWishlist.nomProducte=nomProducte;
-    showModalWishlist.value=true;
+    if(firstObjectInArray===undefined){
+        AvisoWishlist()
+    }else{
+        formWishlist.idProducte=idProducte;
+        formWishlist.nomProducte=nomProducte;
+        formWishlist.idWishlist= firstObjectInArray.idWishlist;
+        showModalWishlist.value=true;
+    }
 }
 const closeWishlist = () => {
     showModalWishlist.value = false;
     showModalWishlistResult.value = false;
+    showModalSenseWishlist.value = false;
     formWishlist.idWishlist="";
 }
-const closeAvisoWishlist = () => {
-    showModalAvisoWishlist.value = true;
+const AvisoWishlist = () => {
+    showModalSenseWishlist.value = true;
+
 }
 
 const afegirProducteWishlist=  () => {
@@ -158,8 +183,19 @@ const recargaWishlist = () => {
     }, 500);
 }
 
+onMounted(() => {
+    setTimeout(() => {
+        visit(window.location.pathname);
+    }, 500);
+});
 
+const cerrarModalQuantitatIncorrecta=()=>{
+    showModalQuantitatIncorrecta.value =false;
+}
 
+const abrirModalQuantitatIncorrecta = () => {
+    showModalQuantitatIncorrecta.value =true;
+}
 
 </script>
 
@@ -280,7 +316,7 @@ const recargaWishlist = () => {
                             </div  >
                             </div>
                             <div class="d-flex justify-content-center m-3">
-                                <button type="button" class="btn btn-success mr-5" @click="crearOferta">Crear Oferta</button>
+                                <button type="button" class="btn btn-success mr-5" @click="crearOferta">Crear Article</button>
                                 <button type="button" class="btn btn-danger ml-5" @click="cerrarModalOferta">Cancelar</button>
                             </div>
                         </div>
@@ -340,6 +376,28 @@ const recargaWishlist = () => {
                 </div>
             </div>
         </Modal>
+        <Modal :show="showModalSenseWishlist" maxWidth="2xl" closeable @close="closeWishlist" >
+            <div class="modal-content w-100">
+                <button class="p-2" @click="closeWishlist" style="border: none; background: none;">
+                    <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                </button>
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>Primer has de crear una Wishlist!</p>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalQuantitatIncorrecta" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Quantitat Incorrecta!</p>
+                    <div></div>
+                </div>
+            </div>
+        </Modal>
+
         <div class="d-flex justify-content-center m-3 " v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
             <b-button class="btn btn-success rounded-pill" style="width: 200px;" @click="crearProducte">Crear Nou producte</b-button>
         </div>

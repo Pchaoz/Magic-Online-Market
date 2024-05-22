@@ -40,7 +40,7 @@ class NoticiesController extends Controller
         if($request->hasFile('imatge')){
             $imageName = time().'.'.$request->imatge->extension();
             $request->imatge->move(public_path('images/noticies'), $imageName);
-            $noticia->imatge = 'noticies/' . $imageName;
+            $noticia->imatge = '/noticies/' . $imageName;
         }
         $noticia->updated_at = Carbon::now()->format('Y-m-d H:i:s');
         $noticia->idCreador =Auth::id();
@@ -66,7 +66,8 @@ class NoticiesController extends Controller
 
         $noticia = DB::table('noticies')
             ->select('noticies.titol as titol','noticies.subtitol as subtitol',
-                'noticies.contingut as contingut','noticies.imatge as imatge','noticies.idNoticia')
+                'noticies.contingut as contingut','noticies.imatge as imatge','noticies.idNoticia',
+                'noticies.dataHoraPublicacio as dataHora')
             ->where('noticies.idNoticia','=',$request->idNoticia)
             ->first();
 
@@ -81,6 +82,7 @@ class NoticiesController extends Controller
         $noticia->titol = $request->titol;
         $noticia->subtitol = $request->subtitol;
         $noticia->contingut = $request->contingut;
+        $noticia->dataHoraPublicacio =$request->dataHora;
         if($request->hasFile('imatge')){
             $imageName = time().'.'.$request->imatge->extension();
             $request->imatge->move(public_path('images/noticies'), $imageName);

@@ -175,6 +175,7 @@ const confirmacionCreacio=()=>{
                             v-model="formRol.nom"
                             required
                             autofocus
+                            maxlength="30"
                             style="color: black;">
 
                     </div>
@@ -199,6 +200,7 @@ const confirmacionCreacio=()=>{
                             v-model="formRol.nom"
                             required
                             autofocus
+                            maxlength="30"
                             style="color: black;">
                     </div>
                         <div class="d-flex justify-content-center m-3 ">
