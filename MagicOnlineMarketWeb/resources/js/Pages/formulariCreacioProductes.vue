@@ -24,6 +24,7 @@ defineProps({
 
 
 let showModal=ref(false);
+let showModalImatgeIncorrecta = ref(false);
 
 const formProducteInsert= useForm({
         idProducte:"",
@@ -59,6 +60,10 @@ const obtenirImatgeInsert = (event) => {
 
 
 const insertProducte =()=>{
+    if(formProducteInsert.imatge==null||formProducteInsert.imatge=="") {
+        abrirModalImatgeIncorrecta();
+        return;
+    }
     formProducteInsert.post('crearProducte');
     confirmacio();
 }
@@ -81,6 +86,14 @@ const confirmacio =()=>{
 
 }
 
+const cerrarModalImatgeIncorrecta=()=>{
+    showModalImatgeIncorrecta.value =false;
+}
+
+const abrirModalImatgeIncorrecta = () => {
+    showModalImatgeIncorrecta.value =true;
+}
+
 </script>
 
 <template>
@@ -99,6 +112,7 @@ const confirmacio =()=>{
             type="text"
             v-model="formProducteInsert.nom"
             rules="required"
+            maxlength="50"
             class="mt-1 block w-full"
             style="color: black;"/>
         <ErrorMessage name="nom" style="color: red; font-weight: bold;"/>
@@ -111,6 +125,7 @@ const confirmacio =()=>{
             type="text"
             v-model="formProducteInsert.descripcio"
             rules="required"
+            maxlength="500"
             class="mt-1 block w-full"
             style="color: black;"
         />
@@ -178,6 +193,17 @@ const confirmacio =()=>{
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3 ">
                         <p>Producte Creat!</p>
+                    </div>
+                </div>
+            </Modal>
+            <Modal :show="showModalImatgeIncorrecta" maxWidth="2xl" closeable @close="cerrarModalImatgeIncorrecta" >
+                <div class="modal-content w-100">
+                    <div class="d-flex justify-content-between m-3 align-items-start">
+                        <button @click="cerrarModalImatgeIncorrecta" style="border: none; background: none;">
+                            <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                        </button>
+                        <p>Atributs de la imatge Incorrectes!</p>
+                        <div></div>
                     </div>
                 </div>
             </Modal>

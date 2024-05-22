@@ -3,7 +3,6 @@ import {ref} from "vue";
 import 'bootstrap/dist/css/bootstrap.css';
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Modal from '@/Components/Modal.vue';
-import axios from 'axios';
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import { required } from '@vee-validate/rules';
@@ -13,12 +12,16 @@ import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-va
 
 defineRule('required', required);
 
-defineProps({
+const props = defineProps({
     usuaris: {
         type: Array(String),
     },
     rols:{
         type: Array(String),
+    },
+    nicks:{
+        type: Array,
+        default: () => ([]),
     }
 });
 
@@ -26,7 +29,12 @@ let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 let showModalModificacio = ref(false);
 let showModalModificacioConfirmacio = ref(false);
-
+let obj = ref(props.nicks);
+let targetArray = [];
+let showModalNickIncorrecte = ref(false);
+if (obj.value) {
+    targetArray = obj.value.map(user => user.nick);
+}
 
 //funcio per eliminar usuari
 
@@ -61,7 +69,6 @@ const formUsuari= useForm({
     nick: "",
     nom:"",
     cognom:"",
-    email:"",
     idRol:""
 })
 
@@ -70,13 +77,17 @@ const abrirModalModificacio=(user)=>{
     formUsuari.nick=user.nick;
     formUsuari.nom=user.nom;
     formUsuari.cognom=user.cognom;
-    formUsuari.email=user.email;
     formUsuari.idRol=user.idRol;
     formUsuari.idUsuari=user.idUsuari;
     showModalModificacio.value=true;
 }
 
 const modificarUser = () => {
+    if (targetArray.includes(formUsuari.nick)) {
+        showModalModificacio.value=false
+        abrirModalNickIncorrecte();
+        return;
+    }
     formUsuari.post('editarUsuari');
     finModificacio();
 
@@ -92,7 +103,13 @@ const finModificacio=()=>{
 
 }
 
+const abrirModalNickIncorrecte = () => {
+    showModalNickIncorrecte.value =true;
+}
 
+const cerrarModalNickIncorrecte=()=>{
+    showModalNickIncorrecte.value =false;
+}
 
 </script>
 
@@ -167,6 +184,7 @@ const finModificacio=()=>{
                                     class="mt-1 block w-full"
                                     v-model="formUsuari.nick"
                                     rules="required"
+                                    maxlength="15"
                                     style="color: black;"/>
                                 <ErrorMessage name="nick" />
                             </div>
@@ -179,6 +197,7 @@ const finModificacio=()=>{
                                     class="mt-1 block w-full"
                                     v-model="formUsuari.nom"
                                     rules="required"
+                                    maxlength="20"
                                     style="color: black;"
                                 />
                                 <ErrorMessage name="nom" />
@@ -192,22 +211,9 @@ const finModificacio=()=>{
                                     class="mt-1 block w-full"
                                     v-model="formUsuari.cognom"
                                     autocomplete="cognom"
+                                    maxlength="20"
                                     style="color: black;"
                                 />
-                            </div>
-                            <div class="m-2">
-                                <InputLabel for="email" value="Email:" />
-                                <VField
-                                    id="email"
-                                    name="email"
-                                    type="text"
-                                    class="mt-1 block w-full"
-                                    v-model="formUsuari.email"
-                                    rules="required"
-                                    autocomplete="email"
-                                    style="color: black;"
-                                />
-                                <ErrorMessage name="email" />
                             </div>
                             <div class="m-2 text-center font-weight-bold">
                                     <div style="color: black">Rol Usuari/a</div>
@@ -237,7 +243,17 @@ const finModificacio=()=>{
                 </div>
             </Modal>
         </div>
-
+        <Modal :show="showModalNickIncorrecte" maxWidth="2xl" closeable @close="cerrarModalNickIncorrecte" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalNickIncorrecte" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Aquest nick ja existeix!</p>
+                    <div></div>
+                </div>
+            </div>
+        </Modal>
 
     </AuthenticatedLayout>
 </template>

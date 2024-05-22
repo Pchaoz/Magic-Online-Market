@@ -5,6 +5,15 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import {ref} from "vue";
+import Modal from "@/Components/Modal.vue";
+
+const props = defineProps({
+    nicks:{
+        type: Array,
+        default: () => ([]),
+    }
+});
 
 const form = useForm({
     name: '',
@@ -15,11 +24,32 @@ const form = useForm({
     password_confirmation: '',
 });
 
+let obj = ref(props.nicks);
+let targetArray = [];
+let showModalNickIncorrecte = ref(false);
+
+if (obj.value) {
+    targetArray = obj.value.map(user => user.nick);
+}
+
 const submit = () => {
+    if (targetArray.includes(form.nick)) {
+        abrirModalNickIncorrecte();
+        return;
+    }
+
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
+
+const abrirModalNickIncorrecte = () => {
+    showModalNickIncorrecte.value =true;
+}
+
+const cerrarModalNickIncorrecte=()=>{
+    showModalNickIncorrecte.value =false;
+}
 </script>
 
 <template>
@@ -37,6 +67,7 @@ const submit = () => {
                     v-model="form.nick"
                     required
                     autofocus
+                    maxlength="15"
                 />
 
                 <InputError class="mt-2" :message="form.errors.nick" />
@@ -54,6 +85,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
+                    maxlength="20"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -69,6 +101,7 @@ const submit = () => {
                     v-model="form.cognom"
                     required
                     autofocus
+                    maxlength="20"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
@@ -83,6 +116,7 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.email"
                     required
+                    maxlength="40"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -131,5 +165,16 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+        <Modal :show="showModalNickIncorrecte" maxWidth="2xl" closeable @close="cerrarModalNickIncorrecte" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalNickIncorrecte" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Aquest nick ja existeix!</p>
+                    <div></div>
+                </div>
+            </div>
+        </Modal>
     </GuestLayout>
 </template>

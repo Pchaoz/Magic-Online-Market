@@ -25,7 +25,7 @@ let showModalOferta=ref(false);
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 let showModalQuantitat = ref(false);
-
+let showModalQuantitatIncorrecta = ref(false);
 
 
 const formOferta= useForm({
@@ -55,9 +55,15 @@ const cerrarModalOferta = () => {
     showModalOferta.value=false;
 }
 
-const ModOferta =()=> {
-    formOferta.get('/modificarArticle');
-    recargaPaginaOferta();
+const ModArticle =()=> {
+    if(formOferta.quantitatDisponible<=0|| formOferta.preuUnitari<=0){
+        cerrarModalOferta()
+        abrirModalQuantitatIncorrecta();
+    }else{
+        formOferta.get('/modificarArticle');
+        recargaPaginaOferta();
+    }
+
 }
 
 const recargaPaginaOferta = () => {
@@ -105,12 +111,17 @@ const cerrarModalQuantitat = () => {
 
 //agregar al carrito
 const agregarCarrito = () => {
+    if(articleAfegit.quantitatComprada <= 0 || articleAfegit.quantitatProducte < articleAfegit.quantitatComprada ){
+        showModalQuantitat.value=false;
+        abrirModalQuantitatIncorrecta();
+    }else{
+        articleAfegit.post('/agregarArticleComanda');
+        cerrarModalQuantitat();
+        setTimeout(() => {
+            useForm.visit(window.location.pathname);
+        }, 500);
+    }
 
-    articleAfegit.post('/agregarArticleComanda');
-    cerrarModalQuantitat();
-    setTimeout(() => {
-        useForm.visit(window.location.pathname);
-    }, 500);
 }
 const abrirModalQuantitat = (article) => {
     articleAfegit.idArticle=article.idArticle;
@@ -118,10 +129,18 @@ const abrirModalQuantitat = (article) => {
     articleAfegit.quantitatProducte=article.quantitat;
     articleAfegit.nomArticle=article.nom;
     articleAfegit.preuArticle=article.preu;
+    articleAfegit.quantitatComprada=1;
     showModalQuantitat.value=true;
 }
 
+const cerrarModalQuantitatIncorrecta=()=>{
+    showModalQuantitatIncorrecta.value =false;
+}
 
+const abrirModalQuantitatIncorrecta = () => {
+    showModalQuantitatIncorrecta.value =true;
+
+}
 </script>
 
 <template>
@@ -214,7 +233,7 @@ const abrirModalQuantitat = (article) => {
                                 </div  >
                             </div>
                             <div class="d-flex justify-content-center m-3 p-3">
-                                <button type="button" class="btn btn-success mr-5" @click="ModOferta">Modificar Oferta</button>
+                                <button type="button" class="btn btn-success mr-5" @click="ModArticle">Modificar Oferta</button>
                                 <button type="button" class="btn btn-danger ml-5" @click="cerrarModalOferta">Cancelar</button>
                             </div>
                         </div>
@@ -274,9 +293,12 @@ const abrirModalQuantitat = (article) => {
         </Modal>
         <Modal :show="showModalQuantitatIncorrecta" maxWidth="2xl" closeable @close="cerrarModalQuantitatIncorrecta" >
             <div class="modal-content w-100">
-
-                <div class="d-flex justify-content-center m-3 ">
-                    <p>Quantitat incorrecta</p>
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalQuantitatIncorrecta" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Quantitat Incorrecta!</p>
+                    <div></div>
                 </div>
             </div>
         </Modal>

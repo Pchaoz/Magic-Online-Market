@@ -25,7 +25,8 @@ const formNoticia = useForm({
     imatge:props.noticia.imatge,
     contingut:props.noticia.contingut,
     imatgeMiniatura:'/images/'+props.noticia.imatge,
-    idNoticia:props.noticia.idNoticia
+    idNoticia:props.noticia.idNoticia,
+    dataHora:props.noticia.dataHora
 });
 
 
@@ -77,23 +78,27 @@ const confirmarCambios = () => {
                 <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="titol" value="Titol:" />
-                        <VField id="titol" name="titol" type="text" v-model="formNoticia.titol" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="titol" name="titol" type="text" v-model="formNoticia.titol" rules="required" maxlength="100" class="mt-1 block w-full" style="color: black;" />
                         <ErrorMessage name="titol"  style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="subtitol" value="Subtitol:" />
-                        <VField id="subtitol" name="subtitol" type="text" v-model="formNoticia.subtitol" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="subtitol" name="subtitol" type="text" v-model="formNoticia.subtitol" class="mt-1 block w-full" maxlength="150" style="color: black;" />
                         <ErrorMessage name="subtitol" style="color: red; font-weight: bold;"/>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="contingut" value="Contingut:" />
-                        <textarea id="contingut" name="contingut" v-model="formNoticia.contingut" class="mt-1 block w-full" style="color: black;"></textarea>
+                        <textarea id="contingut" name="contingut" v-model="formNoticia.contingut" class="mt-1 block w-full" maxlength="2500" style="color: black;"></textarea>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:" />
                         <div class="d-flex flex-column align-items-center ">
                             <VField id="imatge" name="imatge" type="file" class="mt-1 block w-full"  accept="image/png, image/jpg" style="color: black" @change="obtenirImatge" />
                         </div>
+                    </div>
+                    <div class="d-flex flex-column align-items-center m-4 p-1">
+                        <InputLabel for="dataHora" value="Día Hora publicació:" />
+                        <VField id="dataHora" name="dataHora" type="datetime-local" v-model="formNoticia.dataHora" class="mt-1 block w-50 text-center" style="color: black; margin: auto;" />
                     </div>
 
                     <div class="d-flex flex-column align-items-center m-4 p-1">

@@ -11,10 +11,10 @@ return new class extends Migration
 
         Schema::create('usuaris', function (Blueprint $table) {
             $table->bigIncrements("idUsuari");
-            $table->string('nick')->unique();
-            $table->string('name');
-            $table->string('cognom')->nullable();
-            $table->string('email')->unique();
+            $table->string('nick',15)->unique();
+            $table->string('name',20);
+            $table->string('cognom',20)->nullable();
+            $table->string('email',40)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->double('saldo')->default(0);
