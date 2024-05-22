@@ -18,6 +18,7 @@ class ProfileController extends Controller
     {
         $usuaris= DB::table('usuaris')
             ->select('usuaris.nick AS nick')
+            ->where('usuaris.idUsuari','<>',Auth::id())
             ->get();
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
