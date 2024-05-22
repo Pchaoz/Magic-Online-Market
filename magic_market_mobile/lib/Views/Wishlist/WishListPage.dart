@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../../Util/LateralMenu.dart';
 import '../../Util/globals.dart';
 import '../homePage.dart';
+import 'newWishListPage.dart';
 
 void main() {
   runApp(WishListsPage());
@@ -96,6 +97,17 @@ class _WishListPage extends State<WishListsPage> {
                 itemCount: wishLists.length, itemBuilder: (context, index) {}),
           )
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          //REDIRECT FORM OFERTA
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => NewWishListPage()),
+          );
+        },
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
+        child: const Icon(Icons.add),
       ),
       drawer: LateralMenu(
         onTapLogout: () => logOut,

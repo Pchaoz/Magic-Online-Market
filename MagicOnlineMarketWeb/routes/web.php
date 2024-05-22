@@ -178,7 +178,7 @@ Route::delete('/eliminarProducteWishlist', [\App\Http\Controllers\WishlistContro
 Route::post('/afegirProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'afegirProducteWishlist'])->name('afegirProducteWishlist');
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getWishlistUser/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishlistsByUserID'])->name('getWishlistsByUserID');
-
+Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::class,'createNewWishList'])->name('createNewWishList');
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);

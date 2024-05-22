@@ -1,55 +1,82 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:magic_market_mobile/Views/Baralles/barallesUserPage.dart';
-import 'package:magic_market_mobile/Views/homePage.dart';
+import 'package:magic_market_mobile/Views/Wishlist/WishListPage.dart';
 
 import '../../Util/globals.dart';
 import '../homePage.dart';
 
-class NewBarallaPage extends StatefulWidget {
-  @override
-  _NewBarallaPage createState() => _NewBarallaPage();
+void main() {
+  runApp(NewWishListPage());
 }
 
-class _NewBarallaPage extends State<NewBarallaPage> {
+class NewWishListPage extends StatefulWidget {
+  @override
+  _NewWishListPage createState() => _NewWishListPage();
+}
+
+class _NewWishListPage extends State<NewWishListPage> {
   //VARIABLES
   final _formKey = GlobalKey<FormState>();
-  String deckName = "";
-  bool isPublic = false;
+  var wishlistName = "";
 
-  //FUNCTIONS
-  void createBaralla() async {
-    print("SENDED THINGS CHECK FOR NEW DECKS: $deckName, $userID, $isPublic");
+  //FUNCIONES
+  @override
+  void initState() {
+    super.initState();
+  }
 
+  void createNewWishList() async {
     final response = await http.post(Uri.parse('$API_URI_SERVER/createBaralla'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, dynamic>{
-          'deckName': deckName,
+          'name': wishlistName,
           'idUser': userID,
-          'isPublic': isPublic ? 0 : 1
         }));
 
-    print("STATUSCODE NEW DECK: ${response.statusCode}");
-
-    //print(jsonDecode(response.body).toString());
+    print("STATUSCODE NEW WISHLIST: ${response.statusCode}");
 
     if (response.statusCode == 200) {
+      //MENSAJE CONGRATS SE HA CREAO 🤞
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Exit'),
-            content: const Text('Baralla creada correctament.'),
+            title: const Text('Exit!'),
+            content: const Text('WishList creada amb exit!'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Tancar'),
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => BarallesUser()),
+                    MaterialPageRoute(builder: (context) => WishListsPage()),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else if (response.statusCode == 400) {
+      //MENSAJE ERROR CONTROLADO POR MI HEHE
+      print(json.decode(response.body)["message"]);
+      var error = json.decode(response.body)["message"];
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text('Error creant la wishlist. Error: $error'),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
                   );
                 },
               ),
@@ -58,13 +85,14 @@ class _NewBarallaPage extends State<NewBarallaPage> {
         },
       );
     } else {
+      //MENSAJE CAGADA ALGO HAY MAL
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
             content: Text(
-                'Error creant la baralla. Codig de error: ${response.statusCode}'),
+                'Error creant la wishlist. Codig de error: ${response.statusCode}'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Tancar'),
@@ -110,7 +138,7 @@ class _NewBarallaPage extends State<NewBarallaPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextFormField(
                   decoration:
-                      const InputDecoration(labelText: 'Nom de la baralla'),
+                      const InputDecoration(labelText: 'Nom de la Wishlist'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'El campo no puede estar vacío';
@@ -119,28 +147,22 @@ class _NewBarallaPage extends State<NewBarallaPage> {
                   },
                   onSaved: (value) {
                     if (value != null) {
-                      deckName = value;
+                      wishlistName = value;
                     }
                   },
                 ),
               ),
-              CheckboxListTile(
-                title: const Text('¿Es public?'),
-                value: isPublic,
-                onChanged: (bool? value) {
-                  setState(() {
-                    isPublic = value ?? false;
-                  });
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    createBaralla();
-                  }
-                },
-                child: const Text('Crear'),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      createNewWishList();
+                    }
+                  },
+                  child: const Text('Crear'),
+                ),
               )
             ],
           ),

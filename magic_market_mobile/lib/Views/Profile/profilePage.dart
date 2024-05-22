@@ -5,7 +5,7 @@ import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../../Util/globals.dart';
 import '../Baralles/barallesUserPage.dart';
-import '../Wishlist/WishListPage.dart';
+import '../Wishlist/wishListPage.dart';
 import 'loginPage.dart';
 import 'profileEditPage.dart';
 
