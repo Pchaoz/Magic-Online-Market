@@ -96,5 +96,9 @@ class WishlistControler extends Controller
 
         }
     }
+    
+    public function getWishlistsByUserID($id) {
+        
+    }
 
 }
