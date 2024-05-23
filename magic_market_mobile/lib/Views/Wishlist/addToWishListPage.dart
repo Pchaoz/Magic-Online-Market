@@ -79,6 +79,10 @@ class _AddToWishList extends State<AddToWishListPage> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Producto añadido a la wishlist'),
         ));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
       } else {
         showDialog(
           context: context,

@@ -110,7 +110,7 @@ class WishlistControler extends Controller
 
     public function getWishListByWishListID($id) {
 
-        return response()->json(['message' => $id], 400);
+        //return response()->json(['message' => $id], 400);
 
         $wishlist = Wishlist::find($id);
 
