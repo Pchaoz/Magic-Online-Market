@@ -116,7 +116,7 @@ class WishlistControler extends Controller
         $whishlistProductes = DB::table('whishlist_producte')
             ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
             ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
-            ->select('productes.imatge AS imatgeProducte', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist', 'productes.descripcio AS descripcio',
+            ->select('productes.imatge AS imatge', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist', 'productes.descripcio AS descripcio',
                 'whishlist_producte.idWishlistProducte as idwp','whishlist_producte.idProducte as idProducte'  )
             ->where('whishlist_producte.idWishlist','=',$wishlist->idWishlist)
             ->get();
