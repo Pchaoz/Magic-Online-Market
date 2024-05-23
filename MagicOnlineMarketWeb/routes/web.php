@@ -182,7 +182,12 @@ Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::
 Route::get('/api/getWishListByWishListID/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishListByWishListID'])->name('getWishListByWishListID');
 
 //funcions tipus enviaments
-Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments');
+Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/crearTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'crearTipusEnviament'])->name('crearTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::delete('/eliminarTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'eliminarTipusEnviament'])->name('eliminarTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/modTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'modTipusEnviament'])->name('modTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+
+
 
 
 

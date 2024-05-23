@@ -56,6 +56,10 @@ class User extends Authenticatable
         return $this->hasMany(Noticies::class);
     }
 
+    public function enviaments(){
+        return $this->hasMany(Direccions::class);
+    }
+
     public function baralles()
     {
         return $this->hasMany(Baralles::class);
@@ -64,12 +68,6 @@ class User extends Authenticatable
     public function creartornejos()
     {
         return $this->hasMany(Tornejos::class);
-    }
-
-    public function direccions()
-    {
-        return $this->belongsToMany(Direccions::class, 'usuari_direccions', 'idUsuari','idDireccio')->using(UsuariDireccio::class)->withTimestamps();
-
     }
 
     public function comandesComprador()
@@ -333,17 +331,6 @@ class User extends Authenticatable
     public function actualitzarArticle()
     {
         return $this->hasMany(Articles::class);
-    }
-
-    public function crearUsuariDireccio()
-    {
-        return $this->hasMany(UsuariDireccio::class);
-    }
-
-    public function actualitzarUsuariDireccio()
-    {
-        return $this->hasMany(UsuariDireccio::class);
-
     }
 
     public function crearUsuariResultat()
