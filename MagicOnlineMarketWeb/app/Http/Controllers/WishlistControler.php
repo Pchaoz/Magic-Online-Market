@@ -110,7 +110,10 @@ class WishlistControler extends Controller
 
     public function getWishListByWishListID($id) {
 
+        return response()->json(['message' => $id], 400);
+
         $wishlist = Wishlist::find($id);
+
         $whishlistProductes = DB::table('whishlist_producte')
             ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
             ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
@@ -122,8 +125,6 @@ class WishlistControler extends Controller
         return response()->json(['wishlist' => $wishlist, 'whishlistProductes' =>  $whishlistProductes], 200);
 
     }
-
-
     public function createNewWishList(Request $request)
     {
         $wishlist = new Wishlist();
@@ -132,6 +133,25 @@ class WishlistControler extends Controller
         $wishlist->save();
 
         return response()->json(['message' => "Wishlist creada correctament"], 200);
+    }
+
+    public function addProductToWishlist(Request $request)
+    {
+        $wishlist = Wishlist::find($request->idWishlist);
+
+        $existingProduct = WishlistProducte::where('idProducte', $request->idProducte)
+            ->where('idWishlist', $request->idWishlist)
+            ->first();
+
+        if (!$existingProduct) {
+            $wishlistProducte = new WishlistProducte();
+            $wishlistProducte->idProducte = $request->idProducte;
+            $wishlistProducte->idWishlist = $request->idWishlist;
+            $wishlistProducte->save();
+
+            return response()->json(['message' => "Producte agregat a wishlist" . $wishlist->nom . " correctament"], 200);
+        }
+        return response()->json(['message' => "Producte no agregat. Ya existeix en aquesta wishlist.."], 400);
     }
 
 }

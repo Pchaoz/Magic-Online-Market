@@ -5,6 +5,7 @@ import 'dart:convert';
 import '../../Util/globals.dart';
 import '../../Util/lateralMenu.dart';
 import '../Profile/loginPage.dart';
+import '../Wishlist/addToWishListPage.dart';
 import '../homePage.dart';
 import 'productsDetailsPage.dart';
 
@@ -63,38 +64,44 @@ class _ProductsPageState extends State<ProductsPage> {
             ),
           ),
           Expanded(
-            child: products == []
+            child: products.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : ListView.separated(
                     itemCount: products.length,
                     separatorBuilder: (context, index) =>
                         const Divider(color: Color.fromRGBO(11, 214, 153, 0.5)),
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: SizedBox(
-                          width: 50.0,
-                          height: 50.0,
-                          child: Image.network(
-                            products[index]['imatge'] != null
-                                ? URI_SERVER_IMAGES +
-                                    "/" +
-                                    products[index]['imatge']
-                                : "$URI_SERVER_IMAGES/default.png",
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                        title: Text(products[index]['nom'] ?? ""),
-                        subtitle: Text(
-                            products[index]['idCategoriaProducte'].toString()),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductDetailPage(product: products[index]),
-                            ),
-                          );
+                      return GestureDetector(
+                        onLongPressStart: (details) {
+                          _showPopupMenu(context, details.globalPosition,
+                              products[index]['idProducte']);
                         },
+                        child: ListTile(
+                          leading: SizedBox(
+                            width: 50.0,
+                            height: 50.0,
+                            child: Image.network(
+                              products[index]['imatge'] != null
+                                  ? URI_SERVER_IMAGES +
+                                      "/" +
+                                      products[index]['imatge']
+                                  : "$URI_SERVER_IMAGES/default.png",
+                              fit: BoxFit.scaleDown,
+                            ),
+                          ),
+                          title: Text(products[index]['nom'] ?? ""),
+                          subtitle: Text(products[index]['idCategoriaProducte']
+                              .toString()),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductDetailPage(product: products[index]),
+                              ),
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
@@ -102,12 +109,12 @@ class _ProductsPageState extends State<ProductsPage> {
         ],
       ),
       drawer: LateralMenu(
-        onTapLogout: () => _LogOut(context),
+        onTapLogout: () => _logOut(context),
       ),
     );
   }
 
-  void _LogOut(context) {
+  void _logOut(context) {
     try {
       logOut();
       clearPrefs();
@@ -136,5 +143,47 @@ class _ProductsPageState extends State<ProductsPage> {
         },
       );
     }
+  }
+
+  void _showPopupMenu(BuildContext context, Offset position, int productId) {
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy,
+        overlay.size.width - position.dx,
+        overlay.size.height - position.dy,
+      ),
+      items: [
+        const PopupMenuItem<String>(
+          value: 'wishlist',
+          child: Row(
+            children: [
+              Icon(Icons.favorite_border, color: Colors.black),
+              SizedBox(width: 8),
+              Text('Añadir a wishlist', style: TextStyle(color: Colors.black)),
+            ],
+          ),
+        ),
+      ],
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ).then((value) {
+      if (value == 'wishlist') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AddToWishListPage(
+              productID: productId,
+            ),
+          ),
+        );
+      }
+    });
   }
 }
