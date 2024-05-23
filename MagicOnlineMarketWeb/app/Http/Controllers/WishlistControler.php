@@ -109,15 +109,14 @@ class WishlistControler extends Controller
     }
 
     public function getWishListByWishListID($id) {
-
-        //return response()->json(['message' => $id], 400);
+        //return response()->json(['message' => $id], 400); //FOR TESTING THINGS
 
         $wishlist = Wishlist::find($id);
 
         $whishlistProductes = DB::table('whishlist_producte')
             ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
             ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
-            ->select('productes.imatge AS imatgeProducte', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist',
+            ->select('productes.imatge AS imatgeProducte', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist', 'productes.descripcio AS descripcio',
                 'whishlist_producte.idWishlistProducte as idwp','whishlist_producte.idProducte as idProducte'  )
             ->where('whishlist_producte.idWishlist','=',$wishlist->idWishlist)
             ->get();
