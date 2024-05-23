@@ -153,4 +153,10 @@ class WishlistControler extends Controller
         return response()->json(['message' => "Producte no agregat. Ya existeix en aquesta wishlist.."], 400);
     }
 
+    public function removeFromWishlist(Request $request)
+    {
+        $wishlistProducte = WishlistProducte::find($request->idWishListProducte);
+        $wishlistProducte->delete();
+    }
+
 }

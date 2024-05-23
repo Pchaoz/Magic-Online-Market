@@ -29,6 +29,39 @@ class _WishListDetails extends State<WishListDetails> {
     fetchWishList();
   }
 
+  void _removeFromWishlist(int productId) async {
+    final response = await http.delete(
+      Uri.parse('$API_URI_SERVER/addProductToWishlist'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'idWishListProducte': productId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        wishlistProducts
+            .removeWhere((product) => product['idProducte'] == productId);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Producto eliminado de la wishlist'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } else {
+      print('Error al eliminar de wishlist: ${response.statusCode}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al eliminar de wishlist'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   void fetchWishList() async {
     final response = await http
         .get(Uri.parse('$API_URI_SERVER/getWishListByWishListID/$wl_id'));
@@ -67,6 +100,42 @@ class _WishListDetails extends State<WishListDetails> {
     }
   }
 
+  void _showPopupMenu(BuildContext context, Offset position, int productId) {
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy,
+        overlay.size.width - position.dx,
+        overlay.size.height - position.dy,
+      ),
+      items: [
+        const PopupMenuItem<String>(
+          value: 'remove_from_wishlist',
+          child: Row(
+            children: [
+              Icon(Icons.delete, color: Colors.black),
+              SizedBox(width: 8),
+              Text('Eliminar de wishlist',
+                  style: TextStyle(color: Colors.black)),
+            ],
+          ),
+        ),
+      ],
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ).then((value) {
+      if (value == 'remove_from_wishlist') {
+        _removeFromWishlist(productId);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,10 +165,10 @@ class _WishListDetails extends State<WishListDetails> {
                     width: 50.0,
                     height: 50.0,
                     child: Image.network(
-                      product['imatgeProducte'] != null
-                          ? '$URI_SERVER_IMAGES/${product['imatgeProducte']}'
+                      product['imatge'] != null
+                          ? '$URI_SERVER_IMAGES/${product['imatge']}'
                           : '$URI_SERVER_IMAGES/default.png',
-                      fit: BoxFit.cover,
+                      fit: BoxFit.scaleDown,
                     ),
                   ),
                   title: Text(product['nomProducte'] ?? ""),
@@ -112,6 +181,9 @@ class _WishListDetails extends State<WishListDetails> {
                             ProductDetailPage(product: wishlistProducts[index]),
                       ),
                     );
+                  },
+                  onLongPress: () {
+                    _showPopupMenu(context, Offset.zero, product['idwp']);
                   },
                 );
               },
