@@ -244,6 +244,7 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>
+                                        <DropdownLink :href="route('ListUserdirections')"> Direccions </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Desconectar
                                         </DropdownLink>

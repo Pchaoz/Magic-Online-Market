@@ -187,6 +187,12 @@ Route::post('/crearTipusEnviament', [\App\Http\Controllers\TipusEnviamentsContro
 Route::delete('/eliminarTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'eliminarTipusEnviament'])->name('eliminarTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/modTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'modTipusEnviament'])->name('modTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 
+//funcions direccions
+Route::get('/ListUserdirections', [\App\Http\Controllers\DireccionsController::class,'ListUserdirections'])->name('ListUserdirections');
+Route::post('/crearDireccio', [\App\Http\Controllers\DireccionsController::class,'crearDireccio'])->name('crearDireccio');
+Route::delete('/eliminarDireccio', [\App\Http\Controllers\DireccionsController::class,'eliminarDireccio'])->name('eliminarDireccio');
+Route::post('/modDireccio', [\App\Http\Controllers\DireccionsController::class,'modDireccio'])->name('modDireccio');
+
 
 
 
