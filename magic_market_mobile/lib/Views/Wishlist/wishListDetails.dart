@@ -31,7 +31,7 @@ class _WishListDetails extends State<WishListDetails> {
 
   void _removeFromWishlist(int productId) async {
     final response = await http.delete(
-      Uri.parse('$API_URI_SERVER/addProductToWishlist'),
+      Uri.parse('$API_URI_SERVER/removeFromWishlist'),
       headers: {
         'Content-Type': 'application/json',
       },

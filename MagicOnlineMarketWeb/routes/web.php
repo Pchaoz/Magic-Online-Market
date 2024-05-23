@@ -181,7 +181,7 @@ Route::get('/api/getWishlistUser/{id}', [\App\Http\Controllers\WishlistControler
 Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::class,'createNewWishList'])->name('createNewWishList');
 Route::get('/api/getWishListByWishListID/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishListByWishListID'])->name('getWishListByWishListID');
 Route::post('/api/addProductToWishlist', [\App\Http\Controllers\WishlistControler::class,'addProductToWishlist'])->name('addProductToWishlist');
-Route::post('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControler::class,'removeFromWishlist'])->name('removeFromWishlist');
+Route::delete('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControler::class,'removeFromWishlist'])->name('removeFromWishlist');
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
