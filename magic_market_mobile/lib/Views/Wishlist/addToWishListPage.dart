@@ -67,7 +67,7 @@ class _AddToWishList extends State<AddToWishListPage> {
       final response = await http.post(
         Uri.parse('$API_URI_SERVER/addProductToWishlist'),
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/js4on',
         },
         body: json.encode({
           'idWishlist': selectedWishlistID,
@@ -77,12 +77,8 @@ class _AddToWishList extends State<AddToWishListPage> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Producto añadido a la wishlist'),
+          content: Text('Producte afegit a la wishlist'),
         ));
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
       } else {
         showDialog(
           context: context,
@@ -155,7 +151,7 @@ class _AddToWishList extends State<AddToWishListPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: addToWishlist,
-              child: const Text('Añadir a la wishlist'),
+              child: const Text('Afegir a la wishlist'),
             ),
           ],
         ),

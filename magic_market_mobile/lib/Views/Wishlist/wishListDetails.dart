@@ -29,21 +29,21 @@ class _WishListDetails extends State<WishListDetails> {
     fetchWishList();
   }
 
-  void _removeFromWishlist(int productId) async {
+  void _removeFromWishlist(int wl_pID) async {
     final response = await http.delete(
       Uri.parse('$API_URI_SERVER/removeFromWishlist'),
       headers: {
         'Content-Type': 'application/json',
       },
       body: json.encode({
-        'idWishListProducte': productId,
+        'idWishListProducte': wl_pID,
       }),
     );
 
     if (response.statusCode == 200) {
       setState(() {
         wishlistProducts
-            .removeWhere((product) => product['idProducte'] == productId);
+            .removeWhere((product) => product['idProducte'] == wl_pID);
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -51,6 +51,7 @@ class _WishListDetails extends State<WishListDetails> {
           duration: Duration(seconds: 2),
         ),
       );
+      fetchWishList();
     } else {
       print('Error al eliminar de wishlist: ${response.statusCode}');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -100,7 +101,7 @@ class _WishListDetails extends State<WishListDetails> {
     }
   }
 
-  void _showPopupMenu(BuildContext context, Offset position, int productId) {
+  void _showPopupMenu(BuildContext context, Offset position, int wlPid) {
     final RenderBox overlay =
         Overlay.of(context).context.findRenderObject() as RenderBox;
 
@@ -131,7 +132,7 @@ class _WishListDetails extends State<WishListDetails> {
       ),
     ).then((value) {
       if (value == 'remove_from_wishlist') {
-        _removeFromWishlist(productId);
+        _removeFromWishlist(wlPid);
       }
     });
   }
