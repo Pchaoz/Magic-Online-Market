@@ -34,7 +34,7 @@ class _NewBarallaPage extends State<NewBarallaPage> {
 
     print("STATUSCODE NEW DECK: ${response.statusCode}");
 
-    print(jsonDecode(response.body).toString());
+    //print(jsonDecode(response.body).toString());
 
     if (response.statusCode == 200) {
       showDialog(
@@ -140,7 +140,7 @@ class _NewBarallaPage extends State<NewBarallaPage> {
                     createBaralla();
                   }
                 },
-                child: Text('Crear'),
+                child: const Text('Crear'),
               )
             ],
           ),

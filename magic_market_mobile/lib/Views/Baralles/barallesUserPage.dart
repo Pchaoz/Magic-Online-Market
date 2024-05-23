@@ -100,7 +100,6 @@ class _BarallesUser extends State<BarallesUser> {
                   title: Text(baralla['nomBaralla']),
                   subtitle: Text("Creado por: " + baralla['nickCreador']),
                   onTap: () {
-                    // VER INFORMACIÓN DE LA BARAJA EN DETALLE
                     Navigator.push(
                       context,
                       MaterialPageRoute(

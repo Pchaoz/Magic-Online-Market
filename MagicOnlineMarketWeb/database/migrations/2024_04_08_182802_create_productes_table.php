@@ -13,8 +13,8 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('productes', function (Blueprint $table) {
             $table->bigIncrements("idProducte");
-            $table->string("nom");
-            $table->string("descripcio")->nullable();
+            $table->string("nom",50);
+            $table->string("descripcio",500)->nullable();
             $table->string("imatge")->nullable();
             $table->foreignId("idCategoriaProducte")->nullable()->constrained('categoria_productes')->references('idCategoriaProductes');
             $table->foreignId("idExpansio")->nullable()->constrained('expansions')->references('idExpansio');

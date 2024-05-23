@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('cartes', function (Blueprint $table) {
             $table->bigIncrements("idCarta");
-            $table->string("nom");
-            $table->string("descripcio",2000);
+            $table->string("nom",50);
+            $table->string("descripcio",500);
             $table->string("imatge")->nullable();
             $table->enum('raresa',["Comun","Infrecuente","Rara","Mitica"])->default('Comun');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

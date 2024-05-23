@@ -97,6 +97,7 @@ class _HomePageContentState extends State<HomePageContent> {
         news = json.decode(response.body);
         for (var item in news) {
           images.add(URI_SERVER_IMAGES + item['imatge']);
+          print(URI_SERVER_IMAGES + item['imatge']);
         }
         //print(images);
       });

@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('baralles', function (Blueprint $table) {
             $table->bigIncrements("idBaralla");
-            $table->string("nom",40);
+            $table->string("nom",50);
             $table->boolean("isPublic")->default(false);
             $table->foreignId('idCreador')->constrained('usuaris')->references('idUsuari');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');

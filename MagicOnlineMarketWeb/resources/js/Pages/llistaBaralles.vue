@@ -181,7 +181,7 @@ const finModificacio=()=>{
                 <VForm v-slot="{ errors }"  class="w-100 rounded pt-1">
                 <div class="d-flex justify-content-center m-3 ">
                     <InputLabel for="nom" value="Nom Baralla" class="m-2"  style="font-size: 16px;"/>
-                    <VField id="nom" name="nom" type="text" v-model="form.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                    <VField id="nom" name="nom" type="text" v-model="form.nom" maxlength="50" rules="required" class="mt-1 block w-full" style="color: black;" />
                     <ErrorMessage name="nom"  style="color: red; font-weight: bold;" />
 
                 </div>
@@ -217,7 +217,7 @@ const finModificacio=()=>{
                 <VForm v-slot="{ errors }"  class="w-100 rounded pt-1">
                     <div class="d-flex justify-content-center m-3 ">
                         <InputLabel for="nom" value="Nom Baralla" class="m-2"  style="font-size: 16px;"/>
-                        <VField id="nom" name="nom" type="text" v-model="form.nom" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="nom" name="nom" type="text" v-model="form.nom" maxlength="50" rules="required" class="mt-1 block w-full" style="color: black;" />
                         <ErrorMessage name="nom"  style="color: red; font-weight: bold;" />
 
                     </div>

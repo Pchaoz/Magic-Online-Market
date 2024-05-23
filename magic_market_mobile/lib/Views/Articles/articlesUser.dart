@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Util/globals.dart';
 import '../../Util/globals.dart';
+import 'editArticlePage.dart';
 
 void main() {
   runApp(ArticlesUser());
@@ -99,15 +100,25 @@ class _ArticlesUser extends State<ArticlesUser> {
                       (p) => p['idProducte'] == article['idProducte'],
                       orElse: () => null);
                   return ListTile(
-                      leading: product != null
-                          ? Image.network(
-                              URI_SERVER_IMAGES + "/" + product['imatge'])
-                          : null,
-                      title: Text(product != null
-                          ? product['nom']
-                          : 'Producto no encontrado'),
-                      subtitle: Text("Quantitat: ${article['quantitat']}"),
-                      trailing: Text('${article['preu']}€'));
+                    leading: product != null
+                        ? Image.network(
+                            URI_SERVER_IMAGES + "/" + product['imatge'])
+                        : null,
+                    title: Text(product != null
+                        ? product['nom']
+                        : 'Producto no encontrado'),
+                    subtitle: Text("Quantitat: ${article['quantitat']}"),
+                    trailing: Text('${article['preu']}€'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditArticlePage(
+                                  article: article,
+                                )),
+                      );
+                    },
+                  );
                 },
               ),
             )

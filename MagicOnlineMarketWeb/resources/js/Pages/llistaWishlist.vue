@@ -164,7 +164,7 @@ const confirmacionMod=()=>{
                     <div class="d-flex justify-content-center m-3 ">
                         <InputLabel for="nom" value="Nom Wishlist"/>
                         <TextInput id="nom"  type="text" v-model="form.nom" required autofocus
-                                   autocomplete="nom" class="mt-1 block w-full" style="color: black;" />
+                                   autocomplete="nom" class="mt-1 block w-full"  maxlength="40" style="color: black;" />
                         <InputError class="mt-2" :message="form.errors.nom" />
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
@@ -219,7 +219,7 @@ const confirmacionMod=()=>{
                     <div class="d-flex justify-content-center m-3 ">
                         <InputLabel for="nom" value="Nom Wishlist"/>
                         <TextInput id="nom"  type="text" v-model="form.nom" required autofocus
-                                   autocomplete="nom" class="mt-1 block w-full" style="color: black;" />
+                                   autocomplete="nom" class="mt-1 block w-full" maxlength="40" style="color: black;" />
                         <InputError class="mt-2" :message="form.errors.nom" />
                     </div>
                     <div class="d-flex justify-content-center m-3 ">

@@ -25,6 +25,7 @@ const formNoticia = useForm({
 
 
 let showModal = ref(false);
+let showModalImatgeIncorrecta = ref(false);
 
 const obtenirImatge = (event) => {
     const file = event.target.files[0];
@@ -47,8 +48,13 @@ const obtenirImatge = (event) => {
 }
 
 const myfunction = () => {
-    formNoticia.post('crearNoticia');
-    cerrarForm()
+    if(formNoticia.imatge==null||formNoticia.imatge==""){
+        abrirModalImatgeIncorrecta();
+    }else{
+        formNoticia.post('crearNoticia');
+        cerrarForm();
+    }
+
 }
 
 const cerrarForm = () => {
@@ -59,6 +65,13 @@ const cerrarForm = () => {
     }, 500);
 
 
+}
+const cerrarModalImatgeIncorrecta=()=>{
+    showModalImatgeIncorrecta.value =false;
+}
+
+const abrirModalImatgeIncorrecta = () => {
+    showModalImatgeIncorrecta.value =true;
 }
 
 
@@ -71,17 +84,17 @@ const cerrarForm = () => {
                 <VForm v-slot="{ errors }" @submit="myfunction" class="w-100 rounded">
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="titol" value="Titol:" />
-                        <VField id="titol" name="titol" type="text" v-model="formNoticia.titol" rules="required" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="titol" name="titol" type="text" v-model="formNoticia.titol" maxlength="100" rules="required" class="mt-1 block w-full" style="color: black;" />
                         <ErrorMessage name="titol" style="color: red; font-weight: bold;" />
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="subtitol" value="Subtitol:" />
-                        <VField id="subtitol" name="subtitol" type="text" v-model="formNoticia.subtitol" class="mt-1 block w-full" style="color: black;" />
+                        <VField id="subtitol" name="subtitol" type="text" v-model="formNoticia.subtitol" maxlength="150" class="mt-1 block w-full" style="color: black;" />
                         <ErrorMessage name="subtitol" style="color: red; font-weight: bold;"/>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="contingut" value="Contingut:" />
-                        <textarea id="contingut" name="contingut" v-model="formNoticia.contingut" class="mt-1 block w-full" style="color: black;"></textarea>
+                        <textarea id="contingut" name="contingut" v-model="formNoticia.contingut" maxlength="2500" class="mt-1 block w-full" style="color: black;"></textarea>
                     </div>
                     <div class="d-flex flex-column align-items-center m-4 p-1">
                         <InputLabel for="imatge" value="Imatge:" />
@@ -111,7 +124,17 @@ const cerrarForm = () => {
                 </div>
             </Modal>
         </div>
-
+        <Modal :show="showModalImatgeIncorrecta" maxWidth="2xl" closeable @close="cerrarModalImatgeIncorrecta" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-between m-3 align-items-start">
+                    <button @click="cerrarModalImatgeIncorrecta" style="border: none; background: none;">
+                        <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <p>Atributs de la imatge Incorrectes!</p>
+                    <div></div>
+                </div>
+            </div>
+        </Modal>
 
 
     </AuthenticatedLayout>

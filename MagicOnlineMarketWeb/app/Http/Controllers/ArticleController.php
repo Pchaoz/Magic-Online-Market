@@ -151,4 +151,28 @@ class ArticleController extends Controller
 
         return response()->json([$articles], 200);
     }
+    public function updateArticleAPI (Request $request) {
+
+
+        $article= Articles::where('idArticle',$request->idArticle)->first();
+        $article->quantitatDisponible = $request->quantitatDisponible;
+        $article->preuUnitari = $request->preuUnitari;
+        $article->updated_by = $request->idUser;
+        $article->updated_at = Carbon::now()->format('Y-m-d H:i:s');
+        $article->save();
+
+        return response()->json(['message' => 'Artículo actualizado exitosamente'], 200);
+    }
+
+    public function deleteArticleAPI(Request $request) {
+
+        $article = DB::table('articles')->where('idArticle', '=', $request->query('idArticle'))->first();
+        if ($article) {
+            DB::table('articles')->where('idArticle', '=', $request->idArticle)->delete();
+            return response()->json(['message' => 'Artículo eliminado exitosamente'], 200);
+        } else {
+            return response()->json(['message' => 'Artículo no encontrado'], 404);
+        }
+    }
+
 }

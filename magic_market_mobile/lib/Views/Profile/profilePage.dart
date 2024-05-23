@@ -5,6 +5,7 @@ import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../../Util/globals.dart';
 import '../Baralles/barallesUserPage.dart';
+import '../Wishlist/wishListPage.dart';
 import 'loginPage.dart';
 import 'profileEditPage.dart';
 
@@ -68,7 +69,7 @@ class ProfilePage extends StatelessWidget {
                     },
                   ),
                   ListTile(
-                    title: const Center(child: Text('Les meves baralles')),
+                    title: const Center(child: Text('Baralles')),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -78,9 +79,20 @@ class ProfilePage extends StatelessWidget {
                       );
                     },
                   ),
+                  ListTile(
+                    title: const Center(child: Text('Wishlists')),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WishListsPage(),
+                        ),
+                      );
+                    },
+                  ),
                   if (roleID == 1 || roleID == 2 || roleID == 4 || roleID == 5)
                     ListTile(
-                      title: const Center(child: Text('Les meves ofertes')),
+                      title: const Center(child: Text('Ofertes')),
                       onTap: () {
                         // Navegar a la pagina de "mis ofertas"
                         Navigator.push(
