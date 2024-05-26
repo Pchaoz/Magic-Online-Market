@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PayPalController;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -182,6 +183,11 @@ Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::
 Route::get('/api/getWishListByWishListID/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishListByWishListID'])->name('getWishListByWishListID');
 Route::post('/api/addProductToWishlist', [\App\Http\Controllers\WishlistControler::class,'addProductToWishlist'])->name('addProductToWishlist');
 Route::delete('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControler::class,'removeFromWishlist'])->name('removeFromWishlist');
+
+//PAYPAL
+Route::post('api/paypal/order', [PayPalController::class, 'createOrder']);
+Route::post('api/paypal/capture', [PayPalController::class, 'captureOrder']);
+//-----------------------------------API----------------------------------------//
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);

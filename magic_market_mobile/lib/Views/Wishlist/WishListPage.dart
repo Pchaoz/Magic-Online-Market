@@ -62,6 +62,75 @@ class _WishListPage extends State<WishListsPage> {
     }
   }
 
+  void _removeWishlist(int wishlistID) async {
+    final response = await http.delete(
+      Uri.parse('$API_URI_SERVER/removeWishlist'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({
+        'idWishlist': wishlistID,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        wishLists['wishlists']
+            .removeWhere((wishlist) => wishlist['idWishlist'] == wishlistID);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Wishlist eliminada'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      fetchWishLists();
+    } else {
+      print('Error al eliminar la wishlist: ${response.statusCode}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Error al eliminar la wishlist'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
+  void _showPopupMenu(BuildContext context, Offset position, int wishlistID) {
+    final RenderBox overlay =
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    showMenu(
+      context: context,
+      position: RelativeRect.fromLTRB(
+        position.dx,
+        position.dy,
+        overlay.size.width - position.dx,
+        overlay.size.height - position.dy,
+      ),
+      items: [
+        const PopupMenuItem<String>(
+          value: 'remove_wishlist',
+          child: Row(
+            children: [
+              Icon(Icons.delete, color: Colors.black),
+              SizedBox(width: 8),
+              Text('Eliminar wishlist', style: TextStyle(color: Colors.black)),
+            ],
+          ),
+        ),
+      ],
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+    ).then((value) {
+      if (value == 'remove_wishlist') {
+        _removeWishlist(wishlistID);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,22 +168,28 @@ class _WishListPage extends State<WishListsPage> {
                 : ListView.builder(
                     itemCount: wishLists['wishlists'].length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title:
-                            Text(wishLists['wishlists'][index]['nomWishlist']),
-                        subtitle: Text("Creat per: " +
-                            wishLists['wishlists'][index]['nickPropietari']),
+                      return GestureDetector(
                         onTap: () => {
-                          //MOSTRAR DETALLES WISHLIST
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => WishListDetails(
-                                      wishlistID: wishLists['wishlists'][index]
-                                          ['idWishlist'],
-                                    )),
+                              builder: (context) => WishListDetails(
+                                wishlistID: wishLists['wishlists'][index]
+                                    ['idWishlist'],
+                              ),
+                            ),
                           )
                         },
+                        onLongPressStart: (details) {
+                          _showPopupMenu(context, details.globalPosition,
+                              wishLists['wishlists'][index]['idWishlist']);
+                        },
+                        child: ListTile(
+                          title: Text(
+                              wishLists['wishlists'][index]['nomWishlist']),
+                          subtitle: Text("Creat per: " +
+                              wishLists['wishlists'][index]['nickPropietari']),
+                        ),
                       );
                     },
                   ),
@@ -123,7 +198,6 @@ class _WishListPage extends State<WishListsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //REDIRECT FORM OFERTA
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => NewWishListPage()),

@@ -161,18 +161,7 @@ class _WishListDetails extends State<WishListDetails> {
               itemCount: wishlistProducts.length,
               itemBuilder: (context, index) {
                 final product = wishlistProducts[index];
-                return ListTile(
-                  leading: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: Image.network(
-                      product['imatge'] != null
-                          ? '$URI_SERVER_IMAGES/${product['imatge']}'
-                          : '$URI_SERVER_IMAGES/default.png',
-                      fit: BoxFit.scaleDown,
-                    ),
-                  ),
-                  title: Text(product['nomProducte'] ?? ""),
+                return GestureDetector(
                   onTap: () {
                     print("trying to push ${wishlistProducts[index]}");
                     Navigator.push(
@@ -183,9 +172,23 @@ class _WishListDetails extends State<WishListDetails> {
                       ),
                     );
                   },
-                  onLongPress: () {
-                    _showPopupMenu(context, Offset.zero, product['idwp']);
+                  onLongPressStart: (details) {
+                    _showPopupMenu(
+                        context, details.globalPosition, product['idwp']);
                   },
+                  child: ListTile(
+                    leading: SizedBox(
+                      width: 50.0,
+                      height: 50.0,
+                      child: Image.network(
+                        product['imatge'] != null
+                            ? '$URI_SERVER_IMAGES/${product['imatge']}'
+                            : '$URI_SERVER_IMAGES/default.png',
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                    title: Text(product['nomProducte'] ?? ""),
+                  ),
                 );
               },
             ),
