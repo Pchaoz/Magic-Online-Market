@@ -64,6 +64,7 @@ class UsuariSeeder extends Seeder
             'nick' => 'RinconFriki',
             'name' => 'Rincon',
             'cognom' => 'Friki',
+            'saldo' => '500',
             'idRol'=>4,
             'email' => 'rf@gmail.com',
             'password' => Hash::make('magiconline'),

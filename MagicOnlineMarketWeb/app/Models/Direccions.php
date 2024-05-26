@@ -16,10 +16,8 @@ class Direccions extends Model
         return $this->BelongsTo(Ciutats::class, 'idCiutat', 'idCiutat');
     }
 
-    public function propietari()
-    {
-        return $this->belongsToMany(User::class, 'usuari_direccions', 'idDireccio','idUsuari')->using(UsuariDireccio::class)->withTimestamps();
-
+    public function propietari(){
+        return $this->BelongsTo(User::class, 'idUsuari', 'idUsuari');
     }
 
     public function enviaments(){

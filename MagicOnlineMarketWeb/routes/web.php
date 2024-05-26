@@ -123,6 +123,9 @@ Route::post('/agregarArticleComanda',[\App\Http\Controllers\ComandesController::
 Route::delete('/buidarCompra',[\App\Http\Controllers\ComandesController::class, 'buidarCompra'])->name('buidarCompra');
 Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::class, 'eliminarComanda'])->name('eliminarComanda');
 Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class, 'confirmarCompra'])->name('confirmarCompra');
+Route::post('/confirmarPagament',[\App\Http\Controllers\ComandesController::class, 'confirmarPagament'])->name('confirmarPagament');
+Route::post('/confirmarNouEstat',[\App\Http\Controllers\ComandesController::class, 'confirmarNouEstat'])->name('confirmarNouEstat');
+
 
 
 //funcions controller Linies
@@ -182,6 +185,22 @@ Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::
 Route::get('/api/getWishListByWishListID/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishListByWishListID'])->name('getWishListByWishListID');
 Route::post('/api/addProductToWishlist', [\App\Http\Controllers\WishlistControler::class,'addProductToWishlist'])->name('addProductToWishlist');
 Route::delete('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControler::class,'removeFromWishlist'])->name('removeFromWishlist');
+
+//funcions tipus enviaments
+Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/crearTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'crearTipusEnviament'])->name('crearTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::delete('/eliminarTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'eliminarTipusEnviament'])->name('eliminarTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+Route::post('/modTipusEnviament', [\App\Http\Controllers\TipusEnviamentsController::class,'modTipusEnviament'])->name('modTipusEnviament')->middleware(\App\Http\Middleware\checkUserIdRol::class);
+
+//funcions direccions
+Route::get('/ListUserdirections', [\App\Http\Controllers\DireccionsController::class,'ListUserdirections'])->name('ListUserdirections');
+Route::post('/crearDireccio', [\App\Http\Controllers\DireccionsController::class,'crearDireccio'])->name('crearDireccio');
+Route::delete('/eliminarDireccio', [\App\Http\Controllers\DireccionsController::class,'eliminarDireccio'])->name('eliminarDireccio');
+Route::post('/modDireccio', [\App\Http\Controllers\DireccionsController::class,'modDireccio'])->name('modDireccio');
+
+
+
+
 
 //----------------------------------- API LOGIN ----------------------------------------//
 Route::post('/api/login', [AuthController::class, 'login']);
