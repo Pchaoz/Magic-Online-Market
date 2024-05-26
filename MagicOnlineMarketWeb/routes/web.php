@@ -123,6 +123,9 @@ Route::post('/agregarArticleComanda',[\App\Http\Controllers\ComandesController::
 Route::delete('/buidarCompra',[\App\Http\Controllers\ComandesController::class, 'buidarCompra'])->name('buidarCompra');
 Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::class, 'eliminarComanda'])->name('eliminarComanda');
 Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class, 'confirmarCompra'])->name('confirmarCompra');
+Route::post('/confirmarPagament',[\App\Http\Controllers\ComandesController::class, 'confirmarPagament'])->name('confirmarPagament');
+Route::post('/confirmarNouEstat',[\App\Http\Controllers\ComandesController::class, 'confirmarNouEstat'])->name('confirmarNouEstat');
+
 
 
 //funcions controller Linies

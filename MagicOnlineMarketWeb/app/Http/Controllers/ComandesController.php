@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Articles;
 use App\Models\Comandes;
+use App\Models\Enviaments;
 use App\Models\Linies;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,10 +43,11 @@ class ComandesController extends Controller
     public function listComandes ()
     {
         $comandes = DB::table('comandes')
-        ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
-        ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
-        ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total', 'comandes.estatComanda AS estat',
-        'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda')
+            ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
+            ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
+            ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total', 'comandes.estatComanda AS estat',
+                'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda','comandes.idVenedor as idVenedor',
+                'comandes.idComprador as idComprador','comandes.isEnviament as isEnviament')
             ->get();
         $titol="Totes les comandes";
         return Inertia::render('llistaComandes', ['comandes' => $comandes,'titol'=>$titol]);
@@ -57,11 +60,27 @@ class ComandesController extends Controller
             ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
             ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
             ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total', 'comandes.estatComanda AS estat',
-                'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda')
+                'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda','comandes.idVenedor as idVenedor',
+                'comandes.idComprador as idComprador','comandes.isEnviament as isEnviament')
             ->where('idComprador', Auth::id())
             ->get();
         $titol="Les meves Compres";
-        return Inertia::render('llistaComandes', ['comandes' => $comandes, 'titol'=>$titol]);
+        $direccions  = DB::table('direccions')
+            ->leftJoin('ciutats', 'ciutats.idCiutat', '=', 'direccions.idCiutat')
+            ->leftJoin('paissos', 'paissos.idPais', '=', 'ciutats.idPais')
+            ->select('direccions.direccio AS direccio', 'direccions.codiPostal AS codiPostal', 'ciutats.nom as nomCiutat','paissos.nom as nomPais'
+                ,'direccions.idDireccio as idDireccio')
+            ->where('direccions.idPropietari', Auth::id())
+            ->get();
+        $tipusEnviaments = DB::table('tipus_enviaments')
+            ->select('tipus_enviaments.nom as nom','tipus_enviaments.preu as preu','tipus_enviaments.idTipusEnviament as idTipusEnviament')
+            ->get();
+        $saldo = DB::table('usuaris')
+            ->select('usuaris.saldo as saldoComprador')
+            ->where('idUsuari', Auth::id())
+            ->first();
+
+        return Inertia::render('llistaComandes', ['comandes' => $comandes, 'direccions' => $direccions,  'titol'=>$titol, 'tipusEnviaments' => $tipusEnviaments,'saldo' => $saldo]);
 
     }
     public function listComandesVendes ()
@@ -70,7 +89,8 @@ class ComandesController extends Controller
             ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
             ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
             ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total', 'comandes.estatComanda AS estat',
-                'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda')
+                'comandes.isEnviament AS isEnviament','comandes.idEnviament AS idEnviament','comandes.idComanda AS idComanda','comandes.idVenedor as idVenedor',
+                'comandes.idComprador as idComprador','comandes.isEnviament as isEnviament')
             ->where('idVenedor', Auth::id())
             ->get();
         $titol="Les meves Vendes";
@@ -198,6 +218,44 @@ class ComandesController extends Controller
         }
         $comanda->delete();
     }
+    public function confirmarPagament(Request $request)
+    {
+        $comanda = Comandes::where('idComanda', $request->idComanda)->first();
+        //restamos y sumamos saldos
+        $comprador = User::where('idUsuari', $comanda->idComprador)
+            ->first();
+        $comprador->saldo=$comprador->saldo- $request->totalFinal;
+        $comprador->save();
 
+        $venedor = User::where('idUsuari', $comanda->idVenedor)
+            ->first();
+        $venedor->saldo=$venedor->saldo+ $comanda->preuTotal;
+        $venedor->save();
+
+        $comanda->comisio=$request->comisio;
+        $comanda->preuTotal=$request->totalFinal;
+        if($request->isEnviament===true){
+            $comanda->isEnviament=true;
+            $comanda->EstatComanda="Pendent Enviament";
+            $comanda->save();
+            $enviament = new Enviaments();
+            $enviament->idDesti=$request->idDireccio;
+            $enviament->idTipusEnviament=$request->idTipusEnviament;
+            $enviament->idComanda=$request->idComanda;
+            $enviament->save();
+        }else {
+            $comanda->EstatComanda="Pendent preparacio";
+            $comanda->save();
+        }
+
+    }
+
+    public function confirmarNouEstat(Request $request)
+    {
+        $comanda = Comandes::where('idComanda', $request->idComanda)->first();
+        $comanda->EstatComanda=$request->estat;
+        $comanda->save();
+
+    }
 
 }
