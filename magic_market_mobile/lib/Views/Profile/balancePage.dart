@@ -26,9 +26,30 @@ class _BalancePageState extends State<BalancePage> {
     print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
 
     if (response.statusCode == 200) {
+      print(json.decode(response.body)['saldo']);
       setState(() {
-        _balance = json.decode(response.body)['saldo'];
+        _balance = double.parse(json.decode(response.body)['saldo'].toString());
       });
+    } else if (response.statusCode == 400) {
+      print(json.decode(response.body)["message"].toString());
+      var messsage = json.decode(response.body)["message"].toString();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text("Error carregant el saldo.. Error: $messsage"),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     } else {
       showDialog(
         context: context,
@@ -109,7 +130,7 @@ class _BalancePageState extends State<BalancePage> {
             child: const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                'Salari',
+                'Saldo',
                 style: TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
@@ -119,7 +140,7 @@ class _BalancePageState extends State<BalancePage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text('Saldo: €$_balance', style: const TextStyle(fontSize: 24)),
+                Text('Saldo: $_balance€', style: const TextStyle(fontSize: 24)),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _addBalance,
