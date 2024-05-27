@@ -21,7 +21,7 @@ class LiniesController extends Controller
         ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
         ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
         ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total',
-            'comandes.estatComanda AS estat','comprador.idRol as idComprador','comandes.idVenedor as idVendor')
+            'comandes.estatComanda AS estat','comandes.idComprador as idComprador','comandes.idVenedor as idVenedor')
         ->where('comandes.idComanda', '=', $id)
         ->first();
         $linies = DB::table('linies')
@@ -30,7 +30,8 @@ class LiniesController extends Controller
         ->select('productes.nom AS nomProducte', 'linies.quantitat AS quantitat','articles.preuUnitari','linies.idLinia AS idLinia','linies.idComanda AS idComanda'  )
         ->where('linies.idComanda', '=', $id)
         ->get();
-        if(Auth::user()->idRol==1||Auth::user()->idUsuari==$comanda->idComprador ||Auth::user()->idUsuari==$comanda->idVendor){
+
+        if(Auth::user()->idRol==1||Auth::user()->idUsuari===$comanda->idComprador ||Auth::user()->idUsuari===$comanda->idVenedor){
             return Inertia::render('llistaLiniesComanda', ['comanda' => $comanda, 'linies' =>$linies]);
         }else{
             return redirect()->route('listComandesCompres');
