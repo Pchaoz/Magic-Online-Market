@@ -119,7 +119,7 @@ class _BalancePageState extends State<BalancePage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text('Saldo: €$_balance', style: const TextStyle(fontSize: 24)),
+                Text('Saldo: $_balance€', style: const TextStyle(fontSize: 24)),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _addBalance,
