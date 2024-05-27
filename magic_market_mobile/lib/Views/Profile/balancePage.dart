@@ -20,55 +20,16 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _fetchBalance() async {
-    final response =
-        await http.get(Uri.parse('$API_URI_SERVER/getSalary/$userID'));
+    final response = await http.get(Uri.parse('$API_URI_SERVER/getBalance'));
 
     print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
 
     if (response.statusCode == 200) {
-      print(json.decode(response.body)['saldo']);
       setState(() {
-        _balance = double.parse(json.decode(response.body)['saldo'].toString());
+        _balance = json.decode(response.body)['balance'];
       });
-    } else if (response.statusCode == 400) {
-      print(json.decode(response.body)["message"].toString());
-      var messsage = json.decode(response.body)["message"].toString();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: Text("Error carregant el saldo.. Error: $messsage"),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Tancar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: Text(
-                "Error carregant el saldo.. Codig d'error: ${response.statusCode}"),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Tancar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      // Manejo de error
     }
   }
 
@@ -92,24 +53,7 @@ class _BalancePageState extends State<BalancePage> {
         ),
       );
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: Text(
-                "Error agregant saldo.. Codig d'error: ${response.statusCode}"),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Tancar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      // Manejo de error
     }
   }
 
@@ -120,8 +64,7 @@ class _BalancePageState extends State<BalancePage> {
       headers: {'Content-Type': 'application/json'},
     );
 
-    print("CAPTURE PAYMENT STATUSCODE: ${response.statusCode}");
-    print("CAPTURE PAYMENT RESPONSE: ${response.body}");
+    print("CAPTURE PAYMENT BALANCE STATUSCODE: ${response.statusCode}");
 
     if (response.statusCode == 200 &&
         json.decode(response.body)['status'] == 'COMPLETED') {
@@ -152,7 +95,7 @@ class _BalancePageState extends State<BalancePage> {
             child: const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                'Saldo',
+                'Salari',
                 style: TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
@@ -162,7 +105,7 @@ class _BalancePageState extends State<BalancePage> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text('Saldo: $_balance€', style: const TextStyle(fontSize: 24)),
+                Text('Saldo: €$_balance', style: const TextStyle(fontSize: 24)),
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: _addBalance,
@@ -191,6 +134,7 @@ class PayPalWebView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
         title: const Text('Confirmación de Pago'),
       ),
       body: WebView(
@@ -202,10 +146,6 @@ class PayPalWebView extends StatelessWidget {
             String orderID = Uri.parse(request.url).queryParameters['token']!;
             onApprove(orderID);
             Navigator.pop(context);
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => BalancePage()),
-            );
             return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;
