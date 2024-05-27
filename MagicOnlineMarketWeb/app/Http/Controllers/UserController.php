@@ -26,7 +26,12 @@ class UserController extends Controller
        $rols =DB::table('rols')
            ->select('rols.nom AS nom','rols.idRol AS idRol')
            ->get();
-        return Inertia::render('administradorUsuaris',['usuaris'=>$usuaris,'rols'=>$rols]);
+
+        $nicks= DB::table('usuaris')
+            ->select('usuaris.nick AS nick')
+            ->where('usuaris.idUsuari','<>',Auth::id())
+            ->get();
+        return Inertia::render('administradorUsuaris',['usuaris'=>$usuaris,'rols'=>$rols,'nicks'=>$nicks]);
     }
 
 
@@ -53,16 +58,6 @@ class UserController extends Controller
         $usuari->save();
 
     }
-    public function editarUsuariMeu(Request $request){
-        $usuari= User::find(Auth::id()->idUsuari);
-        $usuari->nick=$request->nick;
-        $usuari->cognom=$request->cognom;
-        $usuari->name=$request->nom;
-        $usuari->save();
-        return Redirect::route('dashboard');
-
-    }
-
 
 
 
@@ -72,5 +67,21 @@ class UserController extends Controller
             ->get();
         return response()->json($user);
     }
+
+    public function getSaldoAPI($id)
+    {
+        $user = User::find($id);
+
+        //return response()->json(['message' => $user], 400);
+
+        if ($user) {
+            $saldo = $user->saldo;
+            return response()->json(['saldo' => $saldo], 200);
+        } else {
+            return response()->json(['message' => 'Usuario no encontrado'], 400);
+        }
+    }
+
+
 
 }

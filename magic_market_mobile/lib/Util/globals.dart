@@ -11,7 +11,7 @@ import '../Views/Profile/profilePage.dart';
 //IP SERVIDOR -> 162.19.74.238:8080
 //IP LOCAL PRUEBAS -> 10.1.85.13:8000
 
-String API_URI_CASA = 'http://192.168.0.20:8000/api';
+String API_URI_CASA = 'http://192.168.0.15:8000/api';
 String API_URI_LOCAL = 'http://10.1.85.13:8000/api';
 String API_URI_SERVER = 'http://162.19.74.238:8080/api';
 String URI_SERVER_IMAGES = 'http://162.19.74.238:8080/images';
@@ -69,6 +69,31 @@ void reloadPref(context) async {
   isAuthenticated = prefs.getBool('Auth')!;
   userID = prefs.getInt('userID')!;
 
+  if (userName.isNotEmpty && userID == 0) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text(
+              "Error carregant el usuari.. Siusplau torna a iniciar sessio"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Tancar'),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+                logOut();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   if (userID > 0) {
     userinfo = await fetchUserInfo();
     var userFirst = userinfo.first;
@@ -119,6 +144,7 @@ Future<Map<String, dynamic>> logOut() async {
 
 Future<List<dynamic>> fetchUserInfo() async {
   print("USUARIO A CARGAR INFO: $userName con id: $userID");
+  print("REQUEST A -> $API_URI_SERVER/getUser/$userID");
   final response = await http.get(Uri.parse("$API_URI_SERVER/getUser/$userID"));
 
   print("STATUS CODE IS: ${response.statusCode}");
