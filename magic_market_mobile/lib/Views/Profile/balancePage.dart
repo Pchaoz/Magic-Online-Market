@@ -20,7 +20,7 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _fetchBalance() async {
-    final response = await http.get(Uri.parse('$API_URI_CASA/getBalance'));
+    final response = await http.get(Uri.parse('$API_URI_SERVER/getBalance'));
 
     print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
 
@@ -35,7 +35,7 @@ class _BalancePageState extends State<BalancePage> {
 
   void _addBalance() async {
     final response = await http.post(
-      Uri.parse('$API_URI_CASA/paypal/order'),
+      Uri.parse('$API_URI_SERVER/paypal/order'),
       body: json.encode({'amount': '10.00'}),
       headers: {'Content-Type': 'application/json'},
     );
