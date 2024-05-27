@@ -30,7 +30,8 @@ class LiniesController extends Controller
         ->select('productes.nom AS nomProducte', 'linies.quantitat AS quantitat','articles.preuUnitari','linies.idLinia AS idLinia','linies.idComanda AS idComanda'  )
         ->where('linies.idComanda', '=', $id)
         ->get();
-        if(Auth::user()->idRol==1||Auth::user()->idUsuari==$comanda->idComprador ||Auth::user()->idUsuari==$comanda->idVendor){
+
+        if(Auth::user()->idRol==1||Auth::user()->idUsuari===$comanda->idComprador ||Auth::user()->idUsuari===$comanda->idVenedor){
             return Inertia::render('llistaLiniesComanda', ['comanda' => $comanda, 'linies' =>$linies]);
         }else{
             return redirect()->route('listComandesCompres');
