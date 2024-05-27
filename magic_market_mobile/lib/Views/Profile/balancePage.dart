@@ -92,7 +92,24 @@ class _BalancePageState extends State<BalancePage> {
         ),
       );
     } else {
-      // Manejo de error
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(
+                "Error agregant saldo.. Codig d'error: ${response.statusCode}"),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -111,7 +128,6 @@ class _BalancePageState extends State<BalancePage> {
       setState(() {
         _balance += double.parse(json.decode(response.body)['amount']);
       });
-      // Navega de regreso a BalancePage
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => BalancePage()),
@@ -175,20 +191,22 @@ class PayPalWebView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 11, 214, 153),
         title: const Text('Confirmación de Pago'),
       ),
       body: WebView(
         initialUrl: approvalUrl,
         javascriptMode: JavascriptMode.unrestricted,
         navigationDelegate: (NavigationRequest request) {
+          print("Navegando a: ${request.url}");
           if (request.url.contains('return_url')) {
-            String? orderID = Uri.parse(request.url).queryParameters['token'];
-            if (orderID != null) {
-              onApprove(orderID);
-              Navigator.pop(context);
-              return NavigationDecision.prevent;
-            }
+            String orderID = Uri.parse(request.url).queryParameters['token']!;
+            onApprove(orderID);
+            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => BalancePage()),
+            );
+            return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;
         },
