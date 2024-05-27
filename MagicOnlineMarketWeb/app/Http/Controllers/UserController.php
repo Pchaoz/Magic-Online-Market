@@ -68,4 +68,13 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function getSaldoAPI($id) {
+        $user = DB::table('usuaris')
+            ->select( 'name', 'saldo')
+            ->where('idUsuari','=', $id )
+            -get();
+        return response()->json($user);
+    }
+
+
 }

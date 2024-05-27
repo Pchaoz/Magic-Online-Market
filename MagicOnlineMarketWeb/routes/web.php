@@ -34,6 +34,7 @@ Route::delete('/deleteUser', [\App\Http\Controllers\UserController::class,'delet
 Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'editarUsuari'])->name('editarUsuari')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getUser/{id}', [\App\Http\Controllers\UserController::class,'APIgetUser'])->name('APIgetUser');
+Route::get('/api/getSalary/{id}', [\App\Http\Controllers\UserController::class,'getSaldoAPI'])->name('getSaldoAPI');
 
 
 

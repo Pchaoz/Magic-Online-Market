@@ -20,16 +20,34 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _fetchBalance() async {
-    final response = await http.get(Uri.parse('$API_URI_SERVER/getBalance'));
+    final response =
+        await http.get(Uri.parse('$API_URI_SERVER/getSalary/$userID'));
 
     print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
-        _balance = json.decode(response.body)['balance'];
+        _balance = json.decode(response.body)['saldo'];
       });
     } else {
-      // Manejo de error
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Error'),
+            content: Text(
+                "Error carregant el saldo.. Codig d'error: ${response.statusCode}"),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('Tancar'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
