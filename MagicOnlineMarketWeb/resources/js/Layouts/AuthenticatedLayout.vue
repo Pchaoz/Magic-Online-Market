@@ -243,6 +243,7 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <DropdownLink > Saldo: {{ $page.props.auth.user.saldo+"€" }}</DropdownLink>
                                         <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>
                                         <DropdownLink :href="route('ListUserdirections')"> Direccions </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
