@@ -6,6 +6,7 @@ import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import Modal from "@/Components/Modal.vue";
 import InputLabel from "@/Components/InputLabel.vue";
+import InputError from "@/Components/InputError.vue";
 
 
 const props = defineProps({
@@ -22,6 +23,37 @@ const props = defineProps({
     },
 });
 
+const options = ref([
+    {
+        name:"Pagada",
+        value:"Pagada"
+    },
+    {
+        name:"Pendent preparacio",
+        value:"Pendent preparacio"
+    },
+    {
+        name:"Pendent recollida",
+        value:"Pendent recollida"
+    },
+    {
+        name:"Pendent enviament",
+        value:"Pendent enviament"
+    },
+    {
+        name:"Enviada",
+        value:"Enviada"
+    },
+    {
+        name:"Complerta",
+        value:"Complerta"
+    },
+    {
+        name:"Incidencia",
+        value:"Incidencia"
+    }
+])
+
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 //-------Tramitacio Pagament------//
@@ -33,6 +65,12 @@ let showModalPagamentConfirmacio = ref(false);
 //-----Confirmació enviament----//
 let showModalTasca= ref(false);
 let showModalConfirmacioTasca = ref(false);
+//-----Administració de comandes-------//
+let showModalAdministracio= ref(false);
+let showModalAdministracioIncorrecta = ref(false);
+//-----Anulació de comandes-------//
+let showModalAnulacio = ref(false);
+let showErrorAnulacio = ref(false);
 
 
 
@@ -47,14 +85,11 @@ const formComanda= useForm({
     estat:null,
 })
 
+const formAdminComanda=  useForm({
+    idComanda:null,
+    estat:null,
+})
 
-
-const abrirModalEliminacio = (id) =>{
-    showModalEliminacio.value=true;
-    formComanda.idComanda=id;
-
-
-}
 
 const eliminarLinia =()=> {
     formComanda.delete('/eliminarComanda');
@@ -75,7 +110,7 @@ const cerrarModalEliminacio =()=> {
 
 const realizarTramit =(comanda)=> {
     formComanda.comisio=Number((comanda.total * 0.05).toFixed(2));
-    if(1>formComanda.comisio){
+    if(1.00>Number(formComanda.comisio)){
         formComanda.comisio= 1;
     }
     formComanda.total =Number((formComanda.comisio+comanda.total).toFixed(2));
@@ -172,6 +207,54 @@ const confirmacioProcesTasca=()=>{
     }, 500);
 
 }
+//administracio
+const closeAdministracio = () =>{
+    showModalAdministracio.value =false;
+}
+const obrirAdministracio = (comanda) =>{
+    formAdminComanda.estat="";
+    formAdminComanda.idComanda=comanda.idComanda;
+    showModalAdministracio.value =true;
+}
+
+const administrarComanda = () =>{
+    if(formAdminComanda.estat===""){
+        closeAdministracio();
+        abrirModalAdministracioIncorrecta();
+    }else{
+        formAdminComanda.post('confirmarNouEstat');
+        showModalAdministracio.value =false;
+        confirmacioProcesTasca();
+    }
+
+}
+const abrirModalAdministracioIncorrecta = () =>{
+    showModalAdministracioIncorrecta.value=true;
+}
+
+const closeModalAdministracioIncorrecta = () =>{
+    showModalAdministracioIncorrecta.value=false;
+}
+//Anular Comanda
+const closeAnulacio = () =>{
+    showModalAnulacio.value =false;
+    showErrorAnulacio.value =false;
+}
+
+const obrirAnularComanda = (comanda) =>{
+    if( comanda.estat==='Anulada'){
+        showErrorAnulacio.value=true;
+        return;
+    }
+    formAdminComanda.estat="";
+    formAdminComanda.idComanda=comanda.idComanda;
+    showModalAnulacio.value =true;
+}
+const anularComanada = () =>{
+    formAdminComanda.post('anularComanda');
+    showModalAnulacio.value =false;
+    confirmacioProcesTasca();
+}
 
 
 
@@ -222,11 +305,11 @@ const confirmacioProcesTasca=()=>{
                     </td>
                     <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2">
                         <button class="btn btn-success rounded-pill"
-                                @click=" ">ADMINISTRAR</button>
+                                @click="obrirAdministracio(comanda)">ADMINISTRAR</button>
                     </td>
                     <td v-if="$page.props.auth.user.idRol==1||$page.props.auth.user.idRol==2">
                         <button class="btn btn-danger rounded-pill"
-                                @click=" ">ANULAR</button>
+                                @click="obrirAnularComanda(comanda)">ANULAR</button>
                     </td>
                     <td>
                         <button class="btn btn-danger rounded-pill"
@@ -236,28 +319,6 @@ const confirmacioProcesTasca=()=>{
                 </tr>
                 </tbody>
             </table>
-            <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
-                <div class="modal-content w-100">
-
-                    <div class="d-flex justify-content-center m-3 ">
-                        <p>¿Estas segur de que vols eliminar aquesta comanda?</p>
-                    </div>
-                    <div class="d-flex justify-content-center m-3 ">
-                        <button type="button" class="btn btn-success mr-5"
-                                @click="eliminarLinia">Sí</button>
-                        <button type="button" class="btn btn-danger ml-5" @click="cerrarModalEliminacio">No</button>
-
-                    </div>
-                </div>
-            </Modal>
-            <Modal :show="showModalEliminacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
-                <div class="modal-content w-100">
-
-                    <div class="d-flex justify-content-center m-3 ">
-                        <p>Comanda Eliminada</p>
-                    </div>
-                </div>
-            </Modal>
             <Modal :show="showModalTramitacio" maxWidth="2xl" @close="closeTramit" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3">
@@ -350,7 +411,6 @@ const confirmacioProcesTasca=()=>{
                     </div>
                 </div>
             </Modal>
-
             <Modal :show="showModalConfirmacioTasca" maxWidth="2xl" closeable @close="tancarTasca" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-between m-3 align-items-start">
@@ -362,8 +422,63 @@ const confirmacioProcesTasca=()=>{
                     </div>
                 </div>
             </Modal>
-
-
+            <Modal :show="showModalAdministracio" maxWidth="2xl" @close="closeAdministracio" >
+                <div class="modal-content w-100">
+                    <div class="d-flex justify-content-center m-3">
+                        <form class="w-100 rounded"  >
+                            <div class="m-2 text-center font-weight-bold">
+                                <InputLabel for="estat" value="Nou estat de la comanda: " class="m-2" style="font-size: 16px;" />
+                                <div class="d-flex justify-content-center">
+                                    <select id="estat" v-model="formAdminComanda.estat"  style="color: black;">
+                                        <option v-for="option in options" v-bind:key="option.name" v-bind:value="option.value">
+                                            {{ option.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button class="btn btn-success col-2" @click="administrarComanda">Cambiar</button>
+                    <div class="col-1"></div>
+                    <button class="btn btn-danger col-2 " @click="closeAdministracio">Cancelar</button>
+                </div>
+            </Modal>
+            <Modal :show="showModalAdministracioIncorrecta" maxWidth="2xl" closeable @close="closeModalAdministracioIncorrecta" >
+                <div class="modal-content w-100">
+                    <div class="d-flex justify-content-between m-3 align-items-start">
+                        <button @click="closeModalAdministracioIncorrecta" style="border: none; background: none;">
+                            <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                        </button>
+                        <p>Has de seleccionar un nou estat per a la comanda!</p>
+                        <div></div>
+                    </div>
+                </div>
+            </Modal>
+            <Modal :show="showModalAnulacio" maxWidth="2xl" closeable @close="closeAnulacio" >
+                <div class="modal-content w-100">
+                    <div class="d-flex justify-content-center m-3 ">
+                        <p>¿Estas segur de que vols anular aquesta comanda?</p>
+                    </div>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <button type="button" class="btn btn-success mr-5"
+                                @click="anularComanada">Sí</button>
+                        <button type="button" class="btn btn-danger ml-5" @click="closeAnulacio">No</button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal :show="showErrorAnulacio" maxWidth="2xl" closeable @close="closeAnulacio" >
+                <div class="modal-content w-100">
+                    <div class="d-flex justify-content-between m-3 align-items-start">
+                        <button @click="closeAnulacio" style="border: none; background: none;">
+                            <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
+                        </button>
+                        <p>No pots anular una comanda ja anulada!</p>
+                        <div></div>
+                    </div>
+                </div>
+            </Modal>
         </div>
     </AuthenticatedLayout>
 </template>

@@ -125,6 +125,7 @@ Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::clas
 Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class, 'confirmarCompra'])->name('confirmarCompra');
 Route::post('/confirmarPagament',[\App\Http\Controllers\ComandesController::class, 'confirmarPagament'])->name('confirmarPagament');
 Route::post('/confirmarNouEstat',[\App\Http\Controllers\ComandesController::class, 'confirmarNouEstat'])->name('confirmarNouEstat');
+Route::post('/anularComanda',[\App\Http\Controllers\ComandesController::class, 'anularComanda'])->name('anularComanda')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 
 
 
