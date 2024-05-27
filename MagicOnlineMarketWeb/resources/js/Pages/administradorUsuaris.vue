@@ -67,6 +67,7 @@ const eliminarUsuari =  () => {
 const formUsuari= useForm({
     idUsuari:"",
     nick: "",
+    nickAntic:"",
     nom:"",
     cognom:"",
     idRol:""
@@ -75,6 +76,7 @@ const formUsuari= useForm({
 const abrirModalModificacio=(user)=>{
 
     formUsuari.nick=user.nick;
+    formUsuari.nickAntic=formUsuari.nick;
     formUsuari.nom=user.nom;
     formUsuari.cognom=user.cognom;
     formUsuari.idRol=user.idRol;
@@ -83,7 +85,7 @@ const abrirModalModificacio=(user)=>{
 }
 
 const modificarUser = () => {
-    if (targetArray.includes(formUsuari.nick)) {
+    if (targetArray.includes(formUsuari.nick) &&  formUsuari.nickAntic!=formUsuari.nick) {
         showModalModificacio.value=false
         abrirModalNickIncorrecte();
         return;

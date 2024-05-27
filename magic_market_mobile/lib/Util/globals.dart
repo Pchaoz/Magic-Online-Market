@@ -69,6 +69,31 @@ void reloadPref(context) async {
   isAuthenticated = prefs.getBool('Auth')!;
   userID = prefs.getInt('userID')!;
 
+  if (userName.isNotEmpty && userID == 0) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: const Text(
+              "Error carregant el usuari.. Siusplau torna a iniciar sessio"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Tancar'),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+                logOut();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   if (userID > 0) {
     userinfo = await fetchUserInfo();
     var userFirst = userinfo.first;

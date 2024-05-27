@@ -180,7 +180,7 @@ const abrirModalQuantitatIncorrecta = () => {
                         <td>{{article.quantitat}}</td>
                         <td>{{article.preu}}</td>
                         <td>
-                            <img :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="abrirModalQuantitat(article)">
+                            <img v-if="$page.props.auth.user.idRol!= article.idVenedor" :src="/images/+'carrito.png'" alt="Imagen carrito" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="abrirModalQuantitat(article)">
                         </td>
                         <td v-if="$page.props.auth.user.idRol=='1' || $page.props.auth.user.idRol=='5' ||$page.props.auth.user.idRol=='4'">
                             <button v-if="$page.props.auth.user.idUsuari===article.idVenedor || $page.props.auth.user.idRol=='1' "  class="btn btn-success rounded-pill"

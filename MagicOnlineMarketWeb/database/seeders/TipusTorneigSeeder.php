@@ -15,23 +15,13 @@ class TipusTorneigSeeder extends Seeder
     {
 
         Schema::disableForeignKeyConstraints();
-        DB::table('tipus_torneigs')->insert([
-            'descripcio'  => 'Torneig standard eliminatori.',
+        DB::table('tipus_torneig')->insert([
+            'descripcio'  => 'Eliminatori',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('tipus_torneigs')->insert([
-            'descripcio'  => 'Torneig standard suiz',
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-        DB::table('tipus_torneigs')->insert([
-            'descripcio'  => 'Gigante dos Cabezas standard',
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-        DB::table('tipus_torneigs')->insert([
-            'descripcio'  => 'Legacy',
+        DB::table('tipus_torneig')->insert([
+            'descripcio'  => 'Suiz',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

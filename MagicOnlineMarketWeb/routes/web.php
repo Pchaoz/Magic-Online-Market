@@ -127,6 +127,7 @@ Route::delete('/eliminarComanda',[\App\Http\Controllers\ComandesController::clas
 Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class, 'confirmarCompra'])->name('confirmarCompra');
 Route::post('/confirmarPagament',[\App\Http\Controllers\ComandesController::class, 'confirmarPagament'])->name('confirmarPagament');
 Route::post('/confirmarNouEstat',[\App\Http\Controllers\ComandesController::class, 'confirmarNouEstat'])->name('confirmarNouEstat');
+Route::post('/anularComanda',[\App\Http\Controllers\ComandesController::class, 'anularComanda'])->name('anularComanda')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 
 
 
@@ -188,9 +189,13 @@ Route::get('/api/getWishListByWishListID/{id}', [\App\Http\Controllers\WishlistC
 Route::post('/api/addProductToWishlist', [\App\Http\Controllers\WishlistControler::class,'addProductToWishlist'])->name('addProductToWishlist');
 Route::delete('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControler::class,'removeFromWishlist'])->name('removeFromWishlist');
 
+//funcions controller Tornejos
+Route::get('/getAllTornejos', [\App\Http\Controllers\TornejosController::class,'ListTornejos'])->name('ListTornejos');
+
+
 //PAYPAL
-Route::post('api/paypal/order', [PayPalController::class, 'createOrder']);
-Route::post('api/paypal/capture', [PayPalController::class, 'captureOrder']);
+Route::post('/api/paypal/order', [PayPalController::class, 'createOrder']);
+Route::post('/api/paypal/capture', [PayPalController::class, 'captureOrder']);
 //-----------------------------------API----------------------------------------//
 //funcions tipus enviaments
 Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments')->middleware(\App\Http\Middleware\checkUserIdRol::class);

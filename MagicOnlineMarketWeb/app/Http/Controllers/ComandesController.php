@@ -221,17 +221,6 @@ class ComandesController extends Controller
     public function confirmarPagament(Request $request)
     {
         $comanda = Comandes::where('idComanda', $request->idComanda)->first();
-        //restamos y sumamos saldos
-        $comprador = User::where('idUsuari', $comanda->idComprador)
-            ->first();
-        $comprador->saldo=$comprador->saldo- $request->totalFinal;
-        $comprador->save();
-
-        $venedor = User::where('idUsuari', $comanda->idVenedor)
-            ->first();
-        $venedor->saldo=$venedor->saldo+ $comanda->preuTotal;
-        $venedor->save();
-
         $comanda->comisio=$request->comisio;
         $comanda->preuTotal=$request->totalFinal;
         if($request->isEnviament===true){
@@ -247,6 +236,20 @@ class ComandesController extends Controller
             $comanda->EstatComanda="Pendent preparacio";
             $comanda->save();
         }
+        //restamos y sumamos saldos
+        $comprador = User::where('idUsuari', $comanda->idComprador)
+            ->first();
+        $comprador->saldo-=$comanda->preuTotal;
+        $comprador->save();
+
+        $venedor = User::where('idUsuari', $comanda->idVenedor)
+            ->first();
+        $venedor->saldo+= $comanda->preuTotal-$comanda->comisio;
+        $venedor->save();
+
+        $admin= User::where('idUsuari',1)->first();
+        $admin->saldo+= $comanda->comisio;
+        $admin->save();
 
     }
 
@@ -257,5 +260,36 @@ class ComandesController extends Controller
         $comanda->save();
 
     }
+    public function anularComanda(Request $request)
+    {
+        $comanda = Comandes::where('idComanda', $request->idComanda)->first();
+        $comanda->EstatComanda='Anulada';
+        $comanda->save();
+
+        $comprador= User::where('idUsuari',$comanda->idComprador)->first();
+        $comprador->saldo+=$comanda->preuTotal;
+        $comprador->save();
+
+        $venedor= User::where('idUsuari',$comanda->idVenedor)->first();
+        $venedor->saldo-=($comanda->preuTotal-$comanda->comisio);
+        $venedor->save();
+
+        $admin= User::where('idUsuari',1)->first();
+        $admin->saldo-= $comanda->comisio;
+        $admin->save();
+
+        $linies = Linies::where('idComanda', $comanda->idComanda) ->get();
+        foreach ( $linies as $linia) {
+            $article = Articles::where('idArticle', $linia->idArticle)->first();
+            $article->quantitatDisponible+=$linia->quantitat;
+            $article->save();
+        }
+
+    }
+
+
+
+
+
 
 }

@@ -119,8 +119,8 @@ const showingNavigationDropdown = ref(false);
                                         </span>
                                             </template>
                                             <template #content>
+                                                <DropdownLink :href="route('ListTornejos')"> Veure Tornejos</DropdownLink>
                                                 <DropdownLink> Crear Torneig</DropdownLink>
-                                                <DropdownLink> Veure Tornejos</DropdownLink>
                                                 <DropdownLink> Els meus Tornejos</DropdownLink>
                                                 <DropdownLink> Modificar Tornejos</DropdownLink>
 
@@ -243,6 +243,7 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
+                                        <DropdownLink > Saldo: {{ $page.props.auth.user.saldo+"€" }}</DropdownLink>
                                         <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>
                                         <DropdownLink :href="route('ListUserdirections')"> Direccions </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">

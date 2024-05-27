@@ -20,34 +20,17 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _fetchBalance() async {
-    final response =
-        await http.get(Uri.parse('$API_URI_SERVER/getSalary/$userID'));
+    final response = await http.get(Uri.parse('$API_URI_SERVER/getBalance'));
 
     print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
-        _balance = json.decode(response.body)['saldo'];
+        _balance = json.decode(response.body)['balance'];
       });
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Error'),
-            content: Text(
-                "Error carregant el saldo.. Codig d'error: ${response.statusCode}"),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Tancar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+      // Manejo de error
+      print("Error fetching balance");
     }
   }
 
@@ -72,25 +55,36 @@ class _BalancePageState extends State<BalancePage> {
       );
     } else {
       // Manejo de error
+      print("Error adding balance");
     }
   }
 
   void _capturePayment(String orderID) async {
     final response = await http.post(
       Uri.parse('$API_URI_SERVER/paypal/capture'),
-      body: json.encode({'orderID': orderID}),
+      body: json.encode({'orderID': orderID, 'userID': 'user_id'}),
       headers: {'Content-Type': 'application/json'},
     );
 
     print("CAPTURE PAYMENT BALANCE STATUSCODE: ${response.statusCode}");
 
-    if (response.statusCode == 200 &&
-        json.decode(response.body)['status'] == 'COMPLETED') {
-      setState(() {
-        _balance += double.parse(json.decode(response.body)['amount']);
-      });
+    if (response.statusCode == 200) {
+      final result = json.decode(response.body);
+      if (result['status'] == 'COMPLETED') {
+        setState(() {
+          _balance += double.parse(result['amount']);
+        });
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => BalancePage()),
+        );
+      } else {
+        // Manejo de error
+        print("Payment not completed");
+      }
     } else {
       // Manejo de error
+      print("Error capturing payment");
     }
   }
 
@@ -109,7 +103,7 @@ class _BalancePageState extends State<BalancePage> {
             child: const Padding(
               padding: EdgeInsets.all(16),
               child: Text(
-                'Salari',
+                'Saldo',
                 style: TextStyle(fontSize: 24),
                 textAlign: TextAlign.center,
               ),
@@ -155,13 +149,12 @@ class PayPalWebView extends StatelessWidget {
         initialUrl: approvalUrl,
         javascriptMode: JavascriptMode.unrestricted,
         navigationDelegate: (NavigationRequest request) {
+          print("Navegando a: ${request.url}");
           if (request.url.contains('return_url')) {
-            String? orderID = Uri.parse(request.url).queryParameters['token'];
-            if (orderID != null) {
-              onApprove(orderID);
-              Navigator.pop(context);
-              return NavigationDecision.prevent;
-            }
+            String orderID = Uri.parse(request.url).queryParameters['token']!;
+            onApprove(orderID);
+            Navigator.pop(context);
+            return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;
         },

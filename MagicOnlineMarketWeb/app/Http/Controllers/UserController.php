@@ -68,13 +68,20 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function getSaldoAPI($id) {
-        $user = DB::table('usuaris')
-            ->select( 'name', 'saldo')
-            ->where('idUsuari','=', $id )
-            -get();
-        return response()->json($user);
+    public function getSaldoAPI($id)
+    {
+        $user = User::find($id);
+
+        //return response()->json(['message' => $user], 400);
+
+        if ($user) {
+            $saldo = $user->saldo;
+            return response()->json(['saldo' => $saldo], 200);
+        } else {
+            return response()->json(['message' => 'Usuario no encontrado'], 400);
+        }
     }
+
 
 
 }
