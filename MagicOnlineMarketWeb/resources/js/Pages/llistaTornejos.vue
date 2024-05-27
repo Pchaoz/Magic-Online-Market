@@ -65,7 +65,6 @@ const cerrarModalCreacio = () =>{
                     <th>Màxim</th>
                     <th>Organitzador</th>
                     <th>Tipus Torneig</th>
-                    <th>Rondes</th>
                     <th>Estat</th>
                     <th>Hora Inici</th>
                     <th></th>
@@ -81,19 +80,20 @@ const cerrarModalCreacio = () =>{
                     <td>{{ torneig.max }}</td>
                     <td>{{ torneig.nick }}</td>
                     <td>{{ torneig.descripcio }}</td>
-                    <td>{{ torneig.rondes }}</td>
                     <td>{{ torneig.estat }}</td>
                     <td>{{ torneig.inici }}</td>
                     <td>
-                        <button  class="btn btn-success rounded-pill"
+                        <button v-if="torneig.estat=='En inscripció'" class="btn btn-success rounded-pill"
                                  @click="abrirModalMod(baralla)">Inscripció</button>
                     </td>
-                    <td v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5">
-                        <button  class="btn btn-success rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari"
+                    <td >
+                        <button v-if=" ($page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5)&&
+                                (torneig.estat=='En inscripció'||torneig.estat=='En creació')" class="btn btn-success rounded-pill"
                                  @click="abrirModalMod(baralla)">Modificar</button>
                     </td>
-                    <td v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5">
-                        <button  class="btn btn-danger rounded-pill" v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idUsuari===baralla.idUsuari"
+                    <td>
+                        <button  class="btn btn-danger rounded-pill" v-if=" ($page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5) &&
+                                 torneig.estat=='En creació'"
                                  @click="abrirModalConfirmacionEliminacio(baralla.idBaralla)">Eliminar</button>
                     </td>
                 </tr>
@@ -108,7 +108,7 @@ const cerrarModalCreacio = () =>{
         <Modal :show="showModalCreacio" maxWidth="2xl" closeable @close="cerrarModalCreacio" >
             <div class="modal-content w-100">
                 <div class="d-flex justify-content-center m-3 ">
-                    
+
                 </div>
                 <div class="d-flex justify-content-center m-3 ">
                     <button type="button" class="btn btn-success ml-5"
