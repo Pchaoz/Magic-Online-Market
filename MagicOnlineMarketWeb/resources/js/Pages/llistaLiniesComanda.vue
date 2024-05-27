@@ -105,8 +105,9 @@ const recargaPaginaElim = () => {
                     <td>{{linia.quantitat}}</td>
                     <td>{{linia.preuUnitari}}</td>
                     <td>{{(linia.preuUnitari*linia.quantitat).toFixed(2)}}</td>
-                    <td v-if="$page.props.auth.user.idUsuari==comanda.idComprador||$page.props.auth.user.idRol==1 ">
-                        <button class="btn btn-danger rounded-pill"
+                    <td >
+                        <button v-if="($page.props.auth.user.idUsuari==comanda.idComprador||$page.props.auth.user.idRol==1)
+                    && (comanda.estat==='Pendent pagament'||comanda.estat==='En compra')" class="btn btn-danger rounded-pill"
                                 @click="abrirModalEliminacio(linia)">Eliminar</button>
                     </td>
 
