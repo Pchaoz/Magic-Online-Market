@@ -103,13 +103,19 @@ class _BalancePageState extends State<BalancePage> {
       headers: {'Content-Type': 'application/json'},
     );
 
-    print("CAPTURE PAYMENT BALANCE STATUSCODE: ${response.statusCode}");
+    print("CAPTURE PAYMENT STATUSCODE: ${response.statusCode}");
+    print("CAPTURE PAYMENT RESPONSE: ${response.body}");
 
     if (response.statusCode == 200 &&
         json.decode(response.body)['status'] == 'COMPLETED') {
       setState(() {
         _balance += double.parse(json.decode(response.body)['amount']);
       });
+      // Navega de regreso a BalancePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => BalancePage()),
+      );
     } else {
       // Manejo de error
     }

@@ -189,8 +189,8 @@ Route::post('/api/addProductToWishlist', [\App\Http\Controllers\WishlistControle
 Route::delete('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControler::class,'removeFromWishlist'])->name('removeFromWishlist');
 
 //PAYPAL
-Route::post('api/paypal/order', [PayPalController::class, 'createOrder']);
-Route::post('api/paypal/capture', [PayPalController::class, 'captureOrder']);
+Route::post('/api/paypal/order', [PayPalController::class, 'createOrder']);
+Route::post('/api/paypal/capture', [PayPalController::class, 'captureOrder']);
 //-----------------------------------API----------------------------------------//
 //funcions tipus enviaments
 Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments')->middleware(\App\Http\Middleware\checkUserIdRol::class);
