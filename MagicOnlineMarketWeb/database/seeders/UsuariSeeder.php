@@ -32,7 +32,7 @@ class UsuariSeeder extends Seeder
             'name' => 'Raúl',
             'cognom'=> 'Martín-Caro Gómez',
             'email' => 'raul.martincaro@gmail.com',
-            'password' => Hash::make('laravel123'),
+            'password' => Hash::make('123456789'),
             'saldo' => '500',
             'idRol'=>2,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -44,7 +44,7 @@ class UsuariSeeder extends Seeder
             'name' => 'Pol',
             'cognom' => 'Sotillos',
             'email' => 'p.sotillos@gmail.com',
-            'password' => Hash::make('123laravel'),
+            'password' => Hash::make('123456789'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -54,7 +54,7 @@ class UsuariSeeder extends Seeder
             'name' => 'Judith',
             'cognom' => 'Berron',
             'email' => 'agyko@gmail.com',
-            'password' => Hash::make('-09112024-'),
+            'password' => Hash::make('123456789'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
@@ -67,7 +67,7 @@ class UsuariSeeder extends Seeder
             'saldo' => '500',
             'idRol'=>4,
             'email' => 'rf@gmail.com',
-            'password' => Hash::make('magiconline'),
+            'password' => Hash::make('123456789'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

@@ -120,10 +120,7 @@ const showingNavigationDropdown = ref(false);
                                             </template>
                                             <template #content>
                                                 <DropdownLink :href="route('ListTornejos')"> Veure Tornejos</DropdownLink>
-                                                <DropdownLink> Crear Torneig</DropdownLink>
-                                                <DropdownLink> Els meus Tornejos</DropdownLink>
-                                                <DropdownLink> Modificar Tornejos</DropdownLink>
-
+                                                <DropdownLink > Els meus Tornejos</DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
