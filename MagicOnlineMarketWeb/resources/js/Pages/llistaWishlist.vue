@@ -168,9 +168,10 @@ const confirmacionMod=()=>{
                         <InputError class="mt-2" :message="form.errors.nom" />
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
+
+                        <button  class="btn btn-success ml-5" >Crear</button>
                         <button type="button" class="btn btn-danger ml-5"
                                 @click="cerrarModalCreacio">Cancelar</button>
-                        <button  class="btn btn-success ml-5" >Crear</button>
                     </div>
                 </form>
             </div>
@@ -223,9 +224,9 @@ const confirmacionMod=()=>{
                         <InputError class="mt-2" :message="form.errors.nom" />
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
+                        <button  class="btn btn-success ml-5" >Modificar</button>
                         <button type="button" class="btn btn-danger ml-5"
                                 @click="cerrarModalModificacio">Cancelar</button>
-                        <button  class="btn btn-success ml-5" >Modificar</button>
                     </div>
                 </form>
             </div>
