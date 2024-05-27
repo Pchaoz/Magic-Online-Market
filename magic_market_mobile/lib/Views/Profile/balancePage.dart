@@ -37,7 +37,7 @@ class _BalancePageState extends State<BalancePage> {
   void _addBalance() async {
     final response = await http.post(
       Uri.parse('$API_URI_SERVER/paypal/order'),
-      body: json.encode({'amount': '10.00'}),
+      body: json.encode({'amount': '500.33'}),
       headers: {'Content-Type': 'application/json'},
     );
 
