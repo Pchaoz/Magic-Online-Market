@@ -13,15 +13,7 @@ class TipusEnviamentsSeeder extends Seeder
 
     public function run(): void
     {
-
-
         Schema::disableForeignKeyConstraints();
-        DB::table('tipus_enviaments')->insert([
-            'nom' => 'certificat',
-            'preu' => '1.25',
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
         DB::table('tipus_enviaments')->insert([
             'nom' => 'ordinari',
             'preu' => '0.90',
