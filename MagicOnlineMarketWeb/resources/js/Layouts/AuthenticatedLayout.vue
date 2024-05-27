@@ -206,7 +206,7 @@ const showingNavigationDropdown = ref(false);
                                                 <DropdownLink  :href="route('ListExpansions')"> Administrar Expansions </DropdownLink>
                                                 <DropdownLink  :href="route('ListCategProductes')"> Administrar Categories de Productes </DropdownLink>
                                                 <DropdownLink  :href="route('formulariCartes')"> Crear Cartes </DropdownLink>
-
+                                                <DropdownLink  :href="route('ListTipusEnviaments')"> Administrar Tipus Enviaments </DropdownLink>
                                             </template>
                                         </Dropdown>
                                     </div>
@@ -244,6 +244,7 @@ const showingNavigationDropdown = ref(false);
 
                                     <template #content>
                                         <DropdownLink :href="route('profile.edit')"> Perfil </DropdownLink>
+                                        <DropdownLink :href="route('ListUserdirections')"> Direccions </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
                                             Desconectar
                                         </DropdownLink>

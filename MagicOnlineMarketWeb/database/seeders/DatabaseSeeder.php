@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
         $this->call([ProductesSeeder::class]);
         $this->call([ResultatSeeder::class]);
         $this->call([ArticlesSeeder::class]);
-        $this->call([UsuariDireccioSeeder::class]);
         $this->call([TipusTorneigSeeder::class]);
         $this->call([TornejosSeeder::class]);
         $this->call([ComandesSeeder::class]);

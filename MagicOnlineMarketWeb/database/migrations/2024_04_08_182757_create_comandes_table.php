@@ -12,8 +12,9 @@ return new class extends Migration
         Schema::create('comandes', function (Blueprint $table) {
             $table->bigIncrements("idComanda");
             $table->double("preuTotal");
+            $table->double("comisio")->default(0);
             $table->boolean("isEnviament")->default(false);
-            $table->enum("EstatComanda",["En compra","Pendent pagament","Pagada","Pendent recollida","Enviada","Complerta","Anulada","Incidencia"])->nullable();
+            $table->enum("EstatComanda",["En compra","Pendent pagament","Pagada","Pendent recollida", "Pendent preparacio","Pendent enviament","Enviada","Complerta","Anulada","Incidencia"])->nullable();
             $table->foreignId("idEnviament")->nullable()->constrained('enviaments')->references('idEnviament');
             $table->foreignId("idComprador")->nullable()->constrained('usuaris')->references('idUsuari');
             $table->foreignId("idVenedor")->nullable()->constrained('usuaris')->references('idUsuari');
