@@ -21,7 +21,7 @@ class LiniesController extends Controller
         ->leftJoin('usuaris as venedor', 'comandes.idVenedor', '=', 'venedor.idUsuari')
         ->leftJoin('usuaris as comprador', 'comandes.idComprador', '=', 'comprador.idUsuari')
         ->select('venedor.nick AS nickVenedor', 'comprador.nick AS nickComprador','comandes.preuTotal AS total',
-            'comandes.estatComanda AS estat','comprador.idRol as idComprador','comandes.idVenedor as idVenedor')
+            'comandes.estatComanda AS estat','comandes.idComprador as idComprador','comandes.idVenedor as idVenedor')
         ->where('comandes.idComanda', '=', $id)
         ->first();
         $linies = DB::table('linies')
