@@ -23,6 +23,7 @@ class _AddToWishList extends State<AddToWishListPage> {
   @override
   void initState() {
     super.initState();
+    print(widget.productID.toString());
     fetchWishLists();
   }
 
@@ -62,17 +63,16 @@ class _AddToWishList extends State<AddToWishListPage> {
   }
 
   void addToWishlist() async {
+    var idProdcut = widget.productID;
+    print(idProdcut.toString());
+    print(selectedWishlistID);
+
     if (selectedWishlistID != null) {
-      final response = await http.post(
-        Uri.parse('$API_URI_SERVER/addProductToWishlist'),
-        headers: {
-          'Content-Type': 'application/js4on',
-        },
-        body: json.encode({
-          'idWishlist': selectedWishlistID,
-          'idProducte': widget.productID,
-        }),
-      );
+      final response = await http
+          .post(Uri.parse('$API_URI_SERVER/addProductToWishlist'), body: {
+        'idWishlist': selectedWishlistID.toString(),
+        'idProducte': idProdcut.toString(),
+      });
 
       print("LA RESPUESTA DEL AGREGAR A WISHLIST ES -> ${response.statusCode}");
 
