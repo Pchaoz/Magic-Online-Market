@@ -5,11 +5,16 @@ import {ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import InputLabel from "@/Components/InputLabel.vue";
 import Modal from "@/Components/Modal.vue";
+import TextInput from "@/Components/TextInput.vue";
+import InputError from "@/Components/InputError.vue";
 
 defineProps({
     tornejos: {
         type: Array(String),
-    }
+    },
+    tipusTornejos:{
+        type: Array(String),
+    },
 });
 let showModal = ref(false);
 let showModalEliminacio = ref(false);
@@ -25,10 +30,7 @@ const form = useForm({
     max:0,
     idTipus:"",
     ronda:0,
-    horaInici:null,
-
-
-
+    dataHoraInici:null,
 });
 
 //crear Torneig
@@ -39,13 +41,17 @@ const abrirModalCreacio = () =>{
     form.max=0;
     form.idTipus="";
     form.ronda=0;
-    form.formhoraInici=null;
+    form.dataHoraInici=null;
     showModalCreacio.value=true;
 }
 
 const cerrarModalCreacio = () =>{
     showModalCreacio.value=false;
     showModalCreacioConfirmacio.value=false;
+}
+
+const crearTorneig = () =>{
+
 }
 
 
@@ -60,6 +66,7 @@ const cerrarModalCreacio = () =>{
             <table class="table table-striped my-table w-100 ">
                 <thead>
                 <tr>
+                    <th>Nom Torneig</th>
                     <th>Participants</th>
                     <th>Mínim</th>
                     <th>Màxim</th>
@@ -75,6 +82,7 @@ const cerrarModalCreacio = () =>{
                 </thead>
                 <tbody>
                 <tr v-for="torneig in tornejos" :key="torneig.id"  >
+                    <td>{{torneig.nomTorneig}}</td>
                     <td>{{torneig.num}}</td>
                     <td>{{ torneig.min }}</td>
                     <td>{{ torneig.max }}</td>
@@ -108,7 +116,34 @@ const cerrarModalCreacio = () =>{
         <Modal :show="showModalCreacio" maxWidth="2xl" closeable @close="cerrarModalCreacio" >
             <div class="modal-content w-100">
                 <div class="d-flex justify-content-center m-3 ">
-
+                    <InputLabel for="nom" value="Nom Wishlist"/>
+                    <TextInput id="nom"  type="text" v-model="form.nom" required autofocus
+                               autocomplete="nom" class="mt-1 block w-full" maxlength="40" style="color: black;" />
+                    <InputError class="mt-2" :message="form.errors.nom" />
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <InputLabel for="max" value="Màxim jugadors:"/>
+                    <Input id="max"  type="number" v-model="form.max" required autofocus
+                                class="mt-1 block w-full"  :min="2" step="1"  style="color: black;" />
+                    <InputError class="mt-2" :message="form.errors.max" />
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <InputLabel for="min" value="Mínim jugadors(per defecte 2): "/>
+                    <Input id="min"  type="number" v-model="form.min" required autofocus
+                               class="mt-1 block w-full" :min="2" step="1" style="color: black;" />
+                    <InputError class="mt-2" :message="form.errors.min" />
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <InputLabel for="nom" value="Tipus Torenig"/>
+                    <Input id="nom"  type="text" v-model="form.nom" required autofocus
+                               autocomplete="nom" class="mt-1 block w-full" maxlength="40" style="color: black;" />
+                    <InputError class="mt-2" :message="form.errors.nom" />
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <InputLabel for="dataHora" value="Data i Hora d'Inici:"/>
+                    <Input id="dataHora"  type="datetime-local" v-model="form.dataHoraInici" required
+                           class="mt-1 block w-full"  style="color: black;" />
+                    <InputError class="mt-2" :message="form.errors.dataHoraInici" />
                 </div>
                 <div class="d-flex justify-content-center m-3 ">
                     <button type="button" class="btn btn-success ml-5"
