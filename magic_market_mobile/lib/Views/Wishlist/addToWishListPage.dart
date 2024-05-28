@@ -80,10 +80,13 @@ class _AddToWishList extends State<AddToWishListPage> {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Producte afegit a la wishlist'),
         ));
+      } else if (response.statusCode == 400) {
+        print(json.decode(response.body)['message'].toString());
+        String msg = json.decode(response.body)['message'].toString();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(msg),
+        ));
       } else {
-        if (response.statusCode == 400) {
-          print(json.decode(response.body.toString()));
-        }
         showDialog(
           context: context,
           builder: (BuildContext context) {
