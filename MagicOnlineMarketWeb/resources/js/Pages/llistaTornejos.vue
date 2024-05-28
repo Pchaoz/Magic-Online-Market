@@ -135,9 +135,11 @@ const crearTorneig = () =>{
                 </div>
                 <div class="d-flex justify-content-center m-3 ">
                     <InputLabel for="nom" value="Tipus Torenig"/>
-                    <Input id="nom"  type="text" v-model="form.nom" required autofocus
-                               autocomplete="nom" class="mt-1 block w-full" maxlength="40" style="color: black;" />
-                    <InputError class="mt-2" :message="form.errors.nom" />
+                    <select id="idTipus" v-model="form.idTipus"   style="color: black;">
+                        <option v-for="tipusTorneig in tipusTornejos" v-bind:key="tipusTorneig.idTipus" v-bind:value="tipusTorneig.idTipus">
+                            {{tipusTorneig.descripcio}}
+                        </option>
+                    </select>
                 </div>
                 <div class="d-flex justify-content-center m-3 ">
                     <InputLabel for="dataHora" value="Data i Hora d'Inici:"/>
