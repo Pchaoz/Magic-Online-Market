@@ -157,6 +157,14 @@ class WishlistControler extends Controller
     {
         $wishlistProducte = WishlistProducte::find($request->idWishListProducte);
         $wishlistProducte->delete();
+        return response()->json(['message' => "Producte remogut de la wishlist correctament"], 200);
+    }
+
+    public function deleteWishlist(Request $request)
+    {
+        $wishlist = Wishlist::find($request->idWishlist);
+        $wishlist->delete();
+        return response()->json(['message' => "Wishlist eliminada correctament"], 200);
     }
 
 }

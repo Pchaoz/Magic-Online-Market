@@ -79,11 +79,9 @@ class _BalancePageState extends State<BalancePage> {
           MaterialPageRoute(builder: (context) => BalancePage()),
         );
       } else {
-        // Manejo de error
         print("Payment not completed");
       }
     } else {
-      // Manejo de error
       print("Error capturing payment");
     }
   }

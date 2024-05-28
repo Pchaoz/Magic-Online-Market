@@ -188,6 +188,7 @@ Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::
 Route::get('/api/getWishListByWishListID/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishListByWishListID'])->name('getWishListByWishListID');
 Route::post('/api/addProductToWishlist', [\App\Http\Controllers\WishlistControler::class,'addProductToWishlist'])->name('addProductToWishlist');
 Route::delete('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControler::class,'removeFromWishlist'])->name('removeFromWishlist');
+Route::delete('/api/removeWishList', [\App\Http\Controllers\WishlistControler::class,'deleteWishlist'])->name('deleteWishlist');
 
 //funcions controller Tornejos
 Route::get('/getAllTornejos', [\App\Http\Controllers\TornejosController::class,'ListTornejos'])->name('ListTornejos');
