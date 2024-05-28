@@ -82,7 +82,7 @@ class _AddToWishList extends State<AddToWishListPage> {
         ));
       } else {
         if (response.statusCode == 400) {
-          print(json.decode(response.body).toString());
+          print(json.decode(response.body.toString()));
         }
         showDialog(
           context: context,
