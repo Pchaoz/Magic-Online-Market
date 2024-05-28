@@ -30,8 +30,7 @@ class _AddToWishList extends State<AddToWishListPage> {
     final response =
         await http.get(Uri.parse('$API_URI_SERVER/getWishlistUser/$userID'));
 
-    print(
-        "STATUSCODE AGREGAR A WISHLISTS USER -> $userID : ${response.statusCode}");
+    print("STATUSCODE GET WISHLISTS USER -> $userID : ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
@@ -74,6 +73,8 @@ class _AddToWishList extends State<AddToWishListPage> {
           'idProducte': widget.productID,
         }),
       );
+
+      print("LA RESPUESTA DEL AGREGAR A WISHLIST ES -> ${response.statusCode}");
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -64,7 +64,7 @@ class _WishListPage extends State<WishListsPage> {
 
   void _removeWishlist(int wishlistID) async {
     final response = await http.delete(
-      Uri.parse('$API_URI_SERVER/removeWishlist'),
+      Uri.parse('$API_URI_SERVER/removeWishList'),
       headers: {
         'Content-Type': 'application/json',
       },

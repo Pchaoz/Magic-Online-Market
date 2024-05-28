@@ -134,7 +134,7 @@ class WishlistControler extends Controller
         return response()->json(['message' => "Wishlist creada correctament"], 200);
     }
 
-    public function addProductToWishlist(Request $request)
+    public function addProductToWishlistAPI(Request $request)
     {
         $wishlist = Wishlist::find($request->idWishlist);
 
