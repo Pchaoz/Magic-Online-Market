@@ -81,6 +81,9 @@ class _AddToWishList extends State<AddToWishListPage> {
           content: Text('Producte afegit a la wishlist'),
         ));
       } else {
+        if (response.statusCode == 400) {
+          print(json.decode(response.body).toString());
+        }
         showDialog(
           context: context,
           builder: (BuildContext context) {

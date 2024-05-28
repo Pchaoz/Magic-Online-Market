@@ -136,6 +136,7 @@ class WishlistControler extends Controller
 
     public function addProductToWishlistAPI(Request $request)
     {
+        return response()->json(['message' => $request], 400);
         $wishlist = Wishlist::find($request->idWishlist);
 
         $existingProduct = WishlistProducte::where('idProducte', $request->idProducte)
