@@ -153,8 +153,8 @@ const abrirModalQuantitatIncorrecta = () => {
                     </b-col>
                     <b-col cols="6" class="text-white m-3">
                     <h2>{{ producte[0].nom }}</h2>
-                        <p>Categoria de producte: {{ producte[0].categoriaProducteNom }}</p>
-                        <p>Expansió del producte: {{ producte[0].expansioNom }}</p>
+                        <p>Categoria de producte: {{ producte[0].categoriaProducteNom || 'Sense Categoria' }}</p>
+                        <p>Expansió del producte: {{ producte[0].expansioNom || 'Sense Expansió'}}</p>
                     </b-col>
                 </b-row>
             </b-container>

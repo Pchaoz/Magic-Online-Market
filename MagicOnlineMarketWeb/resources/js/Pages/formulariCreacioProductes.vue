@@ -65,25 +65,9 @@ const insertProducte =()=>{
         return;
     }
     formProducteInsert.post('crearProducte');
-    confirmacio();
-}
-
-const confirmacio =()=>{
-    showModal.value = true;
     setTimeout(() => {
-        formProducteInsert.idProducte='';
-        formProducteInsert.nom='';
-        formProducteInsert.descripcio='';
-        formProducteInsert.imatge='';
-        formProducteInsert.idCategoriaProducte='';
-        formProducteInsert.idExpansio='';
-        formProducteInsert.idCarta='';
-        formProducteInsert.imatgeMiniatura='';
-        showModal.value = false;
-        document.getElementById('imatge').value = '';
-        useForm.visit(window.location.pathname);
+        window.location.href = '/getAllProductes';
     }, 500);
-
 }
 
 const cerrarModalImatgeIncorrecta=()=>{
@@ -189,13 +173,6 @@ const abrirModalImatgeIncorrecta = () => {
     </div>
 </VForm>
             </div>
-            <Modal :show="showModal" maxWidth="2xl" closeable @close="cerrarForm" >
-                <div class="modal-content w-100">
-                    <div class="d-flex justify-content-center m-3 ">
-                        <p>Producte Creat!</p>
-                    </div>
-                </div>
-            </Modal>
             <Modal :show="showModalImatgeIncorrecta" maxWidth="2xl" closeable @close="cerrarModalImatgeIncorrecta" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-between m-3 align-items-start">

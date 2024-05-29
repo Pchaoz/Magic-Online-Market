@@ -39,10 +39,8 @@ async function abrirModalCarret() {
 
 function confirmarCompra () {
     auxform.post('/confirmarCompra');
-    showModalconfirmarCompra.value = true;
     setTimeout(() => {
-        cerrarModals();
-        useForm.visit(window.location.pathname);
+        window.location.href = '/listComandesCompres';
     }, 500);
 }
 
@@ -102,7 +100,7 @@ const total = computed(() => {
     <div class="modal-content w-100">
         <div class="d-flex justify-content-center m-3">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="d-flex justify-content-center p-2">
                     <h5 class="modal-title" id="exampleModalLabel">Carret de compra</h5>
                 </div>
                 <div class="modal-body">
@@ -127,7 +125,6 @@ const total = computed(() => {
                             <td>
                                 <img :src="/images/+'paperera.png'" alt="Imatge paperera" width="25" height="25" style="filter: brightness(0) invert(1);"  @click="abrirModalEliminacio(comanda)">
                             </td>
-
                         </tr>
                         </tbody>
                         <tfoot>
@@ -141,11 +138,9 @@ const total = computed(() => {
                     </table>
                 </div>
                 <div class="d-flex justify-content-center m-3 ">
-                <button class="btn btn-success rounded-pill ml-5"  @click="confirmarCompra">Confirmar compra</button>
+                    <button class="btn btn-success rounded-pill mr-5"  @click="confirmarCompra">Confirmar comandes</button>
+                    <button class="btn btn-danger rounded-pill mrl-5"  @click="cancelarCompra">Buidar Carret</button>
                 </div >
-                <div class="modal-footer">
-                    <button class="btn btn-danger rounded-pill ml-5"  @click="cancelarCompra">Buidar Carret</button>
-                </div>
             </div>
         </div>
     </div>

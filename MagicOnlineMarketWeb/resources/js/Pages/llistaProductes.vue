@@ -231,8 +231,12 @@ const abrirModalQuantitatIncorrecta = () => {
                         <a :href="'/veureArticlesProducte/' + producte.idProducte">{{ producte.nom }}</a>
                     </td>
                     <td>{{producte.descripcio}}</td>
-                    <td> {{producte.categoriaProducteNom}} </td>
-                    <td> {{producte.expansioNom}}</td>
+                    <td>
+                        {{ producte.categoriaProducteNom || 'Sense Categoria' }}
+                    </td>
+                    <td>
+                        {{ producte.expansioNom || 'Sense Expansió' }}
+                    </td>
                     <td v-if="$page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==2 ">
                         <b-button  class="btn btn-success rounded-pill"
                                    @click="modProducte(producte.idProducte)">Modificar</b-button>

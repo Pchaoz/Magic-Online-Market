@@ -181,6 +181,15 @@ const abrirModalInsuficientSaldo = () => {
     showModalInsuficientSaldo.value =true;
 }
 
+
+//--------Eliminar productes de Wishlist-------//
+const eliminarProductesWishlist = () => {
+    formComanda.post('eliminarProductesWishlist');
+    confirmacioPagament();
+}
+
+
+
 //realitzar tasques de canvi estat
 const realitzarTasca = (comanda,estat) => {
     formComanda.idComanda =comanda.idComanda;
@@ -257,8 +266,6 @@ const anularComanada = () =>{
 }
 
 
-
-
 </script>
 
 <template>
@@ -299,7 +306,7 @@ const anularComanada = () =>{
                         <button class="btn btn-success rounded-pill"
                                 @click="realitzarTasca(comanda,'Pendent recollida')" v-if="$page.props.auth.user.idUsuari==comanda.idVenedor && comanda.estat==='Pendent preparacio'">PREPARAT</button>
                         <button class="btn btn-success rounded-pill"
-                                @click="realitzarTasca(comanda,'Complerta')"  v-if="$page.props.auth.user.idUsuari==comanda.idComprador && comanda.estat==='Pendent recollida'">RECOLLIT</button>
+                                @click="realitzarTasca(comanda,'Complerta')"  v-if="$page.props.auth.user.idUsuari==comanda.idVenedor && comanda.estat==='Pendent recollida'">RECOLLIT</button>
                         <button class="btn btn-success rounded-pill" v-if="$page.props.auth.user.idUsuari==comanda.idComprador && comanda.estat==='Enviada'"
                                 @click="realitzarTasca(comanda,'Complerta')">REBUT</button>
                     </td>
@@ -320,12 +327,15 @@ const anularComanada = () =>{
                 </tbody>
             </table>
             <Modal :show="showModalTramitacio" maxWidth="2xl" @close="closeTramit" >
+                <div class="d-flex justify-content-center p-2">
+                    <h5 class="modal-title" id="exampleModalLabel">Tipus de recollida y pagament de la comanda</h5>
+                </div>
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3">
                         <form class="w-100 rounded">
                             <div class="m-2 text-center font-weight-bold">
                                 <div class="d-flex justify-content-center m-3 ">
-                                    <InputLabel for="isEnviament" value="Enviament?" class="m-2"  style="font-size: 16px;"/>
+                                    <InputLabel for="isEnviament" value="Vols enviar aquest producte?" class="m-2"  style="font-size: 16px;"/>
                                     <input
                                         id="isEnviament"
                                         type="checkbox"
@@ -394,8 +404,15 @@ const anularComanada = () =>{
                         <button @click="cerrarconfirmacioPagament" style="border: none; background: none;">
                             <img :src="/images/+'cierre.jpg'" alt="Cerrar" style="width: 10px; height: 10px;" />
                         </button>
-                        <p>Transacció de Pagament realitzada!</p>
-                        <div></div>
+                        <h2 class="text-center mr-14">Pagament realitzat correctament!</h2>
+                    </div>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <p>Vols eliminar els articles comprats de les teves Wishlist?</p>
+                    </div>
+                    <div class="d-flex justify-content-center m-3 ">
+                        <button type="button" class="btn btn-success mr-5"
+                                @click="eliminarProductesWishlist">Sí</button>
+                        <button type="button" class="btn btn-danger ml-5" @click="cerrarconfirmacioPagament">No</button>
                     </div>
                 </div>
             </Modal>
