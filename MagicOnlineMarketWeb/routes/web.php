@@ -190,6 +190,7 @@ Route::post('/api/paypal/order', [PayPalController::class, 'createOrder']);
 Route::post('/api/paypal/capture', [PayPalController::class, 'captureOrder']);
 Route::get('/api/paypal/success', [PayPalController::class, 'success']);
 Route::get('/api/paypal/cancel', [PayPalController::class, 'cancel']);
+Route::post('/api/paypal/withdraw', [PayPalController::class, 'withdraw']);
 //-----------------------------------API----------------------------------------//
 //funcions tipus enviaments
 Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments')->middleware(\App\Http\Middleware\checkUserIdRol::class);

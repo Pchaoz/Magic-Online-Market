@@ -65,4 +65,46 @@ class PayPalController extends Controller
     {
         return view('paypal.cancel');
     }
+
+    public function withdraw(Request $request)
+    {
+        $user = User::find($request->userID);
+        $amount = $request->amount;
+
+        // Verifica que el usuario tenga saldo suficiente
+        if ($user->saldo < $amount) {
+            return response()->json(['message' => 'Saldo insuficiente'], 400);
+        }
+
+        $provider = new PayPalClient;
+        $provider->setApiCredentials(config('paypal'));
+        $paypalToken = $provider->getAccessToken();
+        $provider->setAccessToken($paypalToken);
+
+        $payout = $provider->createPayout([
+            'sender_batch_header' => [
+                'email_subject' => 'You have a payout!',
+            ],
+            'items' => [
+                [
+                    'recipient_type' => 'EMAIL',
+                    'amount' => [
+                        'value' => $amount,
+                        'currency' => 'EUR'
+                    ],
+                    'receiver' => $user->paypal_email,
+                    'note' => 'Thanks for using our service!',
+                ],
+            ],
+        ]);
+
+        // Verificar si el pago fue exitoso
+        if ($payout['batch_header']['batch_status'] === 'SUCCESS') {
+            $user->saldo -= $amount;
+            $user->save();
+            return response()->json(['message' => 'Retiro exitoso', 'payout' => $payout], 200);
+        }
+
+        return response()->json(['message' => 'Error al procesar el retiro', 'payout' => $payout], 500);
+    }
 }

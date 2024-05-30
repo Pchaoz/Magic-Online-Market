@@ -38,7 +38,7 @@ class _BalancePageState extends State<BalancePage> {
   void _addBalance() async {
     final response = await http.post(
       Uri.parse('$API_URI_SERVER/paypal/order'),
-      body: json.encode({'amount': '500.33'}),
+      body: json.encode({'amount': '30.33'}),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -74,10 +74,12 @@ class _BalancePageState extends State<BalancePage> {
       print(
           "Capture Payment Result: $result"); // Imprimir el resultado completo para depuración
       if (result['status'] == 'COMPLETED') {
-        final amountStr = result['purchase_units'][0]['amount']['value'];
-        print("Captured Amount: $amountStr"); // Imprimir el monto capturado
+        // Navegar a la cantidad capturada en el JSON
+        final amount = result['purchase_units'][0]['payments']['captures'][0]
+            ['amount']['value'];
+        print("Captured Amount: $amount"); // Imprimir el monto capturado
         setState(() {
-          _balance += double.parse(amountStr);
+          _balance += double.parse(amount);
         });
         Navigator.pushReplacement(
           context,
@@ -88,6 +90,25 @@ class _BalancePageState extends State<BalancePage> {
       }
     } else {
       print("Error capturing payment");
+    }
+  }
+
+  void _withdrawBalance(double amount) async {
+    final response = await http.post(
+      Uri.parse('$API_URI_SERVER/paypal/withdraw'),
+      body: json.encode({'userID': userID, 'amount': amount}),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    print("WITHDRAW BALANCE STATUSCODE: ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _balance -= amount;
+      });
+      print("Withdraw successful");
+    } else {
+      print("Error withdrawing balance");
     }
   }
 
@@ -123,7 +144,10 @@ class _BalancePageState extends State<BalancePage> {
                   child: const Text('Recargar Saldo'),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    double amountToWithdraw = 10.0; //CANTIDAD A RETIRAR
+                    _withdrawBalance(amountToWithdraw);
+                  },
                   child: const Text('Retirar Saldo'),
                 ),
               ],
