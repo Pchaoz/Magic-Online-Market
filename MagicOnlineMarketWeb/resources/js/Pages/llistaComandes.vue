@@ -409,9 +409,10 @@ const anularComanada = () =>{
                         </button>
                         <h2 class="text-center mr-14">Pagament realitzat correctament!</h2>
                     </div>
-                    <div class="d-flex justify-content-center m-3 ">
+                    <form class="w-75 rounded m-3">
+                    <div>
                         <p>Vols eliminar els articles comprats de les teves Wishlist?<br>
-                        Quines wishlists vols eleminar?</p>
+                        Quines wishlists vols actualitzar?</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-3 ">
                         <div v-for="wishlist in wishlists" :key="wishlist.idWishlist">
@@ -419,11 +420,13 @@ const anularComanada = () =>{
                             <label :for="wishlist.idWishlist">{{ wishlist.nomWishlist }}</label>
                         </div>
                     </div>
+                    </form>
                     <div class="d-flex justify-content-center m-3 ">
                         <button type="button" class="btn btn-success mr-5"
                                 @click="eliminarProductesWishlist">Sí</button>
                         <button type="button" class="btn btn-danger ml-5" @click="cerrarconfirmacioPagament">No</button>
                     </div>
+
                 </div>
             </Modal>
             <Modal :show="showModalTasca" maxWidth="2xl" closeable @close="tancarTasca" >
@@ -452,7 +455,7 @@ const anularComanada = () =>{
             <Modal :show="showModalAdministracio" maxWidth="2xl" @close="closeAdministracio" >
                 <div class="modal-content w-100">
                     <div class="d-flex justify-content-center m-3">
-                        <form class="w-100 rounded"  >
+                        <form class="w-100 rounded" >
                             <div class="m-2 text-center font-weight-bold">
                                 <InputLabel for="estat" value="Nou estat de la comanda: " class="m-2" style="font-size: 16px;" />
                                 <div class="d-flex justify-content-center">
