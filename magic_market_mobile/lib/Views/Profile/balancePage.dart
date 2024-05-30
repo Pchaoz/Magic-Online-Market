@@ -63,7 +63,7 @@ class _BalancePageState extends State<BalancePage> {
   void _capturePayment(String orderID) async {
     final response = await http.post(
       Uri.parse('$API_URI_SERVER/paypal/capture'),
-      body: json.encode({'orderID': orderID, 'userID': 'user_id'}),
+      body: json.encode({'orderID': orderID, 'userID': userID}),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -71,9 +71,13 @@ class _BalancePageState extends State<BalancePage> {
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
+      print(
+          "Capture Payment Result: $result"); // Imprimir el resultado completo para depuración
       if (result['status'] == 'COMPLETED') {
+        final amountStr = result['purchase_units'][0]['amount']['value'];
+        print("Captured Amount: $amountStr"); // Imprimir el monto capturado
         setState(() {
-          _balance += double.parse(result['amount']);
+          _balance += double.parse(amountStr);
         });
         Navigator.pushReplacement(
           context,

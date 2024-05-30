@@ -46,12 +46,15 @@ class PayPalController extends Controller
 
         if ($result['status'] === 'COMPLETED') {
             $user = User::find($request->userID);
-            $user->saldo += $request->amount;
+            $amount = $result['purchase_units'][0]['payments']['captures'][0]['amount']['value']; // Capturar el valor de la cantidad
+            $user->saldo += $amount;
             $user->save();
         }
 
         return response()->json($result);
     }
+
+
     public function success(Request $request)
     {
         $orderID = $request->query('token'); // Capturar el token del pedido
