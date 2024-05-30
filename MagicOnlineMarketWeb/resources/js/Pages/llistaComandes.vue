@@ -21,6 +21,9 @@ const props = defineProps({
     tipusEnviaments:{
         type: Array(String),
     },
+    wishlists:{
+        type: Array(String),
+    },
 });
 
 const options = ref([
@@ -83,6 +86,7 @@ const formComanda= useForm({
     totalFinal:0,
     comisio:0,
     estat:null,
+    idWishlists:[],
 })
 
 const formAdminComanda=  useForm({
@@ -185,7 +189,7 @@ const abrirModalInsuficientSaldo = () => {
 //--------Eliminar productes de Wishlist-------//
 const eliminarProductesWishlist = () => {
     formComanda.post('eliminarProductesWishlist');
-    confirmacioPagament();
+    //  confirmacioPagament();
 }
 
 
@@ -264,7 +268,6 @@ const anularComanada = () =>{
     showModalAnulacio.value =false;
     confirmacioProcesTasca();
 }
-
 
 </script>
 
@@ -407,7 +410,14 @@ const anularComanada = () =>{
                         <h2 class="text-center mr-14">Pagament realitzat correctament!</h2>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
-                        <p>Vols eliminar els articles comprats de les teves Wishlist?</p>
+                        <p>Vols eliminar els articles comprats de les teves Wishlist?<br>
+                        Quines wishlists vols eleminar?</p>
+                    </div>
+                    <div class="d-flex flex-column align-items-center m-3 ">
+                        <div v-for="wishlist in wishlists" :key="wishlist.idWishlist">
+                            <input class="m-2" type="checkbox" :id="wishlist.idWishlist" :value="wishlist.idWishlist" v-model="formComanda.idWishlists">
+                            <label :for="wishlist.idWishlist">{{ wishlist.nomWishlist }}</label>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-center m-3 ">
                         <button type="button" class="btn btn-success mr-5"

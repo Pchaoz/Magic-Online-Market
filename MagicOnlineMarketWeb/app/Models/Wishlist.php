@@ -14,7 +14,7 @@ class Wishlist extends Model
 
 
     public function wishlistproducte(){
-        return $this->belongsToMany(Cartes::class, 'whishlist_producte', 'idWishlist','idProducte')->using(WishlistProducte::class)->withTimestamps();
+        return $this->belongsToMany(Cartes::class, 'wishlist_producte', 'idWishlist','idProducte')->using(WishlistProducte::class)->withTimestamps();
     }
 
     public function propietariWishlist(){

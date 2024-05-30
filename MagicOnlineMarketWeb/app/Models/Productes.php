@@ -21,7 +21,7 @@ class Productes extends Model
     }
 
     public function whishlistProducte(){
-        return $this->belongsToMany(Baralles::class, 'whishlist_producte', 'idProducte','idWishlist')->using(WishlistProducte::class)->withTimestamps();
+        return $this->belongsToMany(Baralles::class, 'wishlist_producte', 'idProducte','idWishlist')->using(WishlistProducte::class)->withTimestamps();
     }
 
     public function cartes(){

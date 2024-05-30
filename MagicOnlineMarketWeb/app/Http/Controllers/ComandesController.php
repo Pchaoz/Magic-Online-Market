@@ -79,8 +79,11 @@ class ComandesController extends Controller
             ->select('usuaris.saldo as saldoComprador')
             ->where('idUsuari', Auth::id())
             ->first();
-
-        return Inertia::render('llistaComandes', ['comandes' => $comandes, 'direccions' => $direccions,  'titol'=>$titol, 'tipusEnviaments' => $tipusEnviaments,'saldo' => $saldo]);
+        $wishlists = DB::table('wishlists')
+            ->select('wishlists.idWishlist AS idWishlist', 'wishlists.nom AS nomWishlist')
+            ->where('wishlists.idPropietari', Auth::id())
+            ->get();
+        return Inertia::render('llistaComandes', ['comandes' => $comandes, 'direccions' => $direccions,  'titol'=>$titol, 'tipusEnviaments' => $tipusEnviaments,'saldo' => $saldo, 'wishlists'=> $wishlists]);
 
     }
     public function listComandesVendes ()

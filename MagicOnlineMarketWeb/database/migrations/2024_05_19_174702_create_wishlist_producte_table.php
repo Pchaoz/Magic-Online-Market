@@ -9,7 +9,7 @@ return new class extends Migration
     protected $fillable = ["idWishlistArticle"];
     public function up(): void
     {
-        Schema::create('whishlist_producte', function (Blueprint $table) {
+        Schema::create('wishlist_producte', function (Blueprint $table) {
             $table->bigIncrements("idWishlistProducte");
             $table->foreignId("idProducte")->constrained('productes')->references('idProducte');
             $table->foreignId("idWishlist")->constrained('wishlists')->references('idWishlist');

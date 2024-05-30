@@ -60,12 +60,12 @@ class WishlistControler extends Controller
     {
         $wishlist = Wishlist::find($id);
         if(Auth::user()->idRol==2||Auth::user()->idRol==1||Auth::user()->idUsuari==$wishlist->idPropietari){
-            $whishlistProductes = DB::table('whishlist_producte')
-                ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
-                ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
+            $whishlistProductes = DB::table('wishlist_producte')
+                ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'wishlist_producte.idWishlist')
+                ->leftJoin('productes', 'productes.idProducte', '=', 'wishlist_producte.idProducte')
                 ->select('productes.imatge AS imatgeProducte', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist',
-               'whishlist_producte.idWishlistProducte as idwp','whishlist_producte.idProducte as idProducte'  )
-                ->where('whishlist_producte.idWishlist','=',$wishlist->idWishlist)
+               'wishlist_producte.idWishlistProducte as idwp','wishlist_producte.idProducte as idProducte'  )
+                ->where('wishlist_producte.idWishlist','=',$wishlist->idWishlist)
                 ->get();
 
             return Inertia::render('vistaWishlist',['whishlistProductes'=>$whishlistProductes,'wishlist'=> $wishlist]);
@@ -113,11 +113,11 @@ class WishlistControler extends Controller
 
         $wishlist = Wishlist::find($id);
 
-        $whishlistProductes = DB::table('whishlist_producte')
-            ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'whishlist_producte.idWishlist')
-            ->leftJoin('productes', 'productes.idProducte', '=', 'whishlist_producte.idProducte')
+        $whishlistProductes = DB::table('wishlist_producte')
+            ->leftJoin('wishlists', 'wishlists.idWishlist', '=', 'wishlist_producte.idWishlist')
+            ->leftJoin('productes', 'productes.idProducte', '=', 'wishlist_producte.idProducte')
             ->select('productes.imatge AS imatge', 'productes.nom AS nomProducte', 'wishlists.nom as nomWishlist', 'productes.descripcio AS descripcio',
-                'whishlist_producte.idWishlistProducte as idwp','whishlist_producte.idProducte as idProducte'  )
+                'wishlist_producte.idWishlistProducte as idwp','wishlist_producte.idProducte as idProducte'  )
             ->where('whishlist_producte.idWishlist','=',$wishlist->idWishlist)
             ->get();
 
@@ -168,4 +168,24 @@ class WishlistControler extends Controller
         return response()->json(['message' => "Wishlist eliminada correctament"], 200);
     }
 
+    public function eliminarProductesWishlist(Request $request)
+    {
+        $idWishlists = $request->input('idWishlists');
+
+        $idProductesComanda = DB::table('comandes')
+            ->leftjoin('linies','linies.idComanda','=','comandes.idComanda')
+            ->leftjoin('articles','articles.idArticle','=','linies.idArticle')
+            ->select('articles.idProducte')
+            ->pluck('idProducte');
+        $wishlistProducts = DB::table('wishlist_producte')
+            ->select('wishlist_producte.idProducte as idProducte')
+            ->whereIn('idWishlist', $idWishlists)
+            ->whereIn('idProducte', $idProductesComanda)
+            ->get();
+
+        DB::table('wishlist_producte')
+            ->whereIn('idProducte', $wishlistProducts->pluck('idProducte'))
+            ->delete();
+
+    }
 }

@@ -12,19 +12,19 @@ class WishlistProductesSeeder extends Seeder
     public function run(): void
     {
         Schema::disableForeignKeyConstraints();
-        DB::table('whishlist_producte')->insert([
+        DB::table('wishlist_producte')->insert([
             'idProducte'=> '1',
             'idWishlist'=> '1',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('whishlist_producte')->insert([
+        DB::table('wishlist_producte')->insert([
             'idProducte'=> '2',
             'idWishlist'=> '1',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
-        DB::table('whishlist_producte')->insert([
+        DB::table('wishlist_producte')->insert([
             'idProducte'=> '3',
             'idWishlist'=> '2',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

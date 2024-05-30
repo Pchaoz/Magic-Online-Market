@@ -128,7 +128,6 @@ const confirmacionMod=()=>{
                 <thead>
                 <tr>
                     <th v-if=" $page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==2">Propietari</th>
-                    <th>Id Wishlist</th>
                     <th>Nom Wishlist</th>
                     <th></th>
                     <th></th>
@@ -138,7 +137,6 @@ const confirmacionMod=()=>{
                 <tbody>
                 <tr v-for="wishlist in wishlists" :key="wishlist.id"  >
                     <td v-if=" $page.props.auth.user.idRol==1 || $page.props.auth.user.idRol==2">{{wishlist.nickPropietari}}</td>
-                    <td>{{wishlist.idWishlist}}</td>
                     <td>
                     <a :href="'/veureWishlist/' + wishlist.idWishlist">{{wishlist.nomWishlist}}</a>
                     </td>
