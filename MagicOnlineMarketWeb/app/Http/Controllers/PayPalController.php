@@ -25,7 +25,11 @@ class PayPalController extends Controller
                         "value" => $request->amount
                     ]
                 ]
-            ]
+            ],
+            'application_context' => [
+                'return_url' => url('/api/paypal/success'),
+                'cancel_url' => url('/api/paypal/cancel'),
+            ],
         ]);
 
         return response()->json($order);
@@ -47,5 +51,15 @@ class PayPalController extends Controller
         }
 
         return response()->json($result);
+    }
+    public function success(Request $request)
+    {
+        $orderID = $request->query('token'); // Capturar el token del pedido
+        return view('paypal.success', ['orderID' => $orderID]);
+    }
+
+    public function cancel()
+    {
+        return view('paypal.cancel');
     }
 }

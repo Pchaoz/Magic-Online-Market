@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import '../Views/Cards/cardsPage.dart';
 import '../Views/Profile/loginPage.dart';
 import '../Views/Profile/profilePage.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 //IP SERVIDOR -> 162.19.74.238:8080
 //IP LOCAL PRUEBAS -> 10.1.85.13:8000
@@ -27,6 +28,12 @@ bool isAuthenticated = false;
 String userName = "";
 int roleID = 0;
 int userID = 0;
+
+void requestBluetoothPermission() async {
+  if (await Permission.bluetooth.isDenied) {
+    Permission.bluetooth.request();
+  }
+}
 
 void setAuth(bool auth, String username, int id) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();

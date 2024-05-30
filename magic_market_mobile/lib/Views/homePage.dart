@@ -49,6 +49,7 @@ class _HomePageContentState extends State<HomePageContent> {
   @override
   void initState() {
     super.initState();
+    requestBluetoothPermission();
     reloadPref(context);
     fetchNews();
     fetchLastArticles();

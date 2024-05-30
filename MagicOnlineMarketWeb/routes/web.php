@@ -36,8 +36,6 @@ Route::post('/editarUsuari', [\App\Http\Controllers\UserController::class,'edita
 Route::get('/api/getUser/{id}', [\App\Http\Controllers\UserController::class,'APIgetUser'])->name('APIgetUser');
 Route::get('/api/getSalary/{id}', [\App\Http\Controllers\UserController::class,'getSaldoAPI'])->name('getSaldoAPI');
 
-
-
 //funciones controller cartas
 Route::get('/getAllCartes', [\App\Http\Controllers\CartesController::class,'ListCartes'])->name('getAllCartes');
 Route::get('/getAllCartesByRaresa/{raresa}', [\App\Http\Controllers\CartesController::class,'getAllCartesByRaresa'])->name('getAllCartesByRaresa');
@@ -61,10 +59,8 @@ Route::get('/modificarNomRol/{id}/{nom}',[\App\Http\Controllers\RolsController::
 Route::post('/editarRol',[\App\Http\Controllers\RolsController::class,'editarRol'])->name('editarRol')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
 Route::delete('/eliminarRol',[\App\Http\Controllers\RolsController::class, 'eliminarRol'])->name('eliminarRol')->middleware(\App\Http\Middleware\checkSuperIdRol::class);
 
-
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllRols', [\App\Http\Controllers\RolsController::class,'APIListRols'])->name('APIListRols');
-
 
 //funcions controller productes
 Route::get('/getAllProductes', [\App\Http\Controllers\ProductesController::class,'ListProductes'])->name('ListProductes');
@@ -80,8 +76,6 @@ Route::post('/crearProducte',[\App\Http\Controllers\ProductesController::class, 
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getAllProductes', [\App\Http\Controllers\ProductesController::class,'APIListProductes'])->name('APIListProductes');
 Route::get('/api/getLastProductes', [\App\Http\Controllers\ProductesController::class,'APILastProductes'])->name('APILastProductes');
-
-
 
 //funcions controller Articles
 Route::get('/crearArticle',[\App\Http\Controllers\ArticleController::class, 'crearArticle'])->name('crearArticle')->middleware(\App\Http\Middleware\checkVendorIdRol::class);
@@ -109,7 +103,6 @@ Route::get('/veureNoticia/{id}',[\App\Http\Controllers\NoticiesController::class
 Route::get('/formModNoticia',[\App\Http\Controllers\NoticiesController::class, 'formModNoticia'])->name('formModNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 Route::post('/modNoticia',[\App\Http\Controllers\NoticiesController::class, 'modNoticia'])->name('modNoticia')->middleware(\App\Http\Middleware\checkUserIdRol::class);
 
-
 //-----------------------------------API----------------------------------------//
 Route::get('/api/noticies/{id}',[\App\Http\Controllers\NoticiesController::class, 'getNoticiaByIdAPI'])->name('getNoticiaByIdAPI');
 Route::get('/api/noticies/',[\App\Http\Controllers\NoticiesController::class, 'getNoticiesAPI'])->name('getNoticiesAPI');
@@ -128,8 +121,6 @@ Route::post('/confirmarCompra',[\App\Http\Controllers\ComandesController::class,
 Route::post('/confirmarPagament',[\App\Http\Controllers\ComandesController::class, 'confirmarPagament'])->name('confirmarPagament');
 Route::post('/confirmarNouEstat',[\App\Http\Controllers\ComandesController::class, 'confirmarNouEstat'])->name('confirmarNouEstat');
 Route::post('/anularComanda',[\App\Http\Controllers\ComandesController::class, 'anularComanda'])->name('anularComanda')->middleware(\App\Http\Middleware\checkUserIdRol::class);
-
-
 
 //funcions controller Linies
 Route::get('/veureLinies/{id}',[\App\Http\Controllers\LiniesController::class, 'veureLiniesComanda'])->name('veureLiniesComanda');
@@ -182,6 +173,7 @@ Route::post('/modWishlist', [\App\Http\Controllers\WishlistControler::class,'mod
 Route::get('/veureWishlist/{id}', [\App\Http\Controllers\WishlistControler::class,'veureWishlist'])->name('veureWishlist');
 Route::delete('/eliminarProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'eliminarProducteWishlist'])->name('eliminarProducteWishlist');
 Route::post('/afegirProducteWishlist', [\App\Http\Controllers\WishlistControler::class,'afegirProducteWishlist'])->name('afegirProducteWishlist');
+
 //-----------------------------------API----------------------------------------//
 Route::get('/api/getWishlistUser/{id}', [\App\Http\Controllers\WishlistControler::class,'getWishlistsByUserID'])->name('getWishlistsByUserID');
 Route::post('/api/createNewWishList', [\App\Http\Controllers\WishlistControler::class,'createNewWishList'])->name('createNewWishList');
@@ -193,10 +185,11 @@ Route::delete('/api/removeWishList', [\App\Http\Controllers\WishlistControler::c
 //funcions controller Tornejos
 Route::get('/getAllTornejos', [\App\Http\Controllers\TornejosController::class,'ListTornejos'])->name('ListTornejos');
 
-
 //PAYPAL
 Route::post('/api/paypal/order', [PayPalController::class, 'createOrder']);
 Route::post('/api/paypal/capture', [PayPalController::class, 'captureOrder']);
+Route::get('/api/paypal/success', [PayPalController::class, 'success']);
+Route::get('/api/paypal/cancel', [PayPalController::class, 'cancel']);
 //-----------------------------------API----------------------------------------//
 //funcions tipus enviaments
 Route::get('/ListTipusEnviaments', [\App\Http\Controllers\TipusEnviamentsController::class,'ListTipusEnviaments'])->name('ListTipusEnviaments')->middleware(\App\Http\Middleware\checkUserIdRol::class);

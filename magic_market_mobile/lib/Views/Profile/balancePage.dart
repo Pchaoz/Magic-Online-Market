@@ -20,13 +20,14 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _fetchBalance() async {
-    final response = await http.get(Uri.parse('$API_URI_SERVER/getBalance'));
+    final response =
+        await http.get(Uri.parse('$API_URI_SERVER/getSalary/$userID'));
 
     print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
-        _balance = json.decode(response.body)['balance'];
+        _balance = json.decode(response.body)['saldo'];
       });
     } else {
       // Manejo de error
@@ -148,10 +149,13 @@ class PayPalWebView extends StatelessWidget {
         javascriptMode: JavascriptMode.unrestricted,
         navigationDelegate: (NavigationRequest request) {
           print("Navegando a: ${request.url}");
-          if (request.url.contains('return_url')) {
+          if (request.url.contains('api/paypal/success')) {
             String orderID = Uri.parse(request.url).queryParameters['token']!;
             onApprove(orderID);
             Navigator.pop(context);
+            return NavigationDecision.prevent;
+          } else if (request.url.contains('api/paypal/cancel')) {
+            Navigator.pop(context); // Navegar a la pantalla de cancelación
             return NavigationDecision.prevent;
           }
           return NavigationDecision.navigate;
