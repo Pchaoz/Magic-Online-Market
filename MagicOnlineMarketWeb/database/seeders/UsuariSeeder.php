@@ -44,7 +44,6 @@ class UsuariSeeder extends Seeder
             'name' => 'Pol',
             'cognom' => 'Sotillos',
             'email' => 'p.sotillos@gmail.com',
-            'paypal_email' => 'buymgmkt@gmail.com',
             'password' => Hash::make('123456789'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -72,6 +71,19 @@ class UsuariSeeder extends Seeder
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
+
+        DB::table('usuaris')->insert([
+            'nick' => 'Pchaozz',
+            'name' => 'Pol',
+            'cognom' => 'Sotillos',
+            'email' => 'polsh2001.1@gmail.com',
+            'paypal_email' => 'buymgmkt@gmail.com',
+            'password' => Hash::make('test1234'),
+            'idRol'=>4,
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
+        ]);
+
         Schema::enableForeignKeyConstraints();
 
     }
