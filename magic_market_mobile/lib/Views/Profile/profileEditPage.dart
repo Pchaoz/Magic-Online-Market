@@ -44,7 +44,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
     List<dynamic> userInfoResolved = await userInfo;
     Map<String, dynamic> firstUser = userInfoResolved.first;
 
-    print("LA PUTISIMA CONTRASEÑA ES: $_passwordActual");
+    print("LA CONTRASEÑA ES: $_passwordActual");
+    print("EL CORREO DE PAYPAL ES: $_paypalmail");
 
     try {
       final response = await http.put(

@@ -89,6 +89,7 @@ class AuthController extends Controller
         $user->name = $request->name;
         $user->cognom = $request->cognom;
         $user->email = $request->email;
+        $user->paypal_email = $request->paypalmail;
 
         if (!$request->password == null) {
             $user->password = Hash::make($request->password);
