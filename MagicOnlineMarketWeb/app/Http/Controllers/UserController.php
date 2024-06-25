@@ -51,6 +51,7 @@ class UserController extends Controller
         $usuari= User::find($request->idUsuari);
         $usuari->nick=$request->nick;
         $usuari->cognom=$request->cognom;
+        $usuari->paypal_email=$request->paypalmail;
         $usuari->name=$request->nom;
         $usuari->idRol=$request->idRol;
         $usuari->updated_by = Auth::id();

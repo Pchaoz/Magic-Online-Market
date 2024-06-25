@@ -30,7 +30,6 @@ class _BalancePageState extends State<BalancePage> {
         _balance = json.decode(response.body)['saldo'];
       });
     } else {
-      // Manejo de error
       print("Error fetching balance");
     }
   }
@@ -71,13 +70,11 @@ class _BalancePageState extends State<BalancePage> {
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
-      print(
-          "Capture Payment Result: $result"); // Imprimir el resultado completo para depuración
+      print("Capture Payment Result: $result");
       if (result['status'] == 'COMPLETED') {
-        // Navegar a la cantidad capturada en el JSON
         final amount = result['purchase_units'][0]['payments']['captures'][0]
             ['amount']['value'];
-        print("Captured Amount: $amount"); // Imprimir el monto capturado
+        print("Captured Amount: $amount");
         setState(() {
           _balance += double.parse(amount);
         });
@@ -108,7 +105,12 @@ class _BalancePageState extends State<BalancePage> {
       });
       print("Withdraw successful");
     } else {
-      print("Error withdrawing balance");
+      if (response.statusCode == 400) {
+        var error = json.decode(response.body)["message"];
+        print("Error: $error");
+      } else {
+        print("Error withdrawing balance");
+      }
     }
   }
 
