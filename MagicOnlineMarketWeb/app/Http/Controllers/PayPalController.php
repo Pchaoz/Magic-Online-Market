@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 class PayPalController extends Controller
 {
     public function createOrder(Request $request)
     {
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+        ]);
+
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
@@ -32,11 +35,20 @@ class PayPalController extends Controller
             ],
         ]);
 
-        return response()->json($order);
+        if (isset($order['id'])) {
+            return response()->json($order);
+        }
+
+        return response()->json(['message' => 'Error creating PayPal order'], 500);
     }
 
     public function captureOrder(Request $request)
     {
+        $request->validate([
+            'orderID' => 'required|string',
+            'userID' => 'required|integer|exists:users,id',
+        ]);
+
         $provider = new PayPalClient;
         $provider->setApiCredentials(config('paypal'));
         $paypalToken = $provider->getAccessToken();
@@ -46,18 +58,19 @@ class PayPalController extends Controller
 
         if ($result['status'] === 'COMPLETED') {
             $user = User::find($request->userID);
-            $amount = $result['purchase_units'][0]['payments']['captures'][0]['amount']['value']; // Capturar el valor de la cantidad
+            $amount = $result['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
             $user->saldo += $amount;
             $user->save();
+
+            return response()->json($result);
         }
 
-        return response()->json($result);
+        return response()->json(['message' => 'Error capturing PayPal order', 'result' => $result], 400);
     }
-
 
     public function success(Request $request)
     {
-        $orderID = $request->query('token'); // Capturar el token del pedido
+        $orderID = $request->query('token'); 
         return view('paypal.success', ['orderID' => $orderID]);
     }
 
@@ -68,10 +81,14 @@ class PayPalController extends Controller
 
     public function withdraw(Request $request)
     {
+        $request->validate([
+            'userID' => 'required|integer|exists:users,id',
+            'amount' => 'required|numeric|min:1',
+        ]);
+
         $user = User::find($request->userID);
         $amount = $request->amount;
 
-        // Verifica que el usuario tenga saldo suficiente
         if ($user->saldo < $amount) {
             return response()->json(['message' => 'Saldo insuficiente'], 400);
         }
@@ -98,13 +115,12 @@ class PayPalController extends Controller
             ],
         ]);
 
-        // Verificar si el pago fue exitoso
-        if ($payout['batch_header']['batch_status'] === 'SUCCESS') {
+        if (isset($payout['batch_header']['batch_status']) && $payout['batch_header']['batch_status'] === 'SUCCESS') {
             $user->saldo -= $amount;
             $user->save();
             return response()->json(['message' => 'Retiro exitoso', 'payout' => $payout], 200);
         }
 
-        return response()->json(['message' => 'Error al procesar el retiro', 'payout' => $payout], 500);
+        return response()->json(['message' => 'Error al procesar el retiro', 'payout' => $payout], 400);
     }
 }
