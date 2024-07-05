@@ -29,8 +29,7 @@ class _BalancePageState extends State<BalancePage> {
       setState(() {
         _balance = json.decode(response.body)['saldo'];
       });
-    }
-    if (response.statusCode == 400) {
+    } else if (response.statusCode == 400) {
       var error = json.decode(response.body)["message"];
       print("Error: $error");
     } else {
@@ -57,8 +56,7 @@ class _BalancePageState extends State<BalancePage> {
           builder: (context) => PayPalWebView(approvalUrl, _capturePayment),
         ),
       );
-    }
-    if (response.statusCode == 400) {
+    } else if (response.statusCode == 400) {
       var error = json.decode(response.body)["message"];
       print("Error: $error");
     } else {
@@ -92,8 +90,7 @@ class _BalancePageState extends State<BalancePage> {
       } else {
         print("Payment not completed");
       }
-    }
-    if (response.statusCode == 400) {
+    } else if (response.statusCode == 400) {
       var error = json.decode(response.body)["message"];
       print("Error: $error");
     } else {

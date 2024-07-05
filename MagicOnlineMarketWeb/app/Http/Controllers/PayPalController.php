@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class PayPalController extends Controller
 {
@@ -14,32 +15,37 @@ class PayPalController extends Controller
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-        $provider->setAccessToken($paypalToken);
+        try {
+            $provider = new PayPalClient;
+            $provider->setApiCredentials(config('paypal'));
+            $paypalToken = $provider->getAccessToken();
+            $provider->setAccessToken($paypalToken);
 
-        $order = $provider->createOrder([
-            "intent" => "CAPTURE",
-            "purchase_units" => [
-                [
-                    "amount" => [
-                        "currency_code" => "EUR",
-                        "value" => $request->amount
+            $order = $provider->createOrder([
+                "intent" => "CAPTURE",
+                "purchase_units" => [
+                    [
+                        "amount" => [
+                            "currency_code" => "EUR",
+                            "value" => $request->amount
+                        ]
                     ]
-                ]
-            ],
-            'application_context' => [
-                'return_url' => url('/api/paypal/success'),
-                'cancel_url' => url('/api/paypal/cancel'),
-            ],
-        ]);
+                ],
+                'application_context' => [
+                    'return_url' => url('/api/paypal/success'),
+                    'cancel_url' => url('/api/paypal/cancel'),
+                ],
+            ]);
 
-        if (isset($order['id'])) {
-            return response()->json($order);
+            if (isset($order['id'])) {
+                return response()->json($order);
+            }
+
+            return response()->json(['message' => 'Error creating PayPal order'], 400);
+        } catch (\Exception $e) {
+            Log::error('Error creating PayPal order: ' . $e->getMessage());
+            return response()->json(['message' => 'Internal server error'], 400);
         }
-
-        return response()->json(['message' => 'Error creating PayPal order'], 500);
     }
 
     public function captureOrder(Request $request)
@@ -49,23 +55,28 @@ class PayPalController extends Controller
             'userID' => 'required|integer|exists:users,id',
         ]);
 
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-        $provider->setAccessToken($paypalToken);
+        try {
+            $provider = new PayPalClient;
+            $provider->setApiCredentials(config('paypal'));
+            $paypalToken = $provider->getAccessToken();
+            $provider->setAccessToken($paypalToken);
 
-        $result = $provider->capturePaymentOrder($request->orderID);
+            $result = $provider->capturePaymentOrder($request->orderID);
 
-        if ($result['status'] === 'COMPLETED') {
-            $user = User::find($request->userID);
-            $amount = $result['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
-            $user->saldo += $amount;
-            $user->save();
+            if ($result['status'] === 'COMPLETED') {
+                $user = User::find($request->userID);
+                $amount = $result['purchase_units'][0]['payments']['captures'][0]['amount']['value'];
+                $user->saldo += $amount;
+                $user->save();
 
-            return response()->json($result);
+                return response()->json($result);
+            }
+
+            return response()->json(['message' => 'Error capturing PayPal order', 'result' => $result], 400);
+        } catch (\Exception $e) {
+            Log::error('Error capturing PayPal order: ' . $e->getMessage());
+            return response()->json(['message' => 'Internal server error'], 400);
         }
-
-        return response()->json(['message' => 'Error capturing PayPal order', 'result' => $result], 400);
     }
 
     public function success(Request $request)
@@ -86,41 +97,46 @@ class PayPalController extends Controller
             'amount' => 'required|numeric|min:1',
         ]);
 
-        $user = User::find($request->userID);
-        $amount = $request->amount;
+        try {
+            $user = User::find($request->userID);
+            $amount = $request->amount;
 
-        if ($user->saldo < $amount) {
-            return response()->json(['message' => 'Saldo insuficiente'], 400);
-        }
+            if ($user->saldo < $amount) {
+                return response()->json(['message' => 'Saldo insuficiente'], 400);
+            }
 
-        $provider = new PayPalClient;
-        $provider->setApiCredentials(config('paypal'));
-        $paypalToken = $provider->getAccessToken();
-        $provider->setAccessToken($paypalToken);
+            $provider = new PayPalClient;
+            $provider->setApiCredentials(config('paypal'));
+            $paypalToken = $provider->getAccessToken();
+            $provider->setAccessToken($paypalToken);
 
-        $payout = $provider->createPayout([
-            'sender_batch_header' => [
-                'email_subject' => 'You have a payout!',
-            ],
-            'items' => [
-                [
-                    'recipient_type' => 'EMAIL',
-                    'amount' => [
-                        'value' => $amount,
-                        'currency' => 'EUR'
-                    ],
-                    'receiver' => $user->paypal_email,
-                    'note' => 'Thanks for using our service!',
+            $payout = $provider->createPayout([
+                'sender_batch_header' => [
+                    'email_subject' => 'You have a payout!',
                 ],
-            ],
-        ]);
+                'items' => [
+                    [
+                        'recipient_type' => 'EMAIL',
+                        'amount' => [
+                            'value' => $amount,
+                            'currency' => 'EUR'
+                        ],
+                        'receiver' => $user->paypal_email,
+                        'note' => 'Thanks for using our service!',
+                    ],
+                ],
+            ]);
 
-        if (isset($payout['batch_header']['batch_status']) && $payout['batch_header']['batch_status'] === 'SUCCESS') {
-            $user->saldo -= $amount;
-            $user->save();
-            return response()->json(['message' => 'Retiro exitoso', 'payout' => $payout], 200);
+            if (isset($payout['batch_header']['batch_status']) && $payout['batch_header']['batch_status'] === 'SUCCESS') {
+                $user->saldo -= $amount;
+                $user->save();
+                return response()->json(['message' => 'Retiro exitoso', 'payout' => $payout], 200);
+            }
+
+            return response()->json(['message' => 'Error al procesar el retiro', 'payout' => $payout], 400);
+        } catch (\Exception $e) {
+            Log::error('Error processing withdrawal: ' . $e->getMessage());
+            return response()->json(['message' => 'Internal server error'], 400);
         }
-
-        return response()->json(['message' => 'Error al procesar el retiro', 'payout' => $payout], 400);
     }
 }
