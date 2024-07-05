@@ -41,10 +41,10 @@ class PayPalController extends Controller
                 return response()->json($order);
             }
 
-            return response()->json(['message' => 'Error creating PayPal order'], 400);
+            return response()->json(['message' => 'Error creating PayPal order'], 500);
         } catch (\Exception $e) {
             Log::error('Error creating PayPal order: ' . $e->getMessage());
-            return response()->json(['message' => 'Internal server error'], 400);
+            return response()->json(['message' => 'Internal server error'], 500);
         }
     }
 
@@ -72,10 +72,10 @@ class PayPalController extends Controller
                 return response()->json($result);
             }
 
-            return response()->json(['message' => 'Error capturing PayPal order', 'result' => $result], 400);
+            return response()->json(['message' => 'Error capturing PayPal order', 'result' => $result], 500);
         } catch (\Exception $e) {
             Log::error('Error capturing PayPal order: ' . $e->getMessage());
-            return response()->json(['message' => 'Internal server error'], 400);
+            return response()->json(['message' => 'Internal server error'], 500);
         }
     }
 
@@ -127,16 +127,18 @@ class PayPalController extends Controller
                 ],
             ]);
 
+            Log::info('PayPal Payout Response: ', $payout);
+
             if (isset($payout['batch_header']['batch_status']) && $payout['batch_header']['batch_status'] === 'SUCCESS') {
                 $user->saldo -= $amount;
                 $user->save();
                 return response()->json(['message' => 'Retiro exitoso', 'payout' => $payout], 200);
             }
 
-            return response()->json(['message' => 'Error al procesar el retiro', 'payout' => $payout], 400);
+            return response()->json(['message' => 'Error al procesar el retiro', 'payout' => $payout], 500);
         } catch (\Exception $e) {
             Log::error('Error processing withdrawal: ' . $e->getMessage());
-            return response()->json(['message' => 'Internal server error'], 400);
+            return response()->json(['message' => 'Internal server error'], 500);
         }
     }
 }

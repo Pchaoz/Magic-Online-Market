@@ -12,6 +12,7 @@ class BalancePage extends StatefulWidget {
 
 class _BalancePageState extends State<BalancePage> {
   double _balance = 0.0;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -20,106 +21,118 @@ class _BalancePageState extends State<BalancePage> {
   }
 
   void _fetchBalance() async {
-    final response =
-        await http.get(Uri.parse('$API_URI_SERVER/getSalary/$userID'));
+    try {
+      final response =
+          await http.get(Uri.parse('$API_URI_SERVER/getSalary/$userID'));
 
-    print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
+      print("FETCH BALANCE STATUSCODE: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _balance = json.decode(response.body)['saldo'];
-      });
-    } else if (response.statusCode == 400) {
-      var error = json.decode(response.body)["message"];
-      print("Error: $error");
-    } else {
-      print("Error ${response.statusCode}");
+      if (response.statusCode == 200) {
+        setState(() {
+          _balance = json.decode(response.body)['saldo'];
+          _isLoading = false;
+        });
+      } else {
+        _showError("Error fetching balance");
+      }
+    } catch (e) {
+      _showError("Error fetching balance");
     }
   }
 
   void _addBalance() async {
-    final response = await http.post(
-      Uri.parse('$API_URI_SERVER/paypal/order'),
-      body: json.encode({'amount': '30.33'}),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    print("ADD BALANCE STATUSCODE: ${response.statusCode}");
-
-    if (response.statusCode == 200) {
-      final approvalUrl = json
-          .decode(response.body)['links']
-          .firstWhere((link) => link['rel'] == 'approve')['href'];
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PayPalWebView(approvalUrl, _capturePayment),
-        ),
+    try {
+      final response = await http.post(
+        Uri.parse('$API_URI_SERVER/paypal/order'),
+        body: json.encode({'amount': '30.33'}),
+        headers: {'Content-Type': 'application/json'},
       );
-    } else if (response.statusCode == 400) {
-      var error = json.decode(response.body)["message"];
-      print("Error: $error");
-    } else {
-      print("Error ${response.statusCode}");
+
+      print("ADD BALANCE STATUSCODE: ${response.statusCode}");
+
+      if (response.statusCode == 200) {
+        final approvalUrl = json
+            .decode(response.body)['links']
+            .firstWhere((link) => link['rel'] == 'approve')['href'];
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PayPalWebView(approvalUrl, _capturePayment),
+          ),
+        );
+      } else {
+        _showError("Error adding balance");
+      }
+    } catch (e) {
+      _showError("Error adding balance");
     }
   }
 
   void _capturePayment(String orderID) async {
-    final response = await http.post(
-      Uri.parse('$API_URI_SERVER/paypal/capture'),
-      body: json.encode({'orderID': orderID, 'userID': userID}),
-      headers: {'Content-Type': 'application/json'},
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('$API_URI_SERVER/paypal/capture'),
+        body: json.encode({'orderID': orderID, 'userID': userID}),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-    print("CAPTURE PAYMENT BALANCE STATUSCODE: ${response.statusCode}");
+      print("CAPTURE PAYMENT BALANCE STATUSCODE: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
-      final result = json.decode(response.body);
-      print("Capture Payment Result: $result");
-      if (result['status'] == 'COMPLETED') {
-        final amount = result['purchase_units'][0]['payments']['captures'][0]
-            ['amount']['value'];
-        print("Captured Amount: $amount");
-        setState(() {
-          _balance += double.parse(amount);
-        });
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => BalancePage()),
-        );
+      if (response.statusCode == 200) {
+        final result = json.decode(response.body);
+        print("Capture Payment Result: $result");
+        if (result['status'] == 'COMPLETED') {
+          final amount = result['purchase_units'][0]['payments']['captures'][0]
+              ['amount']['value'];
+          print("Captured Amount: $amount");
+          setState(() {
+            _balance += double.parse(amount);
+          });
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => BalancePage()),
+          );
+        } else {
+          _showError("Payment not completed");
+        }
       } else {
-        print("Payment not completed");
+        _showError("Error capturing payment");
       }
-    } else if (response.statusCode == 400) {
-      var error = json.decode(response.body)["message"];
-      print("Error: $error");
-    } else {
-      print("Error ${response.statusCode}");
+    } catch (e) {
+      _showError("Error capturing payment");
     }
   }
 
   void _withdrawBalance(double amount) async {
-    final response = await http.post(
-      Uri.parse('$API_URI_SERVER/paypal/withdraw'),
-      body: json.encode({'userID': userID, 'amount': amount}),
-      headers: {'Content-Type': 'application/json'},
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('$API_URI_SERVER/paypal/withdraw'),
+        body: json.encode({'userID': userID, 'amount': amount}),
+        headers: {'Content-Type': 'application/json'},
+      );
 
-    print("WITHDRAW BALANCE STATUSCODE: ${response.statusCode}");
+      print("WITHDRAW BALANCE STATUSCODE: ${response.statusCode}");
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _balance -= amount;
-      });
-      print("Withdraw successful");
-    } else {
-      if (response.statusCode == 400) {
+      if (response.statusCode == 200) {
+        setState(() {
+          _balance -= amount;
+        });
+        print("Withdraw successful");
+      } else if (response.statusCode == 400) {
         var error = json.decode(response.body)["message"];
-        print("Error: $error");
+        _showError("Error: $error");
       } else {
-        print("Error ${response.statusCode}");
+        _showError("Error withdrawing balance");
       }
+    } catch (e) {
+      _showError("Error withdrawing balance");
     }
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
   }
 
   @override
@@ -129,42 +142,45 @@ class _BalancePageState extends State<BalancePage> {
         backgroundColor: const Color.fromARGB(255, 11, 214, 153),
         title: const Text('Magic Online Market'),
       ),
-      body: Column(
-        children: [
-          Container(
-            color: const Color.fromARGB(255, 11, 214, 153),
-            width: double.infinity,
-            child: const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(
-                'Saldo',
-                style: TextStyle(fontSize: 24),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
+      body: _isLoading
+          ? Center(child: CircularProgressIndicator())
+          : Column(
               children: [
-                Text('Saldo: $_balance€', style: const TextStyle(fontSize: 24)),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _addBalance,
-                  child: const Text('Recargar Saldo'),
+                Container(
+                  color: const Color.fromARGB(255, 11, 214, 153),
+                  width: double.infinity,
+                  child: const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text(
+                      'Saldo',
+                      style: TextStyle(fontSize: 24),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    double amountToWithdraw = 10.0; //CANTIDAD A RETIRAR
-                    _withdrawBalance(amountToWithdraw);
-                  },
-                  child: const Text('Retirar Saldo'),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Text('Saldo: $_balance€',
+                          style: const TextStyle(fontSize: 24)),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _addBalance,
+                        child: const Text('Recargar Saldo'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          double amountToWithdraw = 10.0; // CANTIDAD A RETIRAR
+                          _withdrawBalance(amountToWithdraw);
+                        },
+                        child: const Text('Retirar Saldo'),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }
