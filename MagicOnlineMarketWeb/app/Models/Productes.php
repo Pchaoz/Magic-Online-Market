@@ -29,7 +29,7 @@ class Productes extends Model
     }
 
     public function categoriaProducte(){
-        return $this->BelongsTo(CategoriaProductes::class, 'idCategoriesProductes', 'idCategoriesProductes');
+        return $this->BelongsTo(CategoriaProductes::class, 'idCategoriaProductes', 'idCategoriaProductes');
     }
     public function expansioProducte(){
         return $this->BelongsTo(Expansions::class, 'idExpansio', 'idExpansio');
