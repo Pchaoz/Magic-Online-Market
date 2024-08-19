@@ -5,12 +5,12 @@ import 'dart:convert';
 
 import '../../Util/globals.dart';
 
-class BalancePage extends StatefulWidget {
+class OldBalancePage extends StatefulWidget {
   @override
   _BalancePageState createState() => _BalancePageState();
 }
 
-class _BalancePageState extends State<BalancePage> {
+class _BalancePageState extends State<OldBalancePage> {
   double _balance = 0.0;
   bool _isLoading = true;
 
@@ -90,7 +90,7 @@ class _BalancePageState extends State<BalancePage> {
           });
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => BalancePage()),
+            MaterialPageRoute(builder: (context) => OldBalancePage()),
           );
         } else {
           _showError("Payment not completed");

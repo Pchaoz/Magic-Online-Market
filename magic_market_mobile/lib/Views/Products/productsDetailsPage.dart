@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:magic_market_mobile/Views/Articles/newAdd.dart';
 import 'dart:convert';
@@ -6,6 +7,7 @@ import 'dart:convert';
 import '../../Util/globals.dart';
 import '../Profile/loginPage.dart';
 import '../homePage.dart';
+import 'productsPage.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final dynamic product;
@@ -19,6 +21,7 @@ class ProductDetailPage extends StatefulWidget {
 class _ProductDetailPageState extends State<ProductDetailPage> {
   var ButtonAdd;
   List offerList = [];
+  final TextEditingController _quantityController = TextEditingController();
 
   Future getOffers() async {
     print("Buscando las ofertas del producto: ${widget.product['idProducte']}");
@@ -61,6 +64,149 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     } else {
       ButtonAdd = null;
     }
+  }
+
+  Future<void> afegirCistellDeCompra(int productId, int quantity) async {
+    try {
+      // Aquí realizarías la petición asíncrona al servidor para añadir el producto al carrito
+      final response = await http.post(
+        Uri.parse("$API_URI_SERVER/cart/add"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          'productId': productId,
+          'quantity': quantity,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        // Si el servidor devuelve un OK, actualiza el estado de la aplicación
+        Future.delayed(Duration.zero, () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Producto añadido al carrito'),
+            ),
+          );
+        });
+      } else {
+        // Si la petición falla, muestra un mensaje de error
+        Future.delayed(Duration.zero, () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error al añadir el producto al carrito'),
+            ),
+          );
+        });
+      }
+    } catch (e) {
+      // Manejo de cualquier otra excepción
+      Future.delayed(Duration.zero, () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e'),
+          ),
+        );
+      });
+    }
+  }
+
+  void _showQuantityDialog(int index) {
+    _quantityController.clear();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Seleccionar cantidad'),
+          content: TextField(
+            controller: _quantityController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              hintText: 'Cantidad',
+            ),
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Aceptar'),
+              onPressed: () {
+                try {
+                  int quantity = int.parse(_quantityController.text);
+                  print("QUIERES COMPRAR: $quantity");
+                  print(
+                      "LA OFERTA ESTA OFERTANDO: ${offerList[index]['quantitat']}");
+                  if (quantity <= 0 ||
+                      quantity > offerList[index]['quantitat']) {
+                    Navigator.of(context).pop();
+                    Future.delayed(Duration.zero, () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Cantidad no válida'),
+                        ),
+                      );
+                    });
+                  } else {
+                    afegirCistellDeCompra(offerList[index]['id'], quantity);
+                    Navigator.of(context).pop();
+                    _showCartOptionsDialog();
+                  }
+                } catch (e) {
+                  Navigator.of(context).pop();
+                  Future.delayed(Duration.zero, () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Ingrese una cantidad válida'),
+                      ),
+                    );
+                  });
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showCartOptionsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Producto añadido'),
+          content:
+              const Text('¿Deseas seguir comprando o ir al carrito de compra?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Seguir comprando'),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductsPage()),
+                );
+              },
+            ),
+            TextButton(
+              child: const Text('Ir al carrito'),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProductsPage()),
+                );
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -122,57 +268,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         trailing: Text("${offerList[index]['preu']}€"),
                         onTap: () {
                           if (roleID == 0) {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Error'),
+                            Future.delayed(Duration.zero, () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
                                   content: const Text(
-                                      "Has d'inciar sessio per a comprar.. "),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      child: const Text('Iniciar sessio'),
-                                      onPressed: () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginPage()),
-                                        );
-                                      },
-                                    ),
-                                    TextButton(
-                                      child: const Text('Tancar'),
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
+                                      'Has de iniciar sesión para comprar.'),
+                                  action: SnackBarAction(
+                                    label: 'Iniciar sesión',
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => LoginPage()),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              );
+                            });
                           } else {
                             if (userID != offerList[index]['idVenedor']) {
-                              //TEMA DE LA COMPRA
+                              _showQuantityDialog(index);
                             } else {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Error'),
-                                    content: const Text(
-                                        'No pots comprar la carta que has ofertat.. carta.. '),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        child: const Text('Tancar'),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              Future.delayed(Duration.zero, () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'No puedes comprar tu propia oferta.'),
+                                  ),
+                                );
+                              });
                             }
                           }
                         });

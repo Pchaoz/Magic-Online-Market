@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:magic_market_mobile/Util/LateralMenu.dart';
 import 'package:magic_market_mobile/Views/Articles/articlesUser.dart';
-import 'package:magic_market_mobile/Views/Profile/balancePage.dart';
+import 'package:magic_market_mobile/Views/Old/old_BalancePage.dart';
 import 'package:magic_market_mobile/Views/homePage.dart';
 
 import '../../Util/globals.dart';
@@ -104,17 +104,6 @@ class ProfilePage extends StatelessWidget {
                         );
                       },
                     ),
-                  ListTile(
-                    title: const Center(child: Text('Saldo')),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BalancePage(),
-                        ),
-                      );
-                    },
-                  ),
                 ]).toList(),
               ),
             ),
