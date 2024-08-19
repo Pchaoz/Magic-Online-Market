@@ -191,6 +191,7 @@ Route::delete('/api/removeFromWishlist', [\App\Http\Controllers\WishlistControle
 
 //funcions controller Tornejos
 Route::get('/getAllTornejos', [\App\Http\Controllers\TornejosController::class,'ListTornejos'])->name('ListTornejos');
+Route::post('/crearTorneig', [\App\Http\Controllers\TornejosController::class, 'crearTorneig'])->name('crearTorneig');
 
 
 //PAYPAL

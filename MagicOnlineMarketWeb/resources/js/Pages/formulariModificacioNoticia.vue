@@ -121,9 +121,6 @@ const confirmarCambios = () => {
                 </div>
             </Modal>
         </div>
-
-
-
     </AuthenticatedLayout>
 </template>
 
