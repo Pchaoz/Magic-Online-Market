@@ -19,12 +19,13 @@ defineProps({
     },
 });
 let showModal = ref(false);
-let showModalEliminacio = ref(false);
 let showModalCreacio = ref(false);
 let showModalCreacioConfirmacio=ref(false);
 let showModalModificacio = ref(false);
 let showModalModificacioConfirmacio=ref(false);
 let showModalQuantitatIncorrecta=ref(false);
+let showModalEliminacio = ref(false);
+let showModalEliminacioConfirmacio = ref(false);
 
 const form = useForm({
     idTorneig: "",
@@ -57,7 +58,7 @@ const cerrarModalCreacio = () =>{
 
 
 const crearTorneig = () =>{
-    if(form.max <=2||form.min <=2||form.max<form.min){
+    if(form.max <2||form.min <2||form.max<form.min){
         cerrarModalCreacio();
         abrirModalQuantitatIncorrecta();
     }else {
@@ -87,6 +88,43 @@ const abrirModalModificacio = (torneig) =>{
     form.dataHoraInici=torneig.inici;
     showModalModificacio.value=true;
 }
+
+const modificarTorneig = () =>{
+    if(form.max <2||form.min <2||form.max<form.min){
+        cerrarModalModificacio();
+        abrirModalQuantitatIncorrecta();
+    }else {
+        form.post('modificarTorneig');
+        confirmarModificacio();
+    }
+}
+
+const confirmarModificacio = () =>{
+    showModalModificacio.value=false;
+    showModalModificacioConfirmacio.value=true;
+}
+
+//Eliminació de tornejos
+const cerrarModalEliminacio= () =>{
+    showModalEliminacioConfirmacio.value=false;
+    showModalEliminacio.value=false;
+}
+
+const abrirModalConfirmacionEliminacio = (id) =>{
+    form.idTorneig=id;
+    showModalEliminacio.value=true;
+}
+
+const eliminarTorneig = () =>{
+        form.post('eliminarTorneig');
+        confirmarEliminacio();
+}
+
+const confirmarEliminacio = () =>{
+    showModalEliminacio.value=false;
+    showModalEliminacioConfirmacio.value=true;
+}
+
 
 
 const abrirModalQuantitatIncorrecta = () => {
@@ -144,8 +182,8 @@ const cerrarModalQuantitatIncorrecta=()=>{
                     </td>
                     <td>
                         <button  class="btn btn-danger rounded-pill" v-if=" ($page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5) &&
-                                 torneig.estat=='En creació'"
-                                 @click="abrirModalConfirmacionEliminacio(baralla.idBaralla)">Eliminar</button>
+                                 (torneig.estat=='En creació'||torneig.estat=='En inscripció')"
+                                 @click="abrirModalConfirmacionEliminacio(torneig.idTorneig)">Eliminar</button>
                     </td>
                 </tr>
                 </tbody>
@@ -358,7 +396,7 @@ const cerrarModalQuantitatIncorrecta=()=>{
                         @click="validate()"
                         :disabled="invalid"
                     >
-                        Crear
+                        Modificar
                     </button>
                     <button type="button" class="btn btn-danger ml-5" @click="cerrarModalModificacio">
                         Cancelar
@@ -368,8 +406,16 @@ const cerrarModalQuantitatIncorrecta=()=>{
         </Modal>
         <Modal :show="showModalModificacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalModificacio" >
             <div class="modal-content w-100">
-                <div class="d-flex justify-content-center m-3 ">
-                    <p>Torneig Modificat!</p>
+                <div class="d-flex flex-column justify-content-center align-items-center m-3 position-relative">
+                    <!-- Botón de cerrar -->
+                    <button @click="cerrarModalModificacio" style="border: none; background: none; position: absolute; top: 10px; right: 10px;">
+                        <img :src="`/images/cierre.jpg`" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+
+                    <!-- Contenido del mensaje -->
+                    <div class="text-center">
+                        <p>Torneig modificat!</p>
+                    </div>
                 </div>
             </div>
         </Modal>
@@ -390,6 +436,34 @@ const cerrarModalQuantitatIncorrecta=()=>{
                 </div>
             </div>
         </Modal>
+        <Modal :show="showModalEliminacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>¿Estas segur de que vols eliminar aquesta torneig?</p>
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-success mr-5"
+                            @click="eliminarTorneig">Sí</button>
+                    <button type="button" class="btn btn-danger ml-5" @click="cerrarModalEliminacio">No</button>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalEliminacioConfirmacio" maxWidth="2xl" closeable @close="cerrarModalEliminacio" >
+            <div class="modal-content w-100">
+                <div class="d-flex flex-column justify-content-center align-items-center m-3 position-relative">
+                    <!-- Botón de cerrar -->
+                    <button @click="cerrarModalEliminacio" style="border: none; background: none; position: absolute; top: 10px; right: 10px;">
+                        <img :src="`/images/cierre.jpg`" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <!-- Contenido del mensaje -->
+                    <div class="text-center">
+                        <p>Torneig eliminat!</p>
+                    </div>
+                </div>
+            </div>
+        </Modal>
+
+
     </AuthenticatedLayout>
 </template>
 
