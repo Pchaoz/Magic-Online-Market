@@ -8,16 +8,22 @@ import { Form as VForm, Field as VField, defineRule, ErrorMessage } from 'vee-va
 import {required} from "@vee-validate/rules";
 import {useForm} from "@inertiajs/vue3";
 
+
 defineRule('required', required);
 
-defineProps({
+const props = defineProps({
     tornejos: {
         type: Array(String),
     },
     tipusTornejos:{
         type: Array(String),
     },
+    participacions: {
+        type: Array,
+    }
 });
+
+let participacions = ref(props.participacions);
 let showModal = ref(false);
 let showModalCreacio = ref(false);
 let showModalCreacioConfirmacio=ref(false);
@@ -26,6 +32,8 @@ let showModalModificacioConfirmacio=ref(false);
 let showModalQuantitatIncorrecta=ref(false);
 let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
+let showModalTorneigHabilitat =ref(false);
+let showModalTorneigHabilitatConfirmacio =ref(false);
 
 const form = useForm({
     idTorneig: "",
@@ -36,6 +44,7 @@ const form = useForm({
     idTipus:"",
     ronda:0,
     dataHoraInici:null,
+    estat:""
 });
 
 //crear Torneig
@@ -86,6 +95,7 @@ const abrirModalModificacio = (torneig) =>{
     form.max=torneig.max;
     form.idTipus=torneig.idTipusTorneig;
     form.dataHoraInici=torneig.inici;
+    form.estat=torneig.estat;
     showModalModificacio.value=true;
 }
 
@@ -125,6 +135,46 @@ const confirmarEliminacio = () =>{
     showModalEliminacioConfirmacio.value=true;
 }
 
+//habilitar inscripcions
+const abrirModalConfirmacionhabilitarInscripcions = (torneig) =>{
+    form.idTorneig=torneig.idTorneig;
+    form.nom=torneig.nomTorneig;
+    showModalTorneigHabilitat.value=true;
+}
+
+const habilitarTorneig = () =>{
+    form.post('habilitarTorneig');
+    confirmarhabilitacio();
+}
+
+const confirmarhabilitacio = () =>{
+    showModalTorneigHabilitat.value=false;
+    showModalTorneigHabilitatConfirmacio.value=true;
+}
+
+
+const cerrarHabilitarInscripcions = () =>{
+    showModalTorneigHabilitatConfirmacio.value=false;
+    showModalTorneigHabilitat.value=false;
+
+}
+
+//inscripcio
+const inscripcioTorneig = (idTorneig, idUsuari) =>{
+    const jaInscrit = participacions.value.some(participacio =>
+        participacio.idTorneig === idTorneig && participacio.idUsuari === idUsuari
+    );
+    if (jaInscrit) {
+        console.log('Ya estás inscrito en este torneo');
+        return false; // No permitir la inscripción
+    } else {
+        console.log('Puedes inscribirte en este torneo');
+        // Aquí iría el código para inscribir al usuario en el torneo
+        return true; // Permitir la inscripción
+    }
+
+}
+
 
 
 const abrirModalQuantitatIncorrecta = () => {
@@ -159,6 +209,7 @@ const cerrarModalQuantitatIncorrecta=()=>{
                     <th v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5"></th>
                     <th v-if=" $page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5"></th>
 
+
                 </tr>
                 </thead>
                 <tbody>
@@ -172,8 +223,10 @@ const cerrarModalQuantitatIncorrecta=()=>{
                     <td>{{ torneig.estat }}</td>
                     <td>{{ torneig.inici }}</td>
                     <td>
-                        <button v-if="torneig.estat=='En inscripció'" class="btn btn-success rounded-pill"
-                                 @click="abrirModalMod(baralla)">Inscripció</button>
+                        <button v-if="torneig.estat=='En creació'" class="btn btn-success rounded-pill"
+                                @click="abrirModalConfirmacionhabilitarInscripcions(torneig)">Habilitar inscripcions</button>
+                        <button v-if="torneig.estat=='En inscripció' /*&& $page.props.auth.user.nick!=torneig.nick*/" class="btn btn-success rounded-pill"
+                                 @click="inscripcioTorneig(torneig.idTorneig,$page.props.auth.user.idUsuari )">Inscripció</button>
                     </td>
                     <td >
                         <button v-if=" ($page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5)&&
@@ -324,7 +377,7 @@ const cerrarModalQuantitatIncorrecta=()=>{
                 </div>
 
                 <!-- Màxim jugadors -->
-                <div class="d-flex flex-column justify-content-center m-3">
+                <div v-if="form.estat=='En creació'" class="d-flex flex-column justify-content-center m-3">
                     <InputLabel for="max" value="Màxim jugadors:" />
                     <VField
                         id="max"
@@ -340,7 +393,7 @@ const cerrarModalQuantitatIncorrecta=()=>{
                 </div>
 
                 <!-- Mínim jugadors -->
-                <div class="d-flex flex-column justify-content-center m-3">
+                <div v-if="form.estat=='En creació'" class="d-flex flex-column justify-content-center m-3">
                     <InputLabel for="min" value="Mínim jugadors (per defecte 2):" />
                     <VField
                         id="min"
@@ -355,7 +408,7 @@ const cerrarModalQuantitatIncorrecta=()=>{
                 </div>
 
                 <!-- Tipus Torneig -->
-                <div class="d-flex flex-column justify-content-center m-3">
+                <div v-if="form.estat=='En creació'" class="d-flex flex-column justify-content-center m-3">
                     <InputLabel for="idTipus" value="Tipus Torneig" />
                     <VField
                         id="idTipus"
@@ -458,6 +511,32 @@ const cerrarModalQuantitatIncorrecta=()=>{
                     <!-- Contenido del mensaje -->
                     <div class="text-center">
                         <p>Torneig eliminat!</p>
+                    </div>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalTorneigHabilitat " maxWidth="2xl" closeable @close="cerrarHabilitarInscripcions" >
+            <div class="modal-content w-100">
+                <div class="d-flex justify-content-center m-3 ">
+                    <p>¿Estas segur de que vols habilitar el torneig amb nom {{form.nom}}?</p>
+                </div>
+                <div class="d-flex justify-content-center m-3 ">
+                    <button type="button" class="btn btn-success mr-5"
+                            @click="habilitarTorneig">Sí</button>
+                    <button type="button" class="btn btn-danger ml-5" @click="cerrarHabilitarInscripcions">No</button>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalTorneigHabilitatConfirmacio" maxWidth="2xl" closeable @close="cerrarHabilitarInscripcions" >
+            <div class="modal-content w-100">
+                <div class="d-flex flex-column justify-content-center align-items-center m-3 position-relative">
+                    <!-- Botón de cerrar -->
+                    <button @click="cerrarHabilitarInscripcions" style="border: none; background: none; position: absolute; top: 10px; right: 10px;">
+                        <img :src="`/images/cierre.jpg`" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <!-- Contenido del mensaje -->
+                    <div class="text-center">
+                        <p>Torneig habilitat per inscripcions!</p>
                     </div>
                 </div>
             </div>

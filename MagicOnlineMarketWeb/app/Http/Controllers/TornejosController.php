@@ -26,9 +26,12 @@ class TornejosController extends Controller
         $tipusTornejos = DB::table('tipus_torneig')
             ->select('tipus_torneig.descripcio as descripcio','tipus_torneig.idTipusTorneig as idTipus')
             ->get();
+        $partipacions = DB::table('participacions')
+            ->select('participacions.idTorneig as idTorneig', 'participacions.idUsuari as idUsuari')
+            ->get();
 
 
-        return Inertia::render('llistaTornejos',['tornejos'=>$tornejos,'tipusTornejos'=>$tipusTornejos]);
+        return Inertia::render('llistaTornejos',['tornejos'=>$tornejos,'tipusTornejos'=>$tipusTornejos,'participacions'=>$partipacions]);
 
     }
 
@@ -36,8 +39,9 @@ class TornejosController extends Controller
 
         $torneig = new Tornejos();
         $torneig->nom = $request->nom;
-        $torneig->numparticipants= $request->max;
-        $torneig->maxparticipants = $request->min;
+        $torneig->numparticipants= 0;
+        $torneig->maxparticipants= $request->max;
+        $torneig->minparticipants = $request->min;
         $torneig->diaHoraInici =  $request->dataHoraInici;
         $torneig->idOrganitzador = Auth::id();
         $torneig->idTipusTorneig =$request->idTipus;
@@ -50,8 +54,8 @@ class TornejosController extends Controller
     public function modificarTorneig (Request $request){
         $torneig= Tornejos::where('idTorneig',$request->idTorneig)->first();
         $torneig->nom = $request->nom;
-        $torneig->numparticipants= $request->max;
-        $torneig->maxparticipants = $request->min;
+        $torneig->maxparticipants= $request->max;
+        $torneig->minparticipants = $request->min;
         $torneig->diaHoraInici =  $request->dataHoraInici;
         $torneig->idTipusTorneig =$request->idTipus;
         $torneig->updated_by =Auth::id();
@@ -69,6 +73,12 @@ class TornejosController extends Controller
         }
         $torneig->delete();
     }
+    public function habilitarTorneig (Request $request){
+        $torneig= Tornejos::where('idTorneig',$request->idTorneig)->first();
+        $torneig->estat="En inscripció";
+        $torneig->save();
+    }
+
 
 
 
