@@ -72,8 +72,6 @@ class ProductesController extends Controller
     public function APIListProductes(){
 
         $productes = Productes::with('categoriaProducte')->get();
-        return response()->json($productes);
-        
         $result = $productes->map(function($producte) {
             return [
                 'idProducte' => $producte->idProducte,
