@@ -70,10 +70,10 @@ class ProductesController extends Controller
 
 
     public function APIListProductes(){
-        // Carga los productos con la relación de categoría
+
         $productes = Productes::with('categoriaProducte')->get();
-    
-        // Modifica la estructura de los datos para incluir el nombre de la categoría
+        return response()->json($productes);
+        
         $result = $productes->map(function($producte) {
             return [
                 'idProducte' => $producte->idProducte,
@@ -90,7 +90,6 @@ class ProductesController extends Controller
                 'updated_at' => $producte->updated_at,
             ];
         });
-    
         return response()->json($result);
     }
 
