@@ -90,8 +90,8 @@ class _ProductsPageState extends State<ProductsPage> {
                             ),
                           ),
                           title: Text(products[index]['nom'] ?? ""),
-                          subtitle: Text(products[index]['idCategoriaProducte']
-                              .toString()),
+                          subtitle:
+                              Text(products[index]['nomCategoria'].toString()),
                           onTap: () {
                             Navigator.push(
                               context,

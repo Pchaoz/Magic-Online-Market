@@ -22,6 +22,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   var ButtonAdd;
   List offerList = [];
   final TextEditingController _quantityController = TextEditingController();
+  int? selectedOfferId;
+  int? selectedQuantity;
 
   Future getOffers() async {
     print("Buscando las ofertas del producto: ${widget.product['idProducte']}");
@@ -68,7 +70,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   Future<void> afegirCistellDeCompra(int productId, int quantity) async {
     try {
-      // Aquí realizarías la petición asíncrona al servidor para añadir el producto al carrito
       final response = await http.post(
         Uri.parse("$API_URI_SERVER/cart/add"),
         headers: <String, String>{
@@ -81,7 +82,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       );
 
       if (response.statusCode == 200) {
-        // Si el servidor devuelve un OK, actualiza el estado de la aplicación
         Future.delayed(Duration.zero, () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -90,7 +90,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           );
         });
       } else {
-        // Si la petición falla, muestra un mensaje de error
         Future.delayed(Duration.zero, () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -100,7 +99,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         });
       }
     } catch (e) {
-      // Manejo de cualquier otra excepción
       Future.delayed(Duration.zero, () {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -113,20 +111,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   void _showQuantityDialog(int index) {
     _quantityController.clear();
+    final scaffoldContext = context; // Guardar el contexto del Scaffold
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Seleccionar cantidad'),
-          content: TextField(
-            controller: _quantityController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              hintText: 'Cantidad',
+          content: SingleChildScrollView(
+            // Para evitar el overflow
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextField(
+                  controller: _quantityController,
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    hintText: 'Cantidad',
+                  ),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                ),
+              ],
             ),
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
-            ],
           ),
           actions: <Widget>[
             TextButton(
@@ -140,30 +147,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               onPressed: () {
                 try {
                   int quantity = int.parse(_quantityController.text);
-                  print("QUIERES COMPRAR: $quantity");
-                  print(
-                      "LA OFERTA ESTA OFERTANDO: ${offerList[index]['quantitat']}");
                   if (quantity <= 0 ||
                       quantity > offerList[index]['quantitat']) {
-                    Navigator.of(context).pop();
-                    Future.delayed(Duration.zero, () {
-                      ScaffoldMessenger.of(context).showSnackBar(
+                    Navigator.of(context).pop(); // Cerrar el diálogo primero
+
+                    // Mostrar el SnackBar después de cerrar el diálogo
+                    Future.delayed(Duration(milliseconds: 100), () {
+                      ScaffoldMessenger.of(scaffoldContext).showSnackBar(
                         const SnackBar(
-                          content: Text('Cantidad no válida'),
+                          content: Text('Error, valor incorrecto de compra'),
+                          duration: Duration(seconds: 3),
                         ),
                       );
                     });
                   } else {
-                    afegirCistellDeCompra(offerList[index]['id'], quantity);
+                    setState(() {
+                      selectedOfferId = offerList[index]['id'];
+                      selectedQuantity = quantity;
+                    });
                     Navigator.of(context).pop();
                     _showCartOptionsDialog();
                   }
                 } catch (e) {
-                  Navigator.of(context).pop();
-                  Future.delayed(Duration.zero, () {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                  Navigator.of(context).pop(); // Cerrar el diálogo primero
+
+                  // Mostrar el SnackBar después de cerrar el diálogo
+                  Future.delayed(Duration(milliseconds: 100), () {
+                    ScaffoldMessenger.of(scaffoldContext).showSnackBar(
                       const SnackBar(
                         content: Text('Ingrese una cantidad válida'),
+                        duration: Duration(seconds: 3),
                       ),
                     );
                   });
@@ -188,18 +201,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             TextButton(
               child: const Text('Seguir comprando'),
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProductsPage()),
-                );
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Ir al carrito'),
+              child: const Text('Ir al menú principal'),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => ProductsPage()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
               },
             ),
