@@ -195,6 +195,9 @@ Route::post('/crearTorneig', [\App\Http\Controllers\TornejosController::class, '
 Route::post('/modificarTorneig', [\App\Http\Controllers\TornejosController::class, 'modificarTorneig'])->name('modificarTorneig');
 Route::post('/eliminarTorneig', [\App\Http\Controllers\TornejosController::class, 'eliminarTorneig'])->name('eliminarTorneig');
 Route::post('/habilitarTorneig', [\App\Http\Controllers\TornejosController::class, 'habilitarTorneig'])->name('habilitarTorneig');
+Route::post('/inscripcioTorneig', [\App\Http\Controllers\TornejosController::class, 'inscripcioTorneig'])->name('inscripcioTorneig');
+
+
 
 //PAYPAL
 Route::post('/api/paypal/order', [PayPalController::class, 'createOrder']);

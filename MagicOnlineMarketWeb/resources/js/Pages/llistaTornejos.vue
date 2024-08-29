@@ -34,6 +34,10 @@ let showModalEliminacio = ref(false);
 let showModalEliminacioConfirmacio = ref(false);
 let showModalTorneigHabilitat =ref(false);
 let showModalTorneigHabilitatConfirmacio =ref(false);
+let showModalErrorInscripcio= ref(false);
+let showModalErrorInscripcioMax= ref(false);
+let showModalInscripcioCorrecta= ref(false);
+
 
 const form = useForm({
     idTorneig: "",
@@ -45,6 +49,12 @@ const form = useForm({
     ronda:0,
     dataHoraInici:null,
     estat:""
+});
+
+
+const formInscripcions = useForm({
+    idTorneig: "",
+    idParticipant:"",
 });
 
 //crear Torneig
@@ -156,27 +166,35 @@ const confirmarhabilitacio = () =>{
 const cerrarHabilitarInscripcions = () =>{
     showModalTorneigHabilitatConfirmacio.value=false;
     showModalTorneigHabilitat.value=false;
+    showModalErrorInscripcio.value=false;
+    showModalInscripcioCorrecta.value=false;
+    showModalErrorInscripcioMax.value=false;
 
 }
 
 //inscripcio
-const inscripcioTorneig = (idTorneig, idUsuari) =>{
-    const jaInscrit = participacions.value.some(participacio =>
-        participacio.idTorneig === idTorneig && participacio.idUsuari === idUsuari
-    );
-    if (jaInscrit) {
-        console.log('Ya estás inscrito en este torneo');
-        return false; // No permitir la inscripción
-    } else {
-        console.log('Puedes inscribirte en este torneo');
-        // Aquí iría el código para inscribir al usuario en el torneo
-        return true; // Permitir la inscripción
+const inscripcioTorneig = (torneig, idUsuari) => {
+    if(torneig.num==torneig.max){
+        showModalErrorInscripcioMax.value = true;
+        return;
     }
 
+    const jaInscrit = participacions.value.some(participacio =>
+        participacio.idTorneig === torneig.idTorneig && participacio.idUsuari === idUsuari
+    );
+    if (jaInscrit) {
+        showModalErrorInscripcio.value = true;
+
+    } else {
+        formInscripcions.idTorneig = torneig.idTorneig;
+        formInscripcions.idParticipant = idUsuari;
+        formInscripcions.post('inscripcioTorneig');
+        setTimeout(() => {
+            useForm.visit(window.location.pathname);
+        }, 500);
+        showModalInscripcioCorrecta.value = true;
+    }
 }
-
-
-
 const abrirModalQuantitatIncorrecta = () => {
     showModalQuantitatIncorrecta.value =true;
 }
@@ -226,7 +244,7 @@ const cerrarModalQuantitatIncorrecta=()=>{
                         <button v-if="torneig.estat=='En creació'" class="btn btn-success rounded-pill"
                                 @click="abrirModalConfirmacionhabilitarInscripcions(torneig)">Habilitar inscripcions</button>
                         <button v-if="torneig.estat=='En inscripció' /*&& $page.props.auth.user.nick!=torneig.nick*/" class="btn btn-success rounded-pill"
-                                 @click="inscripcioTorneig(torneig.idTorneig,$page.props.auth.user.idUsuari )">Inscripció</button>
+                                 @click="inscripcioTorneig(torneig,$page.props.auth.user.idUsuari )">Inscripció</button>
                     </td>
                     <td >
                         <button v-if=" ($page.props.auth.user.idRol==1 ||$page.props.auth.user.idRol==4 || $page.props.auth.user.idRol==5)&&
@@ -541,8 +559,48 @@ const cerrarModalQuantitatIncorrecta=()=>{
                 </div>
             </div>
         </Modal>
-
-
+        <Modal :show="showModalErrorInscripcio" maxWidth="2xl" closeable @close="cerrarHabilitarInscripcions" >
+            <div class="modal-content w-100">
+                <div class="d-flex flex-column justify-content-center align-items-center m-3 position-relative">
+                    <!-- Botón de cerrar -->
+                    <button @click="cerrarHabilitarInscripcions" style="border: none; background: none; position: absolute; top: 10px; right: 10px;">
+                        <img :src="`/images/cierre.jpg`" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <!-- Contenido del mensaje -->
+                    <div class="text-center">
+                        <p>Ya estás inscrit en aquest torneig!</p>
+                    </div>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalInscripcioCorrecta" maxWidth="2xl" closeable @close="cerrarHabilitarInscripcions" >
+            <div class="modal-content w-100">
+                <div class="d-flex flex-column justify-content-center align-items-center m-3 position-relative">
+                    <!-- Botón de cerrar -->
+                    <button @click="cerrarHabilitarInscripcions" style="border: none; background: none; position: absolute; top: 10px; right: 10px;">
+                        <img :src="`/images/cierre.jpg`" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <!-- Contenido del mensaje -->
+                    <div class="text-center">
+                        <p>Inscripció realitzada!</p>
+                    </div>
+                </div>
+            </div>
+        </Modal>
+        <Modal :show="showModalErrorInscripcioMax" maxWidth="2xl" closeable @close="cerrarHabilitarInscripcions" >
+            <div class="modal-content w-100">
+                <div class="d-flex flex-column justify-content-center align-items-center m-3 position-relative">
+                    <!-- Botón de cerrar -->
+                    <button @click="cerrarHabilitarInscripcions" style="border: none; background: none; position: absolute; top: 10px; right: 10px;">
+                        <img :src="`/images/cierre.jpg`" alt="Cerrar" style="width: 10px; height: 10px;" />
+                    </button>
+                    <!-- Contenido del mensaje -->
+                    <div class="text-center">
+                        <p>Número Màxim d'inscripcions! No et pots apuntar!</p>
+                    </div>
+                </div>
+            </div>
+        </Modal>
     </AuthenticatedLayout>
 </template>
 

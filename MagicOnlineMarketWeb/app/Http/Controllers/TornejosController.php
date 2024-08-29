@@ -79,6 +79,15 @@ class TornejosController extends Controller
         $torneig->save();
     }
 
+    public function inscripcioTorneig (Request $request){
+        $participacio= new Participacions();
+        $participacio->idTorneig=$request->idTorneig;
+        $participacio->idUsuari=$request->idParticipant;
+        $participacio->save();
+        $torneig= Tornejos::where('idTorneig',$request->idTorneig)->first();
+        $torneig->numparticipants=($torneig->numparticipants+1);
+        $torneig->save();
+    }
 
 
 
