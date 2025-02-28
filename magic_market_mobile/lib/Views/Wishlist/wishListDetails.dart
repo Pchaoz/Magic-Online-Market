@@ -20,6 +20,7 @@ class _WishListDetails extends State<WishListDetails> {
   var wl_id;
   Map<String, dynamic>? wishlistData;
   List<dynamic> wishlistProducts = [];
+  var statuscode = 200;
 
   // Funciones
   @override
@@ -39,6 +40,7 @@ class _WishListDetails extends State<WishListDetails> {
         'idWishListProducte': wl_pID,
       }),
     );
+    statuscode = response.statusCode;
 
     if (response.statusCode == 200) {
       setState(() {
@@ -54,6 +56,7 @@ class _WishListDetails extends State<WishListDetails> {
       fetchWishList();
     } else {
       print('Error al eliminar de wishlist: ${response.statusCode}');
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Error al eliminar de wishlist'),
@@ -155,7 +158,7 @@ class _WishListDetails extends State<WishListDetails> {
           ),
         ],
       ),
-      body: wishlistProducts.isEmpty
+      body: wishlistProducts.isEmpty && statuscode != 200
           ? const Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: wishlistProducts.length,

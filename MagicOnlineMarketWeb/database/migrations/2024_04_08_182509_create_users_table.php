@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->double('saldo')->default(0);
+            $table->string('paypal_email')->nullable();
             $table->foreignId('idRol')->default(3)->constrained('rols')->references('idRol');
             $table->foreignId('updated_by')->default(1)->constrained('usuaris')->references('idUsuari');
             $table->foreignId('created_by')->default(1)->constrained('usuaris')->references('idUsuari');

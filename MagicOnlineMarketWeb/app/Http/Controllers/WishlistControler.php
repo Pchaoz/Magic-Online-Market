@@ -134,8 +134,9 @@ class WishlistControler extends Controller
         return response()->json(['message' => "Wishlist creada correctament"], 200);
     }
 
-    public function addProductToWishlist(Request $request)
+    public function addProductToWishlistAPI(Request $request)
     {
+        //return response()->json(['message' => $request->idWishlist], 400);
         $wishlist = Wishlist::find($request->idWishlist);
 
         $existingProduct = WishlistProducte::where('idProducte', $request->idProducte)
@@ -157,6 +158,14 @@ class WishlistControler extends Controller
     {
         $wishlistProducte = WishlistProducte::find($request->idWishListProducte);
         $wishlistProducte->delete();
+        return response()->json(['message' => "Producte remogut de la wishlist correctament"], 200);
+    }
+
+    public function deleteWishlist(Request $request)
+    {
+        $wishlist = Wishlist::find($request->idWishlist);
+        $wishlist->delete();
+        return response()->json(['message' => "Wishlist eliminada correctament"], 200);
     }
 
 }

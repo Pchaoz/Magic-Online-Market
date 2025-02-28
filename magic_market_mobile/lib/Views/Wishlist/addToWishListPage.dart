@@ -23,6 +23,7 @@ class _AddToWishList extends State<AddToWishListPage> {
   @override
   void initState() {
     super.initState();
+    print(widget.productID.toString());
     fetchWishLists();
   }
 
@@ -30,8 +31,7 @@ class _AddToWishList extends State<AddToWishListPage> {
     final response =
         await http.get(Uri.parse('$API_URI_SERVER/getWishlistUser/$userID'));
 
-    print(
-        "STATUSCODE AGREGAR A WISHLISTS USER -> $userID : ${response.statusCode}");
+    print("STATUSCODE GET WISHLISTS USER -> $userID : ${response.statusCode}");
 
     if (response.statusCode == 200) {
       setState(() {
@@ -63,21 +63,28 @@ class _AddToWishList extends State<AddToWishListPage> {
   }
 
   void addToWishlist() async {
+    var idProdcut = widget.productID;
+    print(idProdcut.toString());
+    print(selectedWishlistID);
+
     if (selectedWishlistID != null) {
-      final response = await http.post(
-        Uri.parse('$API_URI_SERVER/addProductToWishlist'),
-        headers: {
-          'Content-Type': 'application/js4on',
-        },
-        body: json.encode({
-          'idWishlist': selectedWishlistID,
-          'idProducte': widget.productID,
-        }),
-      );
+      final response = await http
+          .post(Uri.parse('$API_URI_SERVER/addProductToWishlist'), body: {
+        'idWishlist': selectedWishlistID.toString(),
+        'idProducte': idProdcut.toString(),
+      });
+
+      print("LA RESPUESTA DEL AGREGAR A WISHLIST ES -> ${response.statusCode}");
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Producte afegit a la wishlist'),
+        ));
+      } else if (response.statusCode == 400) {
+        print(json.decode(response.body)['message'].toString());
+        String msg = json.decode(response.body)['message'].toString();
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(msg),
         ));
       } else {
         showDialog(

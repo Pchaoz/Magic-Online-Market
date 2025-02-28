@@ -135,7 +135,7 @@ const  updateTotal =()=> {
 }
 const pagarTransaccio =()=> {
 
-    if(formComanda.isEnviament===true && formComanda.idDireccio==="" && formComanda.idTipusEnviament===""){
+    if(formComanda.isEnviament===true && (formComanda.idDireccio==="" || formComanda.idTipusEnviament==="")){
         closeTramit();
         abrirModalTramitacioIncorrecta();
         return;

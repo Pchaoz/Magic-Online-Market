@@ -14,13 +14,6 @@ class CiutatsSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
         DB::table('ciutats')->insert([
-            'nom' => 'Barcelona',
-            'idPais' => '1',
-            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
-            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
-        ]);
-
-        DB::table('ciutats')->insert([
             'nom' => 'Madrid',
             'idPais' => '1',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),

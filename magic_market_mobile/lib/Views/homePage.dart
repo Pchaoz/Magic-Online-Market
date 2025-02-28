@@ -49,6 +49,7 @@ class _HomePageContentState extends State<HomePageContent> {
   @override
   void initState() {
     super.initState();
+    requestBluetoothPermission();
     reloadPref(context);
     fetchNews();
     fetchLastArticles();
@@ -231,27 +232,15 @@ class _HomePageContentState extends State<HomePageContent> {
                     //MOVE TO THE OFFER
                     if (roleID == 0)
                       {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Error'),
-                              content:
-                                  Text('Has de inciar sessio per comprar.. '),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('Tancar'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        ),
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Has de iniciar sesión para comprar.'),
+                          ),
+                        )
                       }
                     else
-                      {print("Not implemented JET")}
+                      {}
                   },
                 );
               },

@@ -69,11 +69,26 @@ class ProductesController extends Controller
     }
 
 
-
-
     public function APIListProductes(){
-        $productes= Productes::all();
-        return response()->json($productes);
+
+        $productes = Productes::with('categoriaProducte')->get();
+        $result = $productes->map(function($producte) {
+            return [
+                'idProducte' => $producte->idProducte,
+                'nom' => $producte->nom,
+                'descripcio' => $producte->descripcio,
+                'imatge' => $producte->imatge,
+                'idCategoriaProducte' => $producte->idCategoriaProducte,
+                'nomCategoria' => $producte->categoriaProducte ? $producte->categoriaProducte->nom : null,
+                'idExpansio' => $producte->idExpansio,
+                'idCarta' => $producte->idCarta,
+                'updated_by' => $producte->updated_by,
+                'created_by' => $producte->created_by,
+                'created_at' => $producte->created_at,
+                'updated_at' => $producte->updated_at,
+            ];
+        });
+        return response()->json($result);
     }
 
     public function APILastProductes(){

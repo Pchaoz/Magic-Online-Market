@@ -21,6 +21,7 @@ class _ProfileEditPage extends State<ProfileEditPage> {
   final _formKey = GlobalKey<FormState>();
   String _nick = '';
   String _nombre = '';
+  String _paypalmail = '';
   String _password = '';
   String _passwordActual = '';
 
@@ -43,7 +44,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
     List<dynamic> userInfoResolved = await userInfo;
     Map<String, dynamic> firstUser = userInfoResolved.first;
 
-    print("LA PUTISIMA CONTRASEÑA ES: $_passwordActual");
+    print("LA CONTRASEÑA ES: $_passwordActual");
+    print("EL CORREO DE PAYPAL ES: $_paypalmail");
 
     try {
       final response = await http.put(
@@ -55,6 +57,8 @@ class _ProfileEditPage extends State<ProfileEditPage> {
           'idUsuari': firstUser['idUsuari'].toString(),
           'nick': _nick.isEmpty ? firstUser['nick'] : _nick,
           'name': _nombre.isEmpty ? firstUser['name'] : _nombre,
+          'paypalmail':
+              _paypalmail.isEmpty ? firstUser['paypal_email'] : _paypalmail,
           'cognom': firstUser['cognom'],
           'email': firstUser['email'],
           'passwordActual': _passwordActual,
@@ -180,6 +184,28 @@ class _ProfileEditPage extends State<ProfileEditPage> {
                               ),
                               onSaved: (value) {
                                 _nombre = value ?? '';
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                      FutureBuilder<List<dynamic>>(
+                        future: userInfo,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<dynamic>> snapshot) {
+                          if (snapshot.hasData) {
+                            return TextFormField(
+                              initialValue: snapshot.data?.first['paypal_email']
+                                  .toString(),
+                              decoration: const InputDecoration(
+                                labelText: 'Correu paypal',
+                              ),
+                              onSaved: (value) {
+                                _paypalmail = value ?? '';
                               },
                             );
                           } else if (snapshot.hasError) {

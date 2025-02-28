@@ -20,8 +20,8 @@ class User extends Authenticatable
         'cognom',
         'email',
         'password',
-        'saldo'
-
+        'saldo',
+        'paypal_email'
     ];
 
     /**
