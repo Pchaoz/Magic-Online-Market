@@ -184,6 +184,12 @@ Route::delete('/api/removeWishList', [\App\Http\Controllers\WishlistControler::c
 
 //funcions controller Tornejos
 Route::get('/getAllTornejos', [\App\Http\Controllers\TornejosController::class,'ListTornejos'])->name('ListTornejos');
+Route::post('/crearTorneig', [\App\Http\Controllers\TornejosController::class, 'crearTorneig'])->name('crearTorneig');
+Route::post('/modificarTorneig', [\App\Http\Controllers\TornejosController::class, 'modificarTorneig'])->name('modificarTorneig');
+Route::post('/eliminarTorneig', [\App\Http\Controllers\TornejosController::class, 'eliminarTorneig'])->name('eliminarTorneig');
+Route::post('/habilitarTorneig', [\App\Http\Controllers\TornejosController::class, 'habilitarTorneig'])->name('habilitarTorneig');
+Route::post('/inscripcioTorneig', [\App\Http\Controllers\TornejosController::class, 'inscripcioTorneig'])->name('inscripcioTorneig');
+
 
 //PAYPAL
 Route::post('/api/paypal/order', [PayPalController::class, 'createOrder']);

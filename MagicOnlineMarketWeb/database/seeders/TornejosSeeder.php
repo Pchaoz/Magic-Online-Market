@@ -14,6 +14,7 @@ class TornejosSeeder extends Seeder
     {
         Schema::disableForeignKeyConstraints();
         DB::table('tornejos')->insert([
+            'nom'=>'Proba',
             'numparticipants'  => 26,
             'minParticipants'  => 12,
             'maxParticipants'  => 52,
@@ -26,6 +27,7 @@ class TornejosSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
         DB::table('tornejos')->insert([
+            'nom'=>'Proba2',
             'maxParticipants'  => 120,
             'numeroRondes'  => 60,
             'idOrganitzador'  => '3',
@@ -36,6 +38,7 @@ class TornejosSeeder extends Seeder
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
         DB::table('tornejos')->insert([
+            'nom'=>'Proba3',
             'numparticipants'  => 12,
             'numeroRondes'  => 2,
             'idOrganitzador'  => '2',

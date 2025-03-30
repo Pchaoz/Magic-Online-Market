@@ -44,7 +44,7 @@ class PremisSeeder extends Seeder
             'posicio' => '1',
             'quantitat' => '2',
             'idProducte' => '5',
-            'idTorneig' => '3',
+            'idTorneig' => '2',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
 

@@ -11,10 +11,11 @@ return new class extends Migration
     {
         Schema::create('tornejos', function (Blueprint $table) {
             $table->bigIncrements("idTorneig");
-            $table->integer("numparticipants")->default(2);
+            $table->string("nom",40);
+            $table->integer("numparticipants")->default(0);
             $table->integer("minParticipants")->default(2);
             $table->integer("maxParticipants")->nullable();
-            $table->integer("numeroRondes")->default(1);
+            $table->integer("numeroRondes")->nullable();
             $table->enum("estat",["En creació","En inscripció","Jugant","Acabat","Anulat"])->default("En creació");
             $table->foreignId('idOrganitzador')->constrained('usuaris')->references('idUsuari');
             $table->foreignId('idTipusTorneig')->constrained('tipus_torneig')->references('idTipusTorneig');

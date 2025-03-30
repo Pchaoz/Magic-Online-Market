@@ -10,7 +10,7 @@ class Tornejos extends Model
     use HasFactory;
     protected $table = "tornejos";
     protected $primaryKey = "idTorneig";
-    protected $fillable = ["idTorneig","numparticipants","minParticipants","maxParticipants","numeroRondes","horaInici","estat"];
+    protected $fillable = ["idTorneig","nom","numparticipants","minParticipants","maxParticipants","numeroRondes","horaInici","estat"];
 
     public function organitzador(){
         return $this->BelongsTo(User::class, 'idUsuari', 'idOrganitzador');
